@@ -1,0 +1,114 @@
+{
+  "project_info": {
+    "project_number": "461009021142",
+    "firebase_url": "https://abiding-ion-93908.firebaseio.com",
+    "project_id": "abiding-ion-93908",
+    "storage_bucket": "abiding-ion-93908.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:461009021142:android:7af736dffbefcc18",
+        "android_client_info": {
+          "package_name": "com.amazonaws.androidtest"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "461009021142-knetavid99m7v1cbckiid08tanummo5f.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "461009021142-3bsl09mb120pch876pnlp397a9t7j60a.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA-LKKUhi7p7pkms623h0BH10aS9NJ8PZc"
+        },
+        {
+          "current_key": "AIzaSyC5fV8496D27sXBB-KVctcJBwsFTh-7coI"
+        },
+        {
+          "current_key": "AIzaSyAV7L_9x9oFTCVVnlQctR7z5gfPEhGKIEk"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:461009021142:android:16b923cf404b24fb",
+        "android_client_info": {
+          "package_name": "com.getbooks.android"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "461009021142-nffkcsle8fnlffaglolfb57vgltrgtkt.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.getbooks.android",
+            "certificate_hash": "2887c01905f22733ef9e1ae8b2206c10c34d7ba9"
+          }
+        },
+        {
+          "client_id": "461009021142-knetavid99m7v1cbckiid08tanummo5f.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "461009021142-3bsl09mb120pch876pnlp397a9t7j60a.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA-LKKUhi7p7pkms623h0BH10aS9NJ8PZc"
+        },
+        {
+          "current_key": "AIzaSyC5fV8496D27sXBB-KVctcJBwsFTh-7coI"
+        },
+        {
+          "current_key": "AIzaSyAV7L_9x9oFTCVVnlQctR7z5gfPEhGKIEk"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "461009021142-rviorar4019ak34ps9adj3kg2civ2qo6.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.app.GetBooksApp",
+                "app_store_id": "20170710"
+              }
+            },
+            {
+              "client_id": "461009021142-knetavid99m7v1cbckiid08tanummo5f.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
