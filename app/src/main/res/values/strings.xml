@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Getbooks</string>
+    <string name="txt_load">Loading...</string>
 </resources>

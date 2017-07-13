@@ -5,8 +5,13 @@ package com.getbooks.android;
  */
 
 public class Const {
-
+//    public static final String BASE_URL = "https://private-anon-27d0bc03e9-glibrary.apiary-mock.com";
+    public static final String BASE_URL = "https://pelephone.getbooks.co.il/dev/";
     //Authorization constant
     public static final String AUTH_URL = "https://pelephone.getbooks.co.il/dev/customer/account/login/";
-    public static final String REDIRECT_URL = "https://pelephone.getbooks.co.il/dev/customer/account/index/real/1/?DEVICE_TOKEN=";
+    public static final String REDIRECT_URL = "https://pelephone.getbooks.co.il/dev/customer/account/index/real/";
+
+
+    //Shared preference constants
+    public static final String IS_USER_AUTHORIZE = "is_user_authorize";
 }

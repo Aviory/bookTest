@@ -13,6 +13,6 @@ public class LogUtil {
     }
 
     public static void log(Object object, String log){
-        Log.d(object.getClass().getName(), log);
+        Log.d(object.getClass().getSimpleName(), log);
     }
 }
