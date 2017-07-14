@@ -1,13 +1,13 @@
 package com.getbooks.android.api;
 
-import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
+import android.support.v7.app.AppCompatActivity;
 
 import com.getbooks.android.Const;
+import com.getbooks.android.R;
 import com.getbooks.android.prefs.Prefs;
-import com.getbooks.android.ui.LibraryActivity;
-import com.getbooks.android.util.UiUtil;
+import com.getbooks.android.ui.BaseActivity;
+import com.getbooks.android.ui.fragments.LibraryFragment;
 
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -52,9 +52,9 @@ public class ApiManager {
             public void onResponse(Call<Void> call, Response<Void> response) {
                 if (response.isSuccessful()) {
                     Prefs.setBooleanProperty(context, Const.IS_USER_AUTHORIZE, true);
-                    Intent intent = new Intent(context, LibraryActivity.class);
-                    context.startActivity(intent);
-                    UiUtil.clearStack((Activity) context);
+                    BaseActivity.addFragment((AppCompatActivity) context, LibraryFragment.class, R.id.coordinator_layout,
+                            null, false, true, true, null);
+
                 }
             }
 

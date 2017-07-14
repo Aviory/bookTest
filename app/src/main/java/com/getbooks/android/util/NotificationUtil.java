@@ -12,7 +12,7 @@ import android.support.v4.app.NotificationCompat;
 
 import com.getbooks.android.R;
 import com.getbooks.android.events.Events;
-import com.getbooks.android.ui.MainActivity;
+import com.getbooks.android.ui.activities.MainActivity;
 
 import org.greenrobot.eventbus.EventBus;
 
