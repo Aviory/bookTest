@@ -27,9 +27,11 @@ public class AuthorizationActivity extends BaseActivity {
 
     private void checkUserAuthorization() {
         if (Prefs.getBooleanProperty(this, Const.IS_USER_AUTHORIZE)) {
-            BaseActivity.addFragment(this, LibraryFragment.class, R.id.coordinator_layout, null, false, false, true, null);
+            BaseActivity.addFragment(this, LibraryFragment.class, R.id.coordinator_layout, null,
+                    false, false, true, null);
         } else {
-            BaseActivity.addFragment(this, AuthorizationFragment.class, R.id.coordinator_layout, null, false, false, true, null);
+            BaseActivity.addFragment(this, AuthorizationFragment.class, R.id.coordinator_layout,
+                    null, false, false, true, null);
         }
     }
 

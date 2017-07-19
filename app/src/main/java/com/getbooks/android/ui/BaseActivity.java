@@ -5,8 +5,13 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 
 import com.getbooks.android.R;
+import com.getbooks.android.events.Events;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -31,7 +36,9 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     public abstract int getLayout();
 
-    public <T extends BaseActivity> T getAct(){ return (T) this;}
+    public <T extends BaseActivity> T getAct() {
+        return (T) this;
+    }
 
     public static <T> Fragment addFragment(AppCompatActivity activity,
                                            Class<T> clazz,              // class of Fragment
@@ -40,8 +47,7 @@ public abstract class BaseActivity extends AppCompatActivity {
                                            boolean addBackStack,        // add to back stack
                                            boolean replaceFragment,     // true - replace , false - add
                                            boolean animation,           // on/off animation
-                                           int[] animRes)
-    {
+                                           int[] animRes) {
         Fragment fragment = activity.getSupportFragmentManager().findFragmentByTag(clazz.getCanonicalName());
         if (fragment == null) {
             try {
@@ -89,5 +95,33 @@ public abstract class BaseActivity extends AppCompatActivity {
 
         transaction.commitAllowingStateLoss();
         return fragment;
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        EventBus.getDefault().unregister(this);
+    }
+
+
+    @Subscribe
+    public void onMessageEvent(Events.NotificationReceived notificationReceived) {
+    }
+
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+        if (hasFocus) {
+            getWindow().getDecorView().setSystemUiVisibility(
+                    //View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_LAYOUT_STABLE |
+                    View.SYSTEM_UI_FLAG_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+            );
+        }
     }
 }

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Getbooks</string>
+    <string name="txt_load">Loading...</string>
+
+    <!-- Tutorials text -->
+    <string name="txt_library"> הספרים של</string>
+    <string name="txt_catalog">קטלוג</string>
+</resources>

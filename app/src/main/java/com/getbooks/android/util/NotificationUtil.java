@@ -12,7 +12,7 @@ import android.support.v4.app.NotificationCompat;
 
 import com.getbooks.android.R;
 import com.getbooks.android.events.Events;
-import com.getbooks.android.ui.activities.MainActivity;
+import com.getbooks.android.ui.activities.SplashActivity;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -23,7 +23,7 @@ import org.greenrobot.eventbus.EventBus;
 public class NotificationUtil {
 
     public static void showNotification(Context context, String message, String title) {
-        Intent intent = new Intent(context, MainActivity.class);
+        Intent intent = new Intent(context, SplashActivity.class);
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         if (title != null) {
 //            intent.putExtra(Const.INTENT_BOOK_ID, Integer.parseInt(title));

@@ -48,7 +48,7 @@ public class AuthorizationFragment extends BaseFragment {
 
     @Override
     public int getLayout() {
-        return R.layout.authorization_fragment_layout;
+        return R.layout.fragment_authorization_layout;
     }
 
     @Override
