@@ -6,4 +6,5 @@
     <!-- Tutorials text -->
     <string name="txt_library"> הספרים של</string>
     <string name="txt_catalog">קטלוג</string>
+    <string name="txt_tutorial_main">מסכי הסבר זמינים לצפייה  גם מתפריט הגדרות</string>
 </resources>

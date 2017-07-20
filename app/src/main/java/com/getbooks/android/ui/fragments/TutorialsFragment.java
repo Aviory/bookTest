@@ -3,13 +3,10 @@ package com.getbooks.android.ui.fragments;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
-import android.widget.ImageView;
 
 import com.getbooks.android.R;
 import com.getbooks.android.ui.BaseFragment;
 import com.getbooks.android.ui.activities.AuthorizationActivity;
-
-import butterknife.BindView;
 
 /**
  * Created by marina on 19.07.17.
@@ -18,9 +15,9 @@ import butterknife.BindView;
 public class TutorialsFragment extends BaseFragment {
 
     private static final String RES_IMG = "com.getbooks.android.fragment.img";
-
-    @BindView(R.id.img_tutorial)
-    protected ImageView mImageTutorial;
+//
+//    @BindView(R.id.img_tutorial)
+//    protected ImageView mImageTutorial;
 
 
     public static TutorialsFragment getInstance(int imgRes) {
@@ -33,11 +30,11 @@ public class TutorialsFragment extends BaseFragment {
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        if (getArguments() != null) {
-            int res = getArguments().getInt(RES_IMG, -1);
-            if (res > 0)
-                mImageTutorial.setImageResource(res);
-        }
+//        if (getArguments() != null) {
+//            int res = getArguments().getInt(RES_IMG, -1);
+//            if (res > 0)
+//                mImageTutorial.setImageResource(res);
+//        }
     }
 
     @Override

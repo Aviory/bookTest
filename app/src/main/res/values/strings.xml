@@ -5,4 +5,10 @@
     <!-- Tutorials text -->
     <string name="txt_library"> הספרים של</string>
     <string name="txt_catalog">קטלוג</string>
+    <string name="txt_tutorial_main">מסכי הסבר זמינים לצפייה  \nגם מתפריט הגדרות</string>
+    <string name="txt_arrow_first">הגדרות \nכלליות</string>
+    <string name="txt_arrow_second">למסך \nראשי</string>
+    <string name="txt_arrow_third">הספרים \nשבחרת</string>
+    <string name="txt_arrow_four">מבחר \nספרים \nלהשאלה \nאו רכישה</string>
+    <string name="txt_arrow_five">הגדרות \nמערכת</string>
 </resources>
