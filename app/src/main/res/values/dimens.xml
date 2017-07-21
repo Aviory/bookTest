@@ -10,7 +10,7 @@
     <dimen name="margin_small">15dp</dimen>
     <dimen name="margin_medium">20dp</dimen>
     <dimen name="margin_big">30dp</dimen>
-    <dimen name="margin_biggest">60dp</dimen>
+    <dimen name="margin_biggest">70dp</dimen>
 
     <!-- Default fonts -->
     <dimen name="font_3">12sp</dimen>
@@ -23,13 +23,32 @@
     <dimen name="font_10">26sp</dimen>
     <dimen name="font_11">28sp</dimen>
 
-    <!-- Tutorials screen sizes-->
+    <!-- Menu main sizes -->
+    <dimen name="separator_height">22dp</dimen>
+    <dimen name="separator_width">2dp</dimen>
+
+    <!-- Menu book sizes -->
+    <dimen name="margin_bottom">11.8dp</dimen>
+
+    <!-- Menu seek bar sizes -->
+    <dimen name="seek_bar_radius">1dp</dimen>
+    <dimen name="seek_bar_height">4dp</dimen>
+    <dimen name="seek_bar_width">45dp</dimen>
+
+    <!-- Tutorial main screen sizes-->
     <dimen name="margin_between_arrow">40dp</dimen>
     <dimen name="margin_arrow_left">3dp</dimen>
     <dimen name="margin_arrow_right">5dp</dimen>
     <dimen name="margin_close_img">80dp</dimen>
-    <dimen name="separator_height">22dp</dimen>
-    <dimen name="separator_width">2dp</dimen>
 
+    <!-- Tutorial text screen sizes-->
+    <dimen name="margin_2dp">2dp</dimen>
+    <dimen name="margin_50dp">50dp</dimen>
+    <dimen name="margin_40dp">40dp</dimen>
+
+
+    <!-- Tutorial text float screen sizes-->
+    <dimen name="margin_between_bottom_arrow">80dp</dimen>
+    <dimen name="margin_100dp">100dp</dimen>
 
 </resources>

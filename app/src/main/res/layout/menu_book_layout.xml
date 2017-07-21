@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <LinearLayout
+        android:id="@+id/menu_book"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/blue"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/margin_smallest"
+            android:layout_marginLeft="@dimen/margin_smallest"
+            android:layout_marginTop="@dimen/margin_small"
+            android:src="@drawable/book_settings" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/margin_smallest"
+            android:layout_marginTop="@dimen/margin_small"
+            android:layout_weight="1"
+            android:src="@drawable/search_white" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/margin_smallest"
+            android:layout_marginTop="@dimen/margin_small"
+            android:layout_weight="1"
+            android:src="@drawable/bookmarks_list" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/margin_bottom"
+            android:layout_marginRight="@dimen/margin_smallest"
+            android:layout_marginTop="@dimen/margin_small"
+            android:src="@drawable/book_arrow" />
+    </LinearLayout>
+</merge>

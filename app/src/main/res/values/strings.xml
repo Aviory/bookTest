@@ -2,13 +2,39 @@
     <string name="app_name">Getbooks</string>
     <string name="txt_load">Loading...</string>
 
-    <!-- Tutorials text -->
-    <string name="txt_library"> הספרים של</string>
-    <string name="txt_catalog">קטלוג</string>
+    <!-- Menu main text -->
+    <string name="txt_library"> Library</string>
+    <string name="txt_catalog">Catalog</string>
+
+    <!-- Menu seek bar text -->
+    <string name="txt_seek_bar_pages">21/324</string>
+    <string name="txt_seek_bar_per">15%</string>
+
+    <!-- Tutorial main text -->
     <string name="txt_tutorial_main">מסכי הסבר זמינים לצפייה  \nגם מתפריט הגדרות</string>
-    <string name="txt_arrow_first">הגדרות \nכלליות</string>
-    <string name="txt_arrow_second">למסך \nראשי</string>
-    <string name="txt_arrow_third">הספרים \nשבחרת</string>
-    <string name="txt_arrow_four">מבחר \nספרים \nלהשאלה \nאו רכישה</string>
-    <string name="txt_arrow_five">הגדרות \nמערכת</string>
+    <string name="txt_tutorial_main_first">הגדרות \nכלליות</string>
+    <string name="txt_tutorial_main_second">למסך \nראשי</string>
+    <string name="txt_tutorial_main_third">הספרים \nשבחרת</string>
+    <string name="txt_tutorial_main_four">מבחר \nספרים \nלהשאלה \nאו רכישה</string>
+    <string name="txt_tutorial_main_five">הגדרות \nמערכת</string>
+
+
+    <!-- Tutorial first text -->
+    <string name="txt_tutorial_first_page">אמה • ג’יין אוסטין</string>
+    <string name="txt_tutorial_first_one">לחיצב ממושכת על \nהבחירה פותחת חלון צף</string>
+    <string name="txt_tutorial_first_two">דיפדוף בין מסכי עזרה</string>
+    <string name="txt_tutorial_first_three">לבחור צבע \nהדגשה</string>
+    <string name="txt_tutorial_first_four">לשתף ציטוט</string>
+    <string name="txt_tutorial_first_five">לכתוב הערה</string>
+    <string name="txt_tutorial_first_six">למחוק הדגשה</string>
+
+    <!-- Tutorial float text -->
+    <string name="txt_tutorial_float_one">לחיצה קצרה על דף ספר \nפותחת כפתורי שליטה</string>
+    <string name="txt_tutorial_float_two">דיפדוף בין מסכי עזרה</string>
+    <string name="txt_tutorial_float_three">הגדרות \nהספר</string>
+    <string name="txt_tutorial_float_four">חיפוש</string>
+    <string name="txt_tutorial_float_five">סימניות</string>
+    <string name="txt_tutorial_float_six">לספרייה</string>
+    <string name="txt_tutorial_float_bottom">מקומך \nבספר</string>
+
 </resources>

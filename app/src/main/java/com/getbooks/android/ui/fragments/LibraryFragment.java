@@ -57,11 +57,11 @@ public class LibraryFragment extends BaseFragment {
         public Fragment getItem(int position) {
             switch (position) {
                 case 0:
-                    return TutorialsFragment.getInstance(R.drawable.add_bookmark);
+                    return TutorialMainFragment.getInstance();
                 case 1:
-                    return TutorialsFragment.getInstance(R.drawable.add_bookmark);
+                    return TutorialTextFloatFragment.getInstance();
                 case 2:
-                    return TutorialsFragment.getInstance(R.drawable.add_bookmark);
+                    return TutorialTextFragment.getInstance();
             }
             return null;
         }

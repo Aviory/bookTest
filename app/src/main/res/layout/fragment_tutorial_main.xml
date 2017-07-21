@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/black_translucent"
+    android:clickable="true"
+    android:orientation="vertical">
+
+    <include
+        android:id="@+id/menu_main"
+        layout="@layout/menu_main_layout" />
+
+    <ImageView
+        android:id="@+id/img_arrow_first"
+        style="@style/TutorialImageArrowStyle"
+        android:layout_below="@id/menu_main"
+        android:layout_marginLeft="@dimen/margin_medium" />
+
+    <TextView
+        android:id="@+id/txt_tutorial_main_first"
+        style="@style/TutorialTextStyle"
+        android:layout_below="@id/img_arrow_first"
+        android:layout_marginLeft="@dimen/margin_arrow_left"
+        android:text="@string/txt_tutorial_main_first" />
+
+    <ImageView
+        android:id="@+id/img_arrow_second"
+        style="@style/TutorialImageArrowStyle"
+        android:layout_below="@id/menu_main"
+        android:layout_marginLeft="@dimen/margin_between_arrow"
+        android:layout_toRightOf="@id/img_arrow_first" />
+
+    <TextView
+        style="@style/TutorialTextStyle"
+        android:layout_below="@id/img_arrow_second"
+        android:layout_marginLeft="@dimen/margin_arrow_right"
+        android:layout_toRightOf="@id/txt_tutorial_main_first"
+        android:text="@string/txt_tutorial_main_second" />
+
+    <ImageView
+        android:id="@+id/img_arrow_third"
+        style="@style/TutorialImageArrowStyle"
+        android:layout_below="@id/menu_main"
+        android:layout_centerHorizontal="true" />
+
+    <TextView
+        android:id="@+id/txt_third"
+        style="@style/TutorialTextStyle"
+        android:layout_below="@+id/img_arrow_third"
+        android:layout_centerHorizontal="true"
+        android:text="@string/txt_tutorial_main_third" />
+
+    <ImageView
+        android:id="@+id/img_arrow_four"
+        style="@style/TutorialImageArrowStyle"
+        android:layout_below="@id/menu_main"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="@dimen/margin_biggest"
+        android:layout_toRightOf="@id/img_arrow_third" />
+
+    <TextView
+        style="@style/TutorialTextStyle"
+        android:layout_below="@id/img_arrow_four"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="@dimen/margin_small"
+        android:layout_toRightOf="@id/txt_third"
+        android:text="@string/txt_tutorial_main_four" />
+
+    <ImageView
+        android:id="@+id/img_arrow_five"
+        style="@style/TutorialImageArrowStyle"
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/menu_main"
+        android:layout_marginRight="@dimen/margin_small" />
+
+    <TextView
+        android:id="@+id/txt_tutorial_main_five"
+        style="@style/TutorialTextStyle"
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/img_arrow_five"
+        android:layout_marginRight="@dimen/margin_arrow_right"
+        android:text="@string/txt_tutorial_main_five" />
+
+    <ImageView
+        android:id="@+id/img_close"
+        style="@style/TutorialCloseImgageStyle" />
+
+    <TextView
+        style="@style/TutorialTextStyle"
+        android:layout_above="@id/img_close"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="@dimen/margin_close_img"
+        android:text="@string/txt_tutorial_main" />
+
+</RelativeLayout>

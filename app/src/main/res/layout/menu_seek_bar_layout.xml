@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <LinearLayout
+        android:id="@+id/seek_bar_menu"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@color/gray_light"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/margin_medium"
+            android:layout_marginLeft="@dimen/margin_smallest"
+            android:layout_marginTop="@dimen/margin_medium"
+            android:text="@string/txt_seek_bar_per"
+            android:textColor="@color/color_black"
+            android:textSize="@dimen/font_5" />
+
+        <SeekBar
+            android:layout_width="0dp"
+            android:layout_height="@dimen/seek_bar_height"
+            android:layout_marginLeft="@dimen/margin_medium"
+            android:layout_marginRight="@dimen/margin_medium"
+            android:layout_weight="1"
+            android:progressDrawable="@drawable/custom_seek_bar"
+            android:thumb="@drawable/thumb" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/margin_smallest"
+            android:text="@string/txt_seek_bar_pages"
+            android:textColor="@color/color_black"
+            android:textSize="@dimen/font_5" />
+    </LinearLayout>
+</merge>

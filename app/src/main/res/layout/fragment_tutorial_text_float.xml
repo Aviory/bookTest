@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include
+        android:id="@+id/menu_book"
+        layout="@layout/menu_book_layout" />
+
+    <TextView
+        android:id="@+id/txt_page"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/menu_book"
+        android:background="@color/gray_light"
+        android:gravity="center"
+        android:paddingBottom="2dp"
+        android:paddingTop="3dp"
+        android:text="@string/txt_tutorial_first_page"
+        android:textColor="@color/color_black" />
+
+
+    <include
+        android:id="@+id/seek_bar_menu"
+        layout="@layout/menu_seek_bar_layout" />
+
+    <ImageView
+        android:id="@+id/img_text"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/seek_bar_menu"
+        android:layout_below="@id/txt_page"
+        android:background="@drawable/text" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@id/seek_bar_menu"
+        android:layout_below="@id/menu_book"
+        android:background="@color/black_translucent">
+
+        <LinearLayout
+            android:id="@+id/linear_layout_arrows"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:orientation="horizontal">
+
+            <ImageView
+                style="@style/TutorialImageArrowStyle"
+                android:layout_marginLeft="@dimen/margin_medium" />
+
+            <ImageView
+                style="@style/TutorialImageArrowStyle"
+                android:layout_weight="1" />
+
+            <ImageView
+                style="@style/TutorialImageArrowStyle"
+                android:layout_weight="1" />
+
+            <ImageView
+                style="@style/TutorialImageArrowStyle"
+                android:layout_marginRight="@dimen/margin_small" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/linear_layout_arrows"
+            android:orientation="horizontal">
+
+            <TextView
+                style="@style/TutorialTextStyle"
+                android:text="@string/txt_tutorial_float_three" />
+
+            <TextView
+                style="@style/TutorialTextStyle"
+                android:layout_weight="1"
+                android:text="@string/txt_tutorial_float_four" />
+
+            <TextView
+                style="@style/TutorialTextStyle"
+                android:layout_weight="1"
+                android:paddingLeft="@dimen/margin_big"
+                android:text="@string/txt_tutorial_float_five" />
+
+            <TextView
+                style="@style/TutorialTextStyle"
+                android:text="@string/txt_tutorial_float_six" />
+
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/img_close"
+            style="@style/TutorialCloseImgageStyle" />
+
+        <TextView
+            android:id="@+id/txt_tutorial_float_one"
+            style="@style/TutorialTextStyle"
+            android:layout_centerInParent="true"
+            android:text="@string/txt_tutorial_float_one" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/txt_tutorial_float_one"
+            android:layout_centerInParent="true"
+            android:layout_marginTop="@dimen/margin_smallest"
+            android:src="@drawable/hand_btn" />
+
+        <ImageView
+            android:id="@+id/img_hand_arrow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="@dimen/margin_big"
+            android:layout_marginLeft="@dimen/margin_biggest"
+            android:src="@drawable/hand_arrows" />
+
+        <TextView
+            style="@style/TutorialTextStyle"
+            android:layout_above="@id/img_hand_arrow"
+            android:layout_marginBottom="@dimen/margin_smallest"
+            android:layout_marginLeft="@dimen/margin_medium"
+            android:text="@string/txt_tutorial_float_two" />
+
+        <ImageView
+            android:id="@+id/img_arrow_bottom"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/margin_100dp"
+            android:rotation="180"
+            android:src="@drawable/tutorial_arrow_1" />
+
+        <TextView
+            style="@style/TutorialTextStyle"
+            android:layout_above="@id/img_arrow_bottom"
+            android:layout_alignParentRight="true"
+            android:layout_marginBottom="@dimen/margin_smallest"
+            android:layout_marginRight="@dimen/margin_between_bottom_arrow"
+            android:text="@string/txt_tutorial_float_bottom" />
+
+    </RelativeLayout>
+
+</RelativeLayout>

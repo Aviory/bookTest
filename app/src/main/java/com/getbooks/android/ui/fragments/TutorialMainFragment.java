@@ -12,7 +12,7 @@ import com.getbooks.android.ui.activities.AuthorizationActivity;
  * Created by marina on 19.07.17.
  */
 
-public class TutorialsFragment extends BaseFragment {
+public class TutorialMainFragment extends BaseFragment {
 
     private static final String RES_IMG = "com.getbooks.android.fragment.img";
 //
@@ -20,11 +20,11 @@ public class TutorialsFragment extends BaseFragment {
 //    protected ImageView mImageTutorial;
 
 
-    public static TutorialsFragment getInstance(int imgRes) {
-        Bundle bundle = new Bundle();
-        bundle.putInt(RES_IMG, imgRes);
-        TutorialsFragment tutorialsFragment = new TutorialsFragment();
-        tutorialsFragment.setArguments(bundle);
+    public static TutorialMainFragment getInstance() {
+//        Bundle bundle = new Bundle();
+//        bundle.putInt(RES_IMG, imgRes);
+        TutorialMainFragment tutorialsFragment = new TutorialMainFragment();
+//        tutorialsFragment.setArguments(bundle);
         return tutorialsFragment;
     }
 
@@ -39,7 +39,7 @@ public class TutorialsFragment extends BaseFragment {
 
     @Override
     public int getLayout() {
-        return R.layout.fragment_tutorials;
+        return R.layout.fragment_tutorial_main;
     }
 
     @Override

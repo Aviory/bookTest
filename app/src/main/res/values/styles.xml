@@ -14,14 +14,30 @@
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowFullscreen">true</item>
     </style>
-    
-    
+
+
     <style name="TutorialTextStyle">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textColor">@color/color_white</item>
         <item name="android:textSize">@dimen/font_5</item>
         <item name="android:gravity">center</item>
+    </style>
+
+    <style name="TutorialImageArrowStyle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">@dimen/margin_smallest</item>
+        <item name="android:src">@drawable/tutorial_arrow_1</item>
+    </style>
+
+    <style name="TutorialCloseImgageStyle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:src">@drawable/close_blue</item>
+        <item name="android:layout_marginBottom">@dimen/margin_medium</item>
+        <item name="android:layout_centerHorizontal">true</item>
+        <item name="android:layout_alignParentBottom">true</item>
     </style>
 
 </resources>
