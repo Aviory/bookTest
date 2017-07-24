@@ -10,16 +10,36 @@ public class Events {
 
         String message;
 
-        public NotificationReceived(String message){
+        public NotificationReceived(String message) {
             this.message = message;
         }
 
-        public String getMessage(){
-            return  message;
+        public String getMessage() {
+            return message;
         }
 
-        public void setMessage(String message){
+        public void setMessage(String message) {
             this.message = message;
         }
+    }
+
+    public static class ShowTutorialsScreens {
+        boolean isShowTutorials;
+
+        public ShowTutorialsScreens(boolean isShowTutorials) {
+            this.isShowTutorials = isShowTutorials;
+        }
+
+        public boolean isShowTutorials() {
+            return isShowTutorials;
+        }
+
+        public void setShowTutorials(boolean showTutorials) {
+            isShowTutorials = showTutorials;
+        }
+    }
+
+    public static class RemoveTutorialsScreens{
+
     }
 }

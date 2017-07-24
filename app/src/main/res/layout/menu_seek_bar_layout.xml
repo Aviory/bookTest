@@ -10,7 +10,7 @@
         android:gravity="center"
         android:orientation="horizontal">
 
-        <TextView
+        <com.getbooks.android.ui.widget.ArialNormalTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/margin_medium"
@@ -29,7 +29,7 @@
             android:progressDrawable="@drawable/custom_seek_bar"
             android:thumb="@drawable/thumb" />
 
-        <TextView
+        <com.getbooks.android.ui.widget.ArialNormalTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="@dimen/margin_smallest"

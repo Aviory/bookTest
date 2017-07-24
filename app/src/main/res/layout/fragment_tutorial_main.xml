@@ -16,7 +16,7 @@
         android:layout_below="@id/menu_main"
         android:layout_marginLeft="@dimen/margin_medium" />
 
-    <TextView
+    <com.getbooks.android.ui.widget.ArialNormalTextView
         android:id="@+id/txt_tutorial_main_first"
         style="@style/TutorialTextStyle"
         android:layout_below="@id/img_arrow_first"
@@ -30,7 +30,7 @@
         android:layout_marginLeft="@dimen/margin_between_arrow"
         android:layout_toRightOf="@id/img_arrow_first" />
 
-    <TextView
+    <com.getbooks.android.ui.widget.ArialNormalTextView
         style="@style/TutorialTextStyle"
         android:layout_below="@id/img_arrow_second"
         android:layout_marginLeft="@dimen/margin_arrow_right"
@@ -43,7 +43,7 @@
         android:layout_below="@id/menu_main"
         android:layout_centerHorizontal="true" />
 
-    <TextView
+    <com.getbooks.android.ui.widget.ArialNormalTextView
         android:id="@+id/txt_third"
         style="@style/TutorialTextStyle"
         android:layout_below="@+id/img_arrow_third"
@@ -58,11 +58,11 @@
         android:layout_marginLeft="@dimen/margin_biggest"
         android:layout_toRightOf="@id/img_arrow_third" />
 
-    <TextView
+    <com.getbooks.android.ui.widget.ArialNormalTextView
         style="@style/TutorialTextStyle"
         android:layout_below="@id/img_arrow_four"
         android:layout_centerHorizontal="true"
-        android:layout_marginLeft="@dimen/margin_small"
+        android:layout_marginLeft="@dimen/margin_between_txt"
         android:layout_toRightOf="@id/txt_third"
         android:text="@string/txt_tutorial_main_four" />
 
@@ -73,7 +73,7 @@
         android:layout_below="@id/menu_main"
         android:layout_marginRight="@dimen/margin_small" />
 
-    <TextView
+    <com.getbooks.android.ui.widget.ArialNormalTextView
         android:id="@+id/txt_tutorial_main_five"
         style="@style/TutorialTextStyle"
         android:layout_alignParentRight="true"
@@ -85,7 +85,7 @@
         android:id="@+id/img_close"
         style="@style/TutorialCloseImgageStyle" />
 
-    <TextView
+    <com.getbooks.android.ui.widget.ArialNormalTextView
         style="@style/TutorialTextStyle"
         android:layout_above="@id/img_close"
         android:layout_centerHorizontal="true"

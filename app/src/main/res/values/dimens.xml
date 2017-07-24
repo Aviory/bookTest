@@ -39,16 +39,22 @@
     <dimen name="margin_between_arrow">40dp</dimen>
     <dimen name="margin_arrow_left">3dp</dimen>
     <dimen name="margin_arrow_right">5dp</dimen>
-    <dimen name="margin_close_img">80dp</dimen>
+    <dimen name="margin_close_img">70dp</dimen>
+    <dimen name="margin_between_txt">0dp</dimen>
 
     <!-- Tutorial text screen sizes-->
+    <dimen name="margin_hand_top">60dp</dimen>
     <dimen name="margin_2dp">2dp</dimen>
-    <dimen name="margin_50dp">50dp</dimen>
+    <dimen name="margin_hand_left">50dp</dimen>
     <dimen name="margin_40dp">40dp</dimen>
+    <dimen name="margin_txt_top">80dp</dimen>
 
 
     <!-- Tutorial text float screen sizes-->
     <dimen name="margin_between_bottom_arrow">80dp</dimen>
     <dimen name="margin_100dp">100dp</dimen>
+    <dimen name="margin_book_page">30dp</dimen>
+    <dimen name="margin_txt_center">125dp</dimen>
+    <dimen name="margin_bottom_hand">30dp</dimen>
 
 </resources>

@@ -8,10 +8,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
 import com.getbooks.android.R;
-import com.getbooks.android.events.Events;
-
-import org.greenrobot.eventbus.EventBus;
-import org.greenrobot.eventbus.Subscribe;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -97,22 +93,6 @@ public abstract class BaseActivity extends AppCompatActivity {
         return fragment;
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        EventBus.getDefault().register(this);
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        EventBus.getDefault().unregister(this);
-    }
-
-
-    @Subscribe
-    public void onMessageEvent(Events.NotificationReceived notificationReceived) {
-    }
 
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {

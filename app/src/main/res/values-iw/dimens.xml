@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Tutorial main screen sizes-->
+    <dimen name="margin_between_txt">15dp</dimen>
+</resources>

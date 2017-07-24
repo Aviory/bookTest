@@ -1,12 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rootMainView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/white"
     android:orientation="vertical">
 
-    <include android:id="@+id/menu_main"
-        layout="@layout/menu_main_layout" />
+    <com.getbooks.android.ui.widget.SelectorTab
+        android:id="@+id/menu_main"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center" />
+
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyler_books_shelves"
@@ -14,10 +19,16 @@
         android:layout_height="match_parent"
         android:layout_below="@id/menu_main" />
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:text="Library"
+        android:textColor="@color/color_black" />
+
 
     <android.support.v4.view.ViewPager
         android:id="@+id/view_pager"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
-
 </RelativeLayout>

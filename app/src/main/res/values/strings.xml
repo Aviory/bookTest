@@ -11,30 +11,56 @@
     <string name="txt_seek_bar_per">15%</string>
 
     <!-- Tutorial main text -->
-    <string name="txt_tutorial_main">מסכי הסבר זמינים לצפייה  \nגם מתפריט הגדרות</string>
-    <string name="txt_tutorial_main_first">הגדרות \nכלליות</string>
-    <string name="txt_tutorial_main_second">למסך \nראשי</string>
-    <string name="txt_tutorial_main_third">הספרים \nשבחרת</string>
-    <string name="txt_tutorial_main_four">מבחר \nספרים \nלהשאלה \nאו רכישה</string>
-    <string name="txt_tutorial_main_five">הגדרות \nמערכת</string>
+    <string name="txt_tutorial_main">Explanation screens allow viewing \n also from the menu</string>
+    <string name="txt_tutorial_main_first">General \nsettings</string>
+    <string name="txt_tutorial_main_second">Main \nscreen</string>
+    <string name="txt_tutorial_main_third">The books \nyou have \nselected</string>
+    <string name="txt_tutorial_main_four">Selection\n of books\n to borrow \n or purchase</string>
+    <string name="txt_tutorial_main_five">System \nsettings</string>
 
 
     <!-- Tutorial first text -->
     <string name="txt_tutorial_first_page">אמה • ג’יין אוסטין</string>
-    <string name="txt_tutorial_first_one">לחיצב ממושכת על \nהבחירה פותחת חלון צף</string>
-    <string name="txt_tutorial_first_two">דיפדוף בין מסכי עזרה</string>
-    <string name="txt_tutorial_first_three">לבחור צבע \nהדגשה</string>
-    <string name="txt_tutorial_first_four">לשתף ציטוט</string>
-    <string name="txt_tutorial_first_five">לכתוב הערה</string>
-    <string name="txt_tutorial_first_six">למחוק הדגשה</string>
+    <string name="txt_tutorial_first_one">To hold on hold \n the selection opens a floating window</string>
+    <string name="txt_tutorial_first_two">Switching help screens</string>
+    <string name="txt_tutorial_first_three">Choose a color \npaint</string>
+    <string name="txt_tutorial_first_four">Share quote</string>
+    <string name="txt_tutorial_first_five">Write a\n comment</string>
+    <string name="txt_tutorial_first_six">Delete \nhighlighting</string>
 
     <!-- Tutorial float text -->
-    <string name="txt_tutorial_float_one">לחיצה קצרה על דף ספר \nפותחת כפתורי שליטה</string>
-    <string name="txt_tutorial_float_two">דיפדוף בין מסכי עזרה</string>
-    <string name="txt_tutorial_float_three">הגדרות \nהספר</string>
-    <string name="txt_tutorial_float_four">חיפוש</string>
-    <string name="txt_tutorial_float_five">סימניות</string>
-    <string name="txt_tutorial_float_six">לספרייה</string>
-    <string name="txt_tutorial_float_bottom">מקומך \nבספר</string>
+    <string name="txt_tutorial_float_one">A short press on a book page \n opens control buttons</string>
+    <string name="txt_tutorial_float_two">Switching help screens</string>
+    <string name="txt_tutorial_float_three">Settings \nschool</string>
+    <string name="txt_tutorial_float_four">Search</string>
+    <string name="txt_tutorial_float_five">Bookmarks \nfirefox</string>
+    <string name="txt_tutorial_float_six">Go to\n the library</string>
+    <string name="txt_tutorial_float_bottom">Your place \n in the book</string>
+    <string name="txt_page_book_tutorial">אֵמָה ווּדהַאוּז הייתה יפה, חכמה ועשירה, היו לה בית נוח ומזג נעים, ודומה שנתברכה במיטב מעלות החיים גם יחד; מלאו לה כמעט עשרים ואחת שנים, ובתקופת חיים זו דברים מעטים בלבד הטרידו את מנוחתה או הכעיסו אותה.
+
+היא הייתה הצעירה בשתי בנותיו של אב אוהב ומפנק עד מאוד, ובעקבות נישואי אחותה שימשה גבירת הבית מגיל צעיר למדי. אִמהּ מתה שנים רבות, רבות קודם לכן מכדי שתוכל לזכור בבירור את מגעה, ואת מקום האם מילאה אומנת שהייתה אישה נהדרת והרעיפה עליה חיבה לא פחותה מזו של אם.
+
+שש־עשרה שנים בילתה העלמה טֵיילוֹר בקרב משפחתו של מר וודהאוז, פחות כאומנת ויותר כחברה, והיא רחשה אהבה רבה לשתי הבנות, אך לאֵמָה במיוחד. הקִרבה שנרקמה בין השתיים הייתה כקרבתן של אחיות. עוד לפני שחדלה העלמה טיילור מלשאת את תואר האומנת באופן רשמי, הִקשה עליה נועם מזגה להטיל מורא. וכיוון שצִלה של הסמכות כבר התפוגג מזמן, הן חיו יחדיו כשתי חברות הקשורות זו לזו בעבותות, ואֵמה עשתה ככל העולה על רוחה. היא רחשה הערכה רבה לשיקול דעתה של העלמה טיילור, אך הנחה אותה בעיקר שיקול דעתה שלה.\n\n
+
+ואמנם, המגרעות במצבה של אמה היו יכולתה לעשות כרצונה יתר על המידה ונטייתה החזקה מדי להערכה עצמית מופרזת; אלו היו המגרעות שאיימו לפגום בהנאותיה הרבות, אך היא לא מצאה בהן כל דופי משום שבינתיים הייתה הסכנה סמויה מן העין.
+
+והנה הגיעה עת צער — צער קל, שלא התגבש לכדי התבוננות פנימית מטרידה — העלמה טיילור נישאה, ואבדנה הוא שעורר את העצב. ביום חתונתה של חברתה האהובה ישבה אֵמה ולראשונה בחייה הרהרה נוגות בעתיד. עם תום החתונה והסתלקות האורחים נותרו אביה והיא לסעוד יחד, ללא ציפייה שיבוא אדם שלישי לרומם את רוחם בערב הארוך. אביה שכב לישון לאחר הארוחה, כהרגלו, והיא נותרה אפוא לשבת לבדה ולהגות באבדנה.\n\n
+
+האירוע צפן בחובו אושר רב לחברתה; מר וֶסטוֹן היה אדם בעל אופי מצוין, היה לו ממון המאפשר חיים נוחים, הוא היה בגיל מתאים, והליכותיו היו נעימות. אֵמה חשה קורת רוח מסוימת כשהרהרה בכך שהיא עצמה ייחלה לשידוך הזה וקידמה אותו בחוסר אנוכיות ובנדיבות לב; ובכל זאת היה הבוקר הרה אסון עבורה. חסרונה של העלמה טיילור עתיד להיות מורגש  אֵמָה ווּדהַאוּז הייתה יפה, חכמה ועשירה, היו לה בית נוח ומזג נעים, ודומה שנתברכה במיטב מעלות החיים גם יחד; מלאו לה כמעט עשרים ואחת שנים, ובתקופת חיים זו דברים מעטים בלבד הטרידו את מנוחתה או הכעיסו אותה.
+
+היא הייתה הצעירה בשתי בנותיו של אב אוהב ומפנק עד מאוד, ובעקבות נישואי אחותה שימשה גבירת הבית מגיל צעיר למדי. אִמהּ מתה שנים רבות, רבות קודם לכן מכדי שתוכל לזכור בבירור את מגעה, ואת מקום האם מילאה אומנת שהייתה אישה נהדרת והרעיפה עליה חיבה לא פחותה מזו של אם.\n\n
+
+שש־עשרה שנים בילתה העלמה טֵיילוֹר בקרב משפחתו של מר וודהאוז, פחות כאומנת ויותר כחברה, והיא רחשה אהבה רבה לשתי הבנות, אך לאֵמָה במיוחד. הקִרבה שנרקמה בין השתיים הייתה כקרבתן של אחיות. עוד לפני שחדלה העלמה טיילור מלשאת את תואר האומנת באופן רשמי, הִקשה עליה נועם מזגה להטיל מורא. וכיוון שצִלה של הסמכות כבר התפוגג מזמן, הן חיו יחדיו כשתי חברות הקשורות זו לזו בעבותות, ואֵמה עשתה ככל העולה על רוחה. היא רחשה הערכה רבה לשיקול דעתה של העלמה טיילור, אך הנחה אותה בעיקר שיקול דעתה שלה.
+
+\n\nואמנם, המגרעות במצבה של אמה היו יכולתה לעשות כרצונה יתר על המידה ונטייתה החזקה מדי להערכה עצמית מופרזת; אלו היו המגרעות שאיימו לפגום בהנאותיה הרבות, אך היא לא מצאה בהן כל דופי משום שבינתיים הייתה הסכנה סמויה מן העין.
+
+והנה הגיעה עת צער — צער קל, שלא התגבש לכדי התבוננות פנימית מטרידה — העלמה טיילור נישאה, ואבדנה הוא שעורר את העצב. ביום חתונתה של חברתה האהובה ישבה אֵמה ולראשונה בחייה הרהרה נוגות בעתיד. עם תום החתונה והסתלקות האורחים נותרו אביה והיא לסעוד יחד, ללא ציפייה שיבוא אדם שלישי לרומם את רוחם בערב הארוך. אביה שכב לישון לאחר הארוחה, כהרגלו, והיא נותרה אפוא לשבת לבדה ולהגות באבדנה.
+
+האירוע צפן בחובו אושר רב לחברתה; מר וֶסטוֹן היה אדם בעל אופי מצוין, היה לו ממון המאפשר חיים נוחים, הוא היה בגיל מתאים, והליכותיו היו נעימות. אֵמה חשה קורת רוח מסוימת כשהרהרה בכך שהיא עצמה ייחלה לשידוך הזה וקידמה אותו בחוסר אנוכיות ובנדיבות לב; ובכל זאת היה הבוקר הרה אסון עבורה. חסרונה של העלמה טיילור עתיד להיות מורגש </string>
+
+
+    <string name="txt_tutorials_dialog">Do not show more these screens?</string>
+    <string name="txt_yes">Yes</string>
+    <string name="txt_no">No</string>
 
 </resources>

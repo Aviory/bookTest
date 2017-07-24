@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Tutorial main screen sizes-->
+    <dimen name="margin_close_img">10dp</dimen>
+
+    <!-- Tutorial text screen sizes-->
+    <dimen name="margin_hand_top">30dp</dimen>
+    <dimen name="margin_40dp">10dp</dimen>
+    <dimen name="margin_txt_top">50dp</dimen>
+    <dimen name="margin_hand_left">20dp</dimen>
+
+    <!-- Tutorial text float screen sizes-->
+    <dimen name="margin_txt_center">15dp</dimen>
+    <dimen name="margin_bottom_hand">5dp</dimen>
+</resources>

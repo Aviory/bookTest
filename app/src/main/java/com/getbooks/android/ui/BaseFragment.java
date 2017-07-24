@@ -46,4 +46,25 @@ public abstract class BaseFragment extends Fragment {
         super.onDestroyView();
         mUnbinder.unbind();
     }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        saveValue(outState);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        restoreValue(getArguments());
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        saveValue(getArguments());
+    }
+
+    protected void saveValue(Bundle outState){};
+    protected void restoreValue(Bundle outState){};
 }

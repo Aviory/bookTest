@@ -10,5 +10,6 @@
     <color name="gray">#6d6d6d</color>
     <color name="gray_light">#f1f1f2</color>
     <color name="color_white">#ffffffff</color>
+    <color name="color_white_transluent">#63ffffff</color>
     <color name="color_black">#ff001436</color>
 </resources>

@@ -4,10 +4,11 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <include android:id="@+id/menu_book"
+    <include
+        android:id="@+id/menu_book"
         layout="@layout/menu_book_layout" />
 
-    <TextView
+    <com.getbooks.android.ui.widget.ArialNormalTextView
         android:id="@+id/txt_page"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -23,31 +24,36 @@
         android:id="@+id/seek_bar_menu"
         layout="@layout/menu_seek_bar_layout" />
 
-    <ImageView
+    <com.getbooks.android.ui.widget.FrankRuehlMediumTextView
         android:id="@+id/img_text"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@id/seek_bar_menu"
         android:layout_below="@id/txt_page"
-        android:background="@drawable/text" />
+        android:background="@android:color/white"
+        android:paddingLeft="@dimen/margin_book_page"
+        android:paddingRight="@dimen/margin_book_page"
+        android:text="@string/txt_page_book_tutorial"
+        android:textColor="@color/color_black"
+        android:textSize="@dimen/font_7" />
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/black_translucent">
 
-        <TextView
+        <com.getbooks.android.ui.widget.ArialNormalTextView
             android:id="@+id/txt_tutorial_first"
             style="@style/TutorialTextStyle"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="@dimen/margin_biggest"
+            android:layout_marginTop="@dimen/margin_txt_top"
             android:text="@string/txt_tutorial_first_one" />
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="@dimen/margin_medium"
-            android:layout_marginTop="@dimen/margin_50dp"
+            android:layout_marginTop="@dimen/margin_hand_top"
             android:layout_toRightOf="@id/txt_tutorial_first"
             android:src="@drawable/hand_btn" />
 
@@ -68,7 +74,7 @@
             android:layout_below="@id/img_tutorial_menu"
             android:src="@drawable/tutorial_arrow_2" />
 
-        <TextView
+        <com.getbooks.android.ui.widget.ArialNormalTextView
             android:id="@+id/txt_tutorial_arrow_one"
             style="@style/TutorialTextStyle"
             android:layout_alignRight="@id/img_tutorial_arrow_one"
@@ -80,11 +86,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/img_tutorial_menu"
-            android:layout_marginLeft="@dimen/margin_50dp"
+            android:layout_marginLeft="@dimen/margin_hand_left"
             android:layout_toRightOf="@id/img_tutorial_arrow_one"
             android:src="@drawable/tutorial_arrow_4" />
 
-        <TextView
+        <com.getbooks.android.ui.widget.ArialNormalTextView
             android:id="@+id/txt_arrow_five"
             style="@style/TutorialTextStyle"
             android:layout_below="@id/img_tutorial_arrow_two"
@@ -100,7 +106,7 @@
             android:layout_below="@id/img_tutorial_menu"
             android:src="@drawable/tutorial_arrow_5" />
 
-        <TextView
+        <com.getbooks.android.ui.widget.ArialNormalTextView
             style="@style/TutorialTextStyle"
             android:layout_alignLeft="@id/img_tutorial_arrow_four"
             android:layout_below="@id/img_tutorial_arrow_four"
@@ -115,25 +121,27 @@
             android:layout_toLeftOf="@id/img_tutorial_arrow_four"
             android:src="@drawable/tutorial_arrow_3" />
 
-        <TextView
+        <com.getbooks.android.ui.widget.ArialNormalTextView
             style="@style/TutorialTextStyle"
+            android:layout_alignLeft="@id/img_tutorial_arrow_three"
             android:layout_below="@id/img_tutorial_arrow_three"
-            android:layout_toRightOf="@id/txt_arrow_five"
             android:text="@string/txt_tutorial_first_six" />
 
-        <ImageView style="@style/TutorialCloseImgageStyle" />
+        <ImageView
+            android:id="@+id/img_close"
+            style="@style/TutorialCloseImgageStyle" />
 
         <ImageView
             android:id="@+id/img_hand_arrow"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:layout_marginBottom="@dimen/margin_50dp"
-            android:layout_marginLeft="@dimen/margin_50dp"
+            android:layout_marginBottom="@dimen/margin_hand_left"
+            android:layout_marginLeft="@dimen/margin_hand_left"
             android:layout_marginTop="@dimen/margin_2dp"
             android:src="@drawable/hand_arrows" />
 
-        <TextView
+        <com.getbooks.android.ui.widget.ArialNormalTextView
             style="@style/TutorialTextStyle"
             android:layout_above="@id/img_hand_arrow"
             android:layout_marginLeft="@dimen/margin_smallest"

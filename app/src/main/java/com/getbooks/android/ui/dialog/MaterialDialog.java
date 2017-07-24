@@ -28,6 +28,6 @@ public class MaterialDialog extends AlertDialog {
     @Override
     public void show() {
         super.show();
-        setContentView(R.layout.material_progress);
+        setContentView(R.layout.dialog_material_progress);
     }
 }
