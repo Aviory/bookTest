@@ -9,14 +9,15 @@ import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.View;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
 
 import com.getbooks.android.R;
+import com.getbooks.android.api.Queries;
 import com.getbooks.android.events.Events;
+import com.getbooks.android.model.Library;
 import com.getbooks.android.prefs.Prefs;
 import com.getbooks.android.ui.BaseFragment;
 import com.getbooks.android.ui.activities.AuthorizationActivity;
-import com.getbooks.android.ui.widget.SelectorTab;
+import com.google.firebase.iid.FirebaseInstanceId;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -27,26 +28,26 @@ import butterknife.BindView;
  * Created by marina on 14.07.17.
  */
 
-public class LibraryFragment extends BaseFragment implements SelectorTab.OnItemSelectedListener {
+public class LibraryFragment extends BaseFragment implements Queries.CallBack {
 
     @BindView(R.id.view_pager)
     protected ViewPager mViewPagerTutorials;
     @BindView(R.id.rootMainView)
     protected RelativeLayout mRootLayoutView;
-    @BindView(R.id.menu_main)
-    protected SelectorTab mMenuMainSelectorTab;
 
     private ScreenSliderPagerAdapter mSliderPagerAdapter;
     private boolean isTutorialsScreensViewed = false;
 
     public static final String IS_TUTORIALS_VIEWED = "is_tutorials_viewed";
 
+    private Queries mQueries;
+    private Library library;
+
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
 //        Prefs.completeTutorialsShow(getContext());
-        mMenuMainSelectorTab.setOnItemSelectedListener(this);
         if (savedInstanceState != null) {
             isTutorialsScreensViewed = savedInstanceState.getBoolean(IS_TUTORIALS_VIEWED);
             Log.d("isTutorialsScreensView", String.valueOf(savedInstanceState.getBoolean(IS_TUTORIALS_VIEWED)));
@@ -62,6 +63,12 @@ public class LibraryFragment extends BaseFragment implements SelectorTab.OnItemS
                 startViewPagerTutorials();
             }
         }
+
+        mQueries = new Queries();
+        mQueries.setCallBack(this);
+        mQueries.getAllRentedBook(FirebaseInstanceId.getInstance().getToken().replace(":", ""));
+
+//        ApiManager.getAllPurchasedBook(FirebaseInstanceId.getInstance().getToken().replace(":", ""), true);
     }
 
     @Override
@@ -106,18 +113,6 @@ public class LibraryFragment extends BaseFragment implements SelectorTab.OnItemS
         mViewPagerTutorials.setAdapter(mSliderPagerAdapter);
     }
 
-    @Override
-    public void onItemSelected(View view, int id) {
-        switch (id){
-            case 0:
-                Toast.makeText(getContext(), "LibraryTab", Toast.LENGTH_SHORT).show();
-                break;
-            case 1:
-                Toast.makeText(getContext(), "CatalogTab", Toast.LENGTH_SHORT).show();
-                break;
-        }
-    }
-
     @Subscribe
     public void onMessageEvent(Events.RemoveTutorialsScreens removeTutorialsScreens) {
         mRootLayoutView.removeView(mViewPagerTutorials);
@@ -134,6 +129,21 @@ public class LibraryFragment extends BaseFragment implements SelectorTab.OnItemS
     public void onStop() {
         super.onStop();
         EventBus.getDefault().unregister(this);
+    }
+
+    @Override
+    public void onError(Throwable throwable) {
+
+    }
+
+    @Override
+    public void onCompleted(Library library) {
+        this.library = library;
+    }
+
+    @Override
+    public void onFinish() {
+
     }
 
     private class ScreenSliderPagerAdapter extends FragmentStatePagerAdapter {

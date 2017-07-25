@@ -23,22 +23,6 @@ public class Events {
         }
     }
 
-    public static class ShowTutorialsScreens {
-        boolean isShowTutorials;
-
-        public ShowTutorialsScreens(boolean isShowTutorials) {
-            this.isShowTutorials = isShowTutorials;
-        }
-
-        public boolean isShowTutorials() {
-            return isShowTutorials;
-        }
-
-        public void setShowTutorials(boolean showTutorials) {
-            isShowTutorials = showTutorials;
-        }
-    }
-
     public static class RemoveTutorialsScreens{
 
     }

@@ -5,8 +5,12 @@ package com.getbooks.android;
  */
 
 public class Const {
-    //    public static final String BASE_URL = "https://private-anon-27d0bc03e9-glibrary.apiary-mock.com";
-    public static final String BASE_URL = "https://pelephone.getbooks.co.il/dev/";
+
+    // Api constants
+    public static final String BASE_URL_PELEPHONE_API = "https://pelephone.getbooks.co.il/dev/";
+    public static final String BASE_URL_API_ARY = "https://private-anon-4d85167068-glibrary.apiary-mock.com/";
+
+
     //Authorization constant
     public static final String AUTH_URL = "https://pelephone.getbooks.co.il/dev/customer/account/login/";
     public static final String REDIRECT_URL = "https://pelephone.getbooks.co.il/dev/customer/account/index/real/";

@@ -12,6 +12,7 @@ import com.getbooks.android.Const;
 public class Prefs {
     private static final String GERBOOKS_PREF = "getbooks_pref";
     public static final int MAX_COUNT_VIEWS_TUTORIALS = 3;
+    private static final String PREF_TOKEN = "preferences_token";
 
 
     private static SharedPreferences getPrefs(Context context) {
@@ -25,6 +26,22 @@ public class Prefs {
 
     public static boolean getBooleanProperty(Context context, String key) {
         return getPrefs(context).getBoolean(key, false);
+    }
+
+    public static void putToken(Context context, String token) {
+        putString(context, PREF_TOKEN, token);
+    }
+
+    public static String getToken(Context context) {
+        return getString(context, PREF_TOKEN, null);
+    }
+
+    public static String getString(Context context, String preferenceKey, String preferenceDefaultValue) {
+        return getPrefs(context).getString(preferenceKey, preferenceDefaultValue);
+    }
+
+    public static void putString(Context context, String preferenceKey, String preferenceValue) {
+        getPrefs(context).edit().putString(preferenceKey, preferenceValue).commit();
     }
 
     public static int getCountTutorialsShow(Context context) {

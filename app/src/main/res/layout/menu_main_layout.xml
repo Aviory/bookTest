@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<merge xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/menu_main"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@color/blue"
-    android:orientation="horizontal">
+<merge xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <LinearLayout
+        android:id="@+id/menu_main"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/blue"
+        android:gravity="center"
+        android:orientation="horizontal">
 
     <ImageView
         android:id="@+id/img_menu"
@@ -27,8 +30,10 @@
         android:layout_weight="0.2" />
 
     <com.getbooks.android.ui.widget.ArialNormalTextView
+        android:id="@+id/txt_library"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textColor="@android:color/white"
         android:text="@string/txt_library"
         android:textSize="@dimen/font_6" />
 
@@ -40,8 +45,10 @@
         android:background="@android:color/white" />
 
     <com.getbooks.android.ui.widget.ArialNormalTextView
+        android:id="@+id/txt_catalog"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textColor="@color/color_white_transluent"
         android:text="@string/txt_catalog"
         android:textSize="@dimen/txt_size" />
 
@@ -55,4 +62,6 @@
         android:layout_height="wrap_content"
         android:layout_marginRight="@dimen/margin_smallest"
         android:background="@drawable/settings" />
+
+    </LinearLayout>
 </merge>

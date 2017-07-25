@@ -5,21 +5,30 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StyleRes;
 import android.support.v7.app.AlertDialog;
+import android.view.View;
 import android.widget.Button;
 
 import com.getbooks.android.R;
-import com.getbooks.android.events.Events;
-
-import org.greenrobot.eventbus.EventBus;
 
 /**
  * Created by marina on 24.07.17.
  */
 
-public class TutorialsDialog extends AlertDialog {
+public class TutorialsDialog extends AlertDialog implements View.OnClickListener {
 
     private Button mButtonYes;
     private Button mButtonNo;
+    private OnItemTutorialsClick mOnItemTutorialsClick;
+
+    public interface OnItemTutorialsClick {
+        void onYesButtonClick();
+
+        void onNoButtonClick();
+    }
+
+    public void setOnItemTutorialsClick(OnItemTutorialsClick onItemTutorialsClick) {
+        mOnItemTutorialsClick = onItemTutorialsClick;
+    }
 
     public TutorialsDialog(@NonNull Context context) {
         super(context);
@@ -41,19 +50,22 @@ public class TutorialsDialog extends AlertDialog {
         mButtonYes = (Button) findViewById(R.id.txt_yes);
         mButtonNo = (Button) findViewById(R.id.txt_no);
 
-        showTutorials();
-        hideTutorial();
+        mButtonYes.setOnClickListener(this);
+        mButtonNo.setOnClickListener(this);
     }
 
-    protected void showTutorials() {
-        mButtonYes.setOnClickListener(v -> {
-            EventBus.getDefault().post(new Events.ShowTutorialsScreens(true));
-        });
-    }
-
-    protected void hideTutorial() {
-        mButtonNo.setOnClickListener(view -> {
-            EventBus.getDefault().post(new Events.ShowTutorialsScreens(false));
-        });
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.txt_yes:
+                if (mOnItemTutorialsClick != null) {
+                    mOnItemTutorialsClick.onYesButtonClick();
+                }
+                break;
+            case R.id.txt_no:
+                if (mOnItemTutorialsClick != null) {
+                    mOnItemTutorialsClick.onNoButtonClick();
+                }
+        }
     }
 }

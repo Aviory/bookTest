@@ -96,7 +96,7 @@ public class AuthorizationFragment extends BaseFragment {
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
             LogUtil.log(this, "Redirecting URL " + url);
             if (url.startsWith(Const.REDIRECT_URL)) {
-                ApiManager.registerDeviseToken(FirebaseInstanceId.getInstance().getToken(), getContext());
+                ApiManager.registerDeviseToken(FirebaseInstanceId.getInstance().getToken().replace(":", ""), getContext());
                 return true;
             }
             return false;
@@ -108,7 +108,7 @@ public class AuthorizationFragment extends BaseFragment {
             String url = request.getUrl().toString();
             LogUtil.log(this, "Redirecting URL " + url);
             if (url.startsWith(Const.REDIRECT_URL)) {
-                ApiManager.registerDeviseToken(FirebaseInstanceId.getInstance().getToken(), getContext());
+                ApiManager.registerDeviseToken(FirebaseInstanceId.getInstance().getToken().replace(":", ""), getContext());
                 return true;
             }
             return false;
