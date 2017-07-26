@@ -2,6 +2,7 @@ package com.getbooks.android.api;
 
 import com.getbooks.android.model.Library;
 import com.getbooks.android.util.LogUtil;
+import com.getbooks.android.util.UiUtil;
 
 import rx.Observable;
 import rx.Subscriber;
@@ -32,8 +33,8 @@ public class Queries {
 
         ApiService apiService = ApiManager.getClientApiAry().create(ApiService.class);
         Subscription subscriptions = Observable.zip(
-                apiService.getAllRentedBooks("aff_pelephone", deviceToken),
-                apiService.getAllPurchasedBooks("aff_pelephone", deviceToken),
+                apiService.getAllRentedBooks("aff_pelephone", UiUtil.encode(deviceToken)),
+                apiService.getAllPurchasedBooks("aff_pelephone", UiUtil.encode(deviceToken)),
                 (book, purchasedBook) -> {
                     Library library = new Library();
                     library.setRentedRentedBookList(book);

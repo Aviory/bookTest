@@ -15,6 +15,18 @@
         <item name="android:windowFullscreen">true</item>
     </style>
 
+    <style name="CatalogTheme" parent="AppTheme">
+        <item name="android:windowAnimationStyle">@style/AnimationTheme</item>
+    </style>
+
+
+    <style name="AnimationTheme" parent="@android:style/Animation.Activity">
+        <item name="android:activityOpenEnterAnimation">@anim/slide_out_bottom</item>
+        <item name="android:activityOpenExitAnimation">@anim/stay</item>
+        <!--<item name="android:activityCloseEnterAnimation">@anim/slide_out_down</item>-->
+        <!--<item name="android:activityCloseExitAnimation">@anim/stay</item>-->
+    </style>
+
 
     <style name="TutorialTextStyle">
         <item name="android:layout_width">wrap_content</item>

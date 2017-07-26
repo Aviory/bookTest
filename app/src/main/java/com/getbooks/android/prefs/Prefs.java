@@ -60,7 +60,7 @@ public class Prefs {
     }
 
     public static void completeTutorialsShow(Context context) {
-        getPrefs(context).edit().putInt(Const.SHOW_TUTORIALS_COUNT, MAX_COUNT_VIEWS_TUTORIALS).apply();
+        getPrefs(context).edit().putInt(Const.SHOW_TUTORIALS_COUNT, 0).apply();
     }
 
     public static void clearPrefs(Context context) {

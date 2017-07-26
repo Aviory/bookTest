@@ -4,7 +4,7 @@ import com.getbooks.android.R;
 import com.getbooks.android.events.Events;
 import com.getbooks.android.prefs.Prefs;
 import com.getbooks.android.ui.BaseFragment;
-import com.getbooks.android.ui.activities.AuthorizationActivity;
+import com.getbooks.android.ui.activities.TutorialsActivity;
 import com.getbooks.android.ui.dialog.TutorialsDialog;
 
 import org.greenrobot.eventbus.EventBus;
@@ -30,9 +30,10 @@ public class TutorialTextFloatFragment extends BaseFragment implements Tutorials
         return R.layout.fragment_tutorial_text_float;
     }
 
+
     @Override
-    public AuthorizationActivity getAct() {
-        return (AuthorizationActivity) getActivity();
+    public TutorialsActivity getAct() {
+        return (TutorialsActivity) getActivity();
     }
 
     @OnClick(R.id.img_close)
@@ -46,14 +47,12 @@ public class TutorialTextFloatFragment extends BaseFragment implements Tutorials
     public void onYesButtonClick() {
         Prefs.addCountTutorialsView(getContext());
         EventBus.getDefault().post(new Events.RemoveTutorialsScreens());
-        getFragmentManager().beginTransaction().remove(this).commit();
     }
 
     @Override
     public void onNoButtonClick() {
         Prefs.completeTutorialsShow(getContext());
         EventBus.getDefault().post(new Events.RemoveTutorialsScreens());
-        getFragmentManager().beginTransaction().remove(this).commit();
     }
 
     @Override

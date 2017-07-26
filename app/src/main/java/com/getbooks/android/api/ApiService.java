@@ -29,7 +29,7 @@ public interface ApiService {
 
     @GET("/glibrary/purchasedbooks/{websiteCode}/{deviceToken}")
     Observable<List<PurchasedBook>> getAllPurchasedBooks(@Path("websiteCode") String aff_pelephone,
-                                                   @Path("deviceToken") String tokenDevice);
+                                                         @Path("deviceToken") String tokenDevice);
 
 
 }

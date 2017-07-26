@@ -32,7 +32,7 @@ import butterknife.BindView;
 
 public class AuthorizationFragment extends BaseFragment {
 
-    @BindView(R.id.authorization_webview)
+    @BindView(R.id.webview)
     protected WebView mAuthorizationWebView;
     private AlertDialog mProgressBar;
 
@@ -48,7 +48,7 @@ public class AuthorizationFragment extends BaseFragment {
 
     @Override
     public int getLayout() {
-        return R.layout.fragment_authorization_layout;
+        return R.layout.webview_layout;
     }
 
     @Override
@@ -96,7 +96,7 @@ public class AuthorizationFragment extends BaseFragment {
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
             LogUtil.log(this, "Redirecting URL " + url);
             if (url.startsWith(Const.REDIRECT_URL)) {
-                ApiManager.registerDeviseToken(FirebaseInstanceId.getInstance().getToken().replace(":", ""), getContext());
+                ApiManager.registerDeviseToken(FirebaseInstanceId.getInstance().getToken(), getContext());
                 return true;
             }
             return false;
@@ -108,7 +108,7 @@ public class AuthorizationFragment extends BaseFragment {
             String url = request.getUrl().toString();
             LogUtil.log(this, "Redirecting URL " + url);
             if (url.startsWith(Const.REDIRECT_URL)) {
-                ApiManager.registerDeviseToken(FirebaseInstanceId.getInstance().getToken().replace(":", ""), getContext());
+                ApiManager.registerDeviseToken(FirebaseInstanceId.getInstance().getToken(), getContext());
                 return true;
             }
             return false;

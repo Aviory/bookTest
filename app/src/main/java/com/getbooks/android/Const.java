@@ -22,4 +22,7 @@ public class Const {
     public static final String SHOW_TUTORIALS_COUNT = "show_tutorials_count";
 
     public static final int SPLASH_TIME_OUT = 1500;
+
+    //Catalog constant
+    public static final  String CATALOG_URL = "";
 }

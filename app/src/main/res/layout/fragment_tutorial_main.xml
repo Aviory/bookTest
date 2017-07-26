@@ -2,13 +2,27 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/black_translucent"
+    android:background="@color/color_white"
     android:clickable="true"
     android:orientation="vertical">
 
     <include
         android:id="@+id/menu_main"
         layout="@layout/menu_main_layout" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recyler_tutorials_shelves"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/menu_main"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp" />
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/menu_main"
+        android:background="@color/black_translucent" />
 
     <ImageView
         android:id="@+id/img_arrow_first"

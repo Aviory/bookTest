@@ -1,14 +1,13 @@
 package com.getbooks.android.api;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 
 import com.getbooks.android.Const;
-import com.getbooks.android.R;
 import com.getbooks.android.prefs.Prefs;
-import com.getbooks.android.ui.BaseActivity;
-import com.getbooks.android.ui.fragments.LibraryFragment;
+import com.getbooks.android.ui.activities.LibraryActivity;
+import com.getbooks.android.util.UiUtil;
 
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
@@ -67,16 +66,17 @@ public class ApiManager {
 
 
     public static void registerDeviseToken(String token, Context context) {
-        Log.d("Register", token);
-        Call<Void> call = ApiManager.getClientPelephoneApi().create(ApiService.class).registerDeviseToken(token, "2");
+        Call<Void> call = ApiManager.getClientPelephoneApi().create(ApiService.class).
+                registerDeviseToken(UiUtil.encode(token), "2");
         call.enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
                 if (response.isSuccessful()) {
                     Prefs.setBooleanProperty(context, Const.IS_USER_AUTHORIZE, true);
-                    Prefs.putToken(context, token);
-                    BaseActivity.addFragment((AppCompatActivity) context, LibraryFragment.class, R.id.coordinator_layout,
-                            null, false, true, true, null);
+                    Prefs.putToken(context, UiUtil.encode(token));
+                    Intent intent = new Intent(context, LibraryActivity.class);
+                    context.startActivity(intent);
+                    ((AppCompatActivity) context).finish();
 
                 }
             }
