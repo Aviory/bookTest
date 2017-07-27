@@ -62,5 +62,6 @@
     <string name="txt_tutorials_dialog">Do not show more these screens?</string>
     <string name="txt_yes">Yes</string>
     <string name="txt_no">No</string>
+    <string name="error_connection">No internet connection</string>
 
 </resources>

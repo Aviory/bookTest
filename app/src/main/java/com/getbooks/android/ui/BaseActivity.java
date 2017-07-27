@@ -1,13 +1,18 @@
 package com.getbooks.android.ui;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
 import com.getbooks.android.R;
+import com.getbooks.android.util.LogUtil;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -19,6 +24,9 @@ import butterknife.ButterKnife;
  */
 
 public abstract class BaseActivity extends AppCompatActivity {
+
+    private final static int PERMISSION_STORAGE_REQUEST = 1221;
+    private final static int PERMISSION_PHOTO_REQUEST = 1222;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -92,6 +100,44 @@ public abstract class BaseActivity extends AppCompatActivity {
         transaction.commitAllowingStateLoss();
         return fragment;
     }
+
+    // Checking if the user has granted permission of external storage
+    public boolean isStoragePermissionGranted() {
+        if (Build.VERSION.SDK_INT >= 23) {
+            if (checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                    == PackageManager.PERMISSION_GRANTED) {
+                return true;
+            } else {
+                ActivityCompat.requestPermissions(this,
+                        new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                        PERMISSION_STORAGE_REQUEST);
+
+                return false;
+            }
+        } else { //permission is automatically granted on sdk<23 upon installation
+            return true;
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode) {
+            case PERMISSION_STORAGE_REQUEST:
+                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    //TODO
+                    // Permission Granted
+                    //resume tasks needing this permission
+                    LogUtil.log(this, "Permission granded");
+                } else {
+                    //TODO
+                    // Permission Denied
+                    LogUtil.log(this, "Permission denied");
+                }
+                break;
+        }
+    }
+
 
 
     @Override

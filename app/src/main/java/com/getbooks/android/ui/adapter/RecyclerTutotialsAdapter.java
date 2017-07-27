@@ -28,9 +28,7 @@ public class RecyclerTutotialsAdapter extends RecyclerView.Adapter<RecyclerTutot
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        for (int i = 0; i < mCoversBooks.length; i++) {
-            holder.mImageCover.setImageResource(mCoversBooks[i]);
-        }
+        holder.mImageCover.setImageResource(mCoversBooks[position]);
     }
 
     @Override

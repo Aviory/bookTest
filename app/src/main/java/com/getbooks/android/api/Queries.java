@@ -1,8 +1,15 @@
 package com.getbooks.android.api;
 
+import com.getbooks.android.model.Book;
 import com.getbooks.android.model.Library;
+import com.getbooks.android.model.PurchasedBook;
+import com.getbooks.android.model.RentedBook;
+import com.getbooks.android.model.enums.BookState;
 import com.getbooks.android.util.LogUtil;
 import com.getbooks.android.util.UiUtil;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import rx.Observable;
 import rx.Subscriber;
@@ -37,8 +44,18 @@ public class Queries {
                 apiService.getAllPurchasedBooks("aff_pelephone", UiUtil.encode(deviceToken)),
                 (book, purchasedBook) -> {
                     Library library = new Library();
-                    library.setRentedRentedBookList(book);
-                    library.setPurchasedBooks(purchasedBook);
+                    List<PurchasedBook> purchasedBooks = purchasedBook;
+                    for (PurchasedBook bookPurchased : purchasedBooks){
+                        bookPurchased.setBookState(BookState.DOWNLOAD);
+                    }
+                    List<RentedBook> rentedBooks = book;
+                    for (RentedBook rentedBook : book){
+                        rentedBook.setBookState(BookState.DOWNLOAD);
+                    }
+                    List<Book> allBook = new ArrayList<Book>();
+                    allBook.addAll(rentedBooks);
+                    allBook.addAll(purchasedBooks);
+                    library.setAllBook(allBook);
                     return library;
                 })
                 .observeOn(AndroidSchedulers.mainThread())

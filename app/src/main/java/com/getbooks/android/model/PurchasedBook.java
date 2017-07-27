@@ -1,9 +1,13 @@
 package com.getbooks.android.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import com.getbooks.android.model.enums.BookState;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class PurchasedBook {
+public class PurchasedBook extends Book implements Parcelable {
 
     @SerializedName("purchased_book_sku")
     @Expose
@@ -17,6 +21,40 @@ public class PurchasedBook {
     @SerializedName("purchased_book_download_link")
     @Expose
     private String purchasedBookDownloadLink;
+
+    private BookState bookState;
+
+    protected PurchasedBook(Parcel in) {
+        purchasedBookSku = in.readString();
+        purchasedBookName = in.readString();
+        purchasedBookImage = in.readString();
+        purchasedBookDownloadLink = in.readString();
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(purchasedBookSku);
+        dest.writeString(purchasedBookName);
+        dest.writeString(purchasedBookImage);
+        dest.writeString(purchasedBookDownloadLink);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    public static final Creator<PurchasedBook> CREATOR = new Creator<PurchasedBook>() {
+        @Override
+        public PurchasedBook createFromParcel(Parcel in) {
+            return new PurchasedBook(in);
+        }
+
+        @Override
+        public PurchasedBook[] newArray(int size) {
+            return new PurchasedBook[size];
+        }
+    };
 
     public String getPurchasedBookSku() {
         return purchasedBookSku;
@@ -34,8 +72,18 @@ public class PurchasedBook {
         this.purchasedBookName = purchasedBookName;
     }
 
-    public String getPurchasedBookImage() {
+    public String getBookImage() {
         return purchasedBookImage;
+    }
+
+    @Override
+    public void setBookState(BookState bookState) {
+        this.bookState = bookState;
+    }
+
+    @Override
+    public BookState getBookState() {
+        return bookState;
     }
 
     public void setPurchasedBookImage(String purchasedBookImage) {

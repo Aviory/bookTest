@@ -9,11 +9,7 @@ import android.widget.ImageView;
 
 import com.getbooks.android.R;
 import com.getbooks.android.model.Library;
-import com.getbooks.android.model.PurchasedBook;
-import com.getbooks.android.model.RentedBook;
 import com.squareup.picasso.Picasso;
-
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -41,21 +37,27 @@ public class RecyclerShelvesAdapter extends RecyclerView.Adapter<RecyclerShelves
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        List<RentedBook> rentedBookList = mLibrary.getRentedRentedBookList();
-        for (int i = 0; i < rentedBookList.size(); i++) {
-            Picasso.with(mContext).load(rentedBookList.get(i).getRentBookImage()).into(holder.mImageCover);
-            holder.mImageBookState.setImageResource(R.drawable.arrow_down_black);
-        }
-        List<PurchasedBook> purchasedBookList = mLibrary.getPurchasedBooks();
-        for (int i = 0; i < purchasedBookList.size(); i++) {
-            Picasso.with(mContext).load(purchasedBookList.get(i).getPurchasedBookImage()).into(holder.mImageCover);
-            holder.mImageBookState.setImageResource(R.drawable.arrow_down_black);
+        Picasso.with(mContext).load(mLibrary.getAllBook().get(position).
+                getBookImage()).into(holder.mImageCover);
+        switch (mLibrary.getAllBook().get(position).getBookState()){
+            case DOWNLOAD:
+                holder.mImageBookState.setImageResource(R.drawable.arrow_down_black);
+                break;
+            case PURCHASED:
+                holder.mImageBookState.setImageResource(R.drawable.check_black);
+                break;
+            case RENTED:
+                holder.mImageBookState.setImageResource(R.drawable.clock_black);
+                break;
+            case NEWBOOK:
+                holder.mImageNewBook.setVisibility(View.VISIBLE);
+                break;
         }
     }
 
     @Override
     public int getItemCount() {
-        return mLibrary.getPurchasedBooks().size() + mLibrary.getRentedRentedBookList().size();
+        return mLibrary.getAllBook().size();
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {

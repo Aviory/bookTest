@@ -1,9 +1,13 @@
 package com.getbooks.android.model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import com.getbooks.android.model.enums.BookState;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class RentedBook {
+public class RentedBook extends Book implements Parcelable {
     @SerializedName("rent_id")
     @Expose
     private Integer rentId;
@@ -25,6 +29,8 @@ public class RentedBook {
     @SerializedName("rent_meta_last_read_page")
     @Expose
     private Integer rentMetaLastReadPage;
+
+    private BookState bookState;
 
     public Integer getRentId() {
         return rentId;
@@ -50,8 +56,18 @@ public class RentedBook {
         this.rentBookName = rentBookName;
     }
 
-    public String getRentBookImage() {
+    public String getBookImage() {
         return rentBookImage;
+    }
+
+    @Override
+    public void setBookState(BookState bookState) {
+        this.bookState = bookState;
+    }
+
+    @Override
+    public BookState getBookState() {
+        return bookState;
     }
 
     public void setRentBookImage(String rentBookImage) {
@@ -94,5 +110,37 @@ public class RentedBook {
                 ", rentMetaLastReadPage=" + rentMetaLastReadPage +
                 '}';
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(rentBookSku);
+        parcel.writeString(rentBookName);
+        parcel.writeString(rentBookImage);
+        parcel.writeString(rentBookDownloadLink);
+    }
+
+    protected RentedBook(Parcel in) {
+        rentBookSku = in.readString();
+        rentBookName = in.readString();
+        rentBookImage = in.readString();
+        rentBookDownloadLink = in.readString();
+    }
+
+    public static final Creator<RentedBook> CREATOR = new Creator<RentedBook>() {
+        @Override
+        public RentedBook createFromParcel(Parcel in) {
+            return new RentedBook(in);
+        }
+
+        @Override
+        public RentedBook[] newArray(int size) {
+            return new RentedBook[size];
+        }
+    };
 }
 

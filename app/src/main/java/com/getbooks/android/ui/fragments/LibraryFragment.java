@@ -14,9 +14,10 @@ import com.getbooks.android.api.Queries;
 import com.getbooks.android.model.Library;
 import com.getbooks.android.prefs.Prefs;
 import com.getbooks.android.ui.BaseFragment;
-import com.getbooks.android.ui.activities.AuthorizationActivity;
 import com.getbooks.android.ui.activities.CatalogActivity;
+import com.getbooks.android.ui.activities.LibraryActivity;
 import com.getbooks.android.ui.adapter.RecyclerShelvesAdapter;
+import com.getbooks.android.util.UiUtil;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -31,22 +32,25 @@ public class LibraryFragment extends BaseFragment implements Queries.CallBack {
     protected RecyclerView mRecyclerBookShelves;
 
     private Queries mQueries;
-    private Library library;
+    private Library mLibrary;
     private RecyclerShelvesAdapter mShelvesAdapter;
     private GridLayoutManager mGridLayoutManager;
+    DividerItemDecoration dividerItemDecoration;
+
+    private static final String SAVE_LIBRARY = "com.getbooks.android.ui.fragments.save_library";
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        mQueries = new Queries();
-        mQueries.setCallBack(this);
-        mQueries.getAllRentedBook(Prefs.getToken(getContext()));
+        getAct().isStoragePermissionGranted();
 
-        mGridLayoutManager = new GridLayoutManager(getContext(),
-                getResources().getInteger(R.integer.count_column_book));
-        mGridLayoutManager.setOrientation(GridLayoutManager.VERTICAL);
-        mRecyclerBookShelves.setLayoutManager(mGridLayoutManager);
+        if (savedInstanceState == null) {
+            UiUtil.showDialog(getContext());
+            mQueries = new Queries();
+            mQueries.setCallBack(this);
+            mQueries.getAllRentedBook(Prefs.getToken(getContext()));
+        }
     }
 
     @Override
@@ -55,8 +59,25 @@ public class LibraryFragment extends BaseFragment implements Queries.CallBack {
     }
 
     @Override
-    public AuthorizationActivity getAct() {
-        return (AuthorizationActivity) getActivity();
+    public LibraryActivity getAct() {
+        return (LibraryActivity) getActivity();
+    }
+
+    private void initShelvesRecycler(Library library) {
+        mGridLayoutManager = new GridLayoutManager(getContext(),
+                getResources().getInteger(R.integer.count_column_book));
+        mGridLayoutManager.setOrientation(GridLayoutManager.VERTICAL);
+        mRecyclerBookShelves.setLayoutManager(mGridLayoutManager);
+
+        if (mShelvesAdapter == null)
+            mShelvesAdapter = new RecyclerShelvesAdapter(library, getContext());
+        mRecyclerBookShelves.setAdapter(mShelvesAdapter);
+
+        if (dividerItemDecoration == null) {
+            dividerItemDecoration = new DividerItemDecoration(getContext(), LinearLayout.VERTICAL);
+            dividerItemDecoration.setDrawable(getResources().getDrawable(R.drawable.polka));
+            mRecyclerBookShelves.addItemDecoration(dividerItemDecoration);
+        }
     }
 
 
@@ -67,23 +88,49 @@ public class LibraryFragment extends BaseFragment implements Queries.CallBack {
     }
 
     @Override
-    public void onError(Throwable throwable) {
+    protected void saveValue(Bundle outState) {
+        super.saveValue(outState);
+        outState.putParcelable(SAVE_LIBRARY, mLibrary);
+    }
 
+    @Override
+    protected void restoreValue(Bundle outState) {
+        super.restoreValue(outState);
+        mLibrary = outState.getParcelable(SAVE_LIBRARY);
+        if (mLibrary != null)
+            initShelvesRecycler(mLibrary);
+    }
+
+    @Override
+    public void onError(Throwable throwable) {
+        UiUtil.hideDialog();
+        throwable.printStackTrace();
+        UiUtil.showConnectionErrorToast(getContext());
     }
 
     @Override
     public void onCompleted(Library library) {
-        this.library = library;
-        mShelvesAdapter = new RecyclerShelvesAdapter(library, getContext());
-        mRecyclerBookShelves.setAdapter(mShelvesAdapter);
-
-        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(getContext(), LinearLayout.VERTICAL);
-        dividerItemDecoration.setDrawable(getResources().getDrawable(R.drawable.polka));
-        mRecyclerBookShelves.addItemDecoration(dividerItemDecoration);
+        this.mLibrary = library;
+        initShelvesRecycler(mLibrary);
     }
 
     @Override
     public void onFinish() {
+        UiUtil.hideDialog();
+    }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (mQueries != null) {
+            mQueries.onStop();
+        }
+        mQueries = null;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        dividerItemDecoration = null;
     }
 }
