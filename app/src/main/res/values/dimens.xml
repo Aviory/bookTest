@@ -60,4 +60,8 @@
     <!-- Item shelves sizes -->
     <dimen name="margin_shelves">-5dp</dimen>
 
+
+    <!-- Left Menu sizes -->
+    <dimen name="margin_top_icon">30dp</dimen>
+
 </resources>

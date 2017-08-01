@@ -1,11 +1,13 @@
 package com.getbooks.android.ui.fragments;
 
 import android.annotation.TargetApi;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.webkit.CookieManager;
 import android.webkit.WebResourceError;
@@ -17,9 +19,10 @@ import android.widget.Toast;
 
 import com.getbooks.android.Const;
 import com.getbooks.android.R;
-import com.getbooks.android.api.ApiManager;
+import com.getbooks.android.prefs.Prefs;
 import com.getbooks.android.ui.BaseFragment;
 import com.getbooks.android.ui.activities.AuthorizationActivity;
+import com.getbooks.android.ui.activities.TutorialsActivity;
 import com.getbooks.android.ui.dialog.MaterialDialog;
 import com.getbooks.android.util.LogUtil;
 import com.google.firebase.iid.FirebaseInstanceId;
@@ -69,6 +72,7 @@ public class AuthorizationFragment extends BaseFragment {
         webSettings.setSavePassword(false);
         webSettings.setAppCacheEnabled(false);
         webSettings.setCacheMode(WebSettings.LOAD_NO_CACHE);
+        webSettings.setUseWideViewPort(true);
         mAuthorizationWebView.loadUrl(Const.AUTH_URL);
     }
 
@@ -88,6 +92,7 @@ public class AuthorizationFragment extends BaseFragment {
             super.onPageStarted(view, url, favicon);
             if (!getActivity().isFinishing()) {
                 mProgressBar.show();
+                LogUtil.log(this, "onPageStarted " + url);
             }
         }
 
@@ -96,7 +101,10 @@ public class AuthorizationFragment extends BaseFragment {
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
             LogUtil.log(this, "Redirecting URL " + url);
             if (url.startsWith(Const.REDIRECT_URL)) {
-                ApiManager.registerDeviseToken(FirebaseInstanceId.getInstance().getToken(), getContext());
+                String token = FirebaseInstanceId.getInstance().getToken();
+
+                registerToken(view, token);
+                goToUserLibrary(token);
                 return true;
             }
             return false;
@@ -107,8 +115,12 @@ public class AuthorizationFragment extends BaseFragment {
         public boolean shouldOverrideUrlLoading(WebView view, WebResourceRequest request) {
             String url = request.getUrl().toString();
             LogUtil.log(this, "Redirecting URL " + url);
-            if (url.startsWith(Const.REDIRECT_URL)) {
-                ApiManager.registerDeviseToken(FirebaseInstanceId.getInstance().getToken(), getContext());
+            if (url.equals(Const.REDIRECT_URL)) {
+                String token = FirebaseInstanceId.getInstance().getToken();
+
+                registerToken(view, token);
+                goToUserLibrary(token);
+
                 return true;
             }
             return false;
@@ -133,7 +145,22 @@ public class AuthorizationFragment extends BaseFragment {
         @Override
         public void onPageFinished(WebView view, String url) {
             super.onPageFinished(view, url);
+            LogUtil.log(this, url + "last");
             mProgressBar.dismiss();
         }
+    }
+
+    private void registerToken(WebView view, String token) {
+        String registerUrl = Const.BASE_URL_PELEPHONE_API + "DEVICE_TOKEN=" + token + "&DEVICE_OS=1";
+        String urlParameters = "DEVICE_TOKEN=" + token + "&DEVICE_OS=1";
+        view.postUrl(registerUrl, urlParameters.getBytes());
+    }
+
+    private void goToUserLibrary(String token) {
+        Prefs.setBooleanProperty(getAct(), Const.IS_USER_AUTHORIZE, true);
+        Prefs.putToken(getAct(), token);
+        Intent intent = new Intent(getAct(), TutorialsActivity.class);
+        getAct().startActivity(intent);
+        ((AppCompatActivity) getAct()).finish();
     }
 }

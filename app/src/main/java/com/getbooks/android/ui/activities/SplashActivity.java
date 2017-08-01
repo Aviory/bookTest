@@ -15,7 +15,7 @@ public class SplashActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // Prefs.clearPrefs(this);
+//         Prefs.clearPrefs(this);
 //        Prefs.completeTutorialsShow(this);
 
         startTheActivity(AuthorizationActivity.class);

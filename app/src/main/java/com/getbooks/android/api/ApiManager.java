@@ -7,8 +7,12 @@ import android.support.v7.app.AppCompatActivity;
 import com.getbooks.android.Const;
 import com.getbooks.android.prefs.Prefs;
 import com.getbooks.android.ui.activities.LibraryActivity;
-import com.getbooks.android.util.UiUtil;
 
+import java.net.CookieHandler;
+import java.net.CookieManager;
+import java.util.concurrent.TimeUnit;
+
+import okhttp3.JavaNetCookieJar;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Call;
@@ -52,28 +56,47 @@ public class ApiManager {
     }
 
     private static OkHttpClient.Builder createHttpClient() {
+        // init cookie manager
+        CookieHandler cookieHandler = new CookieManager();
+
         HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
         //set your desired log level
         interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
 
-        OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
+//        OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
 
         //add logging as last interceptor
-        httpClient.addInterceptor(interceptor);
+//        httpClient.addInterceptor(interceptor);
 
-        return httpClient;
+        OkHttpClient.Builder client = new OkHttpClient.Builder()
+                .addNetworkInterceptor(interceptor)
+                .cookieJar(new JavaNetCookieJar(cookieHandler))
+                .connectTimeout(10, TimeUnit.SECONDS)
+                .writeTimeout(10, TimeUnit.SECONDS)
+                .readTimeout(30, TimeUnit.SECONDS);
+
+//        HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
+//        //set your desired log level
+//        interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
+//
+//        OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
+//
+//        //add logging as last interceptor
+//        httpClient.addInterceptor(interceptor);
+
+        return client;
     }
 
 
-    public static void registerDeviseToken(String token, Context context) {
+    public static void registerDeviseToken(Context context, String token) {
         Call<Void> call = ApiManager.getClientPelephoneApi().create(ApiService.class).
-                registerDeviseToken(UiUtil.encode(token), "2");
+                registerDeviseToken(token, "1");
         call.enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
                 if (response.isSuccessful()) {
                     Prefs.setBooleanProperty(context, Const.IS_USER_AUTHORIZE, true);
-                    Prefs.putToken(context, UiUtil.encode(token));
+                    Prefs.putToken(context, token);
                     Intent intent = new Intent(context, LibraryActivity.class);
                     context.startActivity(intent);
                     ((AppCompatActivity) context).finish();

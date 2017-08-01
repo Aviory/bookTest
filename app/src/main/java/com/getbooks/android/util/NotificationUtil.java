@@ -37,7 +37,7 @@ public class NotificationUtil {
                 .setContentTitle(title)
                 .setContentText(message)
                 .setAutoCancel(true)
-                .setSound(defaultSoundUri)
+//                .setSound(defaultSoundUri)
                 .setSmallIcon(R.mipmap.ic_launcher)
                 .setLargeIcon(BitmapFactory.decodeResource(Resources.getSystem(), R.mipmap.ic_launcher))
                 .setContentIntent(pendingIntent);

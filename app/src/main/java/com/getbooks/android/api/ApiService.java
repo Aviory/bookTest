@@ -20,7 +20,7 @@ public interface ApiService {
 
     @POST("?")
     Call<Void> registerDeviseToken(@Query("DEVICE_TOKEN") String token,
-                                   @Query("DEVICE_OS") String type);
+                                   @Query("DEVICE_OS") String deviseOs);
 
 
     @GET("/glibrary/rentedbooks/{websiteCode}/{deviceToken}")

@@ -7,13 +7,13 @@ package com.getbooks.android;
 public class Const {
 
     // Api constants
-    public static final String BASE_URL_PELEPHONE_API = "https://pelephone.getbooks.co.il/dev/";
+    public static final String BASE_URL_PELEPHONE_API = "https://pelephone.getbooks.co.il/dev/?";
     public static final String BASE_URL_API_ARY = "https://private-anon-4d85167068-glibrary.apiary-mock.com/";
 
 
     //Authorization constant
     public static final String AUTH_URL = "https://pelephone.getbooks.co.il/dev/customer/account/login/";
-    public static final String REDIRECT_URL = "https://pelephone.getbooks.co.il/dev/customer/account/index/real/";
+    public static final String REDIRECT_URL = "https://pelephone.getbooks.co.il/dev/customer/account/";
 
 
     //Shared preference constants

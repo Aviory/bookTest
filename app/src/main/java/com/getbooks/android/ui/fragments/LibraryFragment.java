@@ -12,12 +12,12 @@ import android.widget.LinearLayout;
 import com.getbooks.android.R;
 import com.getbooks.android.api.Queries;
 import com.getbooks.android.model.Library;
-import com.getbooks.android.prefs.Prefs;
 import com.getbooks.android.ui.BaseFragment;
 import com.getbooks.android.ui.activities.CatalogActivity;
 import com.getbooks.android.ui.activities.LibraryActivity;
 import com.getbooks.android.ui.adapter.RecyclerShelvesAdapter;
 import com.getbooks.android.util.UiUtil;
+import com.google.firebase.iid.FirebaseInstanceId;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -49,7 +49,8 @@ public class LibraryFragment extends BaseFragment implements Queries.CallBack {
             UiUtil.showDialog(getContext());
             mQueries = new Queries();
             mQueries.setCallBack(this);
-            mQueries.getAllRentedBook(Prefs.getToken(getContext()));
+            mQueries.getAllRentedBook(FirebaseInstanceId.getInstance().getToken());
+//            mQueries.getAllRentedBook(Prefs.getToken(getContext()));
         }
     }
 
@@ -87,6 +88,11 @@ public class LibraryFragment extends BaseFragment implements Queries.CallBack {
         startActivity(intent);
     }
 
+    @OnClick
+    protected void openLefMenu(){
+
+    }
+
     @Override
     protected void saveValue(Bundle outState) {
         super.saveValue(outState);
@@ -105,7 +111,7 @@ public class LibraryFragment extends BaseFragment implements Queries.CallBack {
     public void onError(Throwable throwable) {
         UiUtil.hideDialog();
         throwable.printStackTrace();
-        UiUtil.showConnectionErrorToast(getContext());
+//        UiUtil.showConnectionErrorToast(getContext());
     }
 
     @Override

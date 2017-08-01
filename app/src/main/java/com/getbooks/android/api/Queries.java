@@ -6,7 +6,6 @@ import com.getbooks.android.model.PurchasedBook;
 import com.getbooks.android.model.RentedBook;
 import com.getbooks.android.model.enums.BookState;
 import com.getbooks.android.util.LogUtil;
-import com.getbooks.android.util.UiUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,8 +39,8 @@ public class Queries {
 
         ApiService apiService = ApiManager.getClientApiAry().create(ApiService.class);
         Subscription subscriptions = Observable.zip(
-                apiService.getAllRentedBooks("aff_pelephone", UiUtil.encode(deviceToken)),
-                apiService.getAllPurchasedBooks("aff_pelephone", UiUtil.encode(deviceToken)),
+                apiService.getAllRentedBooks("aff_pelephone", deviceToken),
+                apiService.getAllPurchasedBooks("aff_pelephone", deviceToken),
                 (book, purchasedBook) -> {
                     Library library = new Library();
                     List<PurchasedBook> purchasedBooks = purchasedBook;
