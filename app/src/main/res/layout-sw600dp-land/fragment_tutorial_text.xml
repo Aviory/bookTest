@@ -48,26 +48,29 @@
         android:layout_height="match_parent"
         android:background="@color/black_translucent">
 
+        <ImageView
+            android:id="@+id/hand_tutorial_first"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/margin_hand_press_left"
+            android:layout_marginTop="@dimen/margin_hand_top"
+            android:src="@drawable/hand_btn" />
+
         <com.getbooks.android.ui.widget.ArialNormalTextView
             android:id="@+id/txt_tutorial_first"
             style="@style/TutorialTextStyle"
-            android:layout_centerHorizontal="true"
+            android:layout_marginLeft="@dimen/margin_small"
             android:layout_marginTop="@dimen/margin_txt_top"
+            android:layout_toLeftOf="@id/hand_tutorial_first"
             android:text="@string/txt_tutorial_first_one" />
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/margin_hand_press_left"
-            android:layout_marginTop="@dimen/margin_hand_top"
-            android:layout_toRightOf="@id/txt_tutorial_first"
-            android:src="@drawable/hand_btn" />
 
         <ImageView
             android:id="@+id/img_tutorial_menu"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
+            android:layout_marginLeft="@dimen/margin_menu_redactor_top"
             android:layout_marginTop="@dimen/margin_menu_redactor_top"
             android:src="@drawable/tutorial_menu" />
 
@@ -141,15 +144,17 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
             android:layout_marginBottom="@dimen/margin_hand_bottom"
-            android:layout_marginLeft="@dimen/margin_hand_left"
+            android:layout_marginRight="@dimen/margin_hand_left"
             android:layout_marginTop="@dimen/margin_2dp"
             android:src="@drawable/hand_arrows" />
 
         <com.getbooks.android.ui.widget.ArialNormalTextView
             style="@style/TutorialTextStyle"
             android:layout_above="@id/img_hand_arrow"
-            android:layout_marginLeft="@dimen/margin_arrow_bottom"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/margin_arrow_bottom"
             android:text="@string/txt_tutorial_first_two" />
 
     </RelativeLayout>

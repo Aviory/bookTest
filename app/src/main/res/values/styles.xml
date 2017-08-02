@@ -32,7 +32,7 @@
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textColor">@color/color_white</item>
-        <item name="android:textSize">@dimen/font_5</item>
+        <item name="android:textSize">@dimen/txt_tutorial</item>
         <item name="android:gravity">center</item>
     </style>
 
@@ -47,9 +47,19 @@
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:src">@drawable/close_blue</item>
-        <item name="android:layout_marginBottom">@dimen/margin_medium</item>
+        <item name="android:layout_marginBottom">@dimen/margin_close_img_bottom</item>
         <item name="android:layout_centerHorizontal">true</item>
         <item name="android:layout_alignParentBottom">true</item>
+    </style>
+
+    <style name="LeftMenuTextStyle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">@dimen/left_menu_txt_size</item>
+        <item name="android:textColor">@color/color_white</item>
+        <item name="android:gravity">center</item>
+        <item name="android:layout_gravity">left</item>
     </style>
 
 </resources>

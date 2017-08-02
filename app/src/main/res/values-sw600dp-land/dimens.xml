@@ -2,13 +2,23 @@
 <resources>
 
     <!-- Tutorial main screen sizes-->
-    <dimen name="margin_close_img">80dp</dimen>
-
+    <dimen name="menu_icon_margin">40dp</dimen>
+    <dimen name="margin_close_img">40dp</dimen>
+    <dimen name="txt_tutorial">24sp</dimen>
+    <dimen name="margin_menu_icon">80dp</dimen>
+    <dimen name="margin_icon_top">20dp</dimen>
+    <dimen name="margin_arrow_img_left">50dp</dimen>
+    <dimen name="margin_arrow_left">30dp</dimen>
+    <dimen name="margin_arrow_right">25dp</dimen>
+    <dimen name="margin_arrows_img_right">40dp</dimen>
+    <dimen name="margin_between_txt">20dp</dimen>
 
     <!-- Tutorial text screen sizes-->
     <dimen name="margin_txt_top">120dp</dimen>
-    <dimen name="margin_hand_left">50dp</dimen>
-    <dimen name="margin_hand_top">105dp</dimen>
+    <dimen name="margin_hand_left">80dp</dimen>
+    <dimen name="margin_hand_top">50dp</dimen>
+    <dimen name="margin_menu_redactor_top">100dp</dimen>
+    <dimen name="margin_hand_press_left">100dp</dimen>
 
     <!-- Tutorial text float screen sizes-->
     <dimen name="margin_txt_center">100dp</dimen>

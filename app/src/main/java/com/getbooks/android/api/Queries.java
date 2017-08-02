@@ -34,7 +34,7 @@ public class Queries {
         void onFinish();
     }
 
-    public void getAllRentedBook(String deviceToken) {
+    public void getAllUserBook(String deviceToken) {
         mCompositeSubscription = new CompositeSubscription();
 
         ApiService apiService = ApiManager.getClientApiAry().create(ApiService.class);

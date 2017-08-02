@@ -2,4 +2,7 @@
 <resources>
     <!-- Tutorial text float screen sizes-->
     <dimen name="margin_txt_center">350dp</dimen>
+
+    <!-- Tutorial text screen sizes-->
+    <dimen name="margin_menu_redactor_top">350dp</dimen>
 </resources>

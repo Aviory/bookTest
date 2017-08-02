@@ -45,58 +45,6 @@
         android:layout_below="@id/menu_book"
         android:background="@color/black_translucent">
 
-        <LinearLayout
-            android:id="@+id/linear_layout_arrows"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:orientation="horizontal">
-
-            <ImageView
-                style="@style/TutorialImageArrowStyle"
-                android:layout_weight="1" />
-
-            <ImageView
-                style="@style/TutorialImageArrowStyle"
-                android:layout_weight="1" />
-
-            <ImageView
-                style="@style/TutorialImageArrowStyle"
-                android:layout_weight="1" />
-
-            <ImageView
-                style="@style/TutorialImageArrowStyle"
-                android:layout_weight="1" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/linear_layout_arrows"
-            android:orientation="horizontal">
-
-            <com.getbooks.android.ui.widget.ArialNormalTextView
-                style="@style/TutorialTextStyle"
-                android:layout_weight="1"
-                android:text="@string/txt_tutorial_float_three" />
-
-            <com.getbooks.android.ui.widget.ArialNormalTextView
-                style="@style/TutorialTextStyle"
-                android:layout_weight="1"
-                android:text="@string/txt_tutorial_float_four" />
-
-            <com.getbooks.android.ui.widget.ArialNormalTextView
-                style="@style/TutorialTextStyle"
-                android:layout_weight="1"
-                android:text="@string/txt_tutorial_float_five" />
-
-            <com.getbooks.android.ui.widget.ArialNormalTextView
-                style="@style/TutorialTextStyle"
-                android:layout_weight="1"
-                android:text="@string/txt_tutorial_float_six" />
-
-        </LinearLayout>
-
         <ImageView
             android:id="@+id/img_close"
             style="@style/TutorialCloseImgageStyle" />

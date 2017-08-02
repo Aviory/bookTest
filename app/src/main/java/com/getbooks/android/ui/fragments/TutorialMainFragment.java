@@ -48,7 +48,7 @@ public class TutorialMainFragment extends BaseFragment implements TutorialsDialo
         mGridLayoutManager.setOrientation(GridLayoutManager.VERTICAL);
         mRecyclerBookShelves.setLayoutManager(mGridLayoutManager);
 
-        mShelvesAdapter = new RecyclerTutotialsAdapter();
+        mShelvesAdapter = new RecyclerTutotialsAdapter(getAct());
         mRecyclerBookShelves.setAdapter(mShelvesAdapter);
 
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(getContext(), LinearLayout.VERTICAL);

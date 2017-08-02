@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <integer-array name="covers_books">
+        <item>@drawable/book_1</item>
+        <item>@drawable/book_2</item>
+        <item>@drawable/book_3</item>
+        <item>@drawable/book_4</item>
+        <item>@drawable/book_5</item>
+    </integer-array>
+
+    <integer-array name="states_books">
+        <item>@drawable/clock_black</item>
+        <item>@drawable/clock_black</item>
+        <item>@drawable/arrow_down_black</item>
+        <item>@drawable/check_black</item>
+        <item>@drawable/check_black</item>
+    </integer-array>
+
+    <integer-array name="covers_books_tablet">
+        <item>@drawable/book_1</item>
+        <item>@drawable/book_2</item>
+        <item>@drawable/book_3</item>
+        <item>@drawable/book_4</item>
+        <item>@drawable/book_5</item>
+        <item>@drawable/book_6</item>
+        <item>@drawable/book_7</item>
+        <item>@drawable/book_8</item>
+        <item>@drawable/book_9</item>
+        <item>@drawable/book_10</item>
+        <item>@drawable/book_11</item>
+        <item>@drawable/book_12</item>
+        <item>@drawable/book_13</item>
+        <item>@drawable/book_14</item>
+        <item>@drawable/book_15</item>
+    </integer-array>
+
+    <integer-array name="states_books_tablet">
+        <item>@drawable/clock_black</item>
+        <item>@drawable/clock_black</item>
+        <item>@drawable/arrow_down_black</item>
+        <item>@drawable/check_black</item>
+        <item>@drawable/arrow_down_black</item>
+        <item>@drawable/check_black</item>
+        <item>@drawable/arrow_down_black</item>
+        <item>@drawable/arrow_down_black</item>
+        <item>@drawable/check_black</item>
+        <item>@drawable/arrow_down_black</item>
+        <item>@drawable/check_black</item>
+        <item>@drawable/check_black</item>
+        <item>@drawable/check_black</item>
+        <item>@drawable/arrow_down_black</item>
+        <item>@drawable/check_black</item>
+    </integer-array>
+
+</resources>

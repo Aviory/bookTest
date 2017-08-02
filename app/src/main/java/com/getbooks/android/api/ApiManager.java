@@ -111,7 +111,7 @@ public class ApiManager {
         });
     }
 
-//    public static void getAllRentedBook(String token) {
+//    public static void getAllUserBook(String token) {
 //        Log.d("GetByToken", token);
 //        Call<List<RentedBook>> call = ApiManager.getClientApiAry().create(ApiService.class)
 //                .getAllRentedBooks("aff_pelephone", token);

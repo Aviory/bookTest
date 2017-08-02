@@ -1,6 +1,7 @@
 package com.getbooks.android.ui;
 
 import android.Manifest;
+import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -13,6 +14,7 @@ import android.view.View;
 
 import com.getbooks.android.R;
 import com.getbooks.android.util.LogUtil;
+import com.getbooks.android.util.UiUtil;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -31,6 +33,10 @@ public abstract class BaseActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        if (!UiUtil.isTablet(this)) {
+            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+        }
 
         if (getLayout() > 0) {
             setContentView(getLayout());
@@ -137,7 +143,6 @@ public abstract class BaseActivity extends AppCompatActivity {
                 break;
         }
     }
-
 
 
     @Override

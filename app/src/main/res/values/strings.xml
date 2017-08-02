@@ -64,4 +64,13 @@
     <string name="txt_no">No</string>
     <string name="error_connection">No internet connection</string>
 
+    <!-- Left Menu strings -->
+    <string name="txt_about_us">About</string>
+    <string name="txt_log_out">Log out</string>
+    <string name="txt_lock">Service and Privacy</string>
+    <string name="txt_messege">Instructions</string>
+    <string name="txt_order_history">Question history</string>
+    <string name="txt_hand_icon">Explanation screens</string>
+    <string name="txt_rtl">left</string>
+
 </resources>

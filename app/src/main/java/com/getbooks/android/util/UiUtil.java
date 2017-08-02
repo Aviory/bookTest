@@ -70,4 +70,8 @@ public class UiUtil {
             mToast.show();
         }
     }
+
+    public static boolean isTablet(Context context){
+        return context.getResources().getBoolean(R.bool.isTablet);
+    }
 }

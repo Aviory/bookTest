@@ -7,6 +7,7 @@ import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.GET;
+import retrofit2.http.Headers;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
@@ -23,10 +24,18 @@ public interface ApiService {
                                    @Query("DEVICE_OS") String deviseOs);
 
 
+    @Headers({
+            "Accept:application/json",
+            "SecretKey:de@Dc0W4her0"
+    })
     @GET("/glibrary/rentedbooks/{websiteCode}/{deviceToken}")
     Observable<List<RentedBook>> getAllRentedBooks(@Path("websiteCode") String aff_pelephone,
                                                    @Path("deviceToken") String tokenDevice);
 
+    @Headers({
+            "Accept:application/json",
+            "SecretKey:de@Dc0W4her0"
+    })
     @GET("/glibrary/purchasedbooks/{websiteCode}/{deviceToken}")
     Observable<List<PurchasedBook>> getAllPurchasedBooks(@Path("websiteCode") String aff_pelephone,
                                                          @Path("deviceToken") String tokenDevice);

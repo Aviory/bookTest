@@ -36,4 +36,12 @@
     <string name="txt_tutorial_float_five">סימניות</string>
     <string name="txt_tutorial_float_six">לספרייה</string>
     <string name="txt_tutorial_float_bottom">מקומך \nבספר</string>
+
+    <!-- Left Menu strings -->
+    <string name="txt_about_us">אודות</string>
+    <string name="txt_log_out">כניסה כמשתמש אחר</string>
+    <string name="txt_lock">תנאי שירות ופרטיות</string>
+    <string name="txt_messege">מדריך</string>
+    <string name="txt_order_history">היסטוריית השאלה</string>
+    <string name="txt_hand_icon">מסכי הסבר</string>
 </resources>

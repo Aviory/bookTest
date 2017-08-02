@@ -1,5 +1,7 @@
 package com.getbooks.android.ui.adapter;
 
+import android.content.Context;
+import android.content.res.TypedArray;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -7,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.getbooks.android.R;
+import com.getbooks.android.util.UiUtil;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -17,8 +20,11 @@ import butterknife.ButterKnife;
 
 public class RecyclerTutotialsAdapter extends RecyclerView.Adapter<RecyclerTutotialsAdapter.ViewHolder> {
 
-    private int[] mCoversBooks = new int[]{R.drawable.book_1, R.drawable.book_2, R.drawable.book_3,
-            R.drawable.book_4, R.drawable.book_5};
+    private Context mContext;
+
+    public RecyclerTutotialsAdapter(Context context) {
+        this.mContext = context;
+    }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -28,12 +34,29 @@ public class RecyclerTutotialsAdapter extends RecyclerView.Adapter<RecyclerTutot
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        holder.mImageCover.setImageResource(mCoversBooks[position]);
+        if (!UiUtil.isTablet(mContext)) {
+            fillBookCover(R.array.covers_books, R.array.states_books, holder, position);
+        } else {
+            fillBookCover(R.array.covers_books_tablet, R.array.states_books_tablet, holder, position);
+        }
+    }
+
+    private void fillBookCover(int arraysCovers, int arraysStates, ViewHolder holder, int position) {
+        TypedArray covers = mContext.getResources().obtainTypedArray(arraysCovers);
+        TypedArray states = mContext.getResources().obtainTypedArray(arraysStates);
+        holder.mImageCover.setImageResource(covers.getResourceId(position, -1));
+        holder.mImageBookState.setImageResource(states.getResourceId(position, -1));
+        covers.recycle();
+        states.recycle();
     }
 
     @Override
     public int getItemCount() {
-        return mCoversBooks.length;
+        if (!UiUtil.isTablet(mContext))
+            return 5;
+        else
+            return 15;
+
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {

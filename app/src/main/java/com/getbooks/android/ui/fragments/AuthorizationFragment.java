@@ -22,6 +22,7 @@ import com.getbooks.android.R;
 import com.getbooks.android.prefs.Prefs;
 import com.getbooks.android.ui.BaseFragment;
 import com.getbooks.android.ui.activities.AuthorizationActivity;
+import com.getbooks.android.ui.activities.LibraryActivity;
 import com.getbooks.android.ui.activities.TutorialsActivity;
 import com.getbooks.android.ui.dialog.MaterialDialog;
 import com.getbooks.android.util.LogUtil;
@@ -159,8 +160,14 @@ public class AuthorizationFragment extends BaseFragment {
     private void goToUserLibrary(String token) {
         Prefs.setBooleanProperty(getAct(), Const.IS_USER_AUTHORIZE, true);
         Prefs.putToken(getAct(), token);
-        Intent intent = new Intent(getAct(), TutorialsActivity.class);
-        getAct().startActivity(intent);
-        ((AppCompatActivity) getAct()).finish();
+        if (Prefs.getCountTutorialsShow(getAct()) < Prefs.MAX_COUNT_VIEWS_TUTORIALS) {
+            Intent intent = new Intent(getAct(), TutorialsActivity.class);
+            startActivity(intent);
+            ((AppCompatActivity) getAct()).finish();
+        } else {
+            Intent intent = new Intent(getAct(), LibraryActivity.class);
+            startActivity(intent);
+            ((AppCompatActivity) getAct()).finish();
+        }
     }
 }

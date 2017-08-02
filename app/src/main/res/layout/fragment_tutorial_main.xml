@@ -16,6 +16,7 @@
         android:layout_height="match_parent"
         android:layout_below="@id/menu_main"
         android:layout_marginLeft="5dp"
+        android:nestedScrollingEnabled="false"
         android:layout_marginRight="5dp" />
 
     <ImageView
@@ -28,7 +29,7 @@
         android:id="@+id/img_arrow_first"
         style="@style/TutorialImageArrowStyle"
         android:layout_below="@id/menu_main"
-        android:layout_marginLeft="@dimen/margin_medium" />
+        android:layout_marginLeft="@dimen/margin_arrow_img_left" />
 
     <com.getbooks.android.ui.widget.ArialNormalTextView
         android:id="@+id/txt_tutorial_main_first"
@@ -69,7 +70,7 @@
         style="@style/TutorialImageArrowStyle"
         android:layout_below="@id/menu_main"
         android:layout_centerHorizontal="true"
-        android:layout_marginLeft="@dimen/margin_biggest"
+        android:layout_marginLeft="@dimen/margin_arrow_center"
         android:layout_toRightOf="@id/img_arrow_third" />
 
     <com.getbooks.android.ui.widget.ArialNormalTextView
@@ -85,7 +86,7 @@
         style="@style/TutorialImageArrowStyle"
         android:layout_alignParentRight="true"
         android:layout_below="@id/menu_main"
-        android:layout_marginRight="@dimen/margin_small" />
+        android:layout_marginRight="@dimen/margin_arrows_img_right" />
 
     <com.getbooks.android.ui.widget.ArialNormalTextView
         android:id="@+id/txt_tutorial_main_five"

@@ -13,7 +13,17 @@
         android:id="@+id/recyler_books_shelves"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginRight="5dp"
+        android:layout_below="@id/menu_main"
         android:layout_marginLeft="5dp"
-        android:layout_below="@id/menu_main" />
+        android:layout_marginRight="5dp" />
+
+    <include
+        android:id="@+id/left_menu"
+        layout="@layout/fragment_left_menu_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/menu_main"
+        android:visibility="invisible"
+        android:layout_marginTop="-6dp" />
+
 </RelativeLayout>

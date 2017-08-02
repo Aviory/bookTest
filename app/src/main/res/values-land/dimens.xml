@@ -6,7 +6,7 @@
 
     <!-- Tutorial text screen sizes-->
     <dimen name="margin_hand_top">30dp</dimen>
-    <dimen name="margin_40dp">10dp</dimen>
+    <dimen name="margin_menu_redactor_top">10dp</dimen>
     <dimen name="margin_txt_top">50dp</dimen>
     <dimen name="margin_hand_left">20dp</dimen>
 

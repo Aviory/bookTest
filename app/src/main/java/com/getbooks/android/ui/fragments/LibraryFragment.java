@@ -8,16 +8,17 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.getbooks.android.R;
 import com.getbooks.android.api.Queries;
 import com.getbooks.android.model.Library;
+import com.getbooks.android.prefs.Prefs;
 import com.getbooks.android.ui.BaseFragment;
 import com.getbooks.android.ui.activities.CatalogActivity;
 import com.getbooks.android.ui.activities.LibraryActivity;
 import com.getbooks.android.ui.adapter.RecyclerShelvesAdapter;
 import com.getbooks.android.util.UiUtil;
-import com.google.firebase.iid.FirebaseInstanceId;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -30,6 +31,8 @@ public class LibraryFragment extends BaseFragment implements Queries.CallBack {
 
     @BindView(R.id.recyler_books_shelves)
     protected RecyclerView mRecyclerBookShelves;
+    @BindView(R.id.left_menu)
+    protected LinearLayout mLeftMenuLayout;
 
     private Queries mQueries;
     private Library mLibrary;
@@ -49,8 +52,8 @@ public class LibraryFragment extends BaseFragment implements Queries.CallBack {
             UiUtil.showDialog(getContext());
             mQueries = new Queries();
             mQueries.setCallBack(this);
-            mQueries.getAllRentedBook(FirebaseInstanceId.getInstance().getToken());
-//            mQueries.getAllRentedBook(Prefs.getToken(getContext()));
+//            mQueries.getAllUserBook(FirebaseInstanceId.getInstance().getToken());
+            mQueries.getAllUserBook(Prefs.getToken(getContext()));
         }
     }
 
@@ -88,9 +91,10 @@ public class LibraryFragment extends BaseFragment implements Queries.CallBack {
         startActivity(intent);
     }
 
-    @OnClick
+    @OnClick(R.id.img_menu)
     protected void openLefMenu(){
 
+        Toast.makeText(getAct(), "Menu", Toast.LENGTH_SHORT).show();
     }
 
     @Override

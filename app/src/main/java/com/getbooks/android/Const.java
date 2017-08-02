@@ -8,7 +8,7 @@ public class Const {
 
     // Api constants
     public static final String BASE_URL_PELEPHONE_API = "https://pelephone.getbooks.co.il/dev/?";
-    public static final String BASE_URL_API_ARY = "https://private-anon-4d85167068-glibrary.apiary-mock.com/";
+    public static final String BASE_URL_API_ARY = "https://pelephone.getbooks.co.il/dev/api/rest/";
 
 
     //Authorization constant

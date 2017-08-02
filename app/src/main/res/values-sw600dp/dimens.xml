@@ -1,12 +1,38 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <bool name="isTablet">true</bool>
+
+    <!-- Menu main sizes -->
+    <dimen name="txt_size">27sp</dimen>
+    <dimen name="separator_height">30dp</dimen>
+    <dimen name="separator_width">2dp</dimen>
+    <dimen name="margin_menu_icon">40dp</dimen>
+    <dimen name="margin_icon_top">20dp</dimen>
+
+    <!-- Tutorial main screen sizes-->
+    <dimen name="margin_between_arrow">80dp</dimen>
+    <dimen name="margin_close_img">200dp</dimen>
+    <dimen name="margin_close_img_bottom">40dp</dimen>
+    <dimen name="txt_tutorial">30sp</dimen>
+    <dimen name="margin_arrow_center">100dp</dimen>
+
     <!-- Tutorial text screen sizes-->
-    <dimen name="margin_txt_top">120dp</dimen>
-    <dimen name="margin_hand_left">50dp</dimen>
-    <dimen name="margin_hand_top">105dp</dimen>
+    <dimen name="margin_txt_top">90dp</dimen>
+    <dimen name="margin_hand_left">90dp</dimen>
+    <dimen name="margin_hand_bottom">70dp</dimen>
+    <dimen name="margin_hand_top">50dp</dimen>
+    <dimen name="margin_menu_redactor_top">300dp</dimen>
+    <dimen name="margin_book_page">50dp</dimen>
+    <dimen name="margin_hand_press_left">20dp</dimen>
+    <dimen name="margin_arrow_bottom">40dp</dimen>
+    <dimen name="margin_arrow_left_menu">70dp</dimen>
+    <dimen name="margin_arrow_right_menu">50dp</dimen>
 
 
     <!-- Tutorial text float screen sizes-->
     <dimen name="margin_txt_center">350dp</dimen>
+
+    <!-- Left menu sizes -->
+    <dimen name="left_menu_txt_size">27sp</dimen>
 </resources>

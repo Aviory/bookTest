@@ -13,15 +13,15 @@
         android:id="@+id/img_menu"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/margin_small"
-        android:layout_marginLeft="@dimen/margin_smallest"
-        android:layout_marginTop="@dimen/margin_small"
+        android:layout_marginBottom="@dimen/margin_icon_top"
+        android:layout_marginLeft="@dimen/menu_icon_margin"
+        android:layout_marginTop="@dimen/margin_icon_top"
         android:background="@drawable/menu" />
 
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/margin_medium"
+        android:layout_marginLeft="@dimen/margin_menu_icon"
         android:background="@drawable/lib" />
 
     <Space
@@ -35,7 +35,7 @@
         android:layout_height="wrap_content"
         android:textColor="@android:color/white"
         android:text="@string/txt_library"
-        android:textSize="@dimen/font_6" />
+        android:textSize="@dimen/txt_size" />
 
     <ImageView
         android:layout_width="@dimen/separator_width"
@@ -60,7 +60,7 @@
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginRight="@dimen/margin_smallest"
+        android:layout_marginRight="@dimen/menu_icon_margin"
         android:background="@drawable/settings" />
 
     </LinearLayout>

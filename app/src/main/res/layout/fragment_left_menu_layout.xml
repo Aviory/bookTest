@@ -1,53 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/left_menu_layout"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:background="@drawable/bg_left_menu"
+    android:clickable="true"
     android:orientation="horizontal">
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:layout_marginBottom="30dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="30dp"
+        android:layout_marginBottom="@dimen/margin_top_icon"
+        android:layout_marginLeft="@dimen/margin_left_icon"
+        android:layout_marginTop="@dimen/margin_top_icon"
         android:layout_weight="1"
         android:orientation="vertical">
-
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:layout_weight="1"
             android:src="@drawable/clock_white" />
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:layout_weight="1"
             android:src="@drawable/message" />
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:layout_weight="1"
             android:src="@drawable/hand" />
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:layout_weight="1"
             android:src="@drawable/lock" />
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:layout_weight="1"
             android:src="@drawable/logout" />
 
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:layout_weight="1"
             android:src="@drawable/question" />
     </LinearLayout>
@@ -55,72 +62,42 @@
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:layout_marginBottom="30dp"
+        android:layout_marginBottom="@dimen/margin_top_icon"
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="@dimen/margin_top_icon"
         android:layout_weight="1"
         android:orientation="vertical">
 
         <com.getbooks.android.ui.widget.ArialNormalTextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="right"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="היסטוריית השאלה"
-            android:textColor="#ffffffff"
-            android:textSize="15sp" />
+            android:id="@+id/txt_order_history"
+            style="@style/LeftMenuTextStyle"
+            android:text="@string/txt_order_history" />
 
         <com.getbooks.android.ui.widget.ArialNormalTextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="right"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="מדריך"
-            android:textColor="#ffffffff"
-            android:textSize="15sp" />
+            android:id="@+id/txt_instruction"
+            style="@style/LeftMenuTextStyle"
+            android:text="@string/txt_messege" />
 
         <com.getbooks.android.ui.widget.ArialNormalTextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="right"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="מסכי הסבר"
-            android:textColor="#ffffffff"
-            android:textSize="15sp" />
+            android:id="@+id/txt_explanation_screens"
+            style="@style/LeftMenuTextStyle"
+            android:text="@string/txt_hand_icon" />
 
         <com.getbooks.android.ui.widget.ArialNormalTextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="right"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="היסטוריית השאלה"
-            android:textColor="#ffffffff"
-            android:textSize="15sp" />
+            android:id="@+id/txt_service_privacy"
+            style="@style/LeftMenuTextStyle"
+            android:text="@string/txt_lock" />
 
         <com.getbooks.android.ui.widget.ArialNormalTextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="right"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="כניסה כמשתמש אחר"
-            android:textColor="#ffffffff"
-            android:textSize="15sp" />
+            android:id="@+id/txt_log_out"
+            style="@style/LeftMenuTextStyle"
+            android:text="@string/txt_log_out" />
 
         <com.getbooks.android.ui.widget.ArialNormalTextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="right"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="אודות"
-            android:textColor="#ffffffff"
-            android:textSize="15sp" />
+            android:id="@+id/txt_about_us"
+            style="@style/LeftMenuTextStyle"
+            android:text="@string/txt_about_us" />
 
     </LinearLayout>
 
