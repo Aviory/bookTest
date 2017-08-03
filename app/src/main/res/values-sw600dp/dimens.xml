@@ -9,6 +9,7 @@
     <dimen name="separator_width">2dp</dimen>
     <dimen name="margin_menu_icon">40dp</dimen>
     <dimen name="margin_icon_top">20dp</dimen>
+    <dimen name="menu_icon_margin">30dp</dimen>
 
     <!-- Tutorial main screen sizes-->
     <dimen name="margin_between_arrow">80dp</dimen>
@@ -35,4 +36,8 @@
 
     <!-- Left menu sizes -->
     <dimen name="left_menu_txt_size">27sp</dimen>
+    <dimen name="margin_left_menu_top">-9.5dp</dimen>
+
+    <!-- Menu books sizes -->
+    <dimen name="margin_bottom">18dp</dimen>
 </resources>

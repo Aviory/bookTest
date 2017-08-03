@@ -82,5 +82,6 @@
     <dimen name="margin_right_icon">15dp</dimen>
     <dimen name="margin_left_icon">20dp</dimen>
     <dimen name="left_menu_txt_size">15sp</dimen>
+    <dimen name="margin_left_menu_top">-6dp</dimen>
 
 </resources>

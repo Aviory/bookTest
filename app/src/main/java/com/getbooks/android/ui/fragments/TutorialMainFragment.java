@@ -54,6 +54,8 @@ public class TutorialMainFragment extends BaseFragment implements TutorialsDialo
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(getContext(), LinearLayout.VERTICAL);
         dividerItemDecoration.setDrawable(getResources().getDrawable(R.drawable.polka));
         mRecyclerBookShelves.addItemDecoration(dividerItemDecoration);
+
+        mRecyclerBookShelves.setOnTouchListener((view1, motionEvent) -> true);
     }
 
     @Override

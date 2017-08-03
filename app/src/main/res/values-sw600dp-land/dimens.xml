@@ -2,7 +2,7 @@
 <resources>
 
     <!-- Tutorial main screen sizes-->
-    <dimen name="menu_icon_margin">40dp</dimen>
+    <dimen name="menu_icon_margin">30dp</dimen>
     <dimen name="margin_close_img">40dp</dimen>
     <dimen name="txt_tutorial">24sp</dimen>
     <dimen name="margin_menu_icon">80dp</dimen>

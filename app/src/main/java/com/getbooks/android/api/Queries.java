@@ -1,11 +1,15 @@
 package com.getbooks.android.api;
 
+import android.content.Context;
+
+import com.getbooks.android.R;
 import com.getbooks.android.model.Book;
 import com.getbooks.android.model.Library;
 import com.getbooks.android.model.PurchasedBook;
 import com.getbooks.android.model.RentedBook;
 import com.getbooks.android.model.enums.BookState;
 import com.getbooks.android.util.LogUtil;
+import com.getbooks.android.util.UiUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,26 +38,39 @@ public class Queries {
         void onFinish();
     }
 
-    public void getAllUserBook(String deviceToken) {
+    public void getAllUserBook(String deviceToken, Context context) {
         mCompositeSubscription = new CompositeSubscription();
 
         ApiService apiService = ApiManager.getClientApiAry().create(ApiService.class);
+
         Subscription subscriptions = Observable.zip(
                 apiService.getAllRentedBooks("aff_pelephone", deviceToken),
                 apiService.getAllPurchasedBooks("aff_pelephone", deviceToken),
-                (book, purchasedBook) -> {
+                (listRentedResponse, listPurchasedResponse) -> {
                     Library library = new Library();
-                    List<PurchasedBook> purchasedBooks = purchasedBook;
-                    for (PurchasedBook bookPurchased : purchasedBooks){
-                        bookPurchased.setBookState(BookState.DOWNLOAD);
-                    }
-                    List<RentedBook> rentedBooks = book;
-                    for (RentedBook rentedBook : book){
-                        rentedBook.setBookState(BookState.DOWNLOAD);
-                    }
                     List<Book> allBook = new ArrayList<Book>();
-                    allBook.addAll(rentedBooks);
-                    allBook.addAll(purchasedBooks);
+                    List<RentedBook> rentedBooks = new ArrayList<RentedBook>();
+                    List<PurchasedBook> purchasedBooks = new ArrayList<PurchasedBook>();
+                    if (listRentedResponse.code() == 200) {
+                        rentedBooks.addAll(listRentedResponse.body());
+                        for (RentedBook rentedBook : rentedBooks) {
+                            rentedBook.setBookState(BookState.DOWNLOAD);
+                        }
+                        allBook.addAll(rentedBooks);
+                    } else if (listRentedResponse.code() == 404) {
+                        UiUtil.showToast(context, R.string.emty_rented_list);
+                    }
+
+                    if (listPurchasedResponse.code() == 200) {
+                        purchasedBooks.addAll(listPurchasedResponse.body());
+                        for (PurchasedBook purchasedBook : purchasedBooks) {
+                            purchasedBook.setBookState(BookState.DOWNLOAD);
+                        }
+                        allBook.addAll(purchasedBooks);
+                    } else if (listPurchasedResponse.code() == 404) {
+                        UiUtil.showToast(context, R.string.empty_purchased_list);
+                    }
+
                     library.setAllBook(allBook);
                     return library;
                 })

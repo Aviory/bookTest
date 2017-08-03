@@ -8,7 +8,6 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import com.getbooks.android.R;
 import com.getbooks.android.api.Queries;
@@ -52,8 +51,7 @@ public class LibraryFragment extends BaseFragment implements Queries.CallBack {
             UiUtil.showDialog(getContext());
             mQueries = new Queries();
             mQueries.setCallBack(this);
-//            mQueries.getAllUserBook(FirebaseInstanceId.getInstance().getToken());
-            mQueries.getAllUserBook(Prefs.getToken(getContext()));
+            mQueries.getAllUserBook(Prefs.getToken(getContext()), getAct());
         }
     }
 
@@ -92,9 +90,14 @@ public class LibraryFragment extends BaseFragment implements Queries.CallBack {
     }
 
     @OnClick(R.id.img_menu)
-    protected void openLefMenu(){
-
-        Toast.makeText(getAct(), "Menu", Toast.LENGTH_SHORT).show();
+    protected void openLefMenu(View view) {
+        if (view.isActivated()) {
+            view.setActivated(false);
+            UiUtil.showView(mLeftMenuLayout);
+        } else {
+            view.setActivated(true);
+            UiUtil.hideView(mLeftMenuLayout);
+        }
     }
 
     @Override

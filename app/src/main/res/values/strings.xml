@@ -72,5 +72,7 @@
     <string name="txt_order_history">Question history</string>
     <string name="txt_hand_icon">Explanation screens</string>
     <string name="txt_rtl">left</string>
+    <string name="emty_rented_list">You dont have rented books</string>
+    <string name="empty_purchased_list">You dont have purchased books</string>
 
 </resources>

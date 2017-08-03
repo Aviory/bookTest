@@ -1,9 +1,12 @@
 package com.getbooks.android.util;
 
+import android.animation.Animator;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
+import android.view.View;
 import android.widget.Toast;
 
 import com.getbooks.android.R;
@@ -71,7 +74,48 @@ public class UiUtil {
         }
     }
 
-    public static boolean isTablet(Context context){
+    public static void showToast(Context context, int resString) {
+        Handler h = new Handler(Looper.getMainLooper());
+        h.post(() -> {
+            if (mToast == null || !mToast.getView().isShown())
+                mToast = Toast.makeText(context, resString, Toast.LENGTH_SHORT);
+            mToast.show();
+        });
+    }
+
+    public static boolean isTablet(Context context) {
         return context.getResources().getBoolean(R.bool.isTablet);
+    }
+
+    public static void hideView(View view) {
+        showView(view, false);
+    }
+
+    public static void showView(View view) {
+        showView(view, true);
+    }
+
+    private static void showView(final View view, final boolean show) {
+        view.animate().alpha(show ? 1 : 0).setDuration(400).setListener(new Animator.AnimatorListener() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                view.setVisibility(show ? View.VISIBLE : View.INVISIBLE);
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animation) {
+
+            }
+
+            @Override
+            public void onAnimationRepeat(Animator animation) {
+
+            }
+        }).start();
     }
 }

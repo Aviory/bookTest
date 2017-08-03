@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.getbooks.android.R;
 import com.getbooks.android.model.Library;
@@ -39,7 +40,7 @@ public class RecyclerShelvesAdapter extends RecyclerView.Adapter<RecyclerShelves
     public void onBindViewHolder(ViewHolder holder, int position) {
         Picasso.with(mContext).load(mLibrary.getAllBook().get(position).
                 getBookImage()).into(holder.mImageCover);
-        switch (mLibrary.getAllBook().get(position).getBookState()){
+        switch (mLibrary.getAllBook().get(position).getBookState()) {
             case DOWNLOAD:
                 holder.mImageBookState.setImageResource(R.drawable.arrow_down_black);
                 break;
@@ -53,6 +54,10 @@ public class RecyclerShelvesAdapter extends RecyclerView.Adapter<RecyclerShelves
                 holder.mImageNewBook.setVisibility(View.VISIBLE);
                 break;
         }
+
+        holder.mImageCover.setOnClickListener(view -> {
+            Toast.makeText(mContext, "Book click", Toast.LENGTH_SHORT).show();
+        });
     }
 
     @Override

@@ -8,12 +8,15 @@ import com.getbooks.android.Const;
 import com.getbooks.android.prefs.Prefs;
 import com.getbooks.android.ui.activities.LibraryActivity;
 
+import java.io.IOException;
 import java.net.CookieHandler;
 import java.net.CookieManager;
 import java.util.concurrent.TimeUnit;
 
+import okhttp3.Interceptor;
 import okhttp3.JavaNetCookieJar;
 import okhttp3.OkHttpClient;
+import okhttp3.Request;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -33,6 +36,26 @@ public class ApiManager {
     public static Retrofit sRetrofitPelephoneApi = null;
 
     public static Retrofit getClientApiAry() {
+
+        OkHttpClient.Builder httpClient = new OkHttpClient.Builder();
+        httpClient.addInterceptor(new Interceptor() {
+            @Override
+            public okhttp3.Response intercept(Chain chain) throws IOException {
+                Request original = chain.request();
+
+                // Request customization: add request headers
+                Request.Builder requestBuilder = original.newBuilder()
+                        .addHeader("Accept", "application/json")
+                        .addHeader("SecretKey", "de@Dc0W4her0");
+
+                Request request = requestBuilder.build();
+                return chain.proceed(request);
+            }
+        });
+
+//        OkHttpClient client = httpClient.build();
+
+
         if (sRetrofitApiAry == null) {
             sRetrofitApiAry = new Retrofit.Builder().
                     baseUrl(Const.BASE_URL_API_ARY).

@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.webkit.CookieManager;
 import android.webkit.WebResourceError;
@@ -15,7 +16,6 @@ import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.Toast;
 
 import com.getbooks.android.Const;
 import com.getbooks.android.R;
@@ -84,7 +84,8 @@ public class AuthorizationFragment extends BaseFragment {
     }
 
     private void finishWithError(String message) {
-        Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
+        Log.d("ERRRRRRRRRRR", message);
+//        Toast.makeText(getAct(), message, Toast.LENGTH_SHORT).show();
     }
 
     private class LoginWebViewClient extends WebViewClient {
@@ -122,6 +123,8 @@ public class AuthorizationFragment extends BaseFragment {
                 registerToken(view, token);
                 goToUserLibrary(token);
 
+//                view.loadUrl(Const.CATALOG_URL);
+
                 return true;
             }
             return false;
@@ -154,6 +157,7 @@ public class AuthorizationFragment extends BaseFragment {
     private void registerToken(WebView view, String token) {
         String registerUrl = Const.BASE_URL_PELEPHONE_API + "DEVICE_TOKEN=" + token + "&DEVICE_OS=1";
         String urlParameters = "DEVICE_TOKEN=" + token + "&DEVICE_OS=1";
+        LogUtil.log(this, registerUrl);
         view.postUrl(registerUrl, urlParameters.getBytes());
     }
 
