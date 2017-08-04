@@ -86,6 +86,11 @@ public class PurchasedBook extends Book implements Parcelable {
         return bookState;
     }
 
+    @Override
+    public String getBookDownloadLink() {
+        return purchasedBookDownloadLink;
+    }
+
     public void setPurchasedBookImage(String purchasedBookImage) {
         this.purchasedBookImage = purchasedBookImage;
     }

@@ -1,13 +1,16 @@
 package com.getbooks.android.api;
 
+import android.app.Activity;
 import android.content.Context;
 
-import com.getbooks.android.R;
+import com.getbooks.android.Const;
 import com.getbooks.android.model.Book;
 import com.getbooks.android.model.Library;
 import com.getbooks.android.model.PurchasedBook;
 import com.getbooks.android.model.RentedBook;
 import com.getbooks.android.model.enums.BookState;
+import com.getbooks.android.prefs.Prefs;
+import com.getbooks.android.ui.activities.AuthorizationActivity;
 import com.getbooks.android.util.LogUtil;
 import com.getbooks.android.util.UiUtil;
 
@@ -58,7 +61,7 @@ public class Queries {
                         }
                         allBook.addAll(rentedBooks);
                     } else if (listRentedResponse.code() == 404) {
-                        UiUtil.showToast(context, R.string.emty_rented_list);
+//                        UiUtil.showToast(context, R.string.emty_rented_list);
                     }
 
                     if (listPurchasedResponse.code() == 200) {
@@ -68,7 +71,7 @@ public class Queries {
                         }
                         allBook.addAll(purchasedBooks);
                     } else if (listPurchasedResponse.code() == 404) {
-                        UiUtil.showToast(context, R.string.empty_purchased_list);
+//                        UiUtil.showToast(context, R.string.empty_purchased_list);
                     }
 
                     library.setAllBook(allBook);
@@ -104,6 +107,20 @@ public class Queries {
                 });
         mCompositeSubscription.add(subscriptions);
 
+    }
+
+    public void deleteUserSession(String deviceToken, Activity context) {
+        ApiService apiService = ApiManager.getClientApiAry().create(ApiService.class);
+
+        apiService.deleteDeviseSession(Const.WEBSITECODE, deviceToken)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .doOnNext(responseBodyResponse -> {
+                    if (responseBodyResponse.code() == 204) {
+                        Prefs.clearPrefs(context);
+                        UiUtil.openActivity(context, AuthorizationActivity.class, true);
+                    }
+                }).subscribe();
     }
 
     public void onStop() {

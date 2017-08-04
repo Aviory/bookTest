@@ -13,4 +13,6 @@ public abstract class Book {
     public abstract void setBookState(BookState bookState);
 
     public abstract BookState getBookState();
+
+    public abstract String getBookDownloadLink();
 }

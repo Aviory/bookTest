@@ -1,14 +1,11 @@
 package com.getbooks.android.ui.fragments;
 
 import android.annotation.TargetApi;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.webkit.CookieManager;
 import android.webkit.WebResourceError;
@@ -26,6 +23,7 @@ import com.getbooks.android.ui.activities.LibraryActivity;
 import com.getbooks.android.ui.activities.TutorialsActivity;
 import com.getbooks.android.ui.dialog.MaterialDialog;
 import com.getbooks.android.util.LogUtil;
+import com.getbooks.android.util.UiUtil;
 import com.google.firebase.iid.FirebaseInstanceId;
 
 import butterknife.BindView;
@@ -84,8 +82,7 @@ public class AuthorizationFragment extends BaseFragment {
     }
 
     private void finishWithError(String message) {
-        Log.d("ERRRRRRRRRRR", message);
-//        Toast.makeText(getAct(), message, Toast.LENGTH_SHORT).show();
+        LogUtil.log(this, message);
     }
 
     private class LoginWebViewClient extends WebViewClient {
@@ -123,8 +120,6 @@ public class AuthorizationFragment extends BaseFragment {
                 registerToken(view, token);
                 goToUserLibrary(token);
 
-//                view.loadUrl(Const.CATALOG_URL);
-
                 return true;
             }
             return false;
@@ -151,6 +146,12 @@ public class AuthorizationFragment extends BaseFragment {
             super.onPageFinished(view, url);
             LogUtil.log(this, url + "last");
             mProgressBar.dismiss();
+            // Display the keyboard automatically when relevant
+//            if (view.getOriginalUrl().equals(Const.AUTH_URL)) {
+//                Log.d("AAAAAAAAAAA", "seeeeee");
+//                InputMethodManager imm = (InputMethodManager) getAct().getSystemService(Context.INPUT_METHOD_SERVICE);
+//                imm.showSoftInput(view, 0);
+//            }
         }
     }
 
@@ -165,13 +166,9 @@ public class AuthorizationFragment extends BaseFragment {
         Prefs.setBooleanProperty(getAct(), Const.IS_USER_AUTHORIZE, true);
         Prefs.putToken(getAct(), token);
         if (Prefs.getCountTutorialsShow(getAct()) < Prefs.MAX_COUNT_VIEWS_TUTORIALS) {
-            Intent intent = new Intent(getAct(), TutorialsActivity.class);
-            startActivity(intent);
-            ((AppCompatActivity) getAct()).finish();
+            UiUtil.openActivity(getAct(), TutorialsActivity.class, true);
         } else {
-            Intent intent = new Intent(getAct(), LibraryActivity.class);
-            startActivity(intent);
-            ((AppCompatActivity) getAct()).finish();
+            UiUtil.openActivity(getAct(), LibraryActivity.class, true);
         }
     }
 }

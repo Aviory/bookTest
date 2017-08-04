@@ -1,6 +1,5 @@
 package com.getbooks.android.ui.activities;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 
@@ -8,15 +7,13 @@ import com.getbooks.android.Const;
 import com.getbooks.android.R;
 import com.getbooks.android.prefs.Prefs;
 import com.getbooks.android.ui.BaseActivity;
+import com.getbooks.android.util.UiUtil;
 
 public class SplashActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-//         Prefs.clearPrefs(this);
-//        Prefs.completeTutorialsShow(this);
 
         startTheActivity(AuthorizationActivity.class);
     }
@@ -39,15 +36,12 @@ public class SplashActivity extends BaseActivity {
     private void checkUserAuthorization() {
         if (Prefs.getBooleanProperty(this, Const.IS_USER_AUTHORIZE)) {
             if (Prefs.getCountTutorialsShow(this) < Prefs.MAX_COUNT_VIEWS_TUTORIALS) {
-                Intent intent = new Intent(this, TutorialsActivity.class);
-                startActivity(intent);
+                UiUtil.openActivity(this, TutorialsActivity.class, false);
             } else {
-                Intent intent = new Intent(this, LibraryActivity.class);
-                startActivity(intent);
+                UiUtil.openActivity(this, LibraryActivity.class, false);
             }
         } else {
-            Intent intent = new Intent(this, AuthorizationActivity.class);
-            startActivity(intent);
+            UiUtil.openActivity(this, AuthorizationActivity.class, false);
         }
     }
 }

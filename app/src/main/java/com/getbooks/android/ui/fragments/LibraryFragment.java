@@ -7,7 +7,9 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 import com.getbooks.android.R;
 import com.getbooks.android.api.Queries;
@@ -32,6 +34,10 @@ public class LibraryFragment extends BaseFragment implements Queries.CallBack {
     protected RecyclerView mRecyclerBookShelves;
     @BindView(R.id.left_menu)
     protected LinearLayout mLeftMenuLayout;
+    @BindView(R.id.img_menu)
+    protected ImageView mImageMenu;
+    @BindView(R.id.rootMainView)
+    protected RelativeLayout mRootLibraryLayout;
 
     private Queries mQueries;
     private Library mLibrary;
@@ -46,6 +52,7 @@ public class LibraryFragment extends BaseFragment implements Queries.CallBack {
         super.onViewCreated(view, savedInstanceState);
 
         getAct().isStoragePermissionGranted();
+        mImageMenu.setActivated(true);
 
         if (savedInstanceState == null) {
             UiUtil.showDialog(getContext());
@@ -53,6 +60,8 @@ public class LibraryFragment extends BaseFragment implements Queries.CallBack {
             mQueries.setCallBack(this);
             mQueries.getAllUserBook(Prefs.getToken(getContext()), getAct());
         }
+
+        hideLeftMenu();
     }
 
     @Override
@@ -100,6 +109,12 @@ public class LibraryFragment extends BaseFragment implements Queries.CallBack {
         }
     }
 
+    @OnClick(R.id.txt_log_out)
+    protected void logOut() {
+        Queries queries = new Queries();
+        queries.deleteUserSession(Prefs.getToken(getAct()), getAct());
+    }
+
     @Override
     protected void saveValue(Bundle outState) {
         super.saveValue(outState);
@@ -145,5 +160,18 @@ public class LibraryFragment extends BaseFragment implements Queries.CallBack {
     public void onDestroyView() {
         super.onDestroyView();
         dividerItemDecoration = null;
+    }
+
+    protected void hideLeftMenu() {
+//        mRecyclerBookShelves.setOnTouchListener((view, motionEvent) -> {
+//            Rect viewRect = new Rect();
+//            mLeftMenuLayout.getGlobalVisibleRect(viewRect);
+//            if (!viewRect.contains((int) motionEvent.getRawX(), (int) motionEvent.getRawY())) {
+//                Log.d("AAAAAAAA", "Her");
+//                mImageMenu.setActivated(true);
+//                UiUtil.hideView(mLeftMenuLayout);
+//            }
+//            return false;
+//        });
     }
 }

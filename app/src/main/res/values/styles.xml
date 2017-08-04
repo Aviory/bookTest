@@ -19,7 +19,6 @@
         <item name="android:windowAnimationStyle">@style/AnimationTheme</item>
     </style>
 
-
     <style name="AnimationTheme" parent="@android:style/Animation.Activity">
         <item name="android:activityOpenEnterAnimation">@anim/slide_out_bottom</item>
         <item name="android:activityOpenExitAnimation">@anim/stay</item>

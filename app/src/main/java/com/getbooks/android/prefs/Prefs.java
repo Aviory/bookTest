@@ -44,6 +44,14 @@ public class Prefs {
         getPrefs(context).edit().putString(preferenceKey, preferenceValue).commit();
     }
 
+    public static void putDownloadBookId(Context context, long downloadId, String key){
+        getPrefs(context).edit().putLong(key, downloadId).apply();
+    }
+
+    public static long getDownloadBookId(Context context, String key){
+        return getPrefs(context).getLong(key, 0);
+    }
+
     public static int getCountTutorialsShow(Context context) {
         return getPrefs(context).getInt(Const.SHOW_TUTORIALS_COUNT, 0);
     }

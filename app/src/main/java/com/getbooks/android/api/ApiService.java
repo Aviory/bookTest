@@ -5,13 +5,12 @@ import com.getbooks.android.model.RentedBook;
 
 import java.util.List;
 
-import retrofit2.Call;
+import okhttp3.ResponseBody;
 import retrofit2.Response;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.Headers;
-import retrofit2.http.POST;
 import retrofit2.http.Path;
-import retrofit2.http.Query;
 import rx.Observable;
 
 /**
@@ -20,18 +19,13 @@ import rx.Observable;
 
 public interface ApiService {
 
-    @POST("?")
-    Call<Void> registerDeviseToken(@Query("DEVICE_TOKEN") String token,
-                                   @Query("DEVICE_OS") String deviseOs);
-
-
     @Headers({
             "Accept:application/json",
             "SecretKey:de@Dc0W4her0"
     })
     @GET("glibrary/rentedbooks/{websiteCode}/{deviceToken}")
-    Observable<Response< List<RentedBook>>> getAllRentedBooks(@Path("websiteCode") String aff_pelephone,
-                                                   @Path("deviceToken") String tokenDevice);
+    Observable<Response<List<RentedBook>>> getAllRentedBooks(@Path("websiteCode") String aff_pelephone,
+                                                             @Path("deviceToken") String tokenDevice);
 
     @Headers({
             "Accept:application/json",
@@ -39,7 +33,14 @@ public interface ApiService {
     })
     @GET("glibrary/purchasedbooks/aff_pelephone/{websiteCode}/{deviceToken}")
     Observable<Response<List<PurchasedBook>>> getAllPurchasedBooks(@Path("websiteCode") String aff_pelephone,
-                                                             @Path("deviceToken") String tokenDevice);
+                                                                   @Path("deviceToken") String tokenDevice);
 
 
+    @Headers({
+            "Accept:application/json",
+            "SecretKey:de@Dc0W4her0"
+    })
+    @DELETE("glibrary/session/{websiteCode}/{deviceToken}")
+    Observable<Response<ResponseBody>> deleteDeviseSession(@Path("websiteCode") String aff_pelephone,
+                                                           @Path("deviceToken") String tokenDevice);
 }

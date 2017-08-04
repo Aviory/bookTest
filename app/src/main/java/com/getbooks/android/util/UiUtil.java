@@ -3,6 +3,7 @@ package com.getbooks.android.util;
 import android.animation.Animator;
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
@@ -117,5 +118,11 @@ public class UiUtil {
 
             }
         }).start();
+    }
+
+    public static void openActivity(Activity context, Class<?> tClass, boolean isCloseCurrentActivity){
+        Intent intent = new Intent(context, tClass);
+        context.startActivity(intent);
+        if (isCloseCurrentActivity) context.finish();
     }
 }

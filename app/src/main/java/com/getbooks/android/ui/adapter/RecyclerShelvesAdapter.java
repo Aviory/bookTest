@@ -2,6 +2,7 @@ package com.getbooks.android.ui.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,8 +10,9 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.getbooks.android.R;
+import com.getbooks.android.chashe.PicassoCache;
 import com.getbooks.android.model.Library;
-import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Callback;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -38,8 +40,22 @@ public class RecyclerShelvesAdapter extends RecyclerView.Adapter<RecyclerShelves
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        Picasso.with(mContext).load(mLibrary.getAllBook().get(position).
-                getBookImage()).into(holder.mImageCover);
+        PicassoCache.getPicassoInstance(mContext).load(mLibrary.getAllBook().get(position)
+                .getBookImage())
+//                .networkPolicy(NetworkPolicy.OFFLINE)
+//                .memoryPolicy(MemoryPolicy.NO_CACHE)
+//                .error(R.drawable.book_1)
+                .into(holder.mImageCover, new Callback() {
+                    @Override
+                    public void onSuccess() {
+                    }
+
+                    @Override
+                    public void onError() {
+                        Log.d("AAAAAA", "aaaaaa");
+                        holder.mImageCover.setImageResource(R.drawable.book_1);
+                    }
+                });
         switch (mLibrary.getAllBook().get(position).getBookState()) {
             case DOWNLOAD:
                 holder.mImageBookState.setImageResource(R.drawable.arrow_down_black);
@@ -57,6 +73,10 @@ public class RecyclerShelvesAdapter extends RecyclerView.Adapter<RecyclerShelves
 
         holder.mImageCover.setOnClickListener(view -> {
             Toast.makeText(mContext, "Book click", Toast.LENGTH_SHORT).show();
+//            Log.d("Downloaded", String.valueOf(mLibrary.getAllBook().get(position)));
+//            BookDownLoadManager bookDownLoadManager = new BookDownLoadManager(mContext);
+//            bookDownLoadManager.onResume();
+//            bookDownLoadManager.downloadBook(mLibrary.getAllBook().get(position).getBookDownloadLink());
         });
     }
 
