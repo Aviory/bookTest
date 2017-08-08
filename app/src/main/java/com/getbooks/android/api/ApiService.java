@@ -31,7 +31,7 @@ public interface ApiService {
             "Accept:application/json",
             "SecretKey:de@Dc0W4her0"
     })
-    @GET("glibrary/purchasedbooks/aff_pelephone/{websiteCode}/{deviceToken}")
+    @GET("glibrary/purchasedbooks/{websiteCode}/{deviceToken}")
     Observable<Response<List<PurchasedBook>>> getAllPurchasedBooks(@Path("websiteCode") String aff_pelephone,
                                                                    @Path("deviceToken") String tokenDevice);
 

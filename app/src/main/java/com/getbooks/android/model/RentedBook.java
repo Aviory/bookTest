@@ -75,6 +75,11 @@ public class RentedBook extends Book implements Parcelable {
         return rentBookDownloadLink;
     }
 
+    @Override
+    public String getBookName() {
+        return rentBookName;
+    }
+
     public void setRentBookImage(String rentBookImage) {
         this.rentBookImage = rentBookImage;
     }

@@ -29,4 +29,9 @@ public class DownloadedBook extends Book {
     public String getBookDownloadLink() {
         return "";
     }
+
+    @Override
+    public String getBookName() {
+        return "";
+    }
 }

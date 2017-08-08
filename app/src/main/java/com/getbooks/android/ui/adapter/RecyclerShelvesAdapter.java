@@ -2,12 +2,10 @@ package com.getbooks.android.ui.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.getbooks.android.R;
 import com.getbooks.android.chashe.PicassoCache;
@@ -52,12 +50,11 @@ public class RecyclerShelvesAdapter extends RecyclerView.Adapter<RecyclerShelves
 
                     @Override
                     public void onError() {
-                        Log.d("AAAAAA", "aaaaaa");
                         holder.mImageCover.setImageResource(R.drawable.book_1);
                     }
                 });
         switch (mLibrary.getAllBook().get(position).getBookState()) {
-            case DOWNLOAD:
+            case CLOUDBOOK:
                 holder.mImageBookState.setImageResource(R.drawable.arrow_down_black);
                 break;
             case PURCHASED:
@@ -70,14 +67,6 @@ public class RecyclerShelvesAdapter extends RecyclerView.Adapter<RecyclerShelves
                 holder.mImageNewBook.setVisibility(View.VISIBLE);
                 break;
         }
-
-        holder.mImageCover.setOnClickListener(view -> {
-            Toast.makeText(mContext, "Book click", Toast.LENGTH_SHORT).show();
-//            Log.d("Downloaded", String.valueOf(mLibrary.getAllBook().get(position)));
-//            BookDownLoadManager bookDownLoadManager = new BookDownLoadManager(mContext);
-//            bookDownLoadManager.onResume();
-//            bookDownLoadManager.downloadBook(mLibrary.getAllBook().get(position).getBookDownloadLink());
-        });
     }
 
     @Override

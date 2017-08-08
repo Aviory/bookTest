@@ -5,8 +5,9 @@ package com.getbooks.android.model.enums;
  */
 
 public enum BookState {
-    DOWNLOAD,
+    CLOUDBOOK,
     RENTED,
     PURCHASED,
-    NEWBOOK
+    NEWBOOK,
+    DEVICEBOOK
 }

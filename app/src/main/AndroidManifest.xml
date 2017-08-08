@@ -38,6 +38,10 @@
         <activity android:name=".ui.activities.LibraryActivity" />
 
         <service
+            android:name=".download.DownloadService"
+            android:exported="false" />
+
+        <service
             android:name="com.getbooks.android.GetbooksFirebaseMessagingService"
             android:exported="false">
             <intent-filter>

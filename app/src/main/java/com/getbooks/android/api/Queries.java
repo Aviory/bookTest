@@ -57,7 +57,7 @@ public class Queries {
                     if (listRentedResponse.code() == 200) {
                         rentedBooks.addAll(listRentedResponse.body());
                         for (RentedBook rentedBook : rentedBooks) {
-                            rentedBook.setBookState(BookState.DOWNLOAD);
+                            rentedBook.setBookState(BookState.CLOUDBOOK);
                         }
                         allBook.addAll(rentedBooks);
                     } else if (listRentedResponse.code() == 404) {
@@ -67,7 +67,7 @@ public class Queries {
                     if (listPurchasedResponse.code() == 200) {
                         purchasedBooks.addAll(listPurchasedResponse.body());
                         for (PurchasedBook purchasedBook : purchasedBooks) {
-                            purchasedBook.setBookState(BookState.DOWNLOAD);
+                            purchasedBook.setBookState(BookState.CLOUDBOOK);
                         }
                         allBook.addAll(purchasedBooks);
                     } else if (listPurchasedResponse.code() == 404) {

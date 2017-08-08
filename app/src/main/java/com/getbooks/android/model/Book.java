@@ -15,4 +15,13 @@ public abstract class Book {
     public abstract BookState getBookState();
 
     public abstract String getBookDownloadLink();
+
+    public abstract String getBookName();
+
+    String progressId;
+    int progress = 0;
+
+    public int getProgress() {
+        return progress;
+    }
 }

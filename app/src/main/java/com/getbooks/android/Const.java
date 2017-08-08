@@ -4,7 +4,7 @@ package com.getbooks.android;
  * Created by marina on 11.07.17.
  */
 
-public class Const {
+public final class Const {
 
     // Api constants
     public static final String BASE_URL_PELEPHONE_API = "https://pelephone.getbooks.co.il/dev/?";

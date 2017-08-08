@@ -1,24 +1,37 @@
 package com.getbooks.android.ui.fragments;
 
 import android.content.Intent;
+import android.content.res.Resources;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.getbooks.android.R;
 import com.getbooks.android.api.Queries;
+import com.getbooks.android.download.DownloadResultReceiver;
+import com.getbooks.android.download.DownloadService;
+import com.getbooks.android.model.Book;
+import com.getbooks.android.model.DownloadInfo;
+import com.getbooks.android.model.DownloadQueue;
 import com.getbooks.android.model.Library;
 import com.getbooks.android.prefs.Prefs;
 import com.getbooks.android.ui.BaseFragment;
 import com.getbooks.android.ui.activities.CatalogActivity;
 import com.getbooks.android.ui.activities.LibraryActivity;
 import com.getbooks.android.ui.adapter.RecyclerShelvesAdapter;
+import com.getbooks.android.ui.widget.RecyclerItemClickListener;
 import com.getbooks.android.util.UiUtil;
 
 import butterknife.BindView;
@@ -28,7 +41,8 @@ import butterknife.OnClick;
  * Created by marina on 14.07.17.
  */
 
-public class LibraryFragment extends BaseFragment implements Queries.CallBack {
+public class LibraryFragment extends BaseFragment implements Queries.CallBack,
+        DownloadResultReceiver.Receiver {
 
     @BindView(R.id.recyler_books_shelves)
     protected RecyclerView mRecyclerBookShelves;
@@ -38,12 +52,19 @@ public class LibraryFragment extends BaseFragment implements Queries.CallBack {
     protected ImageView mImageMenu;
     @BindView(R.id.rootMainView)
     protected RelativeLayout mRootLibraryLayout;
+    @BindView(R.id.progress_bar)
+    protected ProgressBar mDownloadProgress;
+    @BindView(R.id.txt_progress_download)
+    protected TextView mTextDownloadProgress;
 
     private Queries mQueries;
     private Library mLibrary;
     private RecyclerShelvesAdapter mShelvesAdapter;
     private GridLayoutManager mGridLayoutManager;
     DividerItemDecoration dividerItemDecoration;
+    private DownloadResultReceiver mReceiver;
+    private DownloadQueue mDownloadQueue;
+    DownloadInfo mDownloadInfo;
 
     private static final String SAVE_LIBRARY = "com.getbooks.android.ui.fragments.save_library";
 
@@ -55,6 +76,12 @@ public class LibraryFragment extends BaseFragment implements Queries.CallBack {
         mImageMenu.setActivated(true);
 
         if (savedInstanceState == null) {
+            mReceiver = new DownloadResultReceiver(new Handler());
+            mReceiver.setReceiver(this);
+
+            mDownloadInfo = new DownloadInfo();
+            mDownloadQueue = new DownloadQueue();
+
             UiUtil.showDialog(getContext());
             mQueries = new Queries();
             mQueries.setCallBack(this);
@@ -62,6 +89,8 @@ public class LibraryFragment extends BaseFragment implements Queries.CallBack {
         }
 
         hideLeftMenu();
+
+        clickBook();
     }
 
     @Override
@@ -174,4 +203,118 @@ public class LibraryFragment extends BaseFragment implements Queries.CallBack {
 //            return false;
 //        });
     }
+
+    private void clickBook() {
+        mRecyclerBookShelves.addOnItemTouchListener(new RecyclerItemClickListener(
+                getAct().getApplicationContext(), (view, position) -> {
+            switch (mLibrary.getAllBook().get(position).getBookState()) {
+                case CLOUDBOOK:
+                    addToDownloadQueue(mLibrary.getAllBook().get(position), view);
+                    break;
+                case PURCHASED:
+
+                    break;
+                case RENTED:
+
+                    break;
+                case NEWBOOK:
+                    break;
+            }
+
+        }));
+    }
+
+    private void addToDownloadQueue(Book book, View view) {
+        Log.d("Downloaded0", String.valueOf(view));
+        Log.d("Downloaded0", String.valueOf(view.getId()));
+        mDownloadQueue.addToDownloadQueue(view.getId(), book);
+
+        for (Integer viewId : mDownloadQueue.getSetViewId()) {
+            switch (mDownloadInfo.getDownloadState()) {
+                case NOT_STARTED:
+                    Log.d("Downloaded", "NOT_STARTED");
+                    Log.d("Downloaded", String.valueOf(mDownloadQueue.getDownloadQueueSize()));
+                    downloadBook(mDownloadQueue.getBookFromDownloadQueue(viewId), viewId);
+                case DOWNLOADING:
+                    Log.d("Downloaded", "DOWNLOADING");
+                    Log.d("Downloaded", String.valueOf(mDownloadQueue.getDownloadQueueSize()));
+                    break;
+                case COMPLETE:
+                    Log.d("Downloaded", "COMPLETE");
+                    Log.d("Downloaded", String.valueOf(mDownloadQueue.getDownloadQueueSize()));
+                    downloadBook(mDownloadQueue.getBookFromDownloadQueue(viewId), viewId);
+                    break;
+            }
+        }
+    }
+
+    private void downloadBook(Book book, int viewId) {
+        
+        View view = mRecyclerBookShelves.findViewById(viewId);
+
+        Log.d("Downloaded1", String.valueOf(view));
+        Log.d("Downloaded1", String.valueOf(view.getId()));
+
+        // Starting Download Service
+        Intent intent = new Intent(Intent.ACTION_SYNC, null, getAct(), DownloadService.class);
+        // Send optional extras to Download IntentService
+        intent.putExtra("url", book.getBookDownloadLink());
+        intent.putExtra("receiver", mReceiver);
+
+        getAct().startService(intent);
+
+        Resources res = getAct().getResources();
+        Drawable drawable = res.getDrawable(R.drawable.progress_circle);
+        mDownloadProgress.setProgress(0);   // Main Progress
+        mDownloadProgress.setSecondaryProgress(100); // Secondary Progress
+        mDownloadProgress.setMax(100); // Maximum Progress
+        mDownloadProgress.setProgressDrawable(drawable);
+
+        mDownloadProgress.setX((view.getLeft() + view.getWidth() / 2) - mDownloadProgress.getWidth() / 2 + 15);
+
+        mDownloadProgress.setY((view.getTop() + view.getHeight() / 2) - mDownloadProgress.getHeight() / 4 + 30);
+
+        mTextDownloadProgress.setX((view.getLeft() + view.getWidth() / 2) - 40); //40
+        mTextDownloadProgress.setY((view.getTop() + view.getHeight() / 2) + 90); //90
+    }
+
+    @Override
+    public void onReceiveResult(int resultCode, Bundle resultData) {
+        switch (resultCode) {
+            case DownloadService.STATUS_RUNNING:
+                mDownloadInfo.setDownloadState(DownloadInfo.DownloadState.DOWNLOADING);
+                // Show progress bar
+                mDownloadProgress.setVisibility(View.VISIBLE);
+                mTextDownloadProgress.setVisibility(View.VISIBLE);
+                break;
+
+            case DownloadService.STATUS_PROGRESS:
+                // Extract result from bundle and fill GridData
+                byte[] imageByteArray = resultData.getByteArray("result");
+
+                mDownloadProgress.setProgress(resultData.getInt("progress"));
+                int progress = resultData.getInt("progress");
+                mTextDownloadProgress.setText(progress + " %");
+//                mShelvesAdapter.notifyItemChanged(1);
+                break;
+
+            case DownloadService.STATUS_FINISHED:
+                mDownloadInfo.setDownloadState(DownloadInfo.DownloadState.COMPLETE);
+                // Hide progress
+                mDownloadProgress.setVisibility(View.GONE);
+                mTextDownloadProgress.setVisibility(View.GONE);
+                // Update Library with result
+
+                break;
+
+            case DownloadService.STATUS_ERROR:
+                // Handle the error
+                mDownloadProgress.setVisibility(View.GONE);
+                mTextDownloadProgress.setVisibility(View.GONE);
+                String error = resultData.getString(Intent.EXTRA_TEXT);
+                Toast.makeText(getAct(), error, Toast.LENGTH_LONG).show();
+                break;
+        }
+    }
+
 }
