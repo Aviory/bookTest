@@ -1,15 +1,17 @@
 package com.getbooks.android.ui.fragments;
 
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
+import android.net.ConnectivityManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -20,19 +22,28 @@ import android.widget.Toast;
 
 import com.getbooks.android.R;
 import com.getbooks.android.api.Queries;
-import com.getbooks.android.download.DownloadResultReceiver;
-import com.getbooks.android.download.DownloadService;
+import com.getbooks.android.events.Events;
 import com.getbooks.android.model.Book;
 import com.getbooks.android.model.DownloadInfo;
 import com.getbooks.android.model.DownloadQueue;
 import com.getbooks.android.model.Library;
+import com.getbooks.android.model.PurchasedBook;
+import com.getbooks.android.model.RentedBook;
+import com.getbooks.android.model.enums.BookState;
 import com.getbooks.android.prefs.Prefs;
+import com.getbooks.android.receivers.DownloadResultReceiver;
+import com.getbooks.android.receivers.NetworkStateReceiver;
+import com.getbooks.android.servises.DownloadService;
 import com.getbooks.android.ui.BaseFragment;
 import com.getbooks.android.ui.activities.CatalogActivity;
 import com.getbooks.android.ui.activities.LibraryActivity;
 import com.getbooks.android.ui.adapter.RecyclerShelvesAdapter;
+import com.getbooks.android.ui.dialog.RestartDownloadingDialog;
 import com.getbooks.android.ui.widget.RecyclerItemClickListener;
 import com.getbooks.android.util.UiUtil;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -42,7 +53,7 @@ import butterknife.OnClick;
  */
 
 public class LibraryFragment extends BaseFragment implements Queries.CallBack,
-        DownloadResultReceiver.Receiver {
+        DownloadResultReceiver.Receiver, RestartDownloadingDialog.OnItemRestartDownloadClick {
 
     @BindView(R.id.recyler_books_shelves)
     protected RecyclerView mRecyclerBookShelves;
@@ -62,9 +73,12 @@ public class LibraryFragment extends BaseFragment implements Queries.CallBack,
     private RecyclerShelvesAdapter mShelvesAdapter;
     private GridLayoutManager mGridLayoutManager;
     DividerItemDecoration dividerItemDecoration;
-    private DownloadResultReceiver mReceiver;
+    private NetworkStateReceiver mNetworkReceiver;
+    private DownloadResultReceiver mDownlodReceiver;
     private DownloadQueue mDownloadQueue;
     DownloadInfo mDownloadInfo;
+    RestartDownloadingDialog mRestartDownloadingDialog;
+    private boolean mIsNetworkActive = false;
 
     private static final String SAVE_LIBRARY = "com.getbooks.android.ui.fragments.save_library";
 
@@ -76,8 +90,14 @@ public class LibraryFragment extends BaseFragment implements Queries.CallBack,
         mImageMenu.setActivated(true);
 
         if (savedInstanceState == null) {
-            mReceiver = new DownloadResultReceiver(new Handler());
-            mReceiver.setReceiver(this);
+            mDownlodReceiver = new DownloadResultReceiver(new Handler());
+            mDownlodReceiver.setReceiver(this);
+
+            mNetworkReceiver = new NetworkStateReceiver();
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                getAct().registerReceiver(mNetworkReceiver,
+                        new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+            }
 
             mDownloadInfo = new DownloadInfo();
             mDownloadQueue = new DownloadQueue();
@@ -131,6 +151,7 @@ public class LibraryFragment extends BaseFragment implements Queries.CallBack,
     protected void openLefMenu(View view) {
         if (view.isActivated()) {
             view.setActivated(false);
+            mLeftMenuLayout.bringToFront();
             UiUtil.showView(mLeftMenuLayout);
         } else {
             view.setActivated(true);
@@ -209,57 +230,42 @@ public class LibraryFragment extends BaseFragment implements Queries.CallBack,
                 getAct().getApplicationContext(), (view, position) -> {
             switch (mLibrary.getAllBook().get(position).getBookState()) {
                 case CLOUDBOOK:
-                    addToDownloadQueue(mLibrary.getAllBook().get(position), view);
+                    Book book = mLibrary.getAllBook().get(position);
+                    book.setViewPosition(position);
+                    addToDownloadQueue(book);
                     break;
                 case PURCHASED:
-
+                    Toast.makeText(getAct(), "Purchased Book", Toast.LENGTH_SHORT).show();
                     break;
                 case RENTED:
-
-                    break;
-                case NEWBOOK:
+                    Toast.makeText(getAct(), "Rented Book", Toast.LENGTH_SHORT).show();
                     break;
             }
 
         }));
     }
 
-    private void addToDownloadQueue(Book book, View view) {
-        Log.d("Downloaded0", String.valueOf(view));
-        Log.d("Downloaded0", String.valueOf(view.getId()));
-        mDownloadQueue.addToDownloadQueue(view.getId(), book);
-
-        for (Integer viewId : mDownloadQueue.getSetViewId()) {
-            switch (mDownloadInfo.getDownloadState()) {
-                case NOT_STARTED:
-                    Log.d("Downloaded", "NOT_STARTED");
-                    Log.d("Downloaded", String.valueOf(mDownloadQueue.getDownloadQueueSize()));
-                    downloadBook(mDownloadQueue.getBookFromDownloadQueue(viewId), viewId);
-                case DOWNLOADING:
-                    Log.d("Downloaded", "DOWNLOADING");
-                    Log.d("Downloaded", String.valueOf(mDownloadQueue.getDownloadQueueSize()));
-                    break;
-                case COMPLETE:
-                    Log.d("Downloaded", "COMPLETE");
-                    Log.d("Downloaded", String.valueOf(mDownloadQueue.getDownloadQueueSize()));
-                    downloadBook(mDownloadQueue.getBookFromDownloadQueue(viewId), viewId);
-                    break;
-            }
+    private void addToDownloadQueue(Book book) {
+        if (mDownloadQueue.queueContainsBook(book)) return;
+        mDownloadQueue.addToDownloadQueue(book);
+        switch (mDownloadInfo.getDownloadState()) {
+            case NOT_STARTED:
+                downloadBook(mDownloadQueue.getBookFromDownloadQueue(0));
+                break;
         }
     }
 
-    private void downloadBook(Book book, int viewId) {
-        
-        View view = mRecyclerBookShelves.findViewById(viewId);
+    private Book currentDownloadingBook;
 
-        Log.d("Downloaded1", String.valueOf(view));
-        Log.d("Downloaded1", String.valueOf(view.getId()));
-
+    private void downloadBook(Book book) {
+        View view = mRecyclerBookShelves.getChildAt(book.getViewPosition());
+        currentDownloadingBook = book;
         // Starting Download Service
         Intent intent = new Intent(Intent.ACTION_SYNC, null, getAct(), DownloadService.class);
         // Send optional extras to Download IntentService
         intent.putExtra("url", book.getBookDownloadLink());
-        intent.putExtra("receiver", mReceiver);
+        intent.putExtra("receiver", mDownlodReceiver);
+        intent.putExtra("bookName", book.getBookName());
 
         getAct().startService(intent);
 
@@ -290,20 +296,31 @@ public class LibraryFragment extends BaseFragment implements Queries.CallBack,
 
             case DownloadService.STATUS_PROGRESS:
                 // Extract result from bundle and fill GridData
-                byte[] imageByteArray = resultData.getByteArray("result");
-
                 mDownloadProgress.setProgress(resultData.getInt("progress"));
                 int progress = resultData.getInt("progress");
                 mTextDownloadProgress.setText(progress + " %");
-//                mShelvesAdapter.notifyItemChanged(1);
                 break;
 
             case DownloadService.STATUS_FINISHED:
-                mDownloadInfo.setDownloadState(DownloadInfo.DownloadState.COMPLETE);
+                saveBook();
                 // Hide progress
                 mDownloadProgress.setVisibility(View.GONE);
                 mTextDownloadProgress.setVisibility(View.GONE);
-                // Update Library with result
+                // Remove downloaded book from queue
+                mDownloadQueue.removeFromDownloadQueue(currentDownloadingBook);
+                if (mIsNetworkActive) {
+//                    // Remove downloaded book from queue
+//                    mDownloadQueue.removeFromDownloadQueue(currentDownloadingBook);
+                    // Start new download
+                    if (mDownloadInfo.getDownloadState().equals(DownloadInfo.DownloadState.COMPLETE)) {
+                        mDownloadInfo.setDownloadState(DownloadInfo.DownloadState.DOWNLOADING);
+                        if (mDownloadQueue.getDownloadQueueSize() != 0) {
+                            downloadBook(mDownloadQueue.getBookFromDownloadQueue(0));
+                        } else {
+                            mDownloadInfo.setDownloadState(DownloadInfo.DownloadState.NOT_STARTED);
+                        }
+                    }
+                }
 
                 break;
 
@@ -317,4 +334,85 @@ public class LibraryFragment extends BaseFragment implements Queries.CallBack,
         }
     }
 
+    private void saveBook() {
+        currentDownloadingBook.setIsBookFirstOpen(true);
+        if (currentDownloadingBook instanceof PurchasedBook) {
+            PurchasedBook purchasedBook = (PurchasedBook) currentDownloadingBook;
+            purchasedBook.setBookState(BookState.PURCHASED);
+        } else if (currentDownloadingBook instanceof RentedBook) {
+            RentedBook rentedBook = (RentedBook) currentDownloadingBook;
+            rentedBook.setBookState(BookState.RENTED);
+        }
+
+        mShelvesAdapter.notifyItemChanged(currentDownloadingBook.getViewPosition());
+        mDownloadInfo.setDownloadState(DownloadInfo.DownloadState.COMPLETE);
+    }
+
+    @Subscribe
+    public void onMessageEvent(Events.NetworkStateChange networkStateChange) {
+        switch (networkStateChange.getNetworkState()) {
+            case INTERNET_CONNECT: {
+                mIsNetworkActive = true;
+                restartDownloading();
+                break;
+            }
+            case NO_INTERNET_CONNECTON: {
+                mIsNetworkActive = false;
+                break;
+            }
+        }
+    }
+
+    private void restartDownloading() {
+        if (mDownloadQueue.getDownloadQueueSize() != 0) {
+            mRestartDownloadingDialog = new RestartDownloadingDialog(getAct());
+            mRestartDownloadingDialog.setOnRestartDownloadClick(this);
+            mRestartDownloadingDialog.show();
+        }
+    }
+
+    @Override
+    public void restartDownloadClick() {
+        downloadBook(currentDownloadingBook);
+        closeRestartDownloadDialog();
+    }
+
+    @Override
+    public void disableDownloadClick() {
+        mDownloadQueue.clearDownloadQueue();
+        mDownloadQueue = new DownloadQueue();
+        mDownloadInfo.setDownloadState(DownloadInfo.DownloadState.NOT_STARTED);
+        closeRestartDownloadDialog();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        EventBus.getDefault().unregister(this);
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        EventBus.getDefault().post(new Events.StateLibrary(true));
+        Intent intent = new Intent(getAct(), DownloadService.class);
+        getAct().stopService(intent);
+        closeRestartDownloadDialog();
+        mDownlodReceiver.setReceiver(null);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            getAct().unregisterReceiver(mNetworkReceiver);
+        }
+    }
+
+    private void closeRestartDownloadDialog() {
+        if (mRestartDownloadingDialog != null) {
+            mRestartDownloadingDialog.dismiss();
+        }
+    }
 }

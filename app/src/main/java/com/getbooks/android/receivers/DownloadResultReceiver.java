@@ -1,4 +1,4 @@
-package com.getbooks.android.download;
+package com.getbooks.android.receivers;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;

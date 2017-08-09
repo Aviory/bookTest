@@ -10,7 +10,8 @@ public class DownloadInfo {
         NOT_STARTED,
         QUEUED,
         DOWNLOADING,
-        COMPLETE
+        COMPLETE,
+        INTERRUPTED
     }
     private volatile DownloadState mDownloadState = DownloadState.NOT_STARTED;
 

@@ -8,6 +8,10 @@ import com.getbooks.android.model.enums.BookState;
 
 public abstract class Book {
 
+    private int mProgress = 0;
+    private int mViewPosition = 0;
+    private boolean mIsBookFirstOpen;
+
     public abstract String getBookImage();
 
     public abstract void setBookState(BookState bookState);
@@ -18,10 +22,44 @@ public abstract class Book {
 
     public abstract String getBookName();
 
-    String progressId;
-    int progress = 0;
-
     public int getProgress() {
-        return progress;
+        return mProgress;
+    }
+
+    public void setViewPosition(int viewPosition) {
+        this.mViewPosition = viewPosition;
+    }
+
+    public int getViewPosition() {
+        return mViewPosition;
+    }
+
+    public boolean isIsBookFirstOpen() {
+        return mIsBookFirstOpen;
+    }
+
+    public void setIsBookFirstOpen(boolean mIsBookFirstOpen) {
+        this.mIsBookFirstOpen = mIsBookFirstOpen;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Book)) return false;
+
+        Book book = (Book) o;
+
+        if (mProgress != book.mProgress) return false;
+        if (mViewPosition != book.mViewPosition) return false;
+        return mIsBookFirstOpen == book.mIsBookFirstOpen;
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = mProgress;
+        result = 31 * result + mViewPosition;
+        result = 31 * result + (mIsBookFirstOpen ? 1 : 0);
+        return result;
     }
 }

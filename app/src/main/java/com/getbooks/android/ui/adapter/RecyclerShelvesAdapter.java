@@ -9,6 +9,7 @@ import android.widget.ImageView;
 
 import com.getbooks.android.R;
 import com.getbooks.android.chashe.PicassoCache;
+import com.getbooks.android.model.Book;
 import com.getbooks.android.model.Library;
 import com.squareup.picasso.Callback;
 
@@ -53,18 +54,22 @@ public class RecyclerShelvesAdapter extends RecyclerView.Adapter<RecyclerShelves
                         holder.mImageCover.setImageResource(R.drawable.book_1);
                     }
                 });
-        switch (mLibrary.getAllBook().get(position).getBookState()) {
+        Book book = mLibrary.getAllBook().get(position);
+        switch (book.getBookState()) {
             case CLOUDBOOK:
                 holder.mImageBookState.setImageResource(R.drawable.arrow_down_black);
                 break;
             case PURCHASED:
+                if (book.isIsBookFirstOpen()) {
+                    holder.mImageNewBook.setVisibility(View.VISIBLE);
+                }
                 holder.mImageBookState.setImageResource(R.drawable.check_black);
                 break;
             case RENTED:
+                if (book.isIsBookFirstOpen()) {
+                    holder.mImageNewBook.setVisibility(View.VISIBLE);
+                }
                 holder.mImageBookState.setImageResource(R.drawable.clock_black);
-                break;
-            case NEWBOOK:
-                holder.mImageNewBook.setVisibility(View.VISIBLE);
                 break;
         }
     }

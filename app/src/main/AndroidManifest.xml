@@ -37,8 +37,15 @@
 
         <activity android:name=".ui.activities.LibraryActivity" />
 
+        <receiver
+            android:name=".receivers.NetworkStateReceiver">
+            <intent-filter>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+            </intent-filter>
+        </receiver>
+
         <service
-            android:name=".download.DownloadService"
+            android:name=".servises.DownloadService"
             android:exported="false" />
 
         <service

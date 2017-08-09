@@ -52,6 +52,14 @@ public class Prefs {
         return getPrefs(context).getLong(key, 0);
     }
 
+    public static void putActivityState(Context context, String key, boolean isActivityAlive){
+        getPrefs(context).edit().putBoolean(key, isActivityAlive).apply();
+    }
+
+    public static boolean isActivityAlive(Context context, String key){
+      return getPrefs(context).getBoolean(key, false);
+    }
+
     public static int getCountTutorialsShow(Context context) {
         return getPrefs(context).getInt(Const.SHOW_TUTORIALS_COUNT, 0);
     }

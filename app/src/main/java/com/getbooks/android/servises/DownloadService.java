@@ -1,4 +1,4 @@
-package com.getbooks.android.download;
+package com.getbooks.android.servises;
 
 import android.app.IntentService;
 import android.content.Intent;
@@ -7,7 +7,14 @@ import android.os.Environment;
 import android.os.ResultReceiver;
 import android.util.Log;
 
+import com.getbooks.android.events.Events;
+import com.getbooks.android.util.FileUtil;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+
 import java.io.BufferedInputStream;
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -21,16 +28,6 @@ import java.net.URL;
 
 public class DownloadService extends IntentService {
 
-    public interface OnProgressUpdateListener {
-
-        void onProgressUpdate(int progress);
-    }
-
-    private static OnProgressUpdateListener progressListener;
-    public static void setOnProgressChangedListener(OnProgressUpdateListener _listener) {
-        progressListener = _listener;
-    }
-
     public static final int STATUS_RUNNING = 0;
     public static final int STATUS_PROGRESS = 3;
     public static final int STATUS_FINISHED = 1;
@@ -38,7 +35,10 @@ public class DownloadService extends IntentService {
 
     private static final String TAG = "DownloadService";
 
-    public static int progress = 0;
+    private static int progress = 0;
+    private boolean isLibraryClose = false;
+    private String mBookName;
+
 
     public DownloadService() {
         super(DownloadService.class.getName());
@@ -52,17 +52,20 @@ public class DownloadService extends IntentService {
 
         String urls = intent.getStringExtra("url");
 
+        mBookName = intent.getStringExtra("bookName");
+
+        String bookName = intent.getStringExtra("bookName");
+
         Bundle bundle = new Bundle();
         if (urls != null) {
             progress = 0;
             // Update UI: Download Service is Running
             receiver.send(STATUS_RUNNING, Bundle.EMPTY);
             try {
-                downloadData(urls, receiver);
+                downloadData(urls, receiver, bookName);
             } catch (Exception e) {
-
                 // Sending error message back to activity
-                bundle.putString(Intent.EXTRA_TEXT, e.toString());
+                bundle.putString(Intent.EXTRA_TEXT, e.getClass().getSimpleName());
                 receiver.send(STATUS_ERROR, bundle);
             }
         }
@@ -71,7 +74,7 @@ public class DownloadService extends IntentService {
         this.stopSelf();
     }
 
-    private void downloadData(String requestUrl, ResultReceiver resultReceiver) throws IOException, DownloadException {
+    private void downloadData(String requestUrl, ResultReceiver resultReceiver, String bookName) throws IOException, DownloadException {
         InputStream inputStream = null;
 
         HttpURLConnection urlConnection = null;
@@ -83,8 +86,6 @@ public class DownloadService extends IntentService {
         int statusCode = urlConnection.getResponseCode();
         //200 represents HTTP OK
         if (statusCode == 200) {
-
-
             // this will be useful so that you can show a tipical 0-100%
             // progress bar
             int lenghtOfFile = urlConnection.getContentLength();
@@ -94,10 +95,7 @@ public class DownloadService extends IntentService {
             // Output stream
             OutputStream output = new FileOutputStream(Environment
                     .getExternalStorageDirectory().toString()
-                    + "/first.epub");
-
-            Log.d("Download", Environment
-                    .getExternalStorageDirectory().toString());
+                    + "/" + bookName + ".epub");
 
             byte data[] = new byte[1024];
 
@@ -126,9 +124,24 @@ public class DownloadService extends IntentService {
             output.close();
             inputStream.close();
 
-
         } else {
             throw new DownloadException("Failed to fetch data!!");
+        }
+    }
+
+    @Subscribe
+    public void onMessageEvent(Events.StateLibrary stateLibrary) {
+        if (stateLibrary.isLibraryClose()) {
+            isLibraryClose = true;
+            if (progress != 100) {
+                FileUtil.deleteDir(new File(Environment
+                        .getExternalStorageDirectory().toString()
+                        + "/" + mBookName + ".epub"));
+            }
+            Log.d("Library", "true");
+        } else {
+            isLibraryClose = false;
+            Log.d("Library", "false");
         }
     }
 
@@ -141,6 +154,18 @@ public class DownloadService extends IntentService {
         public DownloadException(String message, Throwable cause) {
             super(message, cause);
         }
+    }
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
     }
 }
 

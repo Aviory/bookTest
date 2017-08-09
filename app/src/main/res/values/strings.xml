@@ -101,5 +101,6 @@
     <string name="txt_rtl">left</string>
     <string name="emty_rented_list">You dont have rented books</string>
     <string name="empty_purchased_list">You dont have purchased books</string>
+    <string name="txt_restart_dialog">Do you want restart downloading of books?</string>
 
 </resources>
