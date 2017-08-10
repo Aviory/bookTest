@@ -1,6 +1,8 @@
 package com.getbooks.android.util;
 
 import android.content.Context;
+import android.content.ContextWrapper;
+import android.text.TextUtils;
 import android.util.Log;
 
 import java.io.File;
@@ -10,6 +12,67 @@ import java.io.File;
  */
 
 public class FileUtil {
+
+    public static void saveBook(Context context, String bookName){
+        ContextWrapper contextWrapper = new ContextWrapper(context);
+        File directory = contextWrapper.getDir(context.getFilesDir().getName(), Context.MODE_PRIVATE);
+        File file =  new File(directory, bookName);
+    }
+
+
+    // Create our own directory
+    public static boolean isCreatedDirectory(Context context) {
+        ContextWrapper contextWrapper = new ContextWrapper(context);
+        File bookFolder = contextWrapper.getDir(context.getFilesDir().getName(), Context.MODE_PRIVATE);
+        boolean isPresent = true;
+        if (!bookFolder.exists()) {
+            LogUtil.log(context, "Directory created");
+            isPresent = bookFolder.mkdir();
+            File myDir = new File(bookFolder, "/files");
+            myDir.mkdir();
+        } else {
+            LogUtil.log(context, "Directory present");
+            File myDir = new File(bookFolder, "/files");
+            myDir.mkdir();
+        }
+        return true;
+    }
+
+
+    public static boolean deleteCacheFiles(String dir) {
+        int i = 0;
+        if (TextUtils.isEmpty(dir)) {
+            return false;
+        }
+        File file = new File(dir);
+        if (file.isDirectory()) {
+            String[] list = file.list();
+            while (i < list.length) {
+                File file2 = new File(dir + "/" + list[i]);
+                if (file2 == null || !file2.isDirectory()) {
+                    file2.delete();
+                } else {
+                    FileUtil.deleteCacheFiles(dir + "/" + list[i]);
+                }
+                i++;
+            }
+        }
+        boolean delete = file.delete();
+        LogUtil.log("GETBOOKS", file.getName() + " was deleted");
+        return delete;
+    }
+
+    public static void clearCache(Context context) {
+        try {
+            File cacheDir = context.getCacheDir();
+            if (cacheDir != null && cacheDir.isDirectory()) {
+                FileUtil.deleteCacheFiles(cacheDir.getAbsolutePath());
+            }
+        } catch (Exception e) {
+            LogUtil.log("trimCache", e.getMessage());
+            e.printStackTrace();
+        }
+    }
 
     public static boolean deleteDir(File dir) {
         if (dir != null && dir.isDirectory()) {

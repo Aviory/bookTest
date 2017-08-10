@@ -12,6 +12,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -22,6 +23,7 @@ import android.widget.Toast;
 
 import com.getbooks.android.R;
 import com.getbooks.android.api.Queries;
+import com.getbooks.android.db.BookDataBaseLoader;
 import com.getbooks.android.events.Events;
 import com.getbooks.android.model.Book;
 import com.getbooks.android.model.DownloadInfo;
@@ -44,6 +46,8 @@ import com.getbooks.android.util.UiUtil;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
+
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -111,6 +115,11 @@ public class LibraryFragment extends BaseFragment implements Queries.CallBack,
         hideLeftMenu();
 
         clickBook();
+
+        List <Integer> list = BookDataBaseLoader.createBookDBLoader(getAct().getApplicationContext()).getUsersIdSession();
+        for (int i  = 0; i < list.size(); i++){
+            Log.d("UsersSession", String.valueOf(list.get(i)));
+        }
     }
 
     @Override

@@ -26,4 +26,6 @@ public final class Const {
 
     //Catalog constant
     public static final  String CATALOG_URL = "";
+
+    public static final String BOOKS_DIRECTORY = "GetBooks";
 }

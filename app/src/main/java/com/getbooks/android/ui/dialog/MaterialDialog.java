@@ -29,6 +29,5 @@ public class MaterialDialog extends AlertDialog {
     public void show() {
         super.show();
         setContentView(R.layout.dialog_material_progress);
-        this.setCancelable(false);
     }
 }

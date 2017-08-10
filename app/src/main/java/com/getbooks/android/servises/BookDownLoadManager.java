@@ -11,7 +11,7 @@ import android.os.ParcelFileDescriptor;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.getbooks.android.encryption.EncryptionAndDownloadManager;
+import com.getbooks.android.encryption.Encryption;
 import com.getbooks.android.prefs.Prefs;
 import com.getbooks.android.util.FileUtil;
 
@@ -109,7 +109,7 @@ public class BookDownLoadManager {
                         Toast.makeText(context, "File Downloaded: " + file.toString(), Toast.LENGTH_LONG).show();
 //                        stopProgressChecker();
                         try {
-                            EncryptionAndDownloadManager.encrypt("/sdcard/Android/data/com.getbooks.android/files/מילה.epub", "/sdcard/Android/data/com.getbooks.android/encrypt.epub");
+                            Encryption.encrypt("/sdcard/Android/data/com.getbooks.android/files/מילה.epub", "/sdcard/Android/data/com.getbooks.android/encrypt.epub");
                         } catch (IOException e) {
                             e.printStackTrace();
                         } catch (NoSuchAlgorithmException e) {

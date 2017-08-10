@@ -16,6 +16,7 @@ import android.webkit.WebViewClient;
 
 import com.getbooks.android.Const;
 import com.getbooks.android.R;
+import com.getbooks.android.db.BookDataBaseLoader;
 import com.getbooks.android.prefs.Prefs;
 import com.getbooks.android.ui.BaseFragment;
 import com.getbooks.android.ui.activities.AuthorizationActivity;
@@ -118,6 +119,7 @@ public class AuthorizationFragment extends BaseFragment {
                 String token = FirebaseInstanceId.getInstance().getToken();
 
                 registerToken(view, token);
+                createUserSession(552288);
                 goToUserLibrary(token);
 
                 return true;
@@ -170,5 +172,9 @@ public class AuthorizationFragment extends BaseFragment {
         } else {
             UiUtil.openActivity(getAct(), LibraryActivity.class, true);
         }
+    }
+
+    private void createUserSession(int userSessionId) {
+        BookDataBaseLoader.createBookDBLoader(getAct()).createUserSession(userSessionId);
     }
 }
