@@ -9,9 +9,10 @@ import android.widget.ImageView;
 
 import com.getbooks.android.R;
 import com.getbooks.android.chashe.PicassoCache;
-import com.getbooks.android.model.Book;
-import com.getbooks.android.model.Library;
+import com.getbooks.android.model.BookDetail;
 import com.squareup.picasso.Callback;
+
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -22,10 +23,10 @@ import butterknife.ButterKnife;
 
 public class RecyclerShelvesAdapter extends RecyclerView.Adapter<RecyclerShelvesAdapter.ViewHolder> {
 
-    private Library mLibrary;
+    private List<BookDetail> mLibrary;
     private Context mContext;
 
-    public RecyclerShelvesAdapter(Library mLibrary, Context context) {
+    public RecyclerShelvesAdapter(List<BookDetail> mLibrary, Context context) {
         this.mLibrary = mLibrary;
         this.mContext = context;
     }
@@ -39,8 +40,8 @@ public class RecyclerShelvesAdapter extends RecyclerView.Adapter<RecyclerShelves
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        PicassoCache.getPicassoInstance(mContext).load(mLibrary.getAllBook().get(position)
-                .getBookImage())
+        PicassoCache.getPicassoInstance(mContext).load(mLibrary.get(position)
+                .getImageDownloadLink())
 //                .networkPolicy(NetworkPolicy.OFFLINE)
 //                .memoryPolicy(MemoryPolicy.NO_CACHE)
 //                .error(R.drawable.book_1)
@@ -54,18 +55,18 @@ public class RecyclerShelvesAdapter extends RecyclerView.Adapter<RecyclerShelves
                         holder.mImageCover.setImageResource(R.drawable.book_1);
                     }
                 });
-        Book book = mLibrary.getAllBook().get(position);
+        BookDetail book = mLibrary.get(position);
         switch (book.getBookState()) {
-            case CLOUDBOOK:
+            case CLOUD_BOOK:
                 holder.mImageBookState.setImageResource(R.drawable.arrow_down_black);
                 break;
-            case PURCHASED:
+            case PURCHASED_BOOK:
                 if (book.isIsBookFirstOpen()) {
                     holder.mImageNewBook.setVisibility(View.VISIBLE);
                 }
                 holder.mImageBookState.setImageResource(R.drawable.check_black);
                 break;
-            case RENTED:
+            case RENTED_BOOK:
                 if (book.isIsBookFirstOpen()) {
                     holder.mImageNewBook.setVisibility(View.VISIBLE);
                 }
@@ -76,7 +77,7 @@ public class RecyclerShelvesAdapter extends RecyclerView.Adapter<RecyclerShelves
 
     @Override
     public int getItemCount() {
-        return mLibrary.getAllBook().size();
+        return mLibrary.size();
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {

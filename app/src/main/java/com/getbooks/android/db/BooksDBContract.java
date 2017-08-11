@@ -6,7 +6,7 @@ import android.provider.BaseColumns;
  * Created by marina on 10.08.17.
  */
 
-public class BooksDataBaseContract {
+public class BooksDBContract {
 
     public static final int DATABASE_VERSION = 1;
 
@@ -16,9 +16,13 @@ public class BooksDataBaseContract {
 
     interface BooksDetailsColumns {
         String USER_ID = "user_id";
+        String BOOK_SKU = "BookSku";
+        String BOOK_IMAGE_DOWNLOAD_URL = "ImagDownloadUrl";
+        String BOOK_DOWNLOAD_LINK = "BookDownloadLink";
+        String BOOK_STATE = "BookState";
         String BOOK_INSTANCE = "BookInstance";
         String BOOK_ID = "BookID";
-        String BOOK_NAME = "BookName";
+        String BOOK_NAME = "mBookName";
         String BOOK_IMAGE = "BookImage";
         String BOOK_CONTENT_ID = "BookContentID";
         String BOOK_CATEGORIES = "BookCategories";
@@ -26,34 +30,27 @@ public class BooksDataBaseContract {
         String BOOK_AUTHORS = "BookAuthors";
         String BOOK_LONG_DESCRIPTION = "BookLongDescription";
         String BOOK_GROUPS = "BookGroups";
-        String BOOK_IS_PURCHASED = "BookIsPurchased";
-        String BOOK_IS_RENTED = "BookIsRented";
         String BOOK_LANGUAGE = "BookLanguage";
         String BOOK_LANGUAGE_DIRECTION = "BookLanguageDirection";
         String IS_DELETED = "IsDeleted";
-        String BOOK_IS_DOWNLOADED = "BookIsDownloaded";
-        String BOOK_IS_NO_MARGINS = "BookIsNoMargins";
         String LAST_UPDATED = "LastUpdated";
-        String GUID = "GUID";
         String BOOK_IS_ENCRYPTED = "BookIsEncrypted";
-        String BOOKS_ISBN = "BookISBN";
         String BOOK_PUBLISHED_YEAR = "BookPublishedYear";
         String BOOK_LAST_CHAPTER = "BookLastChapter";
         String BOOK_LAST_PAGE = "BookLastPage";
         String BOOK_CHAPTER_LIST = "ChaptersList";
         String PAGES_PER_ARTICLE_LIST = "PagesPerArticlesList";
         String READ_DATE_TIME = "ReadDateTime";
-        String IS_BOOK_AR_THE_END = "IsBookAtTheEnd";
+        String IS_BOOK_AT_THE_END = "IsBookAtTheEnd";
         String IS_BOOK_SYNCHRONIZED = "IsBookSynchronized";
         String BOOK_PHYSICAL_PAGE = "BookPhysicalPage";
         String IS_FULL_BOOK = "IsFullBook";
         String IS_FIXED_LAYOUT = "isFixedLayout";
         String HAS_ORIGINAL_CSS = "hasOriginalCSS";
-        String CAMPAIGNS = "Campaigns";
         String LAST_READING_PARAGRAPH = "LastReadingParagraph";
         String IS_BOOK_LOCKED = "IsBookLocked";
         String BOOK_CREATED_DATE = "BookCreatedDate";
-
+        String BOOK_IS_FIRST_OPEN = "IsBookFirstOpen";
     }
 
     interface BookMarkupsColumns {
@@ -78,7 +75,7 @@ public class BooksDataBaseContract {
         String BOOK_MARK_SUMMARY = "bookmark_summary";
     }
 
-    private BooksDataBaseContract() {
+    private BooksDBContract() {
     }
 
     public static class User implements BaseColumns, UserColumns {

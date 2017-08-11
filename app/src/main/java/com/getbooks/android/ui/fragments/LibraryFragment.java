@@ -21,16 +21,14 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.getbooks.android.Const;
 import com.getbooks.android.R;
 import com.getbooks.android.api.Queries;
 import com.getbooks.android.db.BookDataBaseLoader;
 import com.getbooks.android.events.Events;
-import com.getbooks.android.model.Book;
+import com.getbooks.android.model.BookDetail;
 import com.getbooks.android.model.DownloadInfo;
 import com.getbooks.android.model.DownloadQueue;
-import com.getbooks.android.model.Library;
-import com.getbooks.android.model.PurchasedBook;
-import com.getbooks.android.model.RentedBook;
 import com.getbooks.android.model.enums.BookState;
 import com.getbooks.android.prefs.Prefs;
 import com.getbooks.android.receivers.DownloadResultReceiver;
@@ -42,11 +40,14 @@ import com.getbooks.android.ui.activities.LibraryActivity;
 import com.getbooks.android.ui.adapter.RecyclerShelvesAdapter;
 import com.getbooks.android.ui.dialog.RestartDownloadingDialog;
 import com.getbooks.android.ui.widget.RecyclerItemClickListener;
+import com.getbooks.android.util.FileUtil;
+import com.getbooks.android.util.LogUtil;
 import com.getbooks.android.util.UiUtil;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -73,7 +74,7 @@ public class LibraryFragment extends BaseFragment implements Queries.CallBack,
     protected TextView mTextDownloadProgress;
 
     private Queries mQueries;
-    private Library mLibrary;
+    private List<BookDetail> mLibrary;
     private RecyclerShelvesAdapter mShelvesAdapter;
     private GridLayoutManager mGridLayoutManager;
     DividerItemDecoration dividerItemDecoration;
@@ -83,6 +84,8 @@ public class LibraryFragment extends BaseFragment implements Queries.CallBack,
     DownloadInfo mDownloadInfo;
     RestartDownloadingDialog mRestartDownloadingDialog;
     private boolean mIsNetworkActive = false;
+    private String mDirectoryPath;
+    private BookDataBaseLoader mBookDataBaseLoader;
 
     private static final String SAVE_LIBRARY = "com.getbooks.android.ui.fragments.save_library";
 
@@ -92,6 +95,8 @@ public class LibraryFragment extends BaseFragment implements Queries.CallBack,
 
         getAct().isStoragePermissionGranted();
         mImageMenu.setActivated(true);
+        mDirectoryPath = FileUtil.isCreatedDirectory(getAct(), Prefs.getUserSession(getAct(), Const.USER_SESSION_ID));
+        LogUtil.log("FileUtil", mDirectoryPath);
 
         if (savedInstanceState == null) {
             mDownlodReceiver = new DownloadResultReceiver(new Handler());
@@ -102,22 +107,23 @@ public class LibraryFragment extends BaseFragment implements Queries.CallBack,
                 getAct().registerReceiver(mNetworkReceiver,
                         new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
             }
-
             mDownloadInfo = new DownloadInfo();
             mDownloadQueue = new DownloadQueue();
+
+            mBookDataBaseLoader = BookDataBaseLoader.createBookDBLoader(getAct());
 
             UiUtil.showDialog(getContext());
             mQueries = new Queries();
             mQueries.setCallBack(this);
-            mQueries.getAllUserBook(Prefs.getToken(getContext()), getAct());
+            mQueries.getAllUserBook(Prefs.getToken(getContext()), getAct(), Prefs.getUserSession(getAct(), Const.USER_SESSION_ID));
         }
 
         hideLeftMenu();
 
         clickBook();
 
-        List <Integer> list = BookDataBaseLoader.createBookDBLoader(getAct().getApplicationContext()).getUsersIdSession();
-        for (int i  = 0; i < list.size(); i++){
+        List<Integer> list = BookDataBaseLoader.createBookDBLoader(getAct().getApplicationContext()).getUsersIdSession();
+        for (int i = 0; i < list.size(); i++) {
             Log.d("UsersSession", String.valueOf(list.get(i)));
         }
     }
@@ -132,7 +138,7 @@ public class LibraryFragment extends BaseFragment implements Queries.CallBack,
         return (LibraryActivity) getActivity();
     }
 
-    private void initShelvesRecycler(Library library) {
+    private void initShelvesRecycler(List<BookDetail> library) {
         mGridLayoutManager = new GridLayoutManager(getContext(),
                 getResources().getInteger(R.integer.count_column_book));
         mGridLayoutManager.setOrientation(GridLayoutManager.VERTICAL);
@@ -177,7 +183,10 @@ public class LibraryFragment extends BaseFragment implements Queries.CallBack,
     @Override
     protected void saveValue(Bundle outState) {
         super.saveValue(outState);
-        outState.putParcelable(SAVE_LIBRARY, mLibrary);
+        ArrayList<BookDetail> library = new ArrayList<>();
+        library.addAll(mLibrary);
+        outState.putParcelableArrayList(SAVE_LIBRARY, library);
+//        outState.putParcelable(SAVE_LIBRARY, mLibrary);
     }
 
     @Override
@@ -196,7 +205,7 @@ public class LibraryFragment extends BaseFragment implements Queries.CallBack,
     }
 
     @Override
-    public void onCompleted(Library library) {
+    public void onCompleted(List<BookDetail> library) {
         this.mLibrary = library;
         initShelvesRecycler(mLibrary);
     }
@@ -237,16 +246,16 @@ public class LibraryFragment extends BaseFragment implements Queries.CallBack,
     private void clickBook() {
         mRecyclerBookShelves.addOnItemTouchListener(new RecyclerItemClickListener(
                 getAct().getApplicationContext(), (view, position) -> {
-            switch (mLibrary.getAllBook().get(position).getBookState()) {
-                case CLOUDBOOK:
-                    Book book = mLibrary.getAllBook().get(position);
+            switch (mLibrary.get(position).getBookState()) {
+                case CLOUD_BOOK:
+                    BookDetail book = mLibrary.get(position);
                     book.setViewPosition(position);
                     addToDownloadQueue(book);
                     break;
-                case PURCHASED:
+                case PURCHASED_BOOK:
                     Toast.makeText(getAct(), "Purchased Book", Toast.LENGTH_SHORT).show();
                     break;
-                case RENTED:
+                case RENTED_BOOK:
                     Toast.makeText(getAct(), "Rented Book", Toast.LENGTH_SHORT).show();
                     break;
             }
@@ -254,7 +263,7 @@ public class LibraryFragment extends BaseFragment implements Queries.CallBack,
         }));
     }
 
-    private void addToDownloadQueue(Book book) {
+    private void addToDownloadQueue(BookDetail book) {
         if (mDownloadQueue.queueContainsBook(book)) return;
         mDownloadQueue.addToDownloadQueue(book);
         switch (mDownloadInfo.getDownloadState()) {
@@ -264,9 +273,9 @@ public class LibraryFragment extends BaseFragment implements Queries.CallBack,
         }
     }
 
-    private Book currentDownloadingBook;
+    private BookDetail currentDownloadingBook;
 
-    private void downloadBook(Book book) {
+    private void downloadBook(BookDetail book) {
         View view = mRecyclerBookShelves.getChildAt(book.getViewPosition());
         currentDownloadingBook = book;
         // Starting Download Service
@@ -275,6 +284,7 @@ public class LibraryFragment extends BaseFragment implements Queries.CallBack,
         intent.putExtra("url", book.getBookDownloadLink());
         intent.putExtra("receiver", mDownlodReceiver);
         intent.putExtra("bookName", book.getBookName());
+        intent.putExtra("directoryPath", mDirectoryPath);
 
         getAct().startService(intent);
 
@@ -345,16 +355,17 @@ public class LibraryFragment extends BaseFragment implements Queries.CallBack,
 
     private void saveBook() {
         currentDownloadingBook.setIsBookFirstOpen(true);
-        if (currentDownloadingBook instanceof PurchasedBook) {
-            PurchasedBook purchasedBook = (PurchasedBook) currentDownloadingBook;
-            purchasedBook.setBookState(BookState.PURCHASED);
-        } else if (currentDownloadingBook instanceof RentedBook) {
-            RentedBook rentedBook = (RentedBook) currentDownloadingBook;
-            rentedBook.setBookState(BookState.RENTED);
+        if (currentDownloadingBook.isIsBookRented()) {
+            currentDownloadingBook.setBookState(BookState.RENTED_BOOK.getState());
+        } else {
+            currentDownloadingBook.setBookState(BookState.PURCHASED_BOOK.getState());
         }
 
         mShelvesAdapter.notifyItemChanged(currentDownloadingBook.getViewPosition());
         mDownloadInfo.setDownloadState(DownloadInfo.DownloadState.COMPLETE);
+
+        Log.d("QQQQQ------", currentDownloadingBook.toString());
+        mBookDataBaseLoader.saveBookToDB(currentDownloadingBook);
     }
 
     @Subscribe

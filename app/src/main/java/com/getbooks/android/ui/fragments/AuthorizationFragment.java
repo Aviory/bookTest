@@ -104,6 +104,7 @@ public class AuthorizationFragment extends BaseFragment {
                 String token = FirebaseInstanceId.getInstance().getToken();
 
                 registerToken(view, token);
+                createUserSession(552288);
                 goToUserLibrary(token);
                 return true;
             }
@@ -176,5 +177,6 @@ public class AuthorizationFragment extends BaseFragment {
 
     private void createUserSession(int userSessionId) {
         BookDataBaseLoader.createBookDBLoader(getAct()).createUserSession(userSessionId);
+        Prefs.saveUserSession(getAct(), Const.USER_SESSION_ID, userSessionId);
     }
 }

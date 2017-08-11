@@ -7,7 +7,7 @@ import com.getbooks.android.model.enums.BookState;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class RentedBook extends Book implements Parcelable {
+public class RentedBook implements Parcelable {
     @SerializedName("rent_id")
     @Expose
     private Integer rentId;
@@ -56,32 +56,12 @@ public class RentedBook extends Book implements Parcelable {
         this.rentBookName = rentBookName;
     }
 
-    public String getBookImage() {
-        return rentBookImage;
-    }
-
-    @Override
-    public void setBookState(BookState bookState) {
-        this.bookState = bookState;
-    }
-
-    @Override
-    public BookState getBookState() {
-        return bookState;
-    }
-
-    @Override
-    public String getBookDownloadLink() {
-        return rentBookDownloadLink;
-    }
-
-    @Override
-    public String getBookName() {
-        return rentBookName;
-    }
-
     public void setRentBookImage(String rentBookImage) {
         this.rentBookImage = rentBookImage;
+    }
+
+    public String getRentBookImage(){
+        return this.rentBookImage;
     }
 
     public String getRentBookDownloadLink() {

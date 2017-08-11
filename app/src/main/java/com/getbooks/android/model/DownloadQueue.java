@@ -10,13 +10,13 @@ import java.util.List;
 
 public class DownloadQueue {
 
-    private List<Book> downloadQueue;
+    private List<BookDetail> downloadQueue;
 
     public DownloadQueue() {
         downloadQueue = new ArrayList<>();
     }
 
-    public void addToDownloadQueue(Book book) {
+    public void addToDownloadQueue(BookDetail book) {
         downloadQueue.add(book);
     }
 
@@ -33,19 +33,19 @@ public class DownloadQueue {
         return downloadQueue.isEmpty();
     }
 
-    public Book getBookFromDownloadQueue(int position) {
+    public BookDetail getBookFromDownloadQueue(int position) {
         return downloadQueue.get(position);
     }
 
-    public boolean queueContainsBook(Book book){
+    public boolean queueContainsBook(BookDetail book){
         return downloadQueue.contains(book);
     }
 
-    public Iterator<Book> getIteratorQueue(){
+    public Iterator<BookDetail> getIteratorQueue(){
         return downloadQueue.iterator();
     }
 
-    public void removeFromDownloadQueue(Book book){
+    public void removeFromDownloadQueue(BookDetail book){
         downloadQueue.remove(book);
     }
 }

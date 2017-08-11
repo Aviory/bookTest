@@ -3,10 +3,10 @@ package com.getbooks.android.servises;
 import android.app.IntentService;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.ResultReceiver;
 import android.util.Log;
 
+import com.getbooks.android.encryption.Encryption;
 import com.getbooks.android.events.Events;
 import com.getbooks.android.util.FileUtil;
 
@@ -15,12 +15,15 @@ import org.greenrobot.eventbus.Subscribe;
 
 import java.io.BufferedInputStream;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
+
+import javax.crypto.CipherOutputStream;
+import javax.crypto.NoSuchPaddingException;
 
 /**
  * Created by marina on 07.08.17.
@@ -38,6 +41,7 @@ public class DownloadService extends IntentService {
     private static int progress = 0;
     private boolean isLibraryClose = false;
     private String mBookName;
+    private String mDirectoryPath;
 
 
     public DownloadService() {
@@ -53,8 +57,7 @@ public class DownloadService extends IntentService {
         String urls = intent.getStringExtra("url");
 
         mBookName = intent.getStringExtra("bookName");
-
-        String bookName = intent.getStringExtra("bookName");
+        mDirectoryPath = intent.getStringExtra("directoryPath");
 
         Bundle bundle = new Bundle();
         if (urls != null) {
@@ -62,7 +65,7 @@ public class DownloadService extends IntentService {
             // Update UI: Download Service is Running
             receiver.send(STATUS_RUNNING, Bundle.EMPTY);
             try {
-                downloadData(urls, receiver, bookName);
+                downloadData(urls, receiver, mBookName);
             } catch (Exception e) {
                 // Sending error message back to activity
                 bundle.putString(Intent.EXTRA_TEXT, e.getClass().getSimpleName());
@@ -74,7 +77,7 @@ public class DownloadService extends IntentService {
         this.stopSelf();
     }
 
-    private void downloadData(String requestUrl, ResultReceiver resultReceiver, String bookName) throws IOException, DownloadException {
+    private void downloadData(String requestUrl, ResultReceiver resultReceiver, String bookName) throws IOException, DownloadException, NoSuchPaddingException, NoSuchAlgorithmException, InvalidKeyException {
         InputStream inputStream = null;
 
         HttpURLConnection urlConnection = null;
@@ -92,9 +95,8 @@ public class DownloadService extends IntentService {
 
             inputStream = new BufferedInputStream(urlConnection.getInputStream());
 
-            // Output stream
-            OutputStream output = new FileOutputStream(Environment
-                    .getExternalStorageDirectory().toString()
+            // Output stream encoded
+            CipherOutputStream output = Encryption.encryptStream(mDirectoryPath
                     + "/" + bookName + ".epub");
 
             byte data[] = new byte[1024];
@@ -134,8 +136,7 @@ public class DownloadService extends IntentService {
         if (stateLibrary.isLibraryClose()) {
             isLibraryClose = true;
             if (progress != 100) {
-                FileUtil.deleteDir(new File(Environment
-                        .getExternalStorageDirectory().toString()
+                FileUtil.deleteDir(new File(mDirectoryPath
                         + "/" + mBookName + ".epub"));
             }
             Log.d("Library", "true");

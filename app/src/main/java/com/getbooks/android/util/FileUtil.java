@@ -6,6 +6,8 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by marina on 07.08.17.
@@ -13,31 +15,35 @@ import java.io.File;
 
 public class FileUtil {
 
-    public static void saveBook(Context context, String bookName){
-        ContextWrapper contextWrapper = new ContextWrapper(context);
-        File directory = contextWrapper.getDir(context.getFilesDir().getName(), Context.MODE_PRIVATE);
-        File file =  new File(directory, bookName);
-    }
-
-
     // Create our own directory
-    public static boolean isCreatedDirectory(Context context) {
+    public static String isCreatedDirectory(Context context, int userId) {
         ContextWrapper contextWrapper = new ContextWrapper(context);
         File bookFolder = contextWrapper.getDir(context.getFilesDir().getName(), Context.MODE_PRIVATE);
+        LogUtil.log("FileUtil", bookFolder.getAbsolutePath());
         boolean isPresent = true;
         if (!bookFolder.exists()) {
-            LogUtil.log(context, "Directory created");
+            LogUtil.log("FileUtil", "Directory created");
             isPresent = bookFolder.mkdir();
-            File myDir = new File(bookFolder, "/files");
+            File myDir = new File(bookFolder, "/Books-" + userId);
             myDir.mkdir();
+            return myDir.getAbsolutePath();
         } else {
-            LogUtil.log(context, "Directory present");
-            File myDir = new File(bookFolder, "/files");
+            LogUtil.log("FileUtil", "Directory present");
+            File myDir = new File(bookFolder, "/Books-" + userId);
             myDir.mkdir();
+            return myDir.getAbsolutePath();
         }
-        return true;
     }
 
+    public static List<String> getDownloadedBookNamesList(String path){
+        List<String> namesBooks = new ArrayList<>();
+        File file = new File(path);
+        File[] booksNames = file.listFiles();
+        for (int i = 0; i < booksNames.length; i++){
+
+        }
+        return namesBooks;
+    }
 
     public static boolean deleteCacheFiles(String dir) {
         int i = 0;

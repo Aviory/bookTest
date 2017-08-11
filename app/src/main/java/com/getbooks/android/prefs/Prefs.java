@@ -52,6 +52,14 @@ public class Prefs {
         return getPrefs(context).getLong(key, 0);
     }
 
+    public static void  saveUserSession(Context context, String key, int value){
+        getPrefs(context).edit().putInt(key, value).apply();
+    }
+
+    public static int getUserSession(Context context, String key){
+        return getPrefs(context).getInt(key, 0);
+    }
+
     public static void putActivityState(Context context, String key, boolean isActivityAlive){
         getPrefs(context).edit().putBoolean(key, isActivityAlive).apply();
     }

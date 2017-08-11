@@ -2,6 +2,8 @@ package com.getbooks.android.db;
 
 import android.content.Context;
 
+import com.getbooks.android.model.BookDetail;
+
 import java.util.List;
 
 /**
@@ -34,11 +36,19 @@ public class BookDataBaseLoader {
         return dataBaseLoader;
     }
 
-    public void createUserSession(int userSessionId){
+    public void createUserSession(int userSessionId) {
         mBooksDataBase.setUserIdSession(userSessionId);
     }
 
-    public List<Integer> getUsersIdSession(){
+    public List<Integer> getUsersIdSession() {
         return mBooksDataBase.getUserIdSession();
+    }
+
+    public void saveBookToDB(BookDetail bookDetail) {
+        mBooksDataBase.saveBook(bookDetail);
+    }
+
+    public List<BookDetail> getAllUserBookOnDevise(int userId) {
+        return mBooksDataBase.getAllUserBook(userId);
     }
 }

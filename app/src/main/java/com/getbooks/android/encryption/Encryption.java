@@ -1,6 +1,8 @@
 package com.getbooks.android.encryption;
 
-import java.io.FileInputStream;
+import com.getbooks.android.Const;
+import com.getbooks.android.util.SystemUtil;
+
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.math.BigInteger;
@@ -9,7 +11,6 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 import javax.crypto.Cipher;
-import javax.crypto.CipherInputStream;
 import javax.crypto.CipherOutputStream;
 import javax.crypto.NoSuchPaddingException;
 import javax.crypto.spec.SecretKeySpec;
@@ -20,7 +21,7 @@ import javax.crypto.spec.SecretKeySpec;
 
 public class Encryption {
 
-    public String key;
+    private String key;
 
     private static String buildStingKey() {
         StringBuilder stringBuilder = new StringBuilder();
@@ -36,58 +37,34 @@ public class Encryption {
         }
     }
 
+    public String getKey() {
+        return key;
+    }
+
     private static String getStringFromBytesUtf(byte[] bArr) {
         BigInteger bigInteger = new BigInteger(1, bArr);
         return String.format("%0" + (bArr.length << 1) + "x", bigInteger);
     }
 
     public void createKey(String str, String str2) {
-        this.key = digestString(digestString(str) + str2 + Encryption.buildStingKey());
+        key = digestString(digestString(str) + str2 + Encryption.buildStingKey());
     }
 
-
-    public static void encrypt(String epubFilePath, String encryptFilePath) throws IOException, NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException {
-        // Here you read the cleartext.
-        FileInputStream fis = new FileInputStream(epubFilePath);
+    public static CipherOutputStream encryptStream(String encryptFilePath) throws IOException, NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException {
         // This stream write the encrypted text. This stream will be wrapped by another stream.
         FileOutputStream fos = new FileOutputStream(encryptFilePath);
 
+        Encryption encryption = new Encryption();
+        encryption.createKey(Const.USER_SESSION_ID, SystemUtil.getSetting());
+
         // Length is 16 byte
         // Careful when taking user input!!! https://stackoverflow.com/a/3452620/1188357
-        SecretKeySpec sks = new SecretKeySpec(buildStingKey().getBytes(), "AES");
+        SecretKeySpec sks = new SecretKeySpec(encryption.key.getBytes(), "AES");
         // Create cipher
         Cipher cipher = Cipher.getInstance("AES");
         cipher.init(Cipher.ENCRYPT_MODE, sks);
         // Wrap the output stream
         CipherOutputStream cos = new CipherOutputStream(fos, cipher);
-        // Write bytes
-        int b;
-        byte[] d = new byte[8];
-        while ((b = fis.read(d)) != -1) {
-            cos.write(d, 0, b);
-        }
-        // Flush and close streams.
-        cos.flush();
-        cos.close();
-        fis.close();
-    }
-
-
-    static void decrypt() throws IOException, NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException {
-        FileInputStream fis = new FileInputStream("data/encrypted");
-
-        FileOutputStream fos = new FileOutputStream("data/decrypted");
-        SecretKeySpec sks = new SecretKeySpec(buildStingKey().getBytes(), "AES");
-        Cipher cipher = Cipher.getInstance("AES");
-        cipher.init(Cipher.DECRYPT_MODE, sks);
-        CipherInputStream cis = new CipherInputStream(fis, cipher);
-        int b;
-        byte[] d = new byte[8];
-        while ((b = cis.read(d)) != -1) {
-            fos.write(d, 0, b);
-        }
-        fos.flush();
-        fos.close();
-        cis.close();
+        return cos;
     }
 }

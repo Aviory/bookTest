@@ -5,9 +5,17 @@ package com.getbooks.android.model.enums;
  */
 
 public enum BookState {
-    CLOUDBOOK,
-    RENTED,
-    PURCHASED,
-    NEWBOOK,
-    DEVICEBOOK
+    CLOUD_BOOK("CloudBook"),
+    RENTED_BOOK("RentedBook"),
+    PURCHASED_BOOK("PurchasedBook");
+
+    private String mState;
+
+    BookState(String mState) {
+        this.mState = mState;
+    }
+
+    public String getState() {
+        return mState;
+    }
 }

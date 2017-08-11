@@ -7,7 +7,7 @@ import com.getbooks.android.model.enums.BookState;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class PurchasedBook extends Book implements Parcelable {
+public class PurchasedBook implements Parcelable {
 
     @SerializedName("purchased_book_sku")
     @Expose
@@ -72,32 +72,13 @@ public class PurchasedBook extends Book implements Parcelable {
         this.purchasedBookName = purchasedBookName;
     }
 
-    public String getBookImage() {
-        return purchasedBookImage;
-    }
-
-    @Override
-    public void setBookState(BookState bookState) {
-        this.bookState = bookState;
-    }
-
-    @Override
-    public BookState getBookState() {
-        return bookState;
-    }
-
-    @Override
-    public String getBookDownloadLink() {
-        return purchasedBookDownloadLink;
-    }
-
-    @Override
-    public String getBookName() {
-        return purchasedBookName;
-    }
 
     public void setPurchasedBookImage(String purchasedBookImage) {
         this.purchasedBookImage = purchasedBookImage;
+    }
+
+    public String getPurchasedBookImage(){
+        return this.purchasedBookImage;
     }
 
     public String getPurchasedBookDownloadLink() {

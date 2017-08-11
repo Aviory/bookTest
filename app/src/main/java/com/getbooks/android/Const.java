@@ -21,6 +21,7 @@ public final class Const {
     public static final String IS_USER_AUTHORIZE = "is_user_authorize";
     public static final String SHOW_TUTORIALS = "show_tutorials_count";
     public static final String SHOW_TUTORIALS_COUNT = "show_tutorials_count";
+    public static final String USER_SESSION_ID = "user_session_id";
 
     public static final int SPLASH_TIME_OUT = 1500;
 
