@@ -55,6 +55,8 @@ public class UiUtil {
     public static void showDialog(Context context) {
         if (mMaterialDialog != null) {
             mMaterialDialog.hide();
+            mMaterialDialog.dismiss();
+            mMaterialDialog = null;
         }
         mMaterialDialog = new MaterialDialog(context);
         mMaterialDialog.setCancelable(false);

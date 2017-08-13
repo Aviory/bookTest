@@ -43,7 +43,7 @@ public class BooksDataBase {
 
     private static final String CREATE_TABLE_BOOK_DETAILS = new StringBuilder().append("CREATE TABLE IF NOT EXISTS  ")
             .append(Tables.BOOK_DETAILS).append("(")
-            .append(BooksDBContract.BookDetail._ID).append(" INTEGER PRIMARY KEY AUTOINCREMENT,")
+            .append(BooksDBContract.BookDetail._ID).append(" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,")
             .append(BooksDBContract.BookDetail.USER_ID).append(" INTEGER, ")
             .append(BooksDBContract.BookDetail.BOOK_SKU).append(" TEXT, ")
             .append(BooksDBContract.BookDetail.BOOK_IMAGE_DOWNLOAD_URL).append(" TEXT, ")
@@ -142,6 +142,13 @@ public class BooksDataBase {
         mSqLiteDatabase.insert(Tables.USERS, null, contentValues);
     }
 
+    public void deleteUserSession(int userId) {
+        mSqLiteDatabase = mBookDBHelper.getReadableDatabase();
+        String query = "DELETE FROM " + Tables.USERS + " WHERE " + BooksDBContract.User.USER_ID  + " = " + userId;
+        mSqLiteDatabase.execSQL(query);
+    }
+
+
     public List<Integer> getUserIdSession() {
         List<Integer> users = new ArrayList<>();
         mSqLiteDatabase = mBookDBHelper.getReadableDatabase();
@@ -159,6 +166,7 @@ public class BooksDataBase {
 
     protected List<BookDetail> getAllUserBook(int userId) {
         List<BookDetail> alUserBooks = new ArrayList<>();
+        mSqLiteDatabase = mBookDBHelper.getReadableDatabase();
         String query = "SELECT * FROM " + Tables.BOOK_DETAILS + " WHERE " + BooksDBContract.BookDetail.USER_ID +
                 " = " + userId;
         Cursor cursor = mSqLiteDatabase.rawQuery(query, null);
@@ -205,7 +213,7 @@ public class BooksDataBase {
                 bookDetail.setPagesPerArticleList(cursor.getString(cursor.getColumnIndex(BooksDBContract.BookDetail.PAGES_PER_ARTICLE_LIST)));
                 bookDetail.setBookPhysicalPage(cursor.getInt(cursor.getColumnIndex(BooksDBContract.BookDetail.BOOK_PHYSICAL_PAGE)));
                 bookDetail.setLastReadingParagraph(cursor.getInt(cursor.getColumnIndex(BooksDBContract.BookDetail.LAST_READING_PARAGRAPH)));
-                bookDetail.setIsBookFirstOpen(cursor.getInt(cursor.getColumnIndex(BooksDBContract.BookDetail.BOOK_IS_FIRST_OPEN)) != 1);
+                bookDetail.setIsBookFirstOpen(cursor.getInt(cursor.getColumnIndex(BooksDBContract.BookDetail.BOOK_IS_FIRST_OPEN)) != 0);
 
                 alUserBooks.add(bookDetail);
             }

@@ -53,7 +53,7 @@ public class Prefs {
     }
 
     public static void  saveUserSession(Context context, String key, int value){
-        getPrefs(context).edit().putInt(key, value).apply();
+        getPrefs(context).edit().putInt(key, value).commit();
     }
 
     public static int getUserSession(Context context, String key){

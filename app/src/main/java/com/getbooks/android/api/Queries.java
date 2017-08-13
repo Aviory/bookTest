@@ -68,7 +68,6 @@ public class Queries {
                             allLibraryBooks.add(bookDetail);
 
                         }
-//                        allBook.addAll(rentedBooks);
                     } else if (listRentedResponse.code() == 404) {
 //                        UiUtil.showToast(context, R.string.emty_rented_list);
                     }
@@ -77,7 +76,7 @@ public class Queries {
                         purchasedBooks.addAll(listPurchasedResponse.body());
                         for (PurchasedBook purchasedBook : purchasedBooks) {
                             BookDetail bookDetail = new BookDetail();
-                            bookDetail.setUpdateDate(userId);
+                            bookDetail.setUserId(userId);
                             bookDetail.setBookName(purchasedBook.getPurchasedBookName());
                             bookDetail.setImageDownloadLink(purchasedBook.getPurchasedBookImage());
                             bookDetail.setBookDownloadLink(purchasedBook.getPurchasedBookDownloadLink());
@@ -86,7 +85,6 @@ public class Queries {
                             bookDetail.setIsBookRented(false);
                             allLibraryBooks.add(bookDetail);
                         }
-//                        allBook.addAll(purchasedBooks);
                     } else if (listPurchasedResponse.code() == 404) {
 //                        UiUtil.showToast(context, R.string.empty_purchased_list);
                     }
@@ -123,7 +121,6 @@ public class Queries {
                     }
                 });
         mCompositeSubscription.add(subscriptions);
-
     }
 
     public void deleteUserSession(String deviceToken, Activity context) {
@@ -135,6 +132,7 @@ public class Queries {
                 .doOnNext(responseBodyResponse -> {
                     if (responseBodyResponse.code() == 204) {
                         Prefs.clearPrefs(context);
+                        BookDataBaseLoader.createBookDBLoader(context).deleteUserSession(Prefs.getUserSession(context, Const.USER_SESSION_ID));
                         UiUtil.openActivity(context, AuthorizationActivity.class, true);
                     }
                 }).subscribe();
@@ -143,8 +141,9 @@ public class Queries {
     private List<BookDetail> checkDownloadedBook(List<BookDetail> allBooks, int userId, Context context) {
         List<BookDetail> allBooksLibrary = new ArrayList<>();
         allBooksLibrary.addAll(BookDataBaseLoader.createBookDBLoader(context).getAllUserBookOnDevise(userId));
-        Log.d("QQQQQ", String.valueOf(userId));
-        Log.d("QQQQQ", allBooksLibrary.toString());
+        Log.d("QQQQQ-", String.valueOf(userId));
+        Log.d("QQQQQ-", allBooksLibrary.toString());
+        Log.d("QQQQQ-", String.valueOf(allBooksLibrary.size()));
         if (!allBooksLibrary.isEmpty()) {
             for (BookDetail bookDetail : allBooks) {
                 if (!allBooksLibrary.contains(bookDetail)) {
