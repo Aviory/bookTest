@@ -39,6 +39,8 @@
     <dimen name="seek_bar_radius">1dp</dimen>
     <dimen name="seek_bar_height">4dp</dimen>
     <dimen name="seek_bar_width">45dp</dimen>
+    <dimen name="font_seek_bar">16sp</dimen>
+    <dimen name="margin_seek_bar">10dp</dimen>
 
     <!-- Tutorial main screen sizes-->
     <dimen name="margin_between_arrow">40dp</dimen>
@@ -84,4 +86,15 @@
     <dimen name="left_menu_txt_size">15sp</dimen>
     <dimen name="margin_left_menu_top">-6dp</dimen>
 
+    <!-- Reader sizes -->
+    <dimen name="margin_book_mark">12dp</dimen>
+    <dimen name="page_txt_size">14sp</dimen>
+
+
+    <!-- Book settings sizes -->
+    <dimen name="txt_margin_book_setting">25dp</dimen>
+    <dimen name="margin_top_menu_br">26dp</dimen>
+    <dimen name="size_book_setting">14sp</dimen>
+    <dimen name="margin_brightness_img">20dp</dimen>
+    <string name="txt_a">a</string>
 </resources>

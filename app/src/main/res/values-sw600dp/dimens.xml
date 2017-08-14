@@ -40,4 +40,13 @@
 
     <!-- Menu books sizes -->
     <dimen name="margin_bottom">18dp</dimen>
+
+    <!-- Seek bar sizes -->
+    <dimen name="font_seek_bar">27sp</dimen>
+    <dimen name="margin_seek_bar">20dp</dimen>
+
+    <!-- Reader sizes -->
+    <dimen name="margin_book_mark">25dp</dimen>
+    <dimen name="page_txt_size">20sp</dimen>
+
 </resources>

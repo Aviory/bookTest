@@ -103,4 +103,10 @@
     <string name="empty_purchased_list">You dont have purchased books</string>
     <string name="txt_restart_dialog">Do you want restart downloading of books?</string>
 
+
+    <!-- Book settings strings -->
+    <string name="txt_book_setting">Book Settings</string>
+    <string name="txt_a">a</string>
+    <string name="txt_font">Font</string>
+
 </resources>

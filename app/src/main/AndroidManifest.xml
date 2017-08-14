@@ -39,6 +39,8 @@
 
         <activity android:name=".ui.activities.LibraryActivity" />
 
+        <activity android:name=".ui.activities.ReaderActivity" />
+
         <receiver android:name=".receivers.NetworkStateReceiver">
             <intent-filter>
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />

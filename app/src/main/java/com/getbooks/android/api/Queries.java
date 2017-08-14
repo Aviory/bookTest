@@ -11,10 +11,12 @@ import com.getbooks.android.model.PurchasedBook;
 import com.getbooks.android.model.RentedBook;
 import com.getbooks.android.model.enums.BookState;
 import com.getbooks.android.prefs.Prefs;
+import com.getbooks.android.servises.DownloadService;
 import com.getbooks.android.ui.activities.AuthorizationActivity;
 import com.getbooks.android.util.LogUtil;
 import com.getbooks.android.util.UiUtil;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -92,6 +94,10 @@ public class Queries {
                     List<BookDetail> library = new ArrayList<BookDetail>();
                     library.addAll(checkDownloadedBook(allLibraryBooks, userId, context));
                     return library;
+                })
+                .doOnUnsubscribe(() -> {
+                    LogUtil.log(this, "OnUnsubscribe");
+
                 })
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
