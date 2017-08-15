@@ -9,12 +9,17 @@ import com.getbooks.android.db.BookDataBaseLoader;
 import com.getbooks.android.model.BookDetail;
 import com.getbooks.android.model.PurchasedBook;
 import com.getbooks.android.model.RentedBook;
+import com.getbooks.android.model.UserSession;
 import com.getbooks.android.model.enums.BookState;
 import com.getbooks.android.prefs.Prefs;
+import com.getbooks.android.servises.DownloadService;
 import com.getbooks.android.ui.activities.AuthorizationActivity;
+import com.getbooks.android.ui.activities.LibraryActivity;
+import com.getbooks.android.ui.activities.TutorialsActivity;
 import com.getbooks.android.util.LogUtil;
 import com.getbooks.android.util.UiUtil;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -48,8 +53,8 @@ public class Queries {
         ApiService apiService = ApiManager.getClientApiAry().create(ApiService.class);
 
         Subscription subscriptions = Observable.zip(
-                apiService.getAllRentedBooks("aff_pelephone", deviceToken),
-                apiService.getAllPurchasedBooks("aff_pelephone", deviceToken),
+                apiService.getAllRentedBooks(Const.WEBSITECODE, deviceToken),
+                apiService.getAllPurchasedBooks(Const.WEBSITECODE, deviceToken),
                 (listRentedResponse, listPurchasedResponse) -> {
                     List<RentedBook> rentedBooks = new ArrayList<RentedBook>();
                     List<PurchasedBook> purchasedBooks = new ArrayList<PurchasedBook>();
@@ -68,7 +73,6 @@ public class Queries {
                             allLibraryBooks.add(bookDetail);
 
                         }
-//                        allBook.addAll(rentedBooks);
                     } else if (listRentedResponse.code() == 404) {
 //                        UiUtil.showToast(context, R.string.emty_rented_list);
                     }
@@ -77,7 +81,7 @@ public class Queries {
                         purchasedBooks.addAll(listPurchasedResponse.body());
                         for (PurchasedBook purchasedBook : purchasedBooks) {
                             BookDetail bookDetail = new BookDetail();
-                            bookDetail.setUpdateDate(userId);
+                            bookDetail.setUserId(userId);
                             bookDetail.setBookName(purchasedBook.getPurchasedBookName());
                             bookDetail.setImageDownloadLink(purchasedBook.getPurchasedBookImage());
                             bookDetail.setBookDownloadLink(purchasedBook.getPurchasedBookDownloadLink());
@@ -86,7 +90,6 @@ public class Queries {
                             bookDetail.setIsBookRented(false);
                             allLibraryBooks.add(bookDetail);
                         }
-//                        allBook.addAll(purchasedBooks);
                     } else if (listPurchasedResponse.code() == 404) {
 //                        UiUtil.showToast(context, R.string.empty_purchased_list);
                     }
@@ -94,6 +97,10 @@ public class Queries {
                     List<BookDetail> library = new ArrayList<BookDetail>();
                     library.addAll(checkDownloadedBook(allLibraryBooks, userId, context));
                     return library;
+                })
+                .doOnUnsubscribe(() -> {
+                    LogUtil.log(this, "OnUnsubscribe");
+
                 })
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
@@ -123,8 +130,26 @@ public class Queries {
                     }
                 });
         mCompositeSubscription.add(subscriptions);
-
     }
+
+
+    public void getUserSession(String deviseToken, Context context) {
+        ApiService apiService = ApiManager.getClientApiAry().create(ApiService.class);
+
+        apiService.detUserSession(Const.WEBSITECODE, deviseToken)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .doOnNext(userSessionResponse -> {
+                    if (userSessionResponse.isSuccessful()) {
+                        UserSession userSession = userSessionResponse.body();
+                        Prefs.saveUserSession(context, Const.USER_SESSION_ID, userSession.getCustomerId());
+                        Log.d("QQQ-save", String.valueOf(userSession.getCustomerId()));
+                        getAllUserBook(deviseToken, context, Prefs.getUserSession(context, Const.USER_SESSION_ID));
+                    }
+                })
+                .subscribe();
+    }
+
 
     public void deleteUserSession(String deviceToken, Activity context) {
         ApiService apiService = ApiManager.getClientApiAry().create(ApiService.class);
@@ -135,6 +160,7 @@ public class Queries {
                 .doOnNext(responseBodyResponse -> {
                     if (responseBodyResponse.code() == 204) {
                         Prefs.clearPrefs(context);
+                        BookDataBaseLoader.createBookDBLoader(context).deleteUserSession(Prefs.getUserSession(context, Const.USER_SESSION_ID));
                         UiUtil.openActivity(context, AuthorizationActivity.class, true);
                     }
                 }).subscribe();
@@ -143,8 +169,9 @@ public class Queries {
     private List<BookDetail> checkDownloadedBook(List<BookDetail> allBooks, int userId, Context context) {
         List<BookDetail> allBooksLibrary = new ArrayList<>();
         allBooksLibrary.addAll(BookDataBaseLoader.createBookDBLoader(context).getAllUserBookOnDevise(userId));
-        Log.d("QQQQQ", String.valueOf(userId));
-        Log.d("QQQQQ", allBooksLibrary.toString());
+        Log.d("QQQQQ-", String.valueOf(userId));
+        Log.d("QQQQQ-", allBooksLibrary.toString());
+        Log.d("QQQQQ-", String.valueOf(allBooksLibrary.size()));
         if (!allBooksLibrary.isEmpty()) {
             for (BookDetail bookDetail : allBooks) {
                 if (!allBooksLibrary.contains(bookDetail)) {

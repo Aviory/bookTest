@@ -22,4 +22,7 @@
 
     <!-- Tutorial text float screen sizes-->
     <dimen name="margin_txt_center">100dp</dimen>
+
+    <!-- Seek bar sizes -->
+    <dimen name="margin_book_mark">40dp</dimen>
 </resources>

@@ -72,7 +72,6 @@ public class DownloadService extends IntentService {
                 receiver.send(STATUS_ERROR, bundle);
             }
         }
-        receiver.send(STATUS_FINISHED, Bundle.EMPTY);
         Log.d(TAG, "Service Stopping!");
         this.stopSelf();
     }
@@ -125,6 +124,8 @@ public class DownloadService extends IntentService {
             // closing streams
             output.close();
             inputStream.close();
+
+            resultReceiver.send(STATUS_FINISHED, Bundle.EMPTY);
 
         } else {
             throw new DownloadException("Failed to fetch data!!");

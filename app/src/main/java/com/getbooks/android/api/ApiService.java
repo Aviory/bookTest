@@ -2,6 +2,7 @@ package com.getbooks.android.api;
 
 import com.getbooks.android.model.PurchasedBook;
 import com.getbooks.android.model.RentedBook;
+import com.getbooks.android.model.UserSession;
 
 import java.util.List;
 
@@ -43,4 +44,13 @@ public interface ApiService {
     @DELETE("glibrary/session/{websiteCode}/{deviceToken}")
     Observable<Response<ResponseBody>> deleteDeviseSession(@Path("websiteCode") String aff_pelephone,
                                                            @Path("deviceToken") String tokenDevice);
+
+    @Headers({
+            "Accept:application/json",
+            "SecretKey:de@Dc0W4her0"
+    })
+    @GET("glibrary/customer/{websiteCode}/{deviceToken}")
+    Observable<Response<UserSession>> detUserSession(@Path("websiteCode") String aff_pelephone,
+                                                     @Path("deviceToken") String tokenDevice);
+
 }
