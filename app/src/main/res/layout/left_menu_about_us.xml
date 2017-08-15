@@ -13,7 +13,8 @@
         android:layout_centerHorizontal="true"
         android:src="@drawable/about_us_img"/>
     <TextView
-        android:layout_width="match_parent"
+        android:id="@+id/txt_about"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/img_logo"
         android:layout_marginRight="@dimen/dialog_margin"
@@ -21,6 +22,14 @@
         android:textSize="@dimen/font_5"
         android:gravity="center"
         android:text="@string/txt_about_us_full"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/txt_about"
+        android:layout_marginRight="@dimen/dialog_margin"
+        android:layout_marginLeft="@dimen/dialog_margin"
+        android:textSize="@dimen/font_5"
+        android:text="@string/txt_version"/>
     <ImageView
         android:id="@+id/about_us_close"
         android:layout_width="wrap_content"

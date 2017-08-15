@@ -102,6 +102,7 @@
     <string name="emty_rented_list">You dont have rented books</string>
     <string name="empty_purchased_list">You dont have purchased books</string>
     <string name="txt_restart_dialog">Do you want restart downloading of books?</string>
-    <string name="txt_about_us_full">Pelephone books הנה אפליקציית  קריאה דיגיטלית המאפשרת לך להשא מסתקרן עם ספרייה הפרטית שלך בא נשארים כל הספרים שרכשת או השאלת \n\n פונטים: פרוייקט קולמוס \n\n\n  www.pelephonebooks.co.il  \n\n\n vers 3.0.1     </string>
+    <string name="txt_about_us_full">Pelephone books הנה אפליקציית  קריאה דיגיטלית המאפשרת לך להשא מסתקרן עם ספרייה הפרטית שלך בא נשארים כל הספרים שרכשת או השאלת \n\n פונטים: פרוייקט קולמוס \n\n\n  www.pelephonebooks.co.il</string>
+    <string name="txt_version" >vers 3.0.1</string>
 
 </resources>
