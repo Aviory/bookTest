@@ -34,6 +34,7 @@
             android:src="@drawable/bookmarks_list" />
 
         <ImageView
+            android:id="@+id/img_book_close"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"

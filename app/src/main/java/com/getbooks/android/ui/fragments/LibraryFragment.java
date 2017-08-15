@@ -39,6 +39,7 @@ import com.getbooks.android.servises.DownloadService;
 import com.getbooks.android.ui.BaseFragment;
 import com.getbooks.android.ui.activities.CatalogActivity;
 import com.getbooks.android.ui.activities.LibraryActivity;
+import com.getbooks.android.ui.activities.ReaderActivity;
 import com.getbooks.android.ui.adapter.RecyclerShelvesAdapter;
 import com.getbooks.android.ui.dialog.RestartDownloadingDialog;
 import com.getbooks.android.ui.widget.RecyclerItemClickListener;
@@ -250,9 +251,11 @@ public class LibraryFragment extends BaseFragment implements Queries.CallBack,
                     addToDownloadQueue(book);
                     break;
                 case PURCHASED_BOOK:
+                    UiUtil.openActivity(getAct(), ReaderActivity.class, false);
                     Toast.makeText(getAct(), "Purchased Book", Toast.LENGTH_SHORT).show();
                     break;
                 case RENTED_BOOK:
+                    UiUtil.openActivity(getAct(), ReaderActivity.class, false);
                     Toast.makeText(getAct(), "Rented Book", Toast.LENGTH_SHORT).show();
                     break;
             }

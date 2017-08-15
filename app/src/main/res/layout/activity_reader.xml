@@ -49,4 +49,11 @@
     <include
         layout="@layout/menu_book_setting_small"
         android:visibility="gone" />
+
+    <FrameLayout
+        android:id="@+id/content_book_settings"
+        android:layout_width="match_parent"
+        android:layout_alignParentBottom="true"
+        android:clickable="true"
+        android:layout_height="wrap_content"/>
 </RelativeLayout>
