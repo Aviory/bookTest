@@ -5,31 +5,34 @@
     android:minHeight="1000dp"
     android:minWidth="1000dp"
     android:background="@color/color_white">
+    <com.getbooks.android.ui.widget.ArialNormalTextView
+        android:id="@+id/txt_header_aboutus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/menu_icon_margin"
+        android:textSize="@dimen/font_7"
+        android:textColor="@color/blue"
+        android:layout_centerHorizontal="true"
+        android:text="@string/txt_header_about"/>
     <ImageView
         android:id="@+id/img_logo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/margin_hand_top"
+        android:layout_marginTop="@dimen/menu_icon_margin"
+        android:layout_below="@id/txt_header_aboutus"
         android:layout_centerHorizontal="true"
-        android:src="@drawable/about_us_img"/>
-    <TextView
+        android:src="@drawable/img_logo"/>
+    <com.getbooks.android.ui.widget.ArialNormalTextView
         android:id="@+id/txt_about"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/img_logo"
+        android:layout_marginTop="@dimen/menu_icon_margin"
         android:layout_marginRight="@dimen/dialog_margin"
         android:layout_marginLeft="@dimen/dialog_margin"
         android:textSize="@dimen/font_5"
         android:gravity="center"
         android:text="@string/txt_about_us_full"/>
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/txt_about"
-        android:layout_marginRight="@dimen/dialog_margin"
-        android:layout_marginLeft="@dimen/dialog_margin"
-        android:textSize="@dimen/font_5"
-        android:text="@string/txt_version"/>
     <ImageView
         android:id="@+id/about_us_close"
         android:layout_width="wrap_content"
@@ -38,5 +41,14 @@
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="@dimen/margin_bottom"
         android:src="@drawable/close_blue"/>
+
+    <com.getbooks.android.ui.widget.ArialNormalTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/about_us_close"
+        android:layout_marginBottom="@dimen/dialog_margin_about"
+        android:layout_marginLeft="@dimen/dialog_margin_about"
+        android:textSize="@dimen/font_5"
+        android:text="@string/txt_version"/>
 
 </RelativeLayout>
