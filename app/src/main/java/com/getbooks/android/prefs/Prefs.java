@@ -52,6 +52,14 @@ public class Prefs {
         return getPrefs(context).getLong(key, 0);
     }
 
+    public static void saveCookieUserSession(Context context, String cookie){
+        getPrefs(context).edit().putString(Const.COOKIE_USER_SESSION, cookie).commit();
+    }
+
+    public static String getCookieUserSession(Context context){
+        return getPrefs(context).getString(Const.COOKIE_USER_SESSION, "");
+    }
+
     public static void  saveUserSession(Context context, String key, int value){
         getPrefs(context).edit().putInt(key, value).commit();
     }

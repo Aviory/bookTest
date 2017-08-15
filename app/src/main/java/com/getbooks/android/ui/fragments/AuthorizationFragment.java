@@ -67,16 +67,16 @@ public class AuthorizationFragment extends BaseFragment {
 
     private void setUpWebView() {
 //        clearHash();
-//        CookieManager.getInstance().removeAllCookie();
+        CookieManager.getInstance().removeAllCookie();
         mAuthorizationWebView.setHorizontalScrollBarEnabled(false);
         mAuthorizationWebView.setVerticalScrollBarEnabled(false);
         mAuthorizationWebView.setWebViewClient(new LoginWebViewClient());
         WebSettings webSettings = mAuthorizationWebView.getSettings();
         webSettings.setJavaScriptEnabled(true);
-//        webSettings.setSaveFormData(false);
-//        webSettings.setSavePassword(false);
-//        webSettings.setAppCacheEnabled(false);
-//        webSettings.setCacheMode(WebSettings.LOAD_NO_CACHE);
+        webSettings.setSaveFormData(false);
+        webSettings.setSavePassword(false);
+        webSettings.setAppCacheEnabled(false);
+        webSettings.setCacheMode(WebSettings.LOAD_NO_CACHE);
         webSettings.setUseWideViewPort(true);
         mAuthorizationWebView.loadUrl(Const.AUTH_URL);
     }
@@ -151,6 +151,9 @@ public class AuthorizationFragment extends BaseFragment {
         public void onPageFinished(WebView view, String url) {
             super.onPageFinished(view, url);
             LogUtil.log(this, url + "last");
+            String cookies = CookieManager.getInstance().getCookie(url);
+            if (null != getAct())
+            Prefs.saveCookieUserSession(getAct(), cookies);
             mProgressBar.dismiss();
         }
     }

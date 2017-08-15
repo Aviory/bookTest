@@ -6,6 +6,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.View;
 import android.webkit.CookieManager;
 import android.webkit.WebResourceError;
@@ -18,6 +19,7 @@ import android.widget.Toast;
 
 import com.getbooks.android.Const;
 import com.getbooks.android.R;
+import com.getbooks.android.prefs.Prefs;
 import com.getbooks.android.ui.BaseActivity;
 import com.getbooks.android.ui.dialog.MaterialDialog;
 import com.getbooks.android.util.LogUtil;
@@ -67,6 +69,7 @@ public class CatalogActivity extends BaseActivity {
     }
 
     private void setUpWebView() {
+        CookieManager.getInstance().setCookie(Const.CATALOG_URL, Prefs.getCookieUserSession(getAct()));
         mCatalogWebView.setHorizontalScrollBarEnabled(false);
         mCatalogWebView.setVerticalScrollBarEnabled(false);
         mCatalogWebView.setWebViewClient(new CatalogWebViewClient());
