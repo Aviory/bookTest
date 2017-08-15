@@ -17,6 +17,7 @@ import android.webkit.WebViewClient;
 
 import com.getbooks.android.Const;
 import com.getbooks.android.R;
+import com.getbooks.android.api.Queries;
 import com.getbooks.android.db.BookDataBaseLoader;
 import com.getbooks.android.prefs.Prefs;
 import com.getbooks.android.ui.BaseFragment;
@@ -66,16 +67,16 @@ public class AuthorizationFragment extends BaseFragment {
 
     private void setUpWebView() {
 //        clearHash();
-        CookieManager.getInstance().removeAllCookie();
+//        CookieManager.getInstance().removeAllCookie();
         mAuthorizationWebView.setHorizontalScrollBarEnabled(false);
         mAuthorizationWebView.setVerticalScrollBarEnabled(false);
         mAuthorizationWebView.setWebViewClient(new LoginWebViewClient());
         WebSettings webSettings = mAuthorizationWebView.getSettings();
         webSettings.setJavaScriptEnabled(true);
-        webSettings.setSaveFormData(false);
-        webSettings.setSavePassword(false);
-        webSettings.setAppCacheEnabled(false);
-        webSettings.setCacheMode(WebSettings.LOAD_NO_CACHE);
+//        webSettings.setSaveFormData(false);
+//        webSettings.setSavePassword(false);
+//        webSettings.setAppCacheEnabled(false);
+//        webSettings.setCacheMode(WebSettings.LOAD_NO_CACHE);
         webSettings.setUseWideViewPort(true);
         mAuthorizationWebView.loadUrl(Const.AUTH_URL);
     }
@@ -108,7 +109,6 @@ public class AuthorizationFragment extends BaseFragment {
                 String token = FirebaseInstanceId.getInstance().getToken();
 
                 registerToken(view, token);
-                Prefs.saveUserSession(getAct(), Const.USER_SESSION_ID, 223344);
                 goToUserLibrary(token);
                 return true;
             }
@@ -124,7 +124,6 @@ public class AuthorizationFragment extends BaseFragment {
                 String token = FirebaseInstanceId.getInstance().getToken();
 
                 registerToken(view, token);
-                Prefs.saveUserSession(getAct(), Const.USER_SESSION_ID, 223344);
                 goToUserLibrary(token);
 
                 return true;

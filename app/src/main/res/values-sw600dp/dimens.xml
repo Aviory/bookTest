@@ -49,4 +49,14 @@
     <dimen name="margin_book_mark">25dp</dimen>
     <dimen name="page_txt_size">20sp</dimen>
 
+
+    <!-- Book settings sizes -->
+    <dimen name="width_menu_book_setting">550dp</dimen>
+    <dimen name="book_setting_height">470dp</dimen>
+    <dimen name="size_book_setting">25sp</dimen>
+    <dimen name="letter_small_size">35sp</dimen>
+    <dimen name="letter_big_size">72sp</dimen>
+    <dimen name="margin_bottom_menu_book_small">14dp</dimen>
+
+
 </resources>

@@ -9,8 +9,8 @@
     <com.getbooks.android.ui.widget.ReaderWebView
         android:id="@+id/reader_webview"
         android:layout_width="match_parent"
-        android:background="@color/color_white"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+        android:background="@color/color_white" />
 
 
     <ImageView
@@ -18,11 +18,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/margin_book_mark"
-        android:src="@drawable/add_bookmark"/>
+        android:src="@drawable/add_bookmark" />
 
     <include
         android:id="@+id/menu_book"
-        layout="@layout/menu_book_layout"/>
+        layout="@layout/menu_book_layout" />
 
     <com.getbooks.android.ui.widget.ArialNormalTextView
         android:id="@+id/txt_page"
@@ -33,17 +33,20 @@
         android:gravity="center"
         android:paddingBottom="2dp"
         android:paddingTop="3dp"
-        android:textSize="@dimen/page_txt_size"
         android:text="@string/txt_tutorial_first_page"
-        android:textColor="@color/color_black" />
+        android:textColor="@color/color_black"
+        android:textSize="@dimen/page_txt_size" />
 
     <ProgressBar
         android:id="@+id/progress_reader"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:visibility="invisible"/>
+        android:visibility="invisible" />
 
-    <include layout="@layout/menu_seek_bar_layout"/>
+    <include layout="@layout/menu_seek_bar_layout" />
 
+    <include
+        layout="@layout/menu_book_setting_small"
+        android:visibility="gone" />
 </RelativeLayout>

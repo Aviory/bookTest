@@ -67,17 +67,11 @@ public class CatalogActivity extends BaseActivity {
     }
 
     private void setUpWebView() {
-//        clearHash();
-        CookieManager.getInstance().removeAllCookie();
         mCatalogWebView.setHorizontalScrollBarEnabled(false);
         mCatalogWebView.setVerticalScrollBarEnabled(false);
         mCatalogWebView.setWebViewClient(new CatalogWebViewClient());
         WebSettings webSettings = mCatalogWebView.getSettings();
         webSettings.setJavaScriptEnabled(true);
-        webSettings.setSaveFormData(false);
-        webSettings.setSavePassword(false);
-        webSettings.setAppCacheEnabled(false);
-        webSettings.setCacheMode(WebSettings.LOAD_NO_CACHE);
         mCatalogWebView.loadUrl(Const.CATALOG_URL);
     }
 

@@ -9,10 +9,13 @@ import com.getbooks.android.db.BookDataBaseLoader;
 import com.getbooks.android.model.BookDetail;
 import com.getbooks.android.model.PurchasedBook;
 import com.getbooks.android.model.RentedBook;
+import com.getbooks.android.model.UserSession;
 import com.getbooks.android.model.enums.BookState;
 import com.getbooks.android.prefs.Prefs;
 import com.getbooks.android.servises.DownloadService;
 import com.getbooks.android.ui.activities.AuthorizationActivity;
+import com.getbooks.android.ui.activities.LibraryActivity;
+import com.getbooks.android.ui.activities.TutorialsActivity;
 import com.getbooks.android.util.LogUtil;
 import com.getbooks.android.util.UiUtil;
 
@@ -50,8 +53,8 @@ public class Queries {
         ApiService apiService = ApiManager.getClientApiAry().create(ApiService.class);
 
         Subscription subscriptions = Observable.zip(
-                apiService.getAllRentedBooks("aff_pelephone", deviceToken),
-                apiService.getAllPurchasedBooks("aff_pelephone", deviceToken),
+                apiService.getAllRentedBooks(Const.WEBSITECODE, deviceToken),
+                apiService.getAllPurchasedBooks(Const.WEBSITECODE, deviceToken),
                 (listRentedResponse, listPurchasedResponse) -> {
                     List<RentedBook> rentedBooks = new ArrayList<RentedBook>();
                     List<PurchasedBook> purchasedBooks = new ArrayList<PurchasedBook>();
@@ -128,6 +131,25 @@ public class Queries {
                 });
         mCompositeSubscription.add(subscriptions);
     }
+
+
+    public void getUserSession(String deviseToken, Context context) {
+        ApiService apiService = ApiManager.getClientApiAry().create(ApiService.class);
+
+        apiService.detUserSession(Const.WEBSITECODE, deviseToken)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .doOnNext(userSessionResponse -> {
+                    if (userSessionResponse.isSuccessful()) {
+                        UserSession userSession = userSessionResponse.body();
+                        Prefs.saveUserSession(context, Const.USER_SESSION_ID, userSession.getCustomerId());
+                        Log.d("QQQ-save", String.valueOf(userSession.getCustomerId()));
+                        getAllUserBook(deviseToken, context, Prefs.getUserSession(context, Const.USER_SESSION_ID));
+                    }
+                })
+                .subscribe();
+    }
+
 
     public void deleteUserSession(String deviceToken, Activity context) {
         ApiService apiService = ApiManager.getClientApiAry().create(ApiService.class);

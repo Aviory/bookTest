@@ -47,6 +47,6 @@
 
     <!-- Book settings strings -->
     <string name="txt_book_setting">הגדרות ספר</string>
-    <string name="txt_a">א</string>
+    <string name="txt_a_letter">א</string>
     <string name="txt_font">גופן</string>
 </resources>

@@ -6,6 +6,8 @@ import android.support.annotation.Nullable;
 import com.getbooks.android.R;
 import com.getbooks.android.ui.BaseActivity;
 
+import butterknife.OnClick;
+
 /**
  * Created by marinaracu on 14.08.17.
  */
@@ -21,5 +23,10 @@ public class ReaderActivity extends BaseActivity {
     @Override
     public int getLayout() {
         return R.layout.activity_reader;
+    }
+
+    @OnClick(R.id.img_book_setting)
+    protected void openBookSetting(){
+
     }
 }

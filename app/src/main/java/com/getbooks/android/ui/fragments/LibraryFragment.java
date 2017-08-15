@@ -102,8 +102,6 @@ public class LibraryFragment extends BaseFragment implements Queries.CallBack,
         super.onViewCreated(view, savedInstanceState);
 
         mImageMenu.setActivated(true);
-        mDirectoryPath = FileUtil.isCreatedDirectory(getAct(), Prefs.getUserSession(getAct(), Const.USER_SESSION_ID));
-        LogUtil.log("FileUtil", mDirectoryPath);
 
         if (savedInstanceState == null) {
             mDownlodReceiver = new DownloadResultReceiver(new Handler());
@@ -123,7 +121,8 @@ public class LibraryFragment extends BaseFragment implements Queries.CallBack,
             Log.d("QQQ=", String.valueOf(Prefs.getUserSession(getAct(), Const.USER_SESSION_ID)));
             mQueries = new Queries();
             mQueries.setCallBack(this);
-            mQueries.getAllUserBook(Prefs.getToken(getAct()), getAct(), Prefs.getUserSession(getAct(), Const.USER_SESSION_ID));
+            mQueries.getUserSession(Prefs.getToken(getAct()), getAct());
+//            mQueries.getAllUserBook(Prefs.getToken(getAct()), getAct(), Prefs.getUserSession(getAct(), Const.USER_SESSION_ID));
         }
 
         hideLeftMenu();
@@ -203,6 +202,8 @@ public class LibraryFragment extends BaseFragment implements Queries.CallBack,
         throwable.printStackTrace();
         mLibrary = new ArrayList<>();
         mLibrary.addAll(mBookDataBaseLoader.getAllUserBookOnDevise(Prefs.getUserSession(getAct(), Const.USER_SESSION_ID)));
+        mDirectoryPath = FileUtil.isCreatedDirectory(getAct(), Prefs.getUserSession(getAct(), Const.USER_SESSION_ID));
+        LogUtil.log("FileUtil", mDirectoryPath);
         initShelvesRecycler(mLibrary);
 //        UiUtil.showConnectionErrorToast(getContext());
     }
@@ -210,6 +211,8 @@ public class LibraryFragment extends BaseFragment implements Queries.CallBack,
     @Override
     public void onCompleted(List<BookDetail> library) {
         this.mLibrary = library;
+        mDirectoryPath = FileUtil.isCreatedDirectory(getAct(), Prefs.getUserSession(getAct(), Const.USER_SESSION_ID));
+        LogUtil.log("FileUtil", mDirectoryPath);
         initShelvesRecycler(mLibrary);
     }
 

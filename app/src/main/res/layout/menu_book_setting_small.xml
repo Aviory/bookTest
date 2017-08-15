@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/book_setting_small_layout"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@drawable/menu_bg"
+    android:gravity="center"
+    android:orientation="horizontal">
+
+    <ImageView
+        android:id="@+id/img_add_highlight"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/margin_bottom_menu_book_small"
+        android:layout_weight="1"
+        android:src="@drawable/brush" />
+
+    <ImageView
+        android:id="@+id/img_add_note"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/margin_bottom_menu_book_small"
+        android:layout_weight="1"
+        android:src="@drawable/add_note" />
+
+    <ImageView
+        android:id="@+id/img_remove_highlight"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/margin_bottom_menu_book_small"
+        android:layout_weight="1"
+        android:src="@drawable/bin" />
+
+    <ImageView
+        android:id="@+id/img_share_on_facebook"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/margin_bottom_menu_book_small"
+        android:layout_weight="1"
+        android:src="@drawable/fb" />
+
+</LinearLayout>

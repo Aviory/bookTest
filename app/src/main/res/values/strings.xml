@@ -106,7 +106,7 @@
 
     <!-- Book settings strings -->
     <string name="txt_book_setting">Book Settings</string>
-    <string name="txt_a">a</string>
     <string name="txt_font">Font</string>
+    <string name="txt_a_letter">a</string>
 
 </resources>

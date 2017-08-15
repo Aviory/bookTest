@@ -92,9 +92,12 @@
 
 
     <!-- Book settings sizes -->
+    <dimen name="book_setting_height">343dp</dimen>
     <dimen name="txt_margin_book_setting">25dp</dimen>
     <dimen name="margin_top_menu_br">26dp</dimen>
     <dimen name="size_book_setting">14sp</dimen>
     <dimen name="margin_brightness_img">20dp</dimen>
-    <string name="txt_a">a</string>
+    <dimen name="letter_small_size">20sp</dimen>
+    <dimen name="letter_big_size">41sp</dimen>
+    <dimen name="margin_bottom_menu_book_small">7dp</dimen>
 </resources>

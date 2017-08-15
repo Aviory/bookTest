@@ -26,7 +26,7 @@ public final class Const {
     public static final int SPLASH_TIME_OUT = 1500;
 
     //Catalog constant
-    public static final  String CATALOG_URL = "";
+    public static final  String CATALOG_URL = "https://pelephone.getbooks.co.il/dev/on-sale";
 
     public static final String BOOKS_DIRECTORY = "GetBooks";
 }

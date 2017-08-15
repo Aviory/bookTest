@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@color/color_white"
+    android:layout_height="@dimen/book_setting_height"
+    android:layout_gravity="bottom|center"
+    android:background="@color/color_bege_light"
     android:orientation="vertical">
 
     <com.getbooks.android.ui.widget.ArialNormalTextView
@@ -58,7 +59,7 @@
         android:orientation="horizontal">
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="15dp"
@@ -76,9 +77,9 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:gravity="top"
-                    android:text="@string/txt_a"
+                    android:text="@string/txt_a_letter"
                     android:textColor="@color/gray"
-                    android:textSize="20sp" />
+                    android:textSize="@dimen/letter_small_size" />
 
                 <SeekBar
                     android:id="@+id/seek_bar_sizes"
@@ -98,9 +99,9 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="top"
                     android:gravity="top"
-                    android:text="@string/txt_a"
+                    android:text="@string/txt_a_letter"
                     android:textColor="@color/gray"
-                    android:textSize="41sp" />
+                    android:textSize="@dimen/letter_big_size" />
 
             </LinearLayout>
 
@@ -149,7 +150,7 @@
             android:background="@color/blue" />
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_weight="1">
@@ -197,7 +198,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="15dp"
-            android:layout_weight="0.896"
+            android:layout_weight="1"
             android:orientation="vertical">
 
             <com.getbooks.android.ui.widget.ArialNormalTextView
@@ -208,16 +209,17 @@
                 android:text="@string/txt_font"
                 android:textColor="@color/gray" />
 
-            <ListView
-                android:id="@+id/list_fonts"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+            <!--<ListView-->
+            <!--android:id="@+id/list_fonts"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content" />-->
 
         </LinearLayout>
 
         <View
             android:layout_width="1dp"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
             android:background="@color/blue" />
 
         <LinearLayout
@@ -260,18 +262,21 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center"
                     android:layout_weight="1"
                     android:src="@drawable/rows_large" />
 
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center"
                     android:layout_weight="1"
                     android:src="@drawable/rows_mid" />
 
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center"
                     android:layout_weight="1"
                     android:src="@drawable/rows_small" />
             </LinearLayout>
