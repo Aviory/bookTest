@@ -39,6 +39,7 @@ import com.getbooks.android.ui.activities.CatalogActivity;
 import com.getbooks.android.ui.activities.LibraryActivity;
 import com.getbooks.android.ui.adapter.RecyclerShelvesAdapter;
 import com.getbooks.android.ui.dialog.RestartDownloadingDialog;
+import com.getbooks.android.ui.widget.AlertDialogAboutUs;
 import com.getbooks.android.ui.widget.RecyclerItemClickListener;
 import com.getbooks.android.util.FileUtil;
 import com.getbooks.android.util.LogUtil;
@@ -178,6 +179,11 @@ public class LibraryFragment extends BaseFragment implements Queries.CallBack,
     protected void logOut() {
         Queries queries = new Queries();
         queries.deleteUserSession(Prefs.getToken(getAct()), getAct());
+    }
+
+    @OnClick(R.id.txt_about_us)
+    protected void aboutUs() {
+        AlertDialogAboutUs.newInstance().show(getFragmentManager(), "saf");
     }
 
     @Override
