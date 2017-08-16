@@ -8,7 +8,7 @@ public final class Const {
 
     // Api constants
     public static final String BASE_URL_PELEPHONE_API = "https://pelephone.getbooks.co.il/dev/?";
-    public static final String BASE_URL_API_ARY = "https://pelephone.getbooks.co.il/dev/api/rest/";
+    public static final String  BASE_URL_API_ARY = "https://pelephone.getbooks.co.il/dev/api/rest/";
     public static final String WEBSITECODE= "aff_pelephone";
 
 
