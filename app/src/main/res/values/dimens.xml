@@ -36,7 +36,7 @@
     <dimen name="margin_bottom">11.8dp</dimen>
 
     <!-- Menu seek bar sizes -->
-    <dimen name="seek_bar_radius">1dp</dimen>
+    <dimen name="seek_bar_radius">10dp</dimen>
     <dimen name="seek_bar_height">4dp</dimen>
     <dimen name="seek_bar_width">45dp</dimen>
     <dimen name="font_seek_bar">16sp</dimen>
@@ -67,6 +67,9 @@
     <dimen name="margin_arrow_bottom">10dp</dimen>
     <dimen name="margin_arrow_right_menu">35dp</dimen>
 
+    <!-- Catalog sizes -->
+    <dimen name="margin_close_web">20dp</dimen>
+
 
     <!-- Tutorial text float screen sizes-->
     <dimen name="margin_between_bottom_arrow">80dp</dimen>
@@ -92,7 +95,7 @@
 
 
     <!-- Book settings sizes -->
-    <dimen name="book_setting_height">343dp</dimen>
+    <dimen name="book_setting_height">345dp</dimen>
     <dimen name="txt_margin_book_setting">25dp</dimen>
     <dimen name="margin_top_menu_br">26dp</dimen>
     <dimen name="size_book_setting">14sp</dimen>
@@ -100,4 +103,17 @@
     <dimen name="letter_small_size">20sp</dimen>
     <dimen name="letter_big_size">41sp</dimen>
     <dimen name="margin_bottom_menu_book_small">7dp</dimen>
+    
+    <!-- Book contents list sizes -->
+    <dimen name="item_content_size">15sp</dimen>
+    <dimen name="margin_recycler_content_left">20dp</dimen>
+    <dimen name="margin_recycler_right">40dp</dimen>
+    <dimen name="scroll_bar_width">6dp</dimen>
+
+    <!-- Book contents selector sizes -->
+    <dimen name="txt_content_selector_size">15sp</dimen>
+    <dimen name="txt_margin_top_selector">25dp</dimen>
+    <dimen name="btn_background_padding">10dp</dimen>
+    <dimen name="txt_margin_center_selector">45dp</dimen>
+
 </resources>

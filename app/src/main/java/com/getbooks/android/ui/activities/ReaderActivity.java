@@ -1,18 +1,12 @@
 package com.getbooks.android.ui.activities;
 
-import android.app.DialogFragment;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.FragmentTransaction;
-import android.view.Window;
-import android.view.WindowManager;
 
 import com.getbooks.android.R;
 import com.getbooks.android.ui.BaseActivity;
-import com.getbooks.android.ui.BaseFragment;
-import com.getbooks.android.ui.dialog.BookSettingMenuDialog;
+import com.getbooks.android.ui.fragments.BookContentFragment;
+import com.getbooks.android.ui.fragments.BookSettingMenuFragment;
 
 import butterknife.OnClick;
 
@@ -34,14 +28,20 @@ public class ReaderActivity extends BaseActivity {
     }
 
     @OnClick(R.id.img_book_setting)
-    protected void openBookSetting(){
-        BaseActivity.addFragment(this, BookSettingMenuDialog.class, R.id.content_book_settings,
-                null, false, true,  true, null);
+    protected void openBookSetting() {
+        BaseActivity.addFragment(this, BookSettingMenuFragment.class, R.id.content_book_settings,
+                null, false, true, true, null);
     }
 
 
     @OnClick(R.id.img_book_close)
-    protected void closeBook(){
+    protected void closeBook() {
         super.onBackPressed();
+    }
+
+    @OnClick(R.id.img_book_murks_content)
+    protected void openBookMurksContent() {
+        BaseActivity.addFragment(this, BookContentFragment.class, R.id.content_book_settings,
+                null, false, true, true, null);
     }
 }

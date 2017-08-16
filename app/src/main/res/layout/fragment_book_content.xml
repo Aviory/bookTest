@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_white"
+    android:clickable="true"
+    android:orientation="vertical">
+
+    <com.getbooks.android.ui.widget.SelectorOfBookContents
+        android:id="@+id/book_contents_selector"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/txt_margin_top_selector"
+        android:gravity="center" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/content_chosen"
+        style="@style/ScrollbarContentListStyle"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginLeft="@dimen/margin_recycler_content_left"
+        android:layout_marginRight="@dimen/margin_recycler_right"
+        android:layout_marginTop="35dp"
+        android:layout_weight="1" />
+
+    <ImageView
+        android:id="@+id/img_close"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="@dimen/margin_close_img_bottom"
+        android:src="@drawable/close_blue" />
+
+</LinearLayout>

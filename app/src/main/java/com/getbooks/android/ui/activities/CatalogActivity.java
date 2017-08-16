@@ -85,7 +85,7 @@ public class CatalogActivity extends BaseActivity {
     }
 
     private void finishWithError(String message) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+        LogUtil.log(this, message);
     }
 
     private class CatalogWebViewClient extends WebViewClient {

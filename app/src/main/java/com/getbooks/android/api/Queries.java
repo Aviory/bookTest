@@ -23,10 +23,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import retrofit2.Response;
 import rx.Observable;
 import rx.Subscriber;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
 import rx.schedulers.Schedulers;
 import rx.subscriptions.CompositeSubscription;
 
@@ -139,15 +141,27 @@ public class Queries {
         apiService.detUserSession(Const.WEBSITECODE, deviseToken)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
-                .doOnNext(userSessionResponse -> {
-                    if (userSessionResponse.isSuccessful()) {
-                        UserSession userSession = userSessionResponse.body();
-                        Prefs.saveUserSession(context, Const.USER_SESSION_ID, userSession.getCustomerId());
-                        Log.d("QQQ-save", String.valueOf(userSession.getCustomerId()));
+                .subscribe(new Subscriber<Response<UserSession>>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
                         getAllUserBook(deviseToken, context, Prefs.getUserSession(context, Const.USER_SESSION_ID));
                     }
-                })
-                .subscribe();
+
+                    @Override
+                    public void onNext(Response<UserSession> userSessionResponse) {
+                        if (userSessionResponse.isSuccessful()) {
+                            UserSession userSession = userSessionResponse.body();
+                            Prefs.saveUserSession(context, Const.USER_SESSION_ID, userSession.getCustomerId());
+                            Log.d("QQQ-save", String.valueOf(userSession.getCustomerId()));
+                            getAllUserBook(deviseToken, context, Prefs.getUserSession(context, Const.USER_SESSION_ID));
+                        }
+                    }
+                });
     }
 
 

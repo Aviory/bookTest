@@ -109,4 +109,9 @@
     <string name="txt_font">Font</string>
     <string name="txt_a_letter">a</string>
 
+    <!-- Contents selector texts -->
+    <string name="txt_book_content">content</string>
+    <string name="txt_book_murks_list">bookmarks</string>
+    <string name="txt_highlights_list">accent</string>
+
 </resources>

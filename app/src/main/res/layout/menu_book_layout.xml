@@ -26,6 +26,7 @@
             android:src="@drawable/search_white" />
 
         <ImageView
+            android:id="@+id/img_book_murks_content"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/margin_smallest"
