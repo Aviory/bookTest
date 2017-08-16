@@ -14,5 +14,5 @@ import retrofit2.http.Query;
 
 public interface ApiTexts {
     @GET(" ")
-    Call<List<Text>> getAboutUs(    );
+    Call<List<Text>> getAboutUs();
 }
