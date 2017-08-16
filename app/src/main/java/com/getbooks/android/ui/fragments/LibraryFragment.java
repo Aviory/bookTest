@@ -252,11 +252,9 @@ public class LibraryFragment extends BaseFragment implements Queries.CallBack,
                     break;
                 case PURCHASED_BOOK:
                     UiUtil.openActivity(getAct(), ReaderActivity.class, false);
-                    Toast.makeText(getAct(), "Purchased Book", Toast.LENGTH_SHORT).show();
                     break;
                 case RENTED_BOOK:
                     UiUtil.openActivity(getAct(), ReaderActivity.class, false);
-                    Toast.makeText(getAct(), "Rented Book", Toast.LENGTH_SHORT).show();
                     break;
             }
 
