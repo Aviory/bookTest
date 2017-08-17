@@ -5,46 +5,55 @@
     android:minHeight="1000dp"
     android:minWidth="1000dp"
     android:background="@color/color_white">
-    <LinearLayout
-        android:id="@+id/service_top_lianer"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:weightSum="2">
-        <RelativeLayout
+
+        <RadioGroup
+            android:id="@+id/radioGroup1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1">
-            <ToggleButton
+            android:layout_marginTop="@dimen/btn_service_margin_top"
+            android:gravity="center"
+            android:orientation="horizontal" >
+            <RadioButton
                 android:id="@+id/btn_service_left"
                 android:layout_width="@dimen/btn_service_width"
                 android:layout_height="@dimen/btn_service_heigth"
                 android:layout_gravity="center"
                 android:layout_alignParentRight="true"
-                android:layout_marginRight="@dimen/btn_service_margin"/>
-        </RelativeLayout>
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1">
-            <ToggleButton
+                android:button="@null"
+                android:gravity="center"
+                android:layout_marginRight="@dimen/btn_service_margin_between"
+                android:background="@drawable/rbtn_bg_service_privacy"
+                android:textColor="@drawable/selector_btn_service_privacy_txt_color"
+                android:textSize="@dimen/btn_service_txt_size"
+                android:text="Aaaaa"/>
+
+            <RadioButton
                 android:id="@+id/btn_service_right"
                 android:layout_width="@dimen/btn_service_width"
                 android:layout_height="@dimen/btn_service_heigth"
-                android:layout_marginLeft="@dimen/btn_service_margin"
-                android:layout_gravity="center" />
-        </RelativeLayout>
+                android:layout_marginLeft="@dimen/btn_service_margin_between"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:checked="true"
+                android:button="@null"
+                android:background="@drawable/rbtn_bg_service_privacy"
+                android:textColor="@drawable/selector_btn_service_privacy_txt_color"
+                android:textSize="@dimen/btn_service_txt_size"
+                android:text="bbbb"/>
 
-    </LinearLayout>
+        </RadioGroup>
+
+
 
     <com.getbooks.android.ui.widget.ArialNormalTextView
         android:id="@+id/txt_service_privacy"
         android:layout_width="1024dp"
         android:layout_height="wrap_content"
-        android:layout_below="@id/service_top_lianer"
+        android:layout_below="@id/radioGroup1"
         android:gravity="center"
+        android:layout_marginTop="@dimen/btn_service_margin_top"
         android:layout_centerHorizontal="true"
-        android:textSize="@dimen/txt_size_servis_privacy"
+        android:textSize="@dimen/txt_size_body_servis_privacy"
         android:textColor="@color/gray"/>
 
 

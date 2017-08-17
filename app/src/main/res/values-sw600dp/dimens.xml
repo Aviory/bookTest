@@ -47,10 +47,12 @@
     <dimen name="font_body_about">22sp</dimen>
     <!-- Menu books sizes -->
     <dimen name="margin_bottom">18dp</dimen>
-    <dimen name="txt_size_servis_privacy">27sp</dimen>
+    <dimen name="txt_size_body_servis_privacy">22sp</dimen>
     <dimen name="btn_service_width">172dp</dimen>
-    <dimen name="btn_service_heigth">44dp</dimen>
-    <dimen name="btn_service_margin">327dp</dimen>
+    <dimen name="btn_service_heigth">24dp</dimen>
+    <dimen name="btn_service_margin_between">327dp</dimen>
+    <dimen name="btn_service_margin_top">10dp</dimen>
+    <dimen name="btn_service_txt_size">25sp</dimen>
 
 
 </resources>

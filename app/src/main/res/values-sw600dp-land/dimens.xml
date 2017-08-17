@@ -22,5 +22,5 @@
 
     <!-- Tutorial text float screen sizes-->
     <dimen name="margin_txt_center">100dp</dimen>
-    <dimen name="btn_service_margin">327dp</dimen>
+    <dimen name="btn_service_margin_between">327dp</dimen>
 </resources>
