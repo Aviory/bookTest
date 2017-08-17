@@ -37,9 +37,12 @@ import com.getbooks.android.servises.DownloadService;
 import com.getbooks.android.ui.BaseFragment;
 import com.getbooks.android.ui.activities.CatalogActivity;
 import com.getbooks.android.ui.activities.LibraryActivity;
+import com.getbooks.android.ui.activities.TutorialsActivity;
 import com.getbooks.android.ui.adapter.RecyclerShelvesAdapter;
 import com.getbooks.android.ui.dialog.RestartDownloadingDialog;
 import com.getbooks.android.ui.widget.AlertDialogAboutUs;
+import com.getbooks.android.ui.widget.AlertDialogServicePrivacy;
+import com.getbooks.android.ui.widget.AlertDialogStory;
 import com.getbooks.android.ui.widget.RecyclerItemClickListener;
 import com.getbooks.android.util.FileUtil;
 import com.getbooks.android.util.LogUtil;
@@ -174,6 +177,23 @@ public class LibraryFragment extends BaseFragment implements Queries.CallBack,
             UiUtil.hideView(mLeftMenuLayout);
         }
     }
+    @OnClick(R.id.txt_order_history)
+    protected void orderHistory() {
+        AlertDialogStory.newInstance().show(getFragmentManager(), "history");
+    }
+    @OnClick(R.id.txt_instruction)
+    protected void instruction() {
+
+    }
+    @OnClick(R.id.txt_explanation_screens)
+    protected void explanationScreens() {
+        UiUtil.openActivity(getAct(), TutorialsActivity.class, true);
+    }
+    @OnClick(R.id.txt_service_privacy)
+    protected void servicePrivacy() {
+        AlertDialogServicePrivacy.newInstance().show(getFragmentManager(), "privacy");
+    }
+
 
     @OnClick(R.id.txt_log_out)
     protected void logOut() {
@@ -183,7 +203,7 @@ public class LibraryFragment extends BaseFragment implements Queries.CallBack,
 
     @OnClick(R.id.txt_about_us)
     protected void aboutUs() {
-        AlertDialogAboutUs.newInstance().show(getFragmentManager(), "saf");
+        AlertDialogAboutUs.newInstance().show(getFragmentManager(), "about_us");
     }
 
     @Override

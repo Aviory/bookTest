@@ -35,9 +35,22 @@
     <dimen name="margin_txt_center">350dp</dimen>
 
     <!-- Left menu sizes -->
-    <dimen name="left_menu_txt_size">27sp</dimen>
+    <dimen name="margin_top_icon">48dp</dimen>
+    <dimen name="margin_right_icon">24dp</dimen>
+    <dimen name="margin_left_icon">32dp</dimen>
     <dimen name="margin_left_menu_top">-9.5dp</dimen>
+    <dimen name="dialog_margin_about">32dp</dimen>
+    <dimen name="margin_top_icon_about">12.6dp</dimen>
 
+    <dimen name="left_menu_txt_size">27sp</dimen>
+    <dimen name="font_hader_about">27sp</dimen>
+    <dimen name="font_body_about">22sp</dimen>
     <!-- Menu books sizes -->
     <dimen name="margin_bottom">18dp</dimen>
+    <dimen name="txt_size_servis_privacy">27sp</dimen>
+    <dimen name="btn_service_width">172dp</dimen>
+    <dimen name="btn_service_heigth">44dp</dimen>
+    <dimen name="btn_service_margin">327dp</dimen>
+
+
 </resources>

@@ -81,8 +81,16 @@
     <dimen name="margin_top_icon">30dp</dimen>
     <dimen name="margin_right_icon">15dp</dimen>
     <dimen name="margin_left_icon">20dp</dimen>
-    <dimen name="left_menu_txt_size">15sp</dimen>
     <dimen name="margin_left_menu_top">-6dp</dimen>
     <dimen name="dialog_margin_about">20dp</dimen>
+    <dimen name="margin_top_icon_about">7dp</dimen>
+
+    <dimen name="left_menu_txt_size">15sp</dimen>
+    <dimen name="font_hader_about">20sp</dimen>
+    <dimen name="font_body_about">17sp</dimen>
+    <dimen name="txt_size_servis_privacy">25sp</dimen>
+    <dimen name="btn_service_width">139dp</dimen>
+    <dimen name="btn_service_heigth">16dp</dimen>
+    <dimen name="btn_service_margin">327dp</dimen>
 
 </resources>

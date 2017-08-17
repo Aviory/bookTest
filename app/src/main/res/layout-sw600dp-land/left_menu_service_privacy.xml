@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:minHeight="1000dp"
+    android:minWidth="1000dp"
+    android:background="@color/color_white">
+    <LinearLayout
+        android:id="@+id/service_top_lianer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:weightSum="2">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+            <ToggleButton
+                android:id="@+id/btn_service_left"
+                android:layout_width="@dimen/btn_service_width"
+                android:layout_height="@dimen/btn_service_heigth"
+                android:layout_gravity="center"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="@dimen/btn_service_margin"/>
+        </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1">
+            <ToggleButton
+                android:id="@+id/btn_service_right"
+                android:layout_width="@dimen/btn_service_width"
+                android:layout_height="@dimen/btn_service_heigth"
+                android:layout_marginLeft="@dimen/btn_service_margin"
+                android:layout_gravity="center" />
+        </RelativeLayout>
+
+    </LinearLayout>
+
+    <com.getbooks.android.ui.widget.ArialNormalTextView
+        android:id="@+id/txt_service_privacy"
+        android:layout_width="1024dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/service_top_lianer"
+        android:gravity="center"
+        android:layout_centerHorizontal="true"
+        android:textSize="@dimen/txt_size_servis_privacy"
+        android:textColor="@color/gray"/>
+
+
+    <ImageView
+        android:id="@+id/service_privacy_close"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="@dimen/margin_bottom"
+        android:src="@drawable/close_blue"/>
+
+</RelativeLayout>

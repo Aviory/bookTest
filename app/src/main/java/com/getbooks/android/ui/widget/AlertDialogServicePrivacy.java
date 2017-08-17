@@ -25,30 +25,29 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 /**
- * Created by Avi on 14.08.2017.
+ * Created by avi on 17.08.17.
  */
 
-public class AlertDialogAboutUs extends DialogFragment {
-    public AlertDialogAboutUs(){}
-
-    public static AlertDialogAboutUs newInstance(){
-        AlertDialogAboutUs f = new AlertDialogAboutUs();
+public class AlertDialogServicePrivacy extends DialogFragment {
+    public AlertDialogServicePrivacy(){}
+    public static AlertDialogServicePrivacy newInstance(){
+        AlertDialogServicePrivacy f = new AlertDialogServicePrivacy();
         return f;
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.left_menu_about_us, container, false);
-        ImageView close = (ImageView) v.findViewById(R.id.about_us_close);
-        ArialNormalTextView text = (ArialNormalTextView) v.findViewById(R.id.txt_about);
+        View v = inflater.inflate(R.layout.left_menu_service_privacy, container, false);
+        ImageView close = (ImageView) v.findViewById(R.id.service_privacy_close);
+        ArialNormalTextView text = (ArialNormalTextView) v.findViewById(R.id.txt_service_privacy);
         new QueriesTexts().getApi().getAllTexts().enqueue(new Callback<RequestModel>() {
             @Override
             public void onResponse(Call<RequestModel> call, Response<RequestModel> response) {
                 RequestModel s = response.body();
                 List<Text> list = s.getPopUps();
                 for (Text t: list) {
-                    if(t.getPopupID()=="4972");{
+                    if(t.getPopupID()=="4984");{
                         text.setText(t.getPopupText());
                         return;
                     }
@@ -86,3 +85,4 @@ public class AlertDialogAboutUs extends DialogFragment {
         }
     }
 }
+

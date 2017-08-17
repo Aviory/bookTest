@@ -1,5 +1,6 @@
 package com.getbooks.android.api;
 
+import com.getbooks.android.model.RequestModel;
 import com.getbooks.android.model.Text;
 
 import java.util.List;
@@ -14,5 +15,5 @@ import retrofit2.http.Query;
 
 public interface ApiTexts {
     @GET(" ")
-    Call<List<Text>> getAllTexts();
+    Call<RequestModel> getAllTexts();
 }

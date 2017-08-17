@@ -9,8 +9,8 @@
         android:id="@+id/txt_header_aboutus"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/menu_icon_margin"
-        android:textSize="@dimen/font_7"
+        android:layout_marginTop="@dimen/margin_top_icon_about"
+        android:textSize="@dimen/font_hader_about"
         android:textColor="@color/blue"
         android:layout_centerHorizontal="true"
         android:text="@string/txt_header_about"/>
@@ -18,7 +18,7 @@
         android:id="@+id/img_logo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/menu_icon_margin"
+        android:layout_marginTop="@dimen/margin_top_icon_about"
         android:layout_below="@id/txt_header_aboutus"
         android:layout_centerHorizontal="true"
         android:src="@drawable/img_logo"/>
@@ -31,10 +31,11 @@
         android:layout_marginTop="@dimen/menu_icon_margin"
         android:layout_marginRight="@dimen/dialog_margin"
         android:layout_marginLeft="@dimen/dialog_margin"
-        android:textColor="@color/black_translucent"
-        android:textSize="@dimen/font_5"
+        android:textColor="@color/gray"
+        android:textSize="@dimen/font_body_about"
         android:gravity="center"
-        android:text="@string/txt_about_us_full"/>
+        android:layout_centerHorizontal="true"
+        android:text=""/>
     <ImageView
         android:id="@+id/about_us_close"
         android:layout_width="wrap_content"
@@ -50,8 +51,8 @@
         android:layout_above="@id/about_us_close"
         android:layout_marginBottom="@dimen/dialog_margin_about"
         android:layout_marginLeft="@dimen/dialog_margin_about"
-        android:textColor="@color/black_translucent"
-        android:textSize="@dimen/font_5"
+        android:textColor="@color/gray"
+        android:textSize="@dimen/font_body_about"
         android:text="@string/txt_version"/>
 
 </RelativeLayout>
