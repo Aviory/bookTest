@@ -29,5 +29,8 @@ public final class Const {
     //Catalog constant
     public static final  String CATALOG_URL = "https://pelephone.getbooks.co.il/dev/on-sale";
 
+    // Reader constant
     public static final String BOOKS_DIRECTORY = "GetBooks";
+    public static final String BOOK_PATH = "book_path";
+    public static final String BOOK_NAME = "book_name";
 }

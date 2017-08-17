@@ -251,10 +251,12 @@ public class LibraryFragment extends BaseFragment implements Queries.CallBack,
                     addToDownloadQueue(book);
                     break;
                 case PURCHASED_BOOK:
-                    UiUtil.openActivity(getAct(), ReaderActivity.class, false);
+                    UiUtil.openActivity(getAct(), ReaderActivity.class, false,
+                            Const.BOOK_PATH, mDirectoryPath, Const.BOOK_NAME, mLibrary.get(position).getBookName());
                     break;
                 case RENTED_BOOK:
-                    UiUtil.openActivity(getAct(), ReaderActivity.class, false);
+                    UiUtil.openActivity(getAct(), ReaderActivity.class, false,
+                            Const.BOOK_PATH, mDirectoryPath, Const.BOOK_NAME, mLibrary.get(position).getBookName());
                     break;
             }
 

@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.Looper;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
@@ -122,8 +123,12 @@ public class UiUtil {
         }).start();
     }
 
-    public static void openActivity(Activity context, Class<?> tClass, boolean isCloseCurrentActivity){
+    public static void openActivity(Activity context, Class<?> tClass, boolean isCloseCurrentActivity,
+                                    String key, String value, String keyExtra, String valueExtra){
         Intent intent = new Intent(context, tClass);
+        if (!TextUtils.isEmpty(value))
+        intent.putExtra(key, value);
+        intent.putExtra(keyExtra, valueExtra);
         context.startActivity(intent);
         if (isCloseCurrentActivity) context.finish();
     }

@@ -70,5 +70,8 @@
     <dimen name="txt_margin_top_selector">75dp</dimen>
     <dimen name="btn_background_padding">20dp</dimen>
 
+    <dimen name="separator_height_list">2dp</dimen>
+    <dimen name="separator_width_list">2dp</dimen>
+
 
 </resources>

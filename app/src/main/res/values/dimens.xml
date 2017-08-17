@@ -115,5 +115,7 @@
     <dimen name="txt_margin_top_selector">25dp</dimen>
     <dimen name="btn_background_padding">10dp</dimen>
     <dimen name="txt_margin_center_selector">45dp</dimen>
+    <dimen name="separator_height_list">1dp</dimen>
+    <dimen name="separator_width_list">1dp</dimen>
 
 </resources>

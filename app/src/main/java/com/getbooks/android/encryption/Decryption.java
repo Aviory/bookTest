@@ -1,6 +1,10 @@
 package com.getbooks.android.encryption;
 
+import com.getbooks.android.Const;
+import com.getbooks.android.util.SystemUtil;
+
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.security.InvalidKeyException;
@@ -17,26 +21,21 @@ import javax.crypto.spec.SecretKeySpec;
 
 public class Decryption {
 
-    public static void decrypt() {
+    public static CipherInputStream decryptStream(String decryptFilePath, String bookName) throws FileNotFoundException, NoSuchPaddingException, NoSuchAlgorithmException, InvalidKeyException {
+        // This stream write the encrypted text. This stream will be wrapped by another stream.
+        FileInputStream fos = new FileInputStream(decryptFilePath +"/"+ bookName + ".epub" );
+
         Encryption encryption = new Encryption();
-        encryption.getKey();
-    }
+        encryption.createKey(Const.USER_SESSION_ID, SystemUtil.getSetting());
 
-    static void decryptExample() throws IOException, NoSuchAlgorithmException, NoSuchPaddingException, InvalidKeyException {
-        FileInputStream fis = new FileInputStream("data/encrypted");
-
-        FileOutputStream fos = new FileOutputStream("data/decrypted");
-        SecretKeySpec sks = new SecretKeySpec("MyPassword".getBytes(), "AES");
+        // Length is 16 byte
+        // Careful when taking user input!!! https://stackoverflow.com/a/3452620/1188357
+        SecretKeySpec sks = new SecretKeySpec(encryption.getKey().getBytes(), "AES");
+        // Create cipher
         Cipher cipher = Cipher.getInstance("AES");
         cipher.init(Cipher.DECRYPT_MODE, sks);
-        CipherInputStream cis = new CipherInputStream(fis, cipher);
-        int b;
-        byte[] d = new byte[8];
-        while ((b = cis.read(d)) != -1) {
-            fos.write(d, 0, b);
-        }
-        fos.flush();
-        fos.close();
-        cis.close();
+        // Wrap the output stream
+        CipherInputStream cos = new CipherInputStream(fos, cipher);
+        return cos;
     }
 }

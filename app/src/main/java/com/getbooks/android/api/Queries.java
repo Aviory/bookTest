@@ -175,7 +175,7 @@ public class Queries {
                     if (responseBodyResponse.code() == 204) {
                         Prefs.clearPrefs(context);
                         BookDataBaseLoader.createBookDBLoader(context).deleteUserSession(Prefs.getUserSession(context, Const.USER_SESSION_ID));
-                        UiUtil.openActivity(context, AuthorizationActivity.class, true);
+                        UiUtil.openActivity(context, AuthorizationActivity.class, true, "", "", "", "");
                     }
                 }).subscribe();
     }

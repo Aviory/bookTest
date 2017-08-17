@@ -169,9 +169,9 @@ public class AuthorizationFragment extends BaseFragment {
         Prefs.setBooleanProperty(getAct(), Const.IS_USER_AUTHORIZE, true);
         Prefs.putToken(getAct(), token);
         if (Prefs.getCountTutorialsShow(getAct()) < Prefs.MAX_COUNT_VIEWS_TUTORIALS) {
-            UiUtil.openActivity(getAct(), TutorialsActivity.class, true);
+            UiUtil.openActivity(getAct(), TutorialsActivity.class, true, "", "", "", "");
         } else {
-            UiUtil.openActivity(getAct(), LibraryActivity.class, true);
+            UiUtil.openActivity(getAct(), LibraryActivity.class, true, "", "", "", "");
         }
     }
 
