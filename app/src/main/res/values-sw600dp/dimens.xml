@@ -53,6 +53,7 @@
     <dimen name="btn_service_margin_between">327dp</dimen>
     <dimen name="btn_service_margin_top">10dp</dimen>
     <dimen name="btn_service_txt_size">25sp</dimen>
+    <dimen name="btn_service_padding_bot">3dp</dimen>
 
 
 </resources>

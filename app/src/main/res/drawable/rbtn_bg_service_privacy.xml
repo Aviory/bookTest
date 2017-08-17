@@ -1,14 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item android:state_checked="true"><shape>
-        <solid android:color="@color/blue" />
+    <item android:drawable="@drawable/minus" android:state_checked="true">
 
-        <corners android:bottomRightRadius="50dp"
-            android:bottomLeftRadius="50dp"
-            android:topRightRadius="50dp"
-            android:topLeftRadius="50dp"/>
-    </shape></item>
+    </item>
     <item android:state_checked="false"><shape android:shape="rectangle">
         <solid android:color="#ffffff" />
 
