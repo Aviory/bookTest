@@ -95,7 +95,6 @@ public class LibraryFragment extends BaseFragment implements Queries.CallBack,
     private BookDataBaseLoader mBookDataBaseLoader;
 
     private static final String SAVE_LIBRARY = "com.getbooks.android.ui.fragments.save_library";
-    FragmentTransaction fragmentTransaction;
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
@@ -184,11 +183,12 @@ public class LibraryFragment extends BaseFragment implements Queries.CallBack,
     @OnClick(R.id.txt_order_history)
     protected void orderHistory() {
 //        AlertDialogStory.newInstance().show(getFragmentManager(), "history");
+
         FragmentManager fragmentManager = getFragmentManager();
-        fragmentTransaction = fragmentManager
+        FragmentTransaction fragmentTransaction = fragmentManager
                 .beginTransaction();
         FragmentHistory frag = FragmentHistory.newInstance();
-        fragmentTransaction.replace(R.id.contaner_main, frag, "history");
+        fragmentTransaction.replace(R.id.contaner_main, frag);
         fragmentTransaction.commit();
         UiUtil.hideView(mLeftMenuLayout);
     }
@@ -196,10 +196,10 @@ public class LibraryFragment extends BaseFragment implements Queries.CallBack,
     protected void instruction() {
 //        AlertDialogInstruction.newInstance().show(getFragmentManager(), "instruction");
         FragmentManager fragmentManager = getFragmentManager();
-        fragmentTransaction = fragmentManager
+        FragmentTransaction fragmentTransaction = fragmentManager
                 .beginTransaction();
         AlertDialogInstruction frag = AlertDialogInstruction.newInstance();
-        fragmentTransaction.replace(R.id.contaner_main, frag, "instruction");
+        fragmentTransaction.replace(R.id.contaner_main, frag);
         fragmentTransaction.commit();
         UiUtil.hideView(mLeftMenuLayout);
 
@@ -211,11 +211,12 @@ public class LibraryFragment extends BaseFragment implements Queries.CallBack,
     @OnClick(R.id.txt_service_privacy)
     protected void servicePrivacy() {
 //        AlertDialogServicePrivacy.newInstance().show(getFragmentManager(), "privacy");
+
         FragmentManager fragmentManager = getFragmentManager();
-        fragmentTransaction = fragmentManager
+        FragmentTransaction fragmentTransaction = fragmentManager
                 .beginTransaction();
         FragmentServicePrivacy frag = FragmentServicePrivacy.getInstance();
-        fragmentTransaction.replace(R.id.contaner_main, frag, "privacy");
+        fragmentTransaction.replace(R.id.contaner_main, frag);
         fragmentTransaction.commit();
         UiUtil.hideView(mLeftMenuLayout);
     }
