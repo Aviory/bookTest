@@ -1,0 +1,42 @@
+[
+    {
+        "merged": "/home/avi/AndroidStudioProjects/BookApp-android/webviewmarker/build/intermediates/res/merged/debug/anim/abc_fade_in.xml",
+        "source": "/home/avi/.android/build-cache/23b672ab1d38c819db58fa211121ab178a2f0593/output/res/anim/abc_fade_in.xml"
+    },
+    {
+        "merged": "/home/avi/AndroidStudioProjects/BookApp-android/webviewmarker/build/intermediates/res/merged/debug/anim/abc_popup_exit.xml",
+        "source": "/home/avi/.android/build-cache/23b672ab1d38c819db58fa211121ab178a2f0593/output/res/anim/abc_popup_exit.xml"
+    },
+    {
+        "merged": "/home/avi/AndroidStudioProjects/BookApp-android/webviewmarker/build/intermediates/res/merged/debug/anim/abc_slide_out_bottom.xml",
+        "source": "/home/avi/.android/build-cache/23b672ab1d38c819db58fa211121ab178a2f0593/output/res/anim/abc_slide_out_bottom.xml"
+    },
+    {
+        "merged": "/home/avi/AndroidStudioProjects/BookApp-android/webviewmarker/build/intermediates/res/merged/debug/anim/abc_grow_fade_in_from_bottom.xml",
+        "source": "/home/avi/.android/build-cache/23b672ab1d38c819db58fa211121ab178a2f0593/output/res/anim/abc_grow_fade_in_from_bottom.xml"
+    },
+    {
+        "merged": "/home/avi/AndroidStudioProjects/BookApp-android/webviewmarker/build/intermediates/res/merged/debug/anim/abc_slide_in_top.xml",
+        "source": "/home/avi/.android/build-cache/23b672ab1d38c819db58fa211121ab178a2f0593/output/res/anim/abc_slide_in_top.xml"
+    },
+    {
+        "merged": "/home/avi/AndroidStudioProjects/BookApp-android/webviewmarker/build/intermediates/res/merged/debug/anim/abc_shrink_fade_out_from_bottom.xml",
+        "source": "/home/avi/.android/build-cache/23b672ab1d38c819db58fa211121ab178a2f0593/output/res/anim/abc_shrink_fade_out_from_bottom.xml"
+    },
+    {
+        "merged": "/home/avi/AndroidStudioProjects/BookApp-android/webviewmarker/build/intermediates/res/merged/debug/anim/abc_slide_out_top.xml",
+        "source": "/home/avi/.android/build-cache/23b672ab1d38c819db58fa211121ab178a2f0593/output/res/anim/abc_slide_out_top.xml"
+    },
+    {
+        "merged": "/home/avi/AndroidStudioProjects/BookApp-android/webviewmarker/build/intermediates/res/merged/debug/anim/abc_fade_out.xml",
+        "source": "/home/avi/.android/build-cache/23b672ab1d38c819db58fa211121ab178a2f0593/output/res/anim/abc_fade_out.xml"
+    },
+    {
+        "merged": "/home/avi/AndroidStudioProjects/BookApp-android/webviewmarker/build/intermediates/res/merged/debug/anim/abc_slide_in_bottom.xml",
+        "source": "/home/avi/.android/build-cache/23b672ab1d38c819db58fa211121ab178a2f0593/output/res/anim/abc_slide_in_bottom.xml"
+    },
+    {
+        "merged": "/home/avi/AndroidStudioProjects/BookApp-android/webviewmarker/build/intermediates/res/merged/debug/anim/abc_popup_enter.xml",
+        "source": "/home/avi/.android/build-cache/23b672ab1d38c819db58fa211121ab178a2f0593/output/res/anim/abc_popup_enter.xml"
+    }
+]

@@ -105,5 +105,7 @@
     <string name="txt_about_us_full">Pelephone books הנה אפליקציית  קריאה דיגיטלית המאפשרת לך להשא מסתקרן עם ספרייה הפרטית שלך בא נשארים כל הספרים שרכשת או השאלת \n\n פונטים: פרוייקט קולמוס \n\n\n  www.pelephonebooks.co.il</string>
     <string name="txt_version" >vers 3.0.1</string>
     <string name="txt_header_about">אודות</string>
+    <string name="txt_btn_service_rigth">תנאי השירות</string>
+    <string name="txt_btn_service_left">מדיניות פרטיות</string>
 
 </resources>

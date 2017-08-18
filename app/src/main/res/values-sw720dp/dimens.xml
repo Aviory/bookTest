@@ -5,4 +5,5 @@
 
     <!-- Tutorial text screen sizes-->
     <dimen name="margin_menu_redactor_top">350dp</dimen>
+
 </resources>

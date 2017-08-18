@@ -25,7 +25,7 @@
             android:background="@drawable/rbtn_bg_service_privacy"
             android:textColor="@drawable/selector_btn_service_privacy_txt_color"
             android:textSize="@dimen/btn_service_txt_size"
-            android:text="Aaaaa"/>
+            android:text="@string/txt_btn_service_left"/>
 
         <RadioButton
             android:id="@+id/btn_service_right"
@@ -39,7 +39,7 @@
             android:background="@drawable/rbtn_bg_service_privacy"
             android:textColor="@drawable/selector_btn_service_privacy_txt_color"
             android:textSize="@dimen/btn_service_txt_size"
-            android:text="bbbb"/>
+            android:text="@string/txt_btn_service_rigth"/>
 
     </RadioGroup>
 
@@ -47,8 +47,8 @@
 
     <com.getbooks.android.ui.widget.ArialNormalTextView
         android:id="@+id/txt_service_privacy"
-        android:layout_width="1024dp"
-        android:layout_height="wrap_content"
+        android:layout_width="@dimen/txt_width_servise_body"
+        android:layout_height="@dimen/txt_heigth_servise_body"
         android:layout_below="@id/radioGroup1"
         android:gravity="center"
         android:layout_marginTop="@dimen/btn_service_margin_top"

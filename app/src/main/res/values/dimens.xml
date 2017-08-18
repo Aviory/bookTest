@@ -88,12 +88,14 @@
     <dimen name="left_menu_txt_size">15sp</dimen>
     <dimen name="font_hader_about">20sp</dimen>
     <dimen name="font_body_about">17sp</dimen>
-    <dimen name="txt_size_body_servis_privacy">25sp</dimen>
-    <dimen name="btn_service_width">139dp</dimen>
-    <dimen name="btn_service_heigth">16dp</dimen>
+    <dimen name="txt_size_body_servis_privacy">15sp</dimen>
+    <dimen name="btn_service_width">122dp</dimen>
+    <dimen name="btn_service_heigth">17dp</dimen>
     <dimen name="btn_service_margin_between">65dp</dimen>
-    <dimen name="btn_service_margin_top">10dp</dimen>
-    <dimen name="btn_service_txt_size">25sp</dimen>
+    <dimen name="btn_service_margin_top">37dp</dimen>
+    <dimen name="btn_service_txt_size">15sp</dimen>
     <dimen name="btn_service_padding_bot">2dp</dimen>
+    <dimen name="txt_heigth_servise_body">293dp</dimen>
+    <dimen name="txt_width_servise_body">232dp</dimen>
 
 </resources>

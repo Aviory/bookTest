@@ -9,6 +9,8 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -40,9 +42,10 @@ import com.getbooks.android.ui.activities.LibraryActivity;
 import com.getbooks.android.ui.activities.TutorialsActivity;
 import com.getbooks.android.ui.adapter.RecyclerShelvesAdapter;
 import com.getbooks.android.ui.dialog.RestartDownloadingDialog;
-import com.getbooks.android.ui.widget.AlertDialogAboutUs;
-import com.getbooks.android.ui.widget.AlertDialogServicePrivacy;
-import com.getbooks.android.ui.widget.AlertDialogStory;
+import com.getbooks.android.ui.widget.left_menu_items.AlertDialogAboutUs;
+import com.getbooks.android.ui.widget.left_menu_items.AlertDialogInstruction;
+import com.getbooks.android.ui.widget.left_menu_items.FragmentHistory;
+import com.getbooks.android.ui.widget.left_menu_items.FragmentServicePrivacy;
 import com.getbooks.android.ui.widget.RecyclerItemClickListener;
 import com.getbooks.android.util.FileUtil;
 import com.getbooks.android.util.LogUtil;
@@ -92,6 +95,7 @@ public class LibraryFragment extends BaseFragment implements Queries.CallBack,
     private BookDataBaseLoader mBookDataBaseLoader;
 
     private static final String SAVE_LIBRARY = "com.getbooks.android.ui.fragments.save_library";
+    FragmentTransaction fragmentTransaction;
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
@@ -179,10 +183,25 @@ public class LibraryFragment extends BaseFragment implements Queries.CallBack,
     }
     @OnClick(R.id.txt_order_history)
     protected void orderHistory() {
-        AlertDialogStory.newInstance().show(getFragmentManager(), "history");
+//        AlertDialogStory.newInstance().show(getFragmentManager(), "history");
+        FragmentManager fragmentManager = getFragmentManager();
+        fragmentTransaction = fragmentManager
+                .beginTransaction();
+        FragmentHistory frag = FragmentHistory.newInstance();
+        fragmentTransaction.replace(R.id.contaner_main, frag, "history");
+        fragmentTransaction.commit();
+        UiUtil.hideView(mLeftMenuLayout);
     }
     @OnClick(R.id.txt_instruction)
     protected void instruction() {
+//        AlertDialogInstruction.newInstance().show(getFragmentManager(), "instruction");
+        FragmentManager fragmentManager = getFragmentManager();
+        fragmentTransaction = fragmentManager
+                .beginTransaction();
+        AlertDialogInstruction frag = AlertDialogInstruction.newInstance();
+        fragmentTransaction.replace(R.id.contaner_main, frag, "instruction");
+        fragmentTransaction.commit();
+        UiUtil.hideView(mLeftMenuLayout);
 
     }
     @OnClick(R.id.txt_explanation_screens)
@@ -191,7 +210,14 @@ public class LibraryFragment extends BaseFragment implements Queries.CallBack,
     }
     @OnClick(R.id.txt_service_privacy)
     protected void servicePrivacy() {
-        AlertDialogServicePrivacy.newInstance().show(getFragmentManager(), "privacy");
+//        AlertDialogServicePrivacy.newInstance().show(getFragmentManager(), "privacy");
+        FragmentManager fragmentManager = getFragmentManager();
+        fragmentTransaction = fragmentManager
+                .beginTransaction();
+        FragmentServicePrivacy frag = FragmentServicePrivacy.getInstance();
+        fragmentTransaction.replace(R.id.contaner_main, frag, "privacy");
+        fragmentTransaction.commit();
+        UiUtil.hideView(mLeftMenuLayout);
     }
 
 

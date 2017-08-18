@@ -1,0 +1,18 @@
+[
+    {
+        "merged": "/home/avi/AndroidStudioProjects/BookApp-android/webviewmarker/build/intermediates/res/merged/release/layout-v21/notification_template_custom_big.xml",
+        "source": "/home/avi/.android/build-cache/23b672ab1d38c819db58fa211121ab178a2f0593/output/res/layout-v21/notification_template_custom_big.xml"
+    },
+    {
+        "merged": "/home/avi/AndroidStudioProjects/BookApp-android/webviewmarker/build/intermediates/res/merged/release/layout-v21/notification_action.xml",
+        "source": "/home/avi/.android/build-cache/23b672ab1d38c819db58fa211121ab178a2f0593/output/res/layout-v21/notification_action.xml"
+    },
+    {
+        "merged": "/home/avi/AndroidStudioProjects/BookApp-android/webviewmarker/build/intermediates/res/merged/release/layout-v21/notification_action_tombstone.xml",
+        "source": "/home/avi/.android/build-cache/23b672ab1d38c819db58fa211121ab178a2f0593/output/res/layout-v21/notification_action_tombstone.xml"
+    },
+    {
+        "merged": "/home/avi/AndroidStudioProjects/BookApp-android/webviewmarker/build/intermediates/res/merged/release/layout-v21/notification_template_icon_group.xml",
+        "source": "/home/avi/.android/build-cache/23b672ab1d38c819db58fa211121ab178a2f0593/output/res/layout-v21/notification_template_icon_group.xml"
+    }
+]
