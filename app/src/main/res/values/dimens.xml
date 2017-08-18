@@ -33,7 +33,7 @@
     <dimen name="txt_size">18sp</dimen>
 
     <!-- Menu book sizes -->
-    <dimen name="margin_bottom">11.8dp</dimen>
+    <dimen name="left_menu_service_margin_bot">20dp</dimen>
 
     <!-- Menu seek bar sizes -->
     <dimen name="seek_bar_radius">1dp</dimen>
@@ -92,10 +92,14 @@
     <dimen name="btn_service_width">122dp</dimen>
     <dimen name="btn_service_heigth">17dp</dimen>
     <dimen name="btn_service_margin_between">65dp</dimen>
-    <dimen name="btn_service_margin_top">37dp</dimen>
+    <dimen name="txt_service_margin_top">37dp</dimen>
     <dimen name="btn_service_txt_size">15sp</dimen>
     <dimen name="btn_service_padding_bot">2dp</dimen>
     <dimen name="txt_heigth_servise_body">293dp</dimen>
     <dimen name="txt_width_servise_body">232dp</dimen>
+    <dimen name="btn_service_margin_right">41dp</dimen>
+    <dimen name="btn_service_margin_left">37dp</dimen>
+    <dimen name="txt_body_service_margin_left">48dp</dimen>
+    <dimen name="btn_service_margin_top">23dp</dimen>
 
 </resources>

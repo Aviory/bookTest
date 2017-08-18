@@ -42,7 +42,7 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="@dimen/margin_bottom"
+        android:layout_marginBottom="@dimen/left_menu_service_margin_bot"
         android:src="@drawable/close_blue"/>
 
     <com.getbooks.android.ui.widget.ArialNormalTextView

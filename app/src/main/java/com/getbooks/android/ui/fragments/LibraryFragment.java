@@ -9,6 +9,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.DividerItemDecoration;
@@ -94,6 +95,9 @@ public class LibraryFragment extends BaseFragment implements Queries.CallBack,
     private String mDirectoryPath;
     private BookDataBaseLoader mBookDataBaseLoader;
 
+    final static String PRIVACY = "FRAGMENT_1";
+    final static String INSTRUCTIONS = "FRAGMENT_2";
+    final static String HISTORY = "FRAGMENT_3";
     private static final String SAVE_LIBRARY = "com.getbooks.android.ui.fragments.save_library";
 
     @Override
@@ -162,6 +166,14 @@ public class LibraryFragment extends BaseFragment implements Queries.CallBack,
         }
     }
 
+    private void menuTranzaction(Fragment f, String tag){
+        FragmentTransaction fragmentTransaction = getChildFragmentManager()
+                .beginTransaction();
+        fragmentTransaction.replace(R.id.contaner_main, f, tag);
+        fragmentTransaction.commit();
+        UiUtil.hideView(mLeftMenuLayout);
+    }
+
 
     @OnClick(R.id.txt_catalog)
     protected void catalogOpen() {
@@ -183,26 +195,22 @@ public class LibraryFragment extends BaseFragment implements Queries.CallBack,
     @OnClick(R.id.txt_order_history)
     protected void orderHistory() {
 //        AlertDialogStory.newInstance().show(getFragmentManager(), "history");
-
-        FragmentManager fragmentManager = getFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager
-                .beginTransaction();
-        FragmentHistory frag = FragmentHistory.newInstance();
-        fragmentTransaction.replace(R.id.contaner_main, frag);
-        fragmentTransaction.commit();
-        UiUtil.hideView(mLeftMenuLayout);
+        AlertDialogInstruction fragment = (AlertDialogInstruction) getChildFragmentManager()
+                .findFragmentByTag(HISTORY);
+        if(fragment==null)
+            menuTranzaction(FragmentHistory.newInstance(), HISTORY);
+        else
+            UiUtil.hideView(mLeftMenuLayout);
     }
     @OnClick(R.id.txt_instruction)
     protected void instruction() {
 //        AlertDialogInstruction.newInstance().show(getFragmentManager(), "instruction");
-        FragmentManager fragmentManager = getFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager
-                .beginTransaction();
-        AlertDialogInstruction frag = AlertDialogInstruction.newInstance();
-        fragmentTransaction.replace(R.id.contaner_main, frag);
-        fragmentTransaction.commit();
-        UiUtil.hideView(mLeftMenuLayout);
-
+        AlertDialogInstruction fragment = (AlertDialogInstruction) getChildFragmentManager()
+                .findFragmentByTag(INSTRUCTIONS);
+        if(fragment==null)
+            menuTranzaction(AlertDialogInstruction.newInstance(), INSTRUCTIONS);
+        else
+            UiUtil.hideView(mLeftMenuLayout);
     }
     @OnClick(R.id.txt_explanation_screens)
     protected void explanationScreens() {
@@ -210,17 +218,16 @@ public class LibraryFragment extends BaseFragment implements Queries.CallBack,
     }
     @OnClick(R.id.txt_service_privacy)
     protected void servicePrivacy() {
-//        AlertDialogServicePrivacy.newInstance().show(getFragmentManager(), "privacy");
+        //        AlertDialogServicePrivacy.newInstance().show(getFragmentManager(), "privacy");
 
-        FragmentManager fragmentManager = getFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager
-                .beginTransaction();
-        FragmentServicePrivacy frag = FragmentServicePrivacy.getInstance();
-        fragmentTransaction.replace(R.id.contaner_main, frag);
-        fragmentTransaction.commit();
-        UiUtil.hideView(mLeftMenuLayout);
+        FragmentServicePrivacy fragment = (FragmentServicePrivacy) getChildFragmentManager()
+                .findFragmentByTag(PRIVACY);
+        if(fragment==null)
+            menuTranzaction(FragmentServicePrivacy.getInstance(), PRIVACY);
+        else
+            getActivity().getSupportFragmentManager().beginTransaction().show( FragmentServicePrivacy.getInstance()).commit();
+            UiUtil.hideView(mLeftMenuLayout);
     }
-
 
     @OnClick(R.id.txt_log_out)
     protected void logOut() {

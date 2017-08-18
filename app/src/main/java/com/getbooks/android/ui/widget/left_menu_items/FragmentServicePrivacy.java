@@ -2,6 +2,7 @@ package com.getbooks.android.ui.widget.left_menu_items;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,8 +12,6 @@ import com.getbooks.android.R;
 import com.getbooks.android.api.QueriesTexts;
 import com.getbooks.android.model.RequestModel;
 import com.getbooks.android.model.Text;
-import com.getbooks.android.ui.BaseFragment;
-import com.getbooks.android.ui.activities.LibraryActivity;
 import com.getbooks.android.ui.widget.ArialNormalTextView;
 import com.getbooks.android.util.LogUtil;
 
@@ -26,19 +25,14 @@ import retrofit2.Response;
  * Created by avi on 18.08.17.
  */
 
-public class FragmentServicePrivacy extends BaseFragment{
-    @Override
-    public int getLayout() {
-        return R.layout.left_menu_service_privacy;
-    }
+public class FragmentServicePrivacy extends Fragment {
 
-    @Override
-    public LibraryActivity getAct() {
-        return (LibraryActivity) getActivity();
-    }
+    private static FragmentServicePrivacy f;
 
     public static FragmentServicePrivacy getInstance() {
-        FragmentServicePrivacy f = new FragmentServicePrivacy();
+        if(f==null){
+            f = new FragmentServicePrivacy();
+        }
         return f;
     }
 
@@ -59,7 +53,6 @@ public class FragmentServicePrivacy extends BaseFragment{
                         return;
                     }
                 }
-
             }
 
             @Override
@@ -70,7 +63,7 @@ public class FragmentServicePrivacy extends BaseFragment{
         close.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                getActivity().getSupportFragmentManager().beginTransaction().hide( FragmentServicePrivacy.getInstance()).commit();
             }
         });
         return v;

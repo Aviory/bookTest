@@ -2,6 +2,7 @@ package com.getbooks.android.ui.widget.left_menu_items;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,7 +16,7 @@ import com.getbooks.android.ui.BaseFragment;
  * Created by avi on 18.08.17.
  */
 
-public class AlertDialogInstruction extends BaseFragment{
+public class AlertDialogInstruction extends Fragment{
     WebView myBrowser;
     public static AlertDialogInstruction newInstance(){
         AlertDialogInstruction f = new AlertDialogInstruction();
@@ -31,14 +32,5 @@ public class AlertDialogInstruction extends BaseFragment{
         return v;
     }
 
-    @Override
-    public int getLayout() {
-        return R.id.webview_story;
-    }
-
-    @Override
-    public <T extends BaseActivity> T getAct() {
-        return null;
-    }
 }
 

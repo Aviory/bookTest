@@ -46,16 +46,20 @@
     <dimen name="font_hader_about">27sp</dimen>
     <dimen name="font_body_about">22sp</dimen>
     <!-- Menu books sizes -->
-    <dimen name="margin_bottom">18dp</dimen>
+    <dimen name="left_menu_service_margin_bot">39dp</dimen>
     <dimen name="txt_size_body_servis_privacy">27sp</dimen>
     <dimen name="btn_service_width">214dp</dimen>
     <dimen name="btn_service_heigth">30dp</dimen>
     <dimen name="btn_service_margin_between">327dp</dimen>
-    <dimen name="btn_service_margin_top">30dp</dimen>
+    <dimen name="txt_service_margin_top">33dp</dimen>
     <dimen name="btn_service_txt_size">25sp</dimen>
     <dimen name="btn_service_padding_bot">3dp</dimen>
-    <dimen name="txt_heigth_servise_body">414dp</dimen>
-    <dimen name="txt_width_servise_body">957dp</dimen>
+    <dimen name="txt_heigth_servise_body">835dp</dimen>
+    <dimen name="txt_width_servise_body">669dp</dimen>
+    <dimen name="btn_service_margin_right">160dp</dimen>
+    <dimen name="btn_service_margin_left">137dp</dimen>
+    <dimen name="txt_body_service_margin_left">64dp</dimen>
+    <dimen name="btn_service_margin_top">40dp</dimen>
 
 
 </resources>
