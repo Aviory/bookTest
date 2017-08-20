@@ -11,17 +11,15 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/btn_service_margin_top"
-        android:gravity="center"
         android:orientation="horizontal" >
         <RadioButton
             android:id="@+id/btn_service_left"
             android:layout_width="@dimen/btn_service_width"
             android:layout_height="@dimen/btn_service_heigth"
             android:layout_gravity="center"
-            android:layout_alignParentRight="true"
+            android:layout_marginLeft="@dimen/btn_left_service_margin"
             android:button="@null"
             android:gravity="center"
-            android:layout_marginRight="@dimen/btn_service_margin_between"
             android:background="@drawable/rbtn_bg_service_privacy"
             android:textColor="@drawable/selector_btn_service_privacy_txt_color"
             android:textSize="@dimen/btn_service_txt_size"
@@ -31,8 +29,7 @@
             android:id="@+id/btn_service_right"
             android:layout_width="@dimen/btn_service_width"
             android:layout_height="@dimen/btn_service_heigth"
-            android:layout_marginLeft="@dimen/btn_service_margin_between"
-            android:layout_gravity="center"
+            android:layout_marginLeft="@dimen/btn_right_servise_margin_left"
             android:gravity="center"
             android:checked="true"
             android:button="@null"
@@ -44,13 +41,12 @@
     </RadioGroup>
 
 
-
     <com.getbooks.android.ui.widget.ArialNormalTextView
         android:id="@+id/txt_service_privacy"
         android:layout_width="@dimen/txt_width_servise_body"
         android:layout_height="@dimen/txt_heigth_servise_body"
         android:layout_below="@id/radioGroup1"
-        android:gravity="center"
+        android:gravity="center_horizontal"
         android:layout_marginTop="@dimen/btn_service_margin_top"
         android:layout_centerHorizontal="true"
         android:textSize="@dimen/txt_size_body_servis_privacy"

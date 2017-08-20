@@ -91,11 +91,13 @@
     <dimen name="txt_size_body_servis_privacy">15sp</dimen>
     <dimen name="btn_service_width">122dp</dimen>
     <dimen name="btn_service_heigth">17dp</dimen>
-    <dimen name="btn_service_margin_between">65dp</dimen>
+    <dimen name="btn_service_margin_between">41dp</dimen>
     <dimen name="btn_service_margin_top">37dp</dimen>
     <dimen name="btn_service_txt_size">15sp</dimen>
     <dimen name="btn_service_padding_bot">2dp</dimen>
     <dimen name="txt_heigth_servise_body">293dp</dimen>
     <dimen name="txt_width_servise_body">232dp</dimen>
+    <dimen name="btn_left_service_margin">37dp</dimen>
+    <dimen name="btn_right_servise_margin_left">41dp</dimen>
 
 </resources>
