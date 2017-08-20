@@ -92,8 +92,6 @@
     <dimen name="btn_service_width">122dp</dimen>
     <dimen name="btn_service_heigth">17dp</dimen>
     <dimen name="btn_service_margin_between">41dp</dimen>
-    <dimen name="btn_service_margin_top">37dp</dimen>
-    <dimen name="btn_service_margin_between">65dp</dimen>
     <dimen name="txt_service_margin_top">37dp</dimen>
     <dimen name="btn_service_txt_size">15sp</dimen>
     <dimen name="btn_service_padding_bot">2dp</dimen>

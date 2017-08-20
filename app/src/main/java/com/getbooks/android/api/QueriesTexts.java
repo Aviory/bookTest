@@ -28,22 +28,4 @@ public class QueriesTexts {
         apiTexts = retrofit.create(ApiTexts.class); //С
         return apiTexts;
     }
-
-    private static OkHttpClient.Builder createHttpClient() {
-        // init cookie manager
-        CookieHandler cookieHandler = new CookieManager();
-
-        HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
-        //set your desired log level
-        interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
-
-        OkHttpClient.Builder client = new OkHttpClient.Builder()
-                .addNetworkInterceptor(interceptor)
-                .cookieJar(new JavaNetCookieJar(cookieHandler))
-                .connectTimeout(10, TimeUnit.SECONDS)
-                .writeTimeout(10, TimeUnit.SECONDS)
-                .readTimeout(30, TimeUnit.SECONDS);
-
-        return client;
-    }
 }

@@ -26,10 +26,16 @@ import retrofit2.Response;
  */
 
 public class FragmentServicePrivacy extends Fragment {
+    private String txt;
 
     private static FragmentServicePrivacy f;
 
+    public void setTxt(String txt) {
+        this.txt = txt;
+    }
+
     public static FragmentServicePrivacy getInstance() {
+
         if(f==null){
             f = new FragmentServicePrivacy();
         }
@@ -42,24 +48,7 @@ public class FragmentServicePrivacy extends Fragment {
         View v = inflater.inflate(R.layout.left_menu_service_privacy, container, false);
         ImageView close = (ImageView) v.findViewById(R.id.service_privacy_close);
         ArialNormalTextView text = (ArialNormalTextView) v.findViewById(R.id.txt_service_privacy);
-        new QueriesTexts().getApi().getAllTexts().enqueue(new Callback<RequestModel>() {
-            @Override
-            public void onResponse(Call<RequestModel> call, Response<RequestModel> response) {
-                RequestModel s = response.body();
-                List<Text> list = s.getPopUps();
-                for (Text t: list) {
-                    if(t.getPopupID()=="4984");{
-                        text.setText(t.getPopupText());
-                        return;
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(Call<RequestModel> call, Throwable t) {
-                LogUtil.log(this, "onFailure: <List<Text>> ");
-            }
-        });
+        text.setText(txt);
         close.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

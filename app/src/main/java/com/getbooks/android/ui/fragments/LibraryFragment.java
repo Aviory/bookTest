@@ -27,11 +27,14 @@ import android.widget.Toast;
 import com.getbooks.android.Const;
 import com.getbooks.android.R;
 import com.getbooks.android.api.Queries;
+import com.getbooks.android.api.QueriesTexts;
 import com.getbooks.android.db.BookDataBaseLoader;
 import com.getbooks.android.events.Events;
 import com.getbooks.android.model.BookDetail;
 import com.getbooks.android.model.DownloadInfo;
 import com.getbooks.android.model.DownloadQueue;
+import com.getbooks.android.model.RequestModel;
+import com.getbooks.android.model.Text;
 import com.getbooks.android.model.enums.BookState;
 import com.getbooks.android.prefs.Prefs;
 import com.getbooks.android.receivers.DownloadResultReceiver;
@@ -60,6 +63,9 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * Created by marina on 14.07.17.
@@ -94,6 +100,7 @@ public class LibraryFragment extends BaseFragment implements Queries.CallBack,
     private boolean mIsNetworkActive = false;
     private String mDirectoryPath;
     private BookDataBaseLoader mBookDataBaseLoader;
+    private List<Text> txt_list;
 
     final static String PRIVACY = "FRAGMENT_1";
     final static String INSTRUCTIONS = "FRAGMENT_2";
@@ -137,6 +144,19 @@ public class LibraryFragment extends BaseFragment implements Queries.CallBack,
         for (int i = 0; i < list.size(); i++) {
             Log.d("UsersSession", String.valueOf(list.get(i)));
         }
+
+        new QueriesTexts().getApi().getAllTexts().enqueue(new Callback<RequestModel>() {
+            @Override
+            public void onResponse(Call<RequestModel> call, Response<RequestModel> response) {
+                RequestModel s = response.body();
+                txt_list = s.getPopUps();
+            }
+
+            @Override
+            public void onFailure(Call<RequestModel> call, Throwable t) {
+                LogUtil.log(this, "onFailure: <List<Text>> ");
+            }
+        });
     }
 
     @Override
@@ -219,13 +239,22 @@ public class LibraryFragment extends BaseFragment implements Queries.CallBack,
     @OnClick(R.id.txt_service_privacy)
     protected void servicePrivacy() {
         //        AlertDialogServicePrivacy.newInstance().show(getFragmentManager(), "privacy");
-
+        String txt_fragment ="";
+        if(txt_list!=null){
+            for (Text t: txt_list) {
+                if(t.getPopupID()=="4984");{
+                    txt_fragment = t.getPopupText();
+                    break;
+                }
+            }
+        }
         FragmentServicePrivacy fragment = (FragmentServicePrivacy) getChildFragmentManager()
                 .findFragmentByTag(PRIVACY);
         if(fragment==null)
             menuTranzaction(FragmentServicePrivacy.getInstance(), PRIVACY);
         else
             getActivity().getSupportFragmentManager().beginTransaction().show( FragmentServicePrivacy.getInstance()).commit();
+            FragmentServicePrivacy.getInstance().setTxt(txt_fragment);
             UiUtil.hideView(mLeftMenuLayout);
     }
 
