@@ -9,17 +9,15 @@ import android.view.ViewGroup;
 import android.webkit.WebView;
 
 import com.getbooks.android.R;
-import com.getbooks.android.ui.BaseActivity;
-import com.getbooks.android.ui.BaseFragment;
 
 /**
  * Created by avi on 18.08.17.
  */
 
-public class AlertDialogInstruction extends Fragment{
+public class FragmentDialogInstruction extends Fragment{
     WebView myBrowser;
-    public static AlertDialogInstruction newInstance(){
-        AlertDialogInstruction f = new AlertDialogInstruction();
+    public static FragmentDialogInstruction newInstance(){
+        FragmentDialogInstruction f = new FragmentDialogInstruction();
         return f;
     }
 

@@ -137,5 +137,6 @@
     <dimen name="txt_margin_center_selector">45dp</dimen>
     <dimen name="separator_height_list">1dp</dimen>
     <dimen name="separator_width_list">1dp</dimen>
+    <dimen name="btn_close_webview_marg_left">15dp</dimen>
 
 </resources>

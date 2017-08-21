@@ -11,9 +11,7 @@ import android.os.Handler;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.annotation.StringDef;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -50,11 +48,11 @@ import com.getbooks.android.ui.activities.ReaderActivity;
 import com.getbooks.android.ui.adapter.RecyclerShelvesAdapter;
 import com.getbooks.android.ui.dialog.RestartDownloadingDialog;
 import com.getbooks.android.ui.widget.left_menu_items.AlertDialogAboutUs;
-import com.getbooks.android.ui.widget.left_menu_items.AlertDialogInstruction;
-import com.getbooks.android.ui.widget.left_menu_items.FragmentHistory;
+import com.getbooks.android.ui.widget.left_menu_items.AlertDialogInstructions;
+import com.getbooks.android.ui.widget.left_menu_items.AlertDialogStory;
 import com.getbooks.android.ui.widget.left_menu_items.FragmentServicePrivacy;
 import com.getbooks.android.ui.widget.RecyclerItemClickListener;
-import com.getbooks.android.util.ConnectionUtil;
+import com.getbooks.android.ui.widget.left_menu_items.FragmentTutorial;
 import com.getbooks.android.util.FileUtil;
 import com.getbooks.android.util.LogUtil;
 import com.getbooks.android.util.UiUtil;
@@ -201,7 +199,10 @@ public class LibraryFragment extends BaseFragment implements Queries.CallBack,
         fragmentTransaction.commit();
         UiUtil.hideView(mLeftMenuLayout);
     }
-
+    private void menuTranzaction(){
+        getActivity().getSupportFragmentManager().beginTransaction().hide( FragmentServicePrivacy.getInstance()).commit();
+        UiUtil.hideView(mLeftMenuLayout);
+    }
 
     @OnClick(R.id.txt_catalog)
     protected void catalogOpen() {
@@ -222,27 +223,30 @@ public class LibraryFragment extends BaseFragment implements Queries.CallBack,
     }
     @OnClick(R.id.txt_order_history)
     protected void orderHistory() {
-//        AlertDialogStory.newInstance().show(getFragmentManager(), "history");
-        AlertDialogInstruction fragment = (AlertDialogInstruction) getChildFragmentManager()
-                .findFragmentByTag(HISTORY);
-        if(fragment==null)
-            menuTranzaction(FragmentHistory.newInstance(), HISTORY);
-        else
-            UiUtil.hideView(mLeftMenuLayout);
+        menuTranzaction();
+        AlertDialogStory.newInstance().show(getFragmentManager(), "history");
+//        FragmentDialogInstruction fragment = (FragmentDialogInstruction) getChildFragmentManager()
+//                .findFragmentByTag(HISTORY);
+//        if(fragment==null)
+//            menuTranzaction(FragmentHistory.newInstance(), HISTORY);
+//        else
+//            UiUtil.hideView(mLeftMenuLayout);
     }
     @OnClick(R.id.txt_instruction)
     protected void instruction() {
-//        AlertDialogInstruction.newInstance().show(getFragmentManager(), "instruction");
-        AlertDialogInstruction fragment = (AlertDialogInstruction) getChildFragmentManager()
-                .findFragmentByTag(INSTRUCTIONS);
-        if(fragment==null)
-            menuTranzaction(AlertDialogInstruction.newInstance(), INSTRUCTIONS);
-        else
-            UiUtil.hideView(mLeftMenuLayout);
+        menuTranzaction();
+        AlertDialogInstructions.newInstance().show(getFragmentManager(), "instruction");
+//        FragmentDialogInstruction fragment = (FragmentDialogInstruction) getChildFragmentManager()
+//                .findFragmentByTag(INSTRUCTIONS);
+//        if(fragment==null)
+//            menuTranzaction(FragmentDialogInstruction.newInstance(), INSTRUCTIONS);
+//        else
+//            UiUtil.hideView(mLeftMenuLayout);
     }
     @OnClick(R.id.txt_explanation_screens)
     protected void explanationScreens() {
-        UiUtil.openActivity(getAct(), TutorialsActivity.class, true, "", "", "", "");
+//        UiUtil.openActivity(getAct(), TutorialsActivity.class, true, "", "", "", "");
+        FragmentTutorial.newInstance().show(getFragmentManager(), "tutorial");
     }
     @OnClick(R.id.txt_service_privacy)
     protected void servicePrivacy() {

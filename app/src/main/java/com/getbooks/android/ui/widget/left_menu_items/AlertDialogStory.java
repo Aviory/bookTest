@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.webkit.WebView;
+import android.widget.ImageView;
 
 import com.getbooks.android.R;
 
@@ -32,6 +33,15 @@ public class AlertDialogStory extends DialogFragment {
         View v = inflater.inflate(R.layout.left_menu_story, container, false);
         myBrowser = (WebView)v.findViewById(R.id.webview_story);
         myBrowser.loadUrl("https://pelephone.getbooks.co.il/dev/glibrary/bookrent/showrentbook");
+
+        ImageView close = (ImageView) v.findViewById(R.id.about_us_close);
+        close.setOnClickListener(new View.OnClickListener(){
+
+            @Override
+            public void onClick(View view) {
+                dismiss();
+            }
+        });
         return v;
     }
     @Override

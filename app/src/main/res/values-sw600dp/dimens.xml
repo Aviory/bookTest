@@ -97,6 +97,7 @@
 
     <dimen name="separator_height_list">2dp</dimen>
     <dimen name="separator_width_list">2dp</dimen>
+    <dimen name="btn_close_webview_marg_left">15dp</dimen>
 
 
 </resources>

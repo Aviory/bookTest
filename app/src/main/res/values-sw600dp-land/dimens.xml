@@ -43,5 +43,6 @@
     <dimen name="margin_recycler_content_left">80dp</dimen>
     <dimen name="margin_recycler_right">100dp</dimen>
     <dimen name="scroll_bar_width">12dp</dimen>
+    <dimen name="btn_close_webview_marg_left">15dp</dimen>
 
 </resources>

@@ -9,17 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.getbooks.android.R;
-import com.getbooks.android.api.QueriesTexts;
-import com.getbooks.android.model.RequestModel;
-import com.getbooks.android.model.Text;
 import com.getbooks.android.ui.widget.ArialNormalTextView;
-import com.getbooks.android.util.LogUtil;
-
-import java.util.List;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 /**
  * Created by avi on 18.08.17.
