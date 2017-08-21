@@ -125,10 +125,10 @@ public class LibraryFragment extends BaseFragment implements Queries.CallBack,
             mDownlodReceiver.setReceiver(this);
 
             mNetworkReceiver = new NetworkStateReceiver();
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                getAct().registerReceiver(mNetworkReceiver,
-                        new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
-            }
+//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+//                getAct().registerReceiver(mNetworkReceiver,
+//                        new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+//            }
             mDownloadInfo = new DownloadInfo();
             mDownloadQueue = new DownloadQueue();
 
@@ -247,6 +247,7 @@ public class LibraryFragment extends BaseFragment implements Queries.CallBack,
     protected void explanationScreens() {
 //        UiUtil.openActivity(getAct(), TutorialsActivity.class, true, "", "", "", "");
         FragmentTutorial.newInstance().show(getFragmentManager(), "tutorial");
+        menuTranzaction();
     }
     @OnClick(R.id.txt_service_privacy)
     protected void servicePrivacy() {
@@ -289,6 +290,7 @@ public class LibraryFragment extends BaseFragment implements Queries.CallBack,
         }
         AlertDialogAboutUs.newInstance().setTxt(txt_fragment);
         AlertDialogAboutUs.newInstance().show(getFragmentManager(), "about_us");
+        menuTranzaction();
     }
 
     @Override

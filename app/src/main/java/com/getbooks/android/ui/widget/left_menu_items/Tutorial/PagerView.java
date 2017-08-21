@@ -27,14 +27,13 @@ public class PagerView extends PagerAdapter {
         CustomPagerEnum customPagerEnum = CustomPagerEnum.values()[position];
         LayoutInflater inflater = LayoutInflater.from(mContext);
         ViewGroup layout = (ViewGroup) inflater.inflate(customPagerEnum.getLayoutResId(), collection, false);
-        layout.findViewById(R.id.img_close).findViewById(R.id.img_close).setOnClickListener(new View.OnClickListener() {
+        collection.addView(layout);
+        layout.findViewById(R.id.img_close).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                LogUtil.log(this, "sssssssss");
+                LogUtil.log(this, "lllllllll");
             }
         });
-        collection.addView(layout);
         return layout;
     }
 
