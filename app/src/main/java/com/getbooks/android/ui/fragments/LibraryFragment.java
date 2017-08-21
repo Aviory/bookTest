@@ -242,7 +242,7 @@ public class LibraryFragment extends BaseFragment implements Queries.CallBack,
     }
     @OnClick(R.id.txt_explanation_screens)
     protected void explanationScreens() {
-        UiUtil.openActivity(getAct(), TutorialsActivity.class, true);
+        UiUtil.openActivity(getAct(), TutorialsActivity.class, true, "", "", "", "");
     }
     @OnClick(R.id.txt_service_privacy)
     protected void servicePrivacy() {
@@ -283,8 +283,8 @@ public class LibraryFragment extends BaseFragment implements Queries.CallBack,
                 }
             }
         }
-        AlertDialogAboutUs.newInstance().show(getFragmentManager(), "about_us");
         AlertDialogAboutUs.newInstance().setTxt(txt_fragment);
+        AlertDialogAboutUs.newInstance().show(getFragmentManager(), "about_us");
     }
 
     @Override
