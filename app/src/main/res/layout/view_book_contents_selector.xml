@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <com.getbooks.android.ui.widget.ArialNormalTextView
+        style="@style/TextContentSelectorStyle"
+        android:id="@+id/txt_book_content"
+        android:text="@string/txt_book_content"/>
+
+    <com.getbooks.android.ui.widget.ArialNormalTextView
+        style="@style/TextContentSelectorStyle"
+        android:text="@string/txt_book_murks_list"
+        android:layout_marginLeft="@dimen/txt_margin_center_selector"
+        android:layout_marginRight="@dimen/txt_margin_center_selector"
+        android:id="@+id/txt_book_murks_list"/>
+
+    <com.getbooks.android.ui.widget.ArialNormalTextView
+        style="@style/TextContentSelectorStyle"
+        android:text="@string/txt_highlights_list"
+        android:id="@+id/txt_book_highlights_list"/>
+</merge>

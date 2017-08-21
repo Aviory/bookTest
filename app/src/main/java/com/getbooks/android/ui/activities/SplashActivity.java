@@ -36,12 +36,12 @@ public class SplashActivity extends BaseActivity {
     private void checkUserAuthorization() {
         if (Prefs.getBooleanProperty(this, Const.IS_USER_AUTHORIZE)) {
             if (Prefs.getCountTutorialsShow(this) < Prefs.MAX_COUNT_VIEWS_TUTORIALS) {
-                UiUtil.openActivity(this, TutorialsActivity.class, false);
+                UiUtil.openActivity(this, TutorialsActivity.class, false, "", "", "", "");
             } else {
-                UiUtil.openActivity(this, LibraryActivity.class, false);
+                UiUtil.openActivity(this, LibraryActivity.class, false, "", "","", "");
             }
         } else {
-            UiUtil.openActivity(this, AuthorizationActivity.class, false);
+            UiUtil.openActivity(this, AuthorizationActivity.class, false,"", "","", "");
         }
     }
 }

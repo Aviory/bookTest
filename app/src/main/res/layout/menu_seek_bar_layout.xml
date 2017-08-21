@@ -14,27 +14,29 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/margin_medium"
-            android:layout_marginLeft="@dimen/margin_smallest"
+            android:layout_marginLeft="@dimen/margin_seek_bar"
             android:layout_marginTop="@dimen/margin_medium"
             android:text="@string/txt_seek_bar_per"
             android:textColor="@color/color_black"
-            android:textSize="@dimen/font_5" />
+            android:textSize="@dimen/font_seek_bar" />
 
         <SeekBar
             android:layout_width="0dp"
             android:layout_height="@dimen/seek_bar_height"
-            android:layout_marginLeft="@dimen/margin_medium"
-            android:layout_marginRight="@dimen/margin_medium"
+            android:layout_marginLeft="@dimen/margin_seek_bar"
+            android:layout_marginRight="@dimen/margin_seek_bar"
             android:layout_weight="1"
+            android:thumbOffset="10dp"
+            android:padding="0dp"
             android:progressDrawable="@drawable/custom_seek_bar"
             android:thumb="@drawable/thumb" />
 
         <com.getbooks.android.ui.widget.ArialNormalTextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="@dimen/margin_smallest"
+            android:layout_marginRight="@dimen/margin_seek_bar"
             android:text="@string/txt_seek_bar_pages"
             android:textColor="@color/color_black"
-            android:textSize="@dimen/font_5" />
+            android:textSize="@dimen/font_seek_bar" />
     </LinearLayout>
 </merge>

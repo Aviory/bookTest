@@ -40,6 +40,10 @@ public class BookDataBaseLoader {
         mBooksDataBase.setUserIdSession(userSessionId);
     }
 
+    public void deleteUserSession(int userSession){
+        mBooksDataBase.deleteUserSession(userSession);
+    }
+
     public List<Integer> getUsersIdSession() {
         return mBooksDataBase.getUserIdSession();
     }

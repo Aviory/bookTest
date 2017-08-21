@@ -9,6 +9,7 @@
         android:orientation="horizontal">
 
         <ImageView
+            android:id="@+id/img_book_setting"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -25,6 +26,7 @@
             android:src="@drawable/search_white" />
 
         <ImageView
+            android:id="@+id/img_book_murks_content"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/margin_smallest"
@@ -33,6 +35,7 @@
             android:src="@drawable/bookmarks_list" />
 
         <ImageView
+            android:id="@+id/img_book_close"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"

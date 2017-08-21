@@ -6,6 +6,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.View;
 import android.webkit.CookieManager;
 import android.webkit.WebResourceError;
@@ -18,6 +19,7 @@ import android.widget.Toast;
 
 import com.getbooks.android.Const;
 import com.getbooks.android.R;
+import com.getbooks.android.prefs.Prefs;
 import com.getbooks.android.ui.BaseActivity;
 import com.getbooks.android.ui.dialog.MaterialDialog;
 import com.getbooks.android.util.LogUtil;
@@ -67,17 +69,12 @@ public class CatalogActivity extends BaseActivity {
     }
 
     private void setUpWebView() {
-//        clearHash();
-        CookieManager.getInstance().removeAllCookie();
+        CookieManager.getInstance().setCookie(Const.CATALOG_URL, Prefs.getCookieUserSession(getAct()));
         mCatalogWebView.setHorizontalScrollBarEnabled(false);
         mCatalogWebView.setVerticalScrollBarEnabled(false);
         mCatalogWebView.setWebViewClient(new CatalogWebViewClient());
         WebSettings webSettings = mCatalogWebView.getSettings();
         webSettings.setJavaScriptEnabled(true);
-        webSettings.setSaveFormData(false);
-        webSettings.setSavePassword(false);
-        webSettings.setAppCacheEnabled(false);
-        webSettings.setCacheMode(WebSettings.LOAD_NO_CACHE);
         mCatalogWebView.loadUrl(Const.CATALOG_URL);
     }
 
@@ -88,7 +85,7 @@ public class CatalogActivity extends BaseActivity {
     }
 
     private void finishWithError(String message) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+        LogUtil.log(this, message);
     }
 
     private class CatalogWebViewClient extends WebViewClient {

@@ -6,6 +6,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.View;
 import android.webkit.CookieManager;
 import android.webkit.WebResourceError;
@@ -16,6 +17,7 @@ import android.webkit.WebViewClient;
 
 import com.getbooks.android.Const;
 import com.getbooks.android.R;
+import com.getbooks.android.api.Queries;
 import com.getbooks.android.db.BookDataBaseLoader;
 import com.getbooks.android.prefs.Prefs;
 import com.getbooks.android.ui.BaseFragment;
@@ -26,6 +28,9 @@ import com.getbooks.android.ui.dialog.MaterialDialog;
 import com.getbooks.android.util.LogUtil;
 import com.getbooks.android.util.UiUtil;
 import com.google.firebase.iid.FirebaseInstanceId;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 
@@ -104,7 +109,6 @@ public class AuthorizationFragment extends BaseFragment {
                 String token = FirebaseInstanceId.getInstance().getToken();
 
                 registerToken(view, token);
-                createUserSession(552288);
                 goToUserLibrary(token);
                 return true;
             }
@@ -120,7 +124,6 @@ public class AuthorizationFragment extends BaseFragment {
                 String token = FirebaseInstanceId.getInstance().getToken();
 
                 registerToken(view, token);
-                createUserSession(552288);
                 goToUserLibrary(token);
 
                 return true;
@@ -148,13 +151,10 @@ public class AuthorizationFragment extends BaseFragment {
         public void onPageFinished(WebView view, String url) {
             super.onPageFinished(view, url);
             LogUtil.log(this, url + "last");
+            String cookies = CookieManager.getInstance().getCookie(url);
+            if (null != getAct())
+            Prefs.saveCookieUserSession(getAct(), cookies);
             mProgressBar.dismiss();
-            // Display the keyboard automatically when relevant
-//            if (view.getOriginalUrl().equals(Const.AUTH_URL)) {
-//                Log.d("AAAAAAAAAAA", "seeeeee");
-//                InputMethodManager imm = (InputMethodManager) getAct().getSystemService(Context.INPUT_METHOD_SERVICE);
-//                imm.showSoftInput(view, 0);
-//            }
         }
     }
 
@@ -169,14 +169,23 @@ public class AuthorizationFragment extends BaseFragment {
         Prefs.setBooleanProperty(getAct(), Const.IS_USER_AUTHORIZE, true);
         Prefs.putToken(getAct(), token);
         if (Prefs.getCountTutorialsShow(getAct()) < Prefs.MAX_COUNT_VIEWS_TUTORIALS) {
-            UiUtil.openActivity(getAct(), TutorialsActivity.class, true);
+            UiUtil.openActivity(getAct(), TutorialsActivity.class, true, "", "", "", "");
         } else {
-            UiUtil.openActivity(getAct(), LibraryActivity.class, true);
+            UiUtil.openActivity(getAct(), LibraryActivity.class, true, "", "", "", "");
         }
     }
 
     private void createUserSession(int userSessionId) {
-        BookDataBaseLoader.createBookDBLoader(getAct()).createUserSession(userSessionId);
-        Prefs.saveUserSession(getAct(), Const.USER_SESSION_ID, userSessionId);
+        List<Integer> allUsersId = new ArrayList<>();
+        allUsersId.addAll(BookDataBaseLoader.createBookDBLoader(getAct()).getUsersIdSession());
+        if (!allUsersId.isEmpty()) {
+            if (!allUsersId.contains(userSessionId)) {
+                BookDataBaseLoader.createBookDBLoader(getAct()).createUserSession(userSessionId);
+                Prefs.saveUserSession(getAct(), Const.USER_SESSION_ID, userSessionId);
+            }
+        } else {
+            BookDataBaseLoader.createBookDBLoader(getAct()).createUserSession(userSessionId);
+            Prefs.saveUserSession(getAct(), Const.USER_SESSION_ID, userSessionId);
+        }
     }
 }

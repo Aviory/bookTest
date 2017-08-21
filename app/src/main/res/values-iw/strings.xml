@@ -44,4 +44,15 @@
     <string name="txt_messege">מדריך</string>
     <string name="txt_order_history">היסטוריית השאלה</string>
     <string name="txt_hand_icon">מסכי הסבר</string>
+
+    <!-- Book settings strings -->
+    <string name="txt_book_setting">הגדרות ספר</string>
+    <string name="txt_a_letter">א</string>
+    <string name="txt_font">גופן</string>
+
+    <!-- Contents selector texts -->
+    <string name="txt_book_content">תוכן</string>
+    <string name="txt_book_murks_list">סימניות</string>
+    <string name="txt_highlights_list">הדגשה</string>
+
 </resources>

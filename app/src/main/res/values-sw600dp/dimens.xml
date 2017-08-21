@@ -64,4 +64,39 @@
     <dimen name="btn_right_servise_margin_left">160dp</dimen>
 
 
+    <dimen name="margin_bottom">18dp</dimen>
+
+    <!-- Seek bar sizes -->
+    <dimen name="font_seek_bar">27sp</dimen>
+    <dimen name="margin_seek_bar">20dp</dimen>
+
+    <!-- Reader sizes -->
+    <dimen name="margin_book_mark">25dp</dimen>
+    <dimen name="page_txt_size">20sp</dimen>
+
+
+    <!-- Book contents list sizes -->
+    <dimen name="item_content_size">27sp</dimen>
+    <dimen name="scroll_bar_width">12dp</dimen>
+    <dimen name="margin_recycler_content_left">30dp</dimen>
+    <dimen name="margin_recycler_right">60dp</dimen>
+
+
+    <!-- Book settings sizes -->
+    <dimen name="width_menu_book_setting">550dp</dimen>
+    <dimen name="book_setting_height">470dp</dimen>
+    <dimen name="size_book_setting">25sp</dimen>
+    <dimen name="letter_small_size">35sp</dimen>
+    <dimen name="letter_big_size">72sp</dimen>
+    <dimen name="margin_bottom_menu_book_small">14dp</dimen>
+
+    <!-- Book contents selector sizes -->
+    <dimen name="txt_content_selector_size">27sp</dimen>
+    <dimen name="txt_margin_top_selector">75dp</dimen>
+    <dimen name="btn_background_padding">20dp</dimen>
+
+    <dimen name="separator_height_list">2dp</dimen>
+    <dimen name="separator_width_list">2dp</dimen>
+
+
 </resources>
