@@ -266,7 +266,17 @@ public class LibraryFragment extends BaseFragment implements Queries.CallBack,
 
     @OnClick(R.id.txt_about_us)
     protected void aboutUs() {
+        String txt_fragment ="";
+        if(txt_list!=null){
+            for (Text t: txt_list) {
+                if(t.getPopupID()=="4972");{
+                    txt_fragment = t.getPopupText();
+                    break;
+                }
+            }
+        }
         AlertDialogAboutUs.newInstance().show(getFragmentManager(), "about_us");
+        AlertDialogAboutUs.newInstance().setTxt(txt_fragment);
     }
 
     @Override

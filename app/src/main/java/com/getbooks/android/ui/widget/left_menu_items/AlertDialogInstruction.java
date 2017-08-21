@@ -28,7 +28,7 @@ public class AlertDialogInstruction extends Fragment{
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.left_menu_story, container, false);
         myBrowser = (WebView)v.findViewById(R.id.webview_story);
-        myBrowser.loadUrl("https://pelephone.getbooks.co.il/dev/glibrary/bookrent/showrentbook");
+        myBrowser.loadUrl("https://pelephone.getbooks.co.il/dev/how-it-works");
         return v;
     }
 

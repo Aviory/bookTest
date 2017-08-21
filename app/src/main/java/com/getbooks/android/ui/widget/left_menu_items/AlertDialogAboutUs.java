@@ -30,6 +30,12 @@ import retrofit2.Response;
  */
 
 public class AlertDialogAboutUs extends DialogFragment {
+    String txt;
+
+    public void setTxt(String txt) {
+        this.txt = txt;
+    }
+
     public AlertDialogAboutUs(){}
 
     public static AlertDialogAboutUs newInstance(){
@@ -43,25 +49,7 @@ public class AlertDialogAboutUs extends DialogFragment {
         View v = inflater.inflate(R.layout.left_menu_about_us, container, false);
         ImageView close = (ImageView) v.findViewById(R.id.about_us_close);
         ArialNormalTextView text = (ArialNormalTextView) v.findViewById(R.id.txt_about);
-        new QueriesTexts().getApi().getAllTexts().enqueue(new Callback<RequestModel>() {
-            @Override
-            public void onResponse(Call<RequestModel> call, Response<RequestModel> response) {
-                RequestModel s = response.body();
-                List<Text> list = s.getPopUps();
-                for (Text t: list) {
-                    if(t.getPopupID()=="4972");{
-                        text.setText(t.getPopupText());
-                        return;
-                    }
-                }
-
-            }
-
-            @Override
-            public void onFailure(Call<RequestModel> call, Throwable t) {
-                LogUtil.log(this, "onFailure: <List<Text>> ");
-            }
-        });
+        text.setText(txt);
         close.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
