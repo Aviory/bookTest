@@ -138,12 +138,11 @@
     <dimen name="separator_height_list">1dp</dimen>
     <dimen name="separator_width_list">1dp</dimen>
     <dimen name="btn_close_webview_marg_left">15dp</dimen>
-    <dimen name="service_seek_bar_width">6dp</dimen>
     <dimen name="service_seek_bar_height">324dp</dimen>
     <dimen name="service_seek_mar_marg_top">75dp</dimen>
     <dimen name="servise_seek_bar_radius">3dp</dimen>
-    <dimen name="servise_seek_bar_height">49dp</dimen>
-    <dimen name="servise_seek_bar_width">6dp</dimen>
     <dimen name="servise_margin_seek_bar">20dp</dimen>
+    <dimen name="servise_seek_bar_height_thumb">49dp</dimen>
+    <dimen name="service_seek_bar_width">6dp</dimen>
 
 </resources>

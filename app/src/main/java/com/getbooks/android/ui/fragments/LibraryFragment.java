@@ -121,10 +121,10 @@ public class LibraryFragment extends BaseFragment implements Queries.CallBack,
         mImageMenu.setActivated(true);
 
         if (savedInstanceState == null) {
-            mDownlodReceiver = new DownloadResultReceiver(new Handler());
-            mDownlodReceiver.setReceiver(this);
-
-            mNetworkReceiver = new NetworkStateReceiver();
+//            mDownlodReceiver = new DownloadResultReceiver(new Handler());
+//            mDownlodReceiver.setReceiver(this);
+//
+//            mNetworkReceiver = new NetworkStateReceiver();
 //            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
 //                getAct().registerReceiver(mNetworkReceiver,
 //                        new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));

@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.ImageView;
 
 import com.getbooks.android.R;
 import com.getbooks.android.ui.widget.left_menu_items.Tutorial.PagerView;
@@ -25,6 +26,7 @@ import com.getbooks.android.util.LogUtil;
 
 public class FragmentTutorial extends DialogFragment {
     protected ViewPager mViewPagerTutorials;
+    ImageView close;
     private static FragmentTutorial f;
 
     public static FragmentTutorial newInstance(){
@@ -38,6 +40,13 @@ public class FragmentTutorial extends DialogFragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_base_tutorial, container, false);
         mViewPagerTutorials = v.findViewById(R.id.view_pager);
+        close = v.findViewById(R.id.img_close);
+        close.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dismiss();
+            }
+        });
         return v;
     }
 
@@ -66,5 +75,25 @@ public class FragmentTutorial extends DialogFragment {
 
     public void startViewPagerTutorials() {
         mViewPagerTutorials.setAdapter(new PagerView(getActivity()));
+        mViewPagerTutorials.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                if(position==1){
+                    close.setVisibility(View.INVISIBLE);
+                }
+                else
+                    close.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
     }
 }

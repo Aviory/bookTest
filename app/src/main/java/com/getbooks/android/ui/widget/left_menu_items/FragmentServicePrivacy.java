@@ -47,7 +47,7 @@ public class FragmentServicePrivacy extends Fragment implements View.OnClickList
         btnLeft.setOnClickListener(this);
         btnRigth = v.findViewById(R.id.btn_service_right);
         btnRigth.setOnClickListener(this);
-        ArialNormalTextView text_seekbar = (ArialNormalTextView) v.findViewById(R.id.txt_service_privacy);
+        ArialNormalTextView text_seekbar = v.findViewById(R.id.txt_service_privacy);
         text_seekbar.setText(txt);
 
 
@@ -86,11 +86,9 @@ public class FragmentServicePrivacy extends Fragment implements View.OnClickList
         switch (view.getId()){
             case R.id.btn_service_left:
                 seekBar.setVisibility(View.INVISIBLE);
-               // btnLeft.setChecked(true);
                 break;
             case R.id.btn_service_right:
                 seekBar.setVisibility(View.VISIBLE);
-                //btnRigth.setChecked(true);
                 break;
         }
     }
