@@ -35,11 +35,11 @@ public class FileUtil {
         }
     }
 
-    public static List<String> getDownloadedBookNamesList(String path){
+    public static List<String> getDownloadedBookNamesList(String path) {
         List<String> namesBooks = new ArrayList<>();
         File file = new File(path);
         File[] booksNames = file.listFiles();
-        for (int i = 0; i < booksNames.length; i++){
+        for (int i = 0; i < booksNames.length; i++) {
 
         }
         return namesBooks;
@@ -97,12 +97,12 @@ public class FileUtil {
     public void clearApplicationData(Context context) {
         File cache = context.getCacheDir();
         File appDir = new File(cache.getParent());
-        if(appDir.exists()){
+        if (appDir.exists()) {
             String[] children = appDir.list();
-            for(String s : children){
-                if(!s.equals("lib")){
+            for (String s : children) {
+                if (!s.equals("lib")) {
                     deleteDir(new File(appDir, s));
-                    Log.i("TAG", "File /data/data/APP_PACKAGE/" + s +" DELETED");
+                    Log.i("TAG", "File /data/data/APP_PACKAGE/" + s + " DELETED");
                 }
             }
         }

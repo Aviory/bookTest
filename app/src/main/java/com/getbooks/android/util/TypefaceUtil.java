@@ -12,8 +12,8 @@ public class TypefaceUtil {
     private static Typeface mArial;
     private static Typeface mFrankRuehlMedium;
 
-    private static final String ARIAL = "font/roboto_light.ttf";
-    private static final String FRANK_RUEHL_MEDIUM = "font/roboto_light.ttf";
+    private static final String ARIAL = "fonts/arial/arial.ttf";
+    private static final String FRANK_RUEHL_MEDIUM = "fonts/frank_ruehl/FrankRuehlCLM-Medium.ttf";
 
     public static Typeface getArialTypeface(Context context) {
         if (mArial == null) {

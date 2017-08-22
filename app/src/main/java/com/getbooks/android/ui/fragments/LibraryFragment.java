@@ -2,15 +2,12 @@ package com.getbooks.android.ui.fragments;
 
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.res.Resources;
-import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
-import android.support.annotation.StringDef;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -18,9 +15,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.getbooks.android.Const;
@@ -28,7 +23,7 @@ import com.getbooks.android.R;
 import com.getbooks.android.api.Queries;
 import com.getbooks.android.db.BookDataBaseLoader;
 import com.getbooks.android.events.Events;
-import com.getbooks.android.model.BookDetail;
+import com.getbooks.android.model.Book;
 import com.getbooks.android.model.DownloadInfo;
 import com.getbooks.android.model.DownloadQueue;
 import com.getbooks.android.model.enums.BookState;
@@ -43,7 +38,6 @@ import com.getbooks.android.ui.activities.ReaderActivity;
 import com.getbooks.android.ui.adapter.RecyclerShelvesAdapter;
 import com.getbooks.android.ui.dialog.RestartDownloadingDialog;
 import com.getbooks.android.ui.widget.RecyclerItemClickListener;
-import com.getbooks.android.util.ConnectionUtil;
 import com.getbooks.android.util.FileUtil;
 import com.getbooks.android.util.LogUtil;
 import com.getbooks.android.util.UiUtil;
@@ -77,13 +71,13 @@ public class LibraryFragment extends BaseFragment implements Queries.CallBack,
     protected ImageView mImageMenu;
     @BindView(R.id.rootMainView)
     protected RelativeLayout mRootLibraryLayout;
-    @BindView(R.id.progress_bar)
-    protected ProgressBar mDownloadProgress;
-    @BindView(R.id.txt_progress_download)
-    protected TextView mTextDownloadProgress;
+//    @BindView(R.id.progress_bar)
+//    protected ProgressBar mDownloadProgress;
+//    @BindView(R.id.txt_progress_download)
+//    protected TextView mTextDownloadProgress;
 
     private Queries mQueries;
-    private List<BookDetail> mLibrary;
+    private List<Book> mLibrary;
     private RecyclerShelvesAdapter mShelvesAdapter;
     private GridLayoutManager mGridLayoutManager;
     DividerItemDecoration dividerItemDecoration;
@@ -109,10 +103,9 @@ public class LibraryFragment extends BaseFragment implements Queries.CallBack,
             mDownlodReceiver.setReceiver(this);
 
             mNetworkReceiver = new NetworkStateReceiver();
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                getAct().registerReceiver(mNetworkReceiver,
-                        new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
-            }
+            getAct().registerReceiver(mNetworkReceiver,
+                    new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+
             mDownloadInfo = new DownloadInfo();
             mDownloadQueue = new DownloadQueue();
 
@@ -123,7 +116,6 @@ public class LibraryFragment extends BaseFragment implements Queries.CallBack,
             mQueries = new Queries();
             mQueries.setCallBack(this);
             mQueries.getUserSession(Prefs.getToken(getAct()), getAct());
-//            mQueries.getAllUserBook(Prefs.getToken(getAct()), getAct(), Prefs.getUserSession(getAct(), Const.USER_SESSION_ID));
         }
 
         hideLeftMenu();
@@ -141,7 +133,7 @@ public class LibraryFragment extends BaseFragment implements Queries.CallBack,
         return (LibraryActivity) getActivity();
     }
 
-    private void initShelvesRecycler(List<BookDetail> library) {
+    private void initShelvesRecycler(List<Book> library) {
         mGridLayoutManager = new GridLayoutManager(getContext(),
                 getResources().getInteger(R.integer.count_column_book));
         mGridLayoutManager.setOrientation(GridLayoutManager.VERTICAL);
@@ -150,6 +142,8 @@ public class LibraryFragment extends BaseFragment implements Queries.CallBack,
         if (mShelvesAdapter == null)
             mShelvesAdapter = new RecyclerShelvesAdapter(library, getContext());
         mRecyclerBookShelves.setAdapter(mShelvesAdapter);
+
+        mShelvesAdapter.setDownloadInfo(mDownloadInfo);
 
         if (dividerItemDecoration == null) {
             dividerItemDecoration = new DividerItemDecoration(getContext(), LinearLayout.VERTICAL);
@@ -206,11 +200,10 @@ public class LibraryFragment extends BaseFragment implements Queries.CallBack,
         mDirectoryPath = FileUtil.isCreatedDirectory(getAct(), Prefs.getUserSession(getAct(), Const.USER_SESSION_ID));
         LogUtil.log("FileUtil", mDirectoryPath);
         initShelvesRecycler(mLibrary);
-//        UiUtil.showConnectionErrorToast(getContext());
     }
 
     @Override
-    public void onCompleted(List<BookDetail> library) {
+    public void onCompleted(List<Book> library) {
         this.mLibrary = library;
         mDirectoryPath = FileUtil.isCreatedDirectory(getAct(), Prefs.getUserSession(getAct(), Const.USER_SESSION_ID));
         LogUtil.log("FileUtil", mDirectoryPath);
@@ -246,7 +239,8 @@ public class LibraryFragment extends BaseFragment implements Queries.CallBack,
                 getAct().getApplicationContext(), (view, position) -> {
             switch (mLibrary.get(position).getBookState()) {
                 case CLOUD_BOOK:
-                    BookDetail book = mLibrary.get(position);
+                    Toast.makeText(getAct(), "cloud book", Toast.LENGTH_SHORT).show();
+                    Book book = mLibrary.get(position);
                     book.setViewPosition(position);
                     addToDownloadQueue(book);
                     break;
@@ -263,7 +257,7 @@ public class LibraryFragment extends BaseFragment implements Queries.CallBack,
         }));
     }
 
-    private void addToDownloadQueue(BookDetail book) {
+    private void addToDownloadQueue(Book book) {
         if (mDownloadQueue.queueContainsBook(book)) return;
         if (mIsNetworkActive) {
             mDownloadQueue.addToDownloadQueue(book);
@@ -276,12 +270,9 @@ public class LibraryFragment extends BaseFragment implements Queries.CallBack,
         }
     }
 
-    private BookDetail currentDownloadingBook;
+    private Book currentDownloadingBook;
 
-    private void downloadBook(BookDetail book) {
-        Log.d("DownloadedLoadBook", String.valueOf(mDownloadQueue.getDownloadQueueSize()));
-        Log.d("DownloadedLoadBook", book.toString());
-        View view = mRecyclerBookShelves.getChildAt(book.getViewPosition());
+    private void downloadBook(Book book) {
         currentDownloadingBook = book;
         // Starting Download Service
         Intent intent = new Intent(Intent.ACTION_SYNC, null, getAct(), DownloadService.class);
@@ -292,20 +283,6 @@ public class LibraryFragment extends BaseFragment implements Queries.CallBack,
         intent.putExtra("directoryPath", mDirectoryPath);
 
         getAct().startService(intent);
-
-        Resources res = getAct().getResources();
-        Drawable drawable = res.getDrawable(R.drawable.progress_circle);
-        mDownloadProgress.setProgress(0);   // Main Progress
-        mDownloadProgress.setSecondaryProgress(100); // Secondary Progress
-        mDownloadProgress.setMax(100); // Maximum Progress
-        mDownloadProgress.setProgressDrawable(drawable);
-
-        mDownloadProgress.setX((view.getLeft() + view.getWidth() / 2) - mDownloadProgress.getWidth() / 2 + 15);
-
-        mDownloadProgress.setY((view.getTop() + view.getHeight() / 2) - mDownloadProgress.getHeight() / 4 + 30);
-
-        mTextDownloadProgress.setX((view.getLeft() + view.getWidth() / 2) - 30); //40
-        mTextDownloadProgress.setY((view.getTop() + view.getHeight() / 2) + 100); //90
     }
 
     @Override
@@ -314,23 +291,19 @@ public class LibraryFragment extends BaseFragment implements Queries.CallBack,
             case DownloadService.STATUS_RUNNING:
                 mDownloadInfo.setDownloadState(DownloadInfo.DownloadState.DOWNLOADING);
                 // Show progress bar
-                mDownloadProgress.setVisibility(View.VISIBLE);
-                mTextDownloadProgress.setVisibility(View.VISIBLE);
+                mShelvesAdapter.setStartProgress(currentDownloadingBook.getViewPosition(), mDownloadInfo);
                 break;
 
             case DownloadService.STATUS_PROGRESS:
                 // Extract result from bundle and fill GridData
-                mDownloadProgress.setProgress(resultData.getInt("progress"));
                 int progress = resultData.getInt("progress");
-                mTextDownloadProgress.setText(progress + " %");
+                mShelvesAdapter.setProgressRefresh(progress, currentDownloadingBook.getViewPosition(), mDownloadInfo);
                 break;
 
             case DownloadService.STATUS_FINISHED:
                 saveBook();
                 // Hide progress
-                mDownloadProgress.setVisibility(View.GONE);
-                mTextDownloadProgress.setVisibility(View.GONE);
-                Log.d("STATUS_FINISHED", String.valueOf(mDownloadQueue.getDownloadQueueSize()));
+                mShelvesAdapter.setEndProgress(currentDownloadingBook.getViewPosition(), mDownloadInfo);
                 downloadNextBookQueue("Ok");
 
                 break;
@@ -338,13 +311,10 @@ public class LibraryFragment extends BaseFragment implements Queries.CallBack,
             case DownloadService.STATUS_ERROR:
                 mDownloadInfo.setDownloadState(DownloadInfo.DownloadState.COMPLETE);
                 // Handle the error
-                mDownloadProgress.setVisibility(View.GONE);
-                mTextDownloadProgress.setVisibility(View.GONE);
+                mShelvesAdapter.setEndProgress(currentDownloadingBook.getViewPosition(), mDownloadInfo);
 
                 String error = resultData.getString(Intent.EXTRA_TEXT);
                 downloadNextBookQueue(error);
-                Log.d("STATUS_ERROR", String.valueOf(mDownloadQueue.getDownloadQueueSize()));
-                Log.d("STATUS_ERROR", error);
                 Toast.makeText(getAct(), error, Toast.LENGTH_LONG).show();
                 break;
         }
@@ -352,11 +322,10 @@ public class LibraryFragment extends BaseFragment implements Queries.CallBack,
 
     private void downloadNextBookQueue(String error) {
         if (mIsNetworkActive) {
-            Log.d("STATUS_ERROR---", String.valueOf(mDownloadQueue.getDownloadQueueSize()));
-            if (!error.contains("SSLException") && !error.contains("SocketException") && !error.contains("UnknownHostException")) {
+            if (!error.contains("SSLException") && !error.contains("SocketException")
+                    && !error.contains("UnknownHostException")) {
                 // Remove downloaded book from queue
                 mDownloadQueue.removeFromDownloadQueue(currentDownloadingBook);
-                Log.d("STATUS_ERROR###", String.valueOf(mDownloadQueue.getDownloadQueueSize()));
             }
             // Start new download
             if (mDownloadInfo.getDownloadState().equals(DownloadInfo.DownloadState.COMPLETE)) {
@@ -388,7 +357,7 @@ public class LibraryFragment extends BaseFragment implements Queries.CallBack,
     }
 
     private void saveBookToDbIfNotExist() {
-        List<BookDetail> dataBaseBooks = new ArrayList<>();
+        List<Book> dataBaseBooks = new ArrayList<>();
         dataBaseBooks.addAll(mBookDataBaseLoader.getAllUserBookOnDevise(Prefs.getUserSession(getAct(), Const.USER_SESSION_ID)));
         if (!dataBaseBooks.isEmpty()) {
             if (!dataBaseBooks.contains(currentDownloadingBook)) {
@@ -437,10 +406,19 @@ public class LibraryFragment extends BaseFragment implements Queries.CallBack,
         }
     }
 
+    @Subscribe
+    public void onMessageEvent(Events.UpDateLibrary upDateLibrary) {
+        Log.d("Updatelibrary", "need update");
+        for (Book book : mLibrary){
+            if (book.getBookName().equals(upDateLibrary.getBookName())){
+                book.setIsBookFirstOpen(false);
+                mShelvesAdapter.notifyDataSetChanged();
+            }
+        }
+    }
+
     private void restartDownloading() {
-        Log.d("QQQQQ////////", String.valueOf(mDownloadQueue.getDownloadQueueSize()));
         if (mDownloadQueue.getDownloadQueueSize() != 0) {
-            Log.d("QQQQQ////////", String.valueOf(mDownloadQueue.getDownloadQueueSize()));
             mRestartDownloadingDialog = new RestartDownloadingDialog(getAct());
             mRestartDownloadingDialog.setOnRestartDownloadClick(this);
             mRestartDownloadingDialog.show();

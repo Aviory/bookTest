@@ -1,12 +1,9 @@
 package com.getbooks.android.encryption;
 
 import com.getbooks.android.Const;
-import com.getbooks.android.util.SystemUtil;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 
@@ -26,7 +23,7 @@ public class Decryption {
         FileInputStream fos = new FileInputStream(decryptFilePath +"/"+ bookName + ".epub" );
 
         Encryption encryption = new Encryption();
-        encryption.createKey(Const.USER_SESSION_ID, SystemUtil.getSetting());
+        encryption.createKey(Const.USER_SESSION_ID);
 
         // Length is 16 byte
         // Careful when taking user input!!! https://stackoverflow.com/a/3452620/1188357

@@ -54,5 +54,7 @@
     <string name="txt_book_content">תוכן</string>
     <string name="txt_book_murks_list">סימניות</string>
     <string name="txt_highlights_list">הדגשה</string>
+    <string name="txt_connection_fail">תקלה בחיבור לרשת</string>
+    <string name="from" />
 
 </resources>

@@ -21,15 +21,11 @@ public class BooksDBContract {
         String BOOK_DOWNLOAD_LINK = "BookDownloadLink";
         String BOOK_STATE = "BookState";
         String BOOK_INSTANCE = "BookInstance";
-        String BOOK_ID = "BookID";
-        String BOOK_NAME = "mBookName";
+        String BOOK_NAME = "BookName";
         String BOOK_IMAGE = "BookImage";
         String BOOK_CONTENT_ID = "BookContentID";
-        String BOOK_CATEGORIES = "BookCategories";
         String BOOK_PUBLISHERS = "BookPublishers";
         String BOOK_AUTHORS = "BookAuthors";
-        String BOOK_LONG_DESCRIPTION = "BookLongDescription";
-        String BOOK_GROUPS = "BookGroups";
         String BOOK_LANGUAGE = "BookLanguage";
         String BOOK_LANGUAGE_DIRECTION = "BookLanguageDirection";
         String IS_DELETED = "IsDeleted";
@@ -39,40 +35,27 @@ public class BooksDBContract {
         String BOOK_LAST_CHAPTER = "BookLastChapter";
         String BOOK_LAST_PAGE = "BookLastPage";
         String BOOK_CHAPTER_LIST = "ChaptersList";
-        String PAGES_PER_ARTICLE_LIST = "PagesPerArticlesList";
         String READ_DATE_TIME = "ReadDateTime";
         String IS_BOOK_AT_THE_END = "IsBookAtTheEnd";
-        String IS_BOOK_SYNCHRONIZED = "IsBookSynchronized";
         String BOOK_PHYSICAL_PAGE = "BookPhysicalPage";
-        String IS_FULL_BOOK = "IsFullBook";
-        String IS_FIXED_LAYOUT = "isFixedLayout";
-        String HAS_ORIGINAL_CSS = "hasOriginalCSS";
         String LAST_READING_PARAGRAPH = "LastReadingParagraph";
-        String IS_BOOK_LOCKED = "IsBookLocked";
         String BOOK_CREATED_DATE = "BookCreatedDate";
         String BOOK_IS_FIRST_OPEN = "IsBookFirstOpen";
     }
 
     interface BookMarkupsColumns {
         String USER_ID = "user_id";
-        String BOOK_ID = "bookID";
+        String BOOK_SKU = "bookID";
         String MARK_TYPE = "markType";
         String CHAPTER_NUMBER = "chapterNumber";
         String PAGE_NUMBER = "pageNumber";
-        String ANCHOR_OFFSET = "anchorOffset";
         String CHARS_TO_SELECTION_END = "charsToSelectionEnd";
         String CHARS_TO_SELECTION_START = "charsToSelectionStart";
-        String END_PARAGRAPH = "endParagraph";
-        String START_PARAGRAPH = "startParagraph";
-        String FOCUS_OFFSET = "focusOffset";
         String TEXT = "text";
         String TEXT_LENGTH = "textLength";
         String SECTION_ID = "sectionId";
-        String ARTICLE_INDEX = "articleIndex";
-        String UTC_TICKS = "utcTicks";
-        String UTC_DATE = "utcDate";
         String NOTE_TEXT = "noteText";
-        String BOOK_MARK_SUMMARY = "bookmark_summary";
+        String BOOK_MARK_ALL = "bookmark_all";
     }
 
     private BooksDBContract() {

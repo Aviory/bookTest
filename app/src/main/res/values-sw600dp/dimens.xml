@@ -72,6 +72,12 @@
 
     <dimen name="separator_height_list">2dp</dimen>
     <dimen name="separator_width_list">2dp</dimen>
+    <dimen name="padding_scroll_bar">90dp</dimen>
+    <dimen name="padding_bottom_item">5dp</dimen>
+
+    <!-- Add note dialog sizes -->
+    <dimen name="close_margin_add_note">25dp</dimen>
+    <dimen name="add_note_txt_size">27sp</dimen>
 
 
 </resources>

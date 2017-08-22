@@ -2,7 +2,7 @@ package com.getbooks.android.db;
 
 import android.content.Context;
 
-import com.getbooks.android.model.BookDetail;
+import com.getbooks.android.model.Book;
 
 import java.util.List;
 
@@ -40,7 +40,7 @@ public class BookDataBaseLoader {
         mBooksDataBase.setUserIdSession(userSessionId);
     }
 
-    public void deleteUserSession(int userSession){
+    public void deleteUserSession(int userSession) {
         mBooksDataBase.deleteUserSession(userSession);
     }
 
@@ -48,11 +48,19 @@ public class BookDataBaseLoader {
         return mBooksDataBase.getUserIdSession();
     }
 
-    public void saveBookToDB(BookDetail bookDetail) {
-        mBooksDataBase.saveBook(bookDetail);
+    public void saveBookToDB(Book book) {
+        mBooksDataBase.saveBook(book);
     }
 
-    public List<BookDetail> getAllUserBookOnDevise(int userId) {
+    public void updateCurrentBookDb(Book book) {
+        mBooksDataBase.updateBook(book);
+    }
+
+    public List<Book> getAllUserBookOnDevise(int userId) {
         return mBooksDataBase.getAllUserBook(userId);
+    }
+
+    public Book getCurrentBookDetailDb(int userId, String bookName) {
+        return mBooksDataBase.getCurrentBookDetail(userId, bookName);
     }
 }

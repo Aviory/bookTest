@@ -113,5 +113,7 @@
     <string name="txt_book_content">content</string>
     <string name="txt_book_murks_list">bookmarks</string>
     <string name="txt_highlights_list">accent</string>
+    <string name="txt_connection_fail">Network connection failure</string>
+    <string name="from" />
 
 </resources>

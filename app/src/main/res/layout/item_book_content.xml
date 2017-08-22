@@ -11,7 +11,7 @@
         android:id="@+id/txt_chapter_name"
         android:layout_gravity="center"
         android:gravity="top"
-        android:paddingBottom="2dp"
+        android:paddingBottom="@dimen/padding_bottom_item"
         style="@style/ContentItemListTextStyle"/>
 
 </LinearLayout>

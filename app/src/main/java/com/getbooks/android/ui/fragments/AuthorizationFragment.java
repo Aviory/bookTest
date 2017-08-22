@@ -154,6 +154,7 @@ public class AuthorizationFragment extends BaseFragment {
             String cookies = CookieManager.getInstance().getCookie(url);
             if (null != getAct())
             Prefs.saveCookieUserSession(getAct(), cookies);
+            LogUtil.log(this, "Save user cookies session");
             mProgressBar.dismiss();
         }
     }
@@ -168,6 +169,7 @@ public class AuthorizationFragment extends BaseFragment {
     private void goToUserLibrary(String token) {
         Prefs.setBooleanProperty(getAct(), Const.IS_USER_AUTHORIZE, true);
         Prefs.putToken(getAct(), token);
+        LogUtil.log(this, "Save user token authorization" + token);
         if (Prefs.getCountTutorialsShow(getAct()) < Prefs.MAX_COUNT_VIEWS_TUTORIALS) {
             UiUtil.openActivity(getAct(), TutorialsActivity.class, true, "", "", "", "");
         } else {

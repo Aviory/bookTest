@@ -9,8 +9,11 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 
 import com.getbooks.android.R;
+import com.getbooks.android.events.Events;
 import com.getbooks.android.ui.BaseFragment;
 import com.getbooks.android.ui.activities.ReaderActivity;
+
+import org.greenrobot.eventbus.EventBus;
 
 import butterknife.BindView;
 
@@ -49,6 +52,7 @@ public class BookSettingMenuFragment extends BaseFragment implements View.OnTouc
         Rect rect = new Rect();
         mLayoutBookSettings.getGlobalVisibleRect(rect);
         if (!rect.contains((int) motionEvent.getRawX(), (int) motionEvent.getRawY())) {
+            EventBus.getDefault().post(new Events.CloseContentMenuSetting(false));
             getAct().getSupportFragmentManager().beginTransaction().remove(BookSettingMenuFragment.this).commit();
         }
         return false;

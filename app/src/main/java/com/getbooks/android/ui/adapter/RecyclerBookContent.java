@@ -1,6 +1,5 @@
 package com.getbooks.android.ui.adapter;
 
-import android.support.v4.widget.TextViewCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,11 +8,8 @@ import android.widget.TextView;
 
 import com.getbooks.android.R;
 
-import java.util.List;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import nl.siegmann.epublib.domain.TOCReference;
 
 /**
  * Created by marinaracu on 17.08.17.
@@ -21,10 +17,10 @@ import nl.siegmann.epublib.domain.TOCReference;
 
 public class RecyclerBookContent extends RecyclerView.Adapter<RecyclerBookContent.ViewHolder> {
 
-    List<TOCReference> mTocReferenceList;
+    String[] mChapterArray;
 
-    public RecyclerBookContent(List<TOCReference> tocReferenceList) {
-        this.mTocReferenceList = tocReferenceList;
+    public RecyclerBookContent(String[] tocReferenceList) {
+        this.mChapterArray = tocReferenceList;
     }
 
     @Override
@@ -35,12 +31,12 @@ public class RecyclerBookContent extends RecyclerView.Adapter<RecyclerBookConten
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        holder.mTextChapterName.setText(mTocReferenceList.get(position).getTitle());
+        holder.mTextChapterName.setText(mChapterArray[position]);
     }
 
     @Override
     public int getItemCount() {
-        return mTocReferenceList.size();
+        return mChapterArray.length;
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {

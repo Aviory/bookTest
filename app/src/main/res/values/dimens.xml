@@ -92,6 +92,9 @@
     <!-- Reader sizes -->
     <dimen name="margin_book_mark">12dp</dimen>
     <dimen name="page_txt_size">14sp</dimen>
+    <dimen name="markups_menu_height">42dp</dimen>
+    <dimen name="markups_menu_margins">18dp</dimen>
+    <dimen name="markups_menu_width">170dp</dimen>
 
 
     <!-- Book settings sizes -->
@@ -117,5 +120,12 @@
     <dimen name="txt_margin_center_selector">45dp</dimen>
     <dimen name="separator_height_list">1dp</dimen>
     <dimen name="separator_width_list">1dp</dimen>
+    <dimen name="padding_scroll_bar">13dp</dimen>
+    <dimen name="padding_bottom_item">2dp</dimen>
+
+
+    <!-- Add note dialog sizes -->
+    <dimen name="close_margin_add_note">15dp</dimen>
+    <dimen name="add_note_txt_size">16sp</dimen>
 
 </resources>
