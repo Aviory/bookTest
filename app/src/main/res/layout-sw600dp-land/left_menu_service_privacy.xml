@@ -40,19 +40,19 @@
 
         </RadioGroup>
 
-    <SeekBar
-        android:id="@+id/seek_bar_sizes"
-        android:layout_width="0dp"
-        android:layout_height="@dimen/seek_bar_height"
-        android:layout_below="@id/radioGroup1"
-        android:layout_gravity="center"
-        android:layout_marginLeft="@dimen/margin_seek_bar"
-        android:layout_marginRight="@dimen/margin_seek_bar"
-        android:layout_weight="1"
+    <com.getbooks.android.ui.widget.left_menu_items.CustomSeekBar
+        android:id="@+id/servise_seek_bar"
+        android:layout_width="@dimen/service_seek_bar_height"
+        android:layout_height="@dimen/service_seek_bar_width"
+        android:layout_marginTop="@dimen/service_seek_mar_marg_top"
+        android:layout_marginLeft="@dimen/servise_margin_seek_bar"
+        android:layout_marginStart="@dimen/servise_margin_seek_bar"
         android:padding="0dp"
-        android:progressDrawable="@drawable/custom_seek_bar"
-        android:thumb="@drawable/thumb"
-        android:thumbOffset="0dp" />
+        android:progressDrawable="@drawable/service_custom_seek_bar"
+        android:rotation="270"
+        android:thumb="@drawable/thumb_vertical"
+        android:thumbOffset="0dp"
+        android:visibility="invisible"/>
 
     <com.getbooks.android.ui.widget.ArialNormalTextView
         android:id="@+id/txt_service_privacy"

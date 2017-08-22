@@ -54,14 +54,14 @@ public class FragmentServicePrivacy extends Fragment implements View.OnClickList
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                int val = (progress * (seekBar.getHeight() - 2 * seekBar.getThumbOffset())) / seekBar.getMax();
-                text_seekbar.setText("" + progress);
-                text_seekbar.setY(seekBar.getY() + val + seekBar.getThumbOffset() / 2);
+//                int val = (progress * (seekBar.getHeight() - 2 * seekBar.getThumbOffset())) / seekBar.getMax();
+//                text_seekbar.setText("" + progress);
+//                text_seekbar.setY(seekBar.getY() + val + seekBar.getThumbOffset() / 2);
             }
 
             @Override
             public void onStartTrackingTouch(SeekBar seekBar) {
-                text_seekbar.setVisibility(View.VISIBLE);
+//                text_seekbar.setVisibility(View.VISIBLE);
 
             }
 
@@ -88,7 +88,7 @@ public class FragmentServicePrivacy extends Fragment implements View.OnClickList
                 seekBar.setVisibility(View.INVISIBLE);
                 break;
             case R.id.btn_service_right:
-                seekBar.setVisibility(View.VISIBLE);
+//                seekBar.setVisibility(View.VISIBLE);
                 break;
         }
     }
