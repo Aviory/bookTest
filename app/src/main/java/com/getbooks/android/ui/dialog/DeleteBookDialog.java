@@ -27,10 +27,10 @@ public class DeleteBookDialog extends AlertDialog implements View.OnClickListene
     public interface OnItemDeleteDialogListener {
         void cancelBookDelete();
 
-        void deleteBook();
+        void deleteBookClick();
     }
 
-    protected DeleteBookDialog(Context context) {
+    public DeleteBookDialog(Context context) {
         super(context);
     }
 
@@ -72,7 +72,7 @@ public class DeleteBookDialog extends AlertDialog implements View.OnClickListene
             case R.id.txt_sign_out:
             case R.id.img_log_out:
                 if (mOnItemDeleteDialogListener != null) {
-                    mOnItemDeleteDialogListener.deleteBook();
+                    mOnItemDeleteDialogListener.deleteBookClick();
                 }
                 break;
         }

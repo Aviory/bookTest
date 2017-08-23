@@ -4,9 +4,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.support.annotation.StyleRes;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.getbooks.android.R;
@@ -15,7 +13,7 @@ import com.getbooks.android.R;
  * Created by marinaracu on 23.08.17.
  */
 
-public class LogOutAlertDialog extends AlertDialog implements View.OnClickListener {
+public class LogOutDialog extends AlertDialog implements View.OnClickListener {
 
     private OnItemLogOutListener mOnItemLogOutListener;
     private TextView mTextCancel;
@@ -30,18 +28,18 @@ public class LogOutAlertDialog extends AlertDialog implements View.OnClickListen
     public interface OnItemLogOutListener {
         void cancelLogOut();
 
-        void logOut();
+        void logOutClick();
     }
 
-    protected LogOutAlertDialog(Context context) {
+    public LogOutDialog(Context context) {
         super(context);
     }
 
-    protected LogOutAlertDialog(Context context, boolean cancelable, OnCancelListener cancelListener) {
+    protected LogOutDialog(Context context, boolean cancelable, OnCancelListener cancelListener) {
         super(context, cancelable, cancelListener);
     }
 
-    protected LogOutAlertDialog(Context context, @StyleRes int themeResId) {
+    protected LogOutDialog(Context context, @StyleRes int themeResId) {
         super(context, themeResId);
     }
 
@@ -75,7 +73,7 @@ public class LogOutAlertDialog extends AlertDialog implements View.OnClickListen
             case R.id.txt_sign_out:
             case R.id.img_log_out:
                 if (mOnItemLogOutListener != null) {
-                    mOnItemLogOutListener.logOut();
+                    mOnItemLogOutListener.logOutClick();
                 }
                 break;
         }

@@ -35,6 +35,8 @@ import com.getbooks.android.receivers.NetworkStateReceiver;
 import com.getbooks.android.servises.DownloadService;
 import com.getbooks.android.ui.BaseActivity;
 import com.getbooks.android.ui.adapter.RecyclerShelvesAdapter;
+import com.getbooks.android.ui.dialog.DeleteBookDialog;
+import com.getbooks.android.ui.dialog.LogOutDialog;
 import com.getbooks.android.ui.dialog.RestartDownloadingDialog;
 import com.getbooks.android.ui.widget.RecyclerItemClickListener;
 import com.getbooks.android.util.FileUtil;
@@ -60,7 +62,8 @@ import butterknife.OnClick;
  */
 
 public class LibraryActivity extends BaseActivity implements Queries.CallBack,
-        DownloadResultReceiver.Receiver, RestartDownloadingDialog.OnItemRestartDownloadClick {
+        DownloadResultReceiver.Receiver, RestartDownloadingDialog.OnItemRestartDownloadClick,
+        LogOutDialog.OnItemLogOutListener, DeleteBookDialog.OnItemDeleteDialogListener {
 
     @BindView(R.id.recyler_books_shelves)
     protected RecyclerView mRecyclerBookShelves;
@@ -88,6 +91,8 @@ public class LibraryActivity extends BaseActivity implements Queries.CallBack,
     private boolean mIsNetworkActive = false;
     private String mDirectoryPath;
     private BookDataBaseLoader mBookDataBaseLoader;
+    private LogOutDialog mLogOutDialog;
+    private DeleteBookDialog mDeleteBookDialog;
 
     private static final String SAVE_LIBRARY = "com.getbooks.android.ui.fragments.save_library";
 
@@ -118,8 +123,6 @@ public class LibraryActivity extends BaseActivity implements Queries.CallBack,
             mQueries.setCallBack(this);
             mQueries.getUserSession(Prefs.getToken(getAct()), getAct());
         }
-
-        hideLeftMenu();
 
         clickBook();
     }
@@ -183,8 +186,38 @@ public class LibraryActivity extends BaseActivity implements Queries.CallBack,
 
     @OnClick(R.id.txt_log_out)
     protected void logOut() {
+        mLogOutDialog = new LogOutDialog(this);
+        mLogOutDialog.setOnItemLogOutListener(this);
+        mLogOutDialog.show();
+    }
+
+
+    @Override
+    public void cancelLogOut() {
+        mLogOutDialog.dismiss();
+    }
+
+    @Override
+    public void logOutClick() {
         Queries queries = new Queries();
         queries.deleteUserSession(Prefs.getToken(getAct()), getAct());
+    }
+
+    @OnClick(R.id.rigth_txt_remove_books)
+    public void removeBook() {
+        mDeleteBookDialog = new DeleteBookDialog(this);
+        mDeleteBookDialog.setOnItemLogOutListener(this);
+        mDeleteBookDialog.show();
+    }
+
+    @Override
+    public void cancelBookDelete() {
+        mDeleteBookDialog.dismiss();
+    }
+
+    @Override
+    public void deleteBookClick() {
+
     }
 
 
@@ -237,10 +270,6 @@ public class LibraryActivity extends BaseActivity implements Queries.CallBack,
             mQueries.onStop();
         }
         mQueries = null;
-    }
-
-    protected void hideLeftMenu() {
-
     }
 
     private void clickBook() {
