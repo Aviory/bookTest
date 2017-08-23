@@ -1,10 +1,13 @@
 package com.getbooks.android.ui.fragments;
 
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
+import android.net.ConnectivityManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -119,14 +122,14 @@ public class LibraryFragment extends BaseFragment implements Queries.CallBack,
         mImageMenu.setActivated(true);
 
         if (savedInstanceState == null) {
-//            mDownlodReceiver = new DownloadResultReceiver(new Handler());
-//            mDownlodReceiver.setReceiver(this);
-//
-//            mNetworkReceiver = new NetworkStateReceiver();
-//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-//                getAct().registerReceiver(mNetworkReceiver,
-//                        new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
-//            }
+            mDownlodReceiver = new DownloadResultReceiver(new Handler());
+            mDownlodReceiver.setReceiver(this);
+
+            mNetworkReceiver = new NetworkStateReceiver();
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                getAct().registerReceiver(mNetworkReceiver,
+                        new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+            }
             mDownloadInfo = new DownloadInfo();
             mDownloadQueue = new DownloadQueue();
 
