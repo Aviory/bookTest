@@ -33,4 +33,8 @@ public final class Const {
     public static final String BOOKS_DIRECTORY = "GetBooks";
     public static final String BOOK_PATH = "book_path";
     public static final String BOOK_NAME = "book_name";
+
+    //right menu const
+    public static final String SERVISE_PRIVASY_RIGHT_BTN_TEXT_ID = "4984";
+    public static final String SERVISE_PRIVASY_ABOUT_US_TEXT_ID = "4972";
 }

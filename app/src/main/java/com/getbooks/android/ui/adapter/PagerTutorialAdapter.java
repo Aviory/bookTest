@@ -1,11 +1,10 @@
-package com.getbooks.android.ui.widget.left_menu_items.Tutorial;
+package com.getbooks.android.ui.adapter;
 
 import android.content.Context;
 import android.support.v4.view.PagerAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 
 import com.getbooks.android.R;
 import com.getbooks.android.util.LogUtil;
@@ -14,11 +13,11 @@ import com.getbooks.android.util.LogUtil;
  * Created by avi on 21.08.17.
  */
 
-public class PagerView extends PagerAdapter {
+public class PagerTutorialAdapter extends PagerAdapter {
 
     private Context mContext;
 
-    public PagerView(Context context) {
+    public PagerTutorialAdapter(Context context) {
         mContext = context;
     }
 

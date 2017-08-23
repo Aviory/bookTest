@@ -1,4 +1,4 @@
-package com.getbooks.android.ui.widget.left_menu_items;
+package com.getbooks.android.ui.dialog;
 
 import android.app.Dialog;
 import android.graphics.Color;
@@ -23,9 +23,8 @@ import com.getbooks.android.ui.widget.ArialNormalTextView;
 public class AlertDialogInstructions extends DialogFragment {
 
         public static AlertDialogInstructions newInstance(){
-
-            AlertDialogInstructions f = new AlertDialogInstructions();
-            return f;
+            AlertDialogInstructions alertDialogInstructions = new AlertDialogInstructions();
+            return alertDialogInstructions;
         }
 
         @Nullable

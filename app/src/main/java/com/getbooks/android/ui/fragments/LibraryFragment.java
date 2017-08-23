@@ -1,13 +1,10 @@
 package com.getbooks.android.ui.fragments;
 
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
-import android.net.ConnectivityManager;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -43,16 +40,15 @@ import com.getbooks.android.servises.DownloadService;
 import com.getbooks.android.ui.BaseFragment;
 import com.getbooks.android.ui.activities.CatalogActivity;
 import com.getbooks.android.ui.activities.LibraryActivity;
-import com.getbooks.android.ui.activities.TutorialsActivity;
 import com.getbooks.android.ui.activities.ReaderActivity;
 import com.getbooks.android.ui.adapter.RecyclerShelvesAdapter;
 import com.getbooks.android.ui.dialog.RestartDownloadingDialog;
-import com.getbooks.android.ui.widget.left_menu_items.AlertDialogAboutUs;
-import com.getbooks.android.ui.widget.left_menu_items.AlertDialogInstructions;
-import com.getbooks.android.ui.widget.left_menu_items.AlertDialogStory;
-import com.getbooks.android.ui.widget.left_menu_items.FragmentServicePrivacy;
+import com.getbooks.android.ui.dialog.AlertDialogAboutUs;
+import com.getbooks.android.ui.dialog.AlertDialogInstructions;
+import com.getbooks.android.ui.dialog.AlertDialogStory;
+import com.getbooks.android.ui.fragments.left_menu_items.FragmentServicePrivacy;
 import com.getbooks.android.ui.widget.RecyclerItemClickListener;
-import com.getbooks.android.ui.widget.left_menu_items.FragmentTutorial;
+import com.getbooks.android.ui.fragments.left_menu_items.FragmentTutorial;
 import com.getbooks.android.util.FileUtil;
 import com.getbooks.android.util.LogUtil;
 import com.getbooks.android.util.UiUtil;
@@ -109,9 +105,11 @@ public class LibraryFragment extends BaseFragment implements Queries.CallBack,
     private BookDataBaseLoader mBookDataBaseLoader;
     private List<Text> txt_list;
 
-    final static String PRIVACY = "FRAGMENT_1";
-    final static String INSTRUCTIONS = "FRAGMENT_2";
-    final static String HISTORY = "FRAGMENT_3";
+    public final static String PRIVACY = "privacy";
+    public final static String INSTRUCTIONS = "instruction";
+    public final static String HISTORY = "history";
+    public final static String TUTORIAL = "tutorial";
+
     private static final String SAVE_LIBRARY = "com.getbooks.android.ui.fragments.save_library";
 
     @Override
@@ -224,38 +222,24 @@ public class LibraryFragment extends BaseFragment implements Queries.CallBack,
     @OnClick(R.id.txt_order_history)
     protected void orderHistory() {
         menuTranzaction();
-        AlertDialogStory.newInstance().show(getFragmentManager(), "history");
-//        FragmentDialogInstruction fragment = (FragmentDialogInstruction) getChildFragmentManager()
-//                .findFragmentByTag(HISTORY);
-//        if(fragment==null)
-//            menuTranzaction(FragmentHistory.newInstance(), HISTORY);
-//        else
-//            UiUtil.hideView(mLeftMenuLayout);
+        AlertDialogStory.newInstance().show(getFragmentManager(), HISTORY);
     }
     @OnClick(R.id.txt_instruction)
     protected void instruction() {
         menuTranzaction();
-        AlertDialogInstructions.newInstance().show(getFragmentManager(), "instruction");
-//        FragmentDialogInstruction fragment = (FragmentDialogInstruction) getChildFragmentManager()
-//                .findFragmentByTag(INSTRUCTIONS);
-//        if(fragment==null)
-//            menuTranzaction(FragmentDialogInstruction.newInstance(), INSTRUCTIONS);
-//        else
-//            UiUtil.hideView(mLeftMenuLayout);
+        AlertDialogInstructions.newInstance().show(getFragmentManager(), INSTRUCTIONS);
     }
     @OnClick(R.id.txt_explanation_screens)
     protected void explanationScreens() {
-//        UiUtil.openActivity(getAct(), TutorialsActivity.class, true, "", "", "", "");
-        FragmentTutorial.newInstance().show(getFragmentManager(), "tutorial");
         menuTranzaction();
+        FragmentTutorial.newInstance().show(getFragmentManager(), TUTORIAL);
     }
     @OnClick(R.id.txt_service_privacy)
     protected void servicePrivacy() {
-        //        AlertDialogServicePrivacy.newInstance().show(getFragmentManager(), "privacy");
         String txt_fragment ="";
         if(txt_list!=null){
             for (Text t: txt_list) {
-                if(t.getPopupID()=="4984");{
+                if(t.getPopupID()==Const.SERVISE_PRIVASY_RIGHT_BTN_TEXT_ID);{
                     txt_fragment = t.getPopupText();
                     break;
                 }
@@ -267,7 +251,7 @@ public class LibraryFragment extends BaseFragment implements Queries.CallBack,
             menuTranzaction(FragmentServicePrivacy.getInstance(), PRIVACY);
         else
             getActivity().getSupportFragmentManager().beginTransaction().show( FragmentServicePrivacy.getInstance()).commit();
-            FragmentServicePrivacy.getInstance().setTxt(txt_fragment);
+            FragmentServicePrivacy.getInstance().setText(txt_fragment);
             UiUtil.hideView(mLeftMenuLayout);
     }
 
@@ -282,7 +266,7 @@ public class LibraryFragment extends BaseFragment implements Queries.CallBack,
         String txt_fragment ="";
         if(txt_list!=null){
             for (Text t: txt_list) {
-                if(t.getPopupID()=="4972");{
+                if(t.getPopupID()==Const.SERVISE_PRIVASY_ABOUT_US_TEXT_ID);{
                     txt_fragment = t.getPopupText();
                     break;
                 }

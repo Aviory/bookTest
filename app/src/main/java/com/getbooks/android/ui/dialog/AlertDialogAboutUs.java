@@ -1,4 +1,4 @@
-package com.getbooks.android.ui.widget.left_menu_items;
+package com.getbooks.android.ui.dialog;
 
 import android.app.Dialog;
 import android.graphics.Color;
@@ -13,17 +13,7 @@ import android.view.Window;
 import android.widget.ImageView;
 
 import com.getbooks.android.R;
-import com.getbooks.android.api.QueriesTexts;
-import com.getbooks.android.model.RequestModel;
-import com.getbooks.android.model.Text;
 import com.getbooks.android.ui.widget.ArialNormalTextView;
-import com.getbooks.android.util.LogUtil;
-
-import java.util.List;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 /**
  * Created by Avi on 14.08.2017.

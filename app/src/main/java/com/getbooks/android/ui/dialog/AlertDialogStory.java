@@ -1,4 +1,4 @@
-package com.getbooks.android.ui.widget.left_menu_items;
+package com.getbooks.android.ui.dialog;
 
 import android.app.Dialog;
 import android.graphics.Color;
@@ -20,11 +20,12 @@ import com.getbooks.android.R;
  */
 
 public class AlertDialogStory extends DialogFragment {
-    public AlertDialogStory(){}
-    WebView myBrowser;
+
+    private WebView myBrowser;
+
     public static AlertDialogStory newInstance(){
-        AlertDialogStory f = new AlertDialogStory();
-        return f;
+        AlertDialogStory alertDialogStory = new AlertDialogStory();
+        return alertDialogStory;
     }
 
     @Nullable

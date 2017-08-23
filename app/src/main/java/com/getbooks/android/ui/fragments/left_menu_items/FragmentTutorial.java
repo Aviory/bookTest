@@ -1,4 +1,4 @@
-package com.getbooks.android.ui.widget.left_menu_items;
+package com.getbooks.android.ui.fragments.left_menu_items;
 
 import android.app.Dialog;
 import android.graphics.Color;
@@ -6,9 +6,6 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,7 +14,7 @@ import android.view.Window;
 import android.widget.ImageView;
 
 import com.getbooks.android.R;
-import com.getbooks.android.ui.widget.left_menu_items.Tutorial.PagerView;
+import com.getbooks.android.ui.adapter.PagerTutorialAdapter;
 import com.getbooks.android.util.LogUtil;
 
 /**
@@ -27,12 +24,12 @@ import com.getbooks.android.util.LogUtil;
 public class FragmentTutorial extends DialogFragment {
     protected ViewPager mViewPagerTutorials;
     ImageView close;
-    private static FragmentTutorial f;
+    private static FragmentTutorial mFragmentTutorial;
 
     public static FragmentTutorial newInstance(){
-        if(f==null)
-        f = new FragmentTutorial();
-        return f;
+        if(mFragmentTutorial==null)
+            mFragmentTutorial = new FragmentTutorial();
+        return mFragmentTutorial;
     }
 
     @Nullable
@@ -40,13 +37,6 @@ public class FragmentTutorial extends DialogFragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_base_tutorial, container, false);
         mViewPagerTutorials = v.findViewById(R.id.view_pager);
-        close = v.findViewById(R.id.img_close);
-        close.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                dismiss();
-            }
-        });
         return v;
     }
 
@@ -54,6 +44,17 @@ public class FragmentTutorial extends DialogFragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         startViewPagerTutorials();
+        if(view.findViewById(R.id.img_close)!=null){
+            close = view.findViewById(R.id.img_close);
+            close.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    dismiss();
+                    LogUtil.log(this, "aaaaaaaaaaaaaaaa");
+                }
+            });
+        }
+
     }
 
     @Override
@@ -74,7 +75,7 @@ public class FragmentTutorial extends DialogFragment {
     }
 
     public void startViewPagerTutorials() {
-        mViewPagerTutorials.setAdapter(new PagerView(getActivity()));
+        mViewPagerTutorials.setAdapter(new PagerTutorialAdapter(getActivity()));
         mViewPagerTutorials.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -83,11 +84,7 @@ public class FragmentTutorial extends DialogFragment {
 
             @Override
             public void onPageSelected(int position) {
-                if(position==1){
-                    close.setVisibility(View.INVISIBLE);
-                }
-                else
-                    close.setVisibility(View.VISIBLE);
+
             }
 
             @Override
