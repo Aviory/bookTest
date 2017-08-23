@@ -24,7 +24,7 @@
         android:id="@+id/seek_bar_menu"
         layout="@layout/menu_seek_bar_layout" />
 
-    <com.getbooks.android.ui.widget.FrankRuehlMediumTextView
+    <com.getbooks.android.ui.widget.ArialNormalTextView
         android:id="@+id/img_text"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

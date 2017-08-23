@@ -27,4 +27,14 @@
         android:layout_marginTop="@dimen/margin_left_menu_top"
         android:visibility="invisible" />
 
+    <include
+        android:id="@+id/rigth_menu"
+        layout="@layout/fragment_right_menu_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/menu_main"
+        android:layout_marginTop="@dimen/margin_left_menu_top"
+        android:visibility="invisible" />
+
 </RelativeLayout>

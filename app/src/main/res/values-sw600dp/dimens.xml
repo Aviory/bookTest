@@ -94,5 +94,10 @@
     <dimen name="padding_dialog_del_top">63dp</dimen>
     <dimen name="padding_sides_dialog_del">40dp</dimen>
 
+    <!-- Right menu sizes -->
+    <dimen name="right_margin_top_icon">34dp</dimen>
+    <dimen name="right_margin_left_icon">22dp</dimen>
+    <dimen name="right_margin_bot_icon">26dp</dimen>
+
 
 </resources>

@@ -61,6 +61,16 @@
         <item name="android:layout_gravity">left</item>
     </style>
 
+    <style name="RightMenuTextStyle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">@dimen/left_menu_txt_size</item>
+        <item name="android:textColor">@color/color_white</item>
+        <item name="android:gravity">center</item>
+        <item name="android:layout_gravity">right</item>
+    </style>
+
     <style name="TextContentSelectorStyle">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>

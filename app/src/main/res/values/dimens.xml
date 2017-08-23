@@ -79,7 +79,7 @@
     <dimen name="margin_bottom_hand">30dp</dimen>
 
     <!-- Item shelves sizes -->
-    <dimen name="margin_shelves">-5dp</dimen>
+    <dimen name="margin_shelves">-10dp</dimen>
 
 
     <!-- Left Menu sizes -->
@@ -139,5 +139,10 @@
     <dimen name="dialog_delete_width">285dp</dimen>
     <dimen name="dialog_delete_height">188dp</dimen>
     <dimen name="padding_sides_dialog_del">30dp</dimen>
+
+    <!-- Right menu sizes -->
+    <dimen name="right_margin_top_icon">34dp</dimen>
+    <dimen name="right_margin_left_icon">22dp</dimen>
+    <dimen name="right_margin_bot_icon">26dp</dimen>
 
 </resources>

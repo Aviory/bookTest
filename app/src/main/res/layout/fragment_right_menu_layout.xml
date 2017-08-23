@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_right_menu"
+    android:clickable="true"
+    android:orientation="horizontal">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="@dimen/margin_top_icon"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="@dimen/margin_top_icon"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <com.getbooks.android.ui.widget.ArialNormalTextView
+            android:id="@+id/txt_order_history"
+            style="@style/RightMenuTextStyle"
+            android:text="@string/rigth_txt_screen_sett" />
+
+        <com.getbooks.android.ui.widget.ArialNormalTextView
+            android:id="@+id/rigth_txt_order"
+            style="@style/RightMenuTextStyle"
+            android:text="@string/rigth_txt_order" />
+
+        <com.getbooks.android.ui.widget.ArialNormalTextView
+            android:id="@+id/rigth_txt_book_name"
+            style="@style/RightMenuTextStyle"
+            android:text="@string/rigth_txt_book_name" />
+
+        <com.getbooks.android.ui.widget.ArialNormalTextView
+            android:id="@+id/rigth_txt_author_name"
+            style="@style/RightMenuTextStyle"
+            android:text="@string/rigth_txt_author_name" />
+
+        <com.getbooks.android.ui.widget.ArialNormalTextView
+            android:id="@+id/rigth_txt_read_date"
+            style="@style/RightMenuTextStyle"
+            android:text="@string/rigth_txt_read_date" />
+
+        <com.getbooks.android.ui.widget.ArialNormalTextView
+            android:id="@+id/rigth_txt_date_add"
+            style="@style/RightMenuTextStyle"
+            android:text="@string/rigth_txt_date_add" />
+
+        <com.getbooks.android.ui.widget.ArialNormalTextView
+            android:id="@+id/rigth_txt_remove_books"
+            style="@style/RightMenuTextStyle"
+            android:text="@string/rigth_txt_remove_books" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="@dimen/right_margin_bot_icon"
+        android:layout_marginRight="@dimen/right_margin_left_icon"
+        android:layout_marginTop="@dimen/right_margin_top_icon"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:src="@drawable/list" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:src="@drawable/sort" />
+
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1" />
+
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1" />
+
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:checked="true" />
+
+        <RadioButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:src="@drawable/bin_white" />
+    </LinearLayout>
+
+
+</LinearLayout>
