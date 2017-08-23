@@ -112,6 +112,7 @@ public class LibraryFragment extends BaseFragment implements Queries.CallBack,
     public final static String INSTRUCTIONS = "instruction";
     public final static String HISTORY = "history";
     public final static String TUTORIAL = "tutorial";
+    public final static String ABOUT_US = "about_us";
 
     private static final String SAVE_LIBRARY = "com.getbooks.android.ui.fragments.save_library";
 
@@ -193,10 +194,10 @@ public class LibraryFragment extends BaseFragment implements Queries.CallBack,
         }
     }
 
-    private void menuTranzaction(Fragment f, String tag){
+    private void menuTranzaction(Fragment fragment, String tag){
         FragmentTransaction fragmentTransaction = getChildFragmentManager()
                 .beginTransaction();
-        fragmentTransaction.replace(R.id.contaner_main, f, tag);
+        fragmentTransaction.replace(R.id.contaner_main, fragment, tag);
         fragmentTransaction.commit();
         UiUtil.hideView(mLeftMenuLayout);
     }
@@ -276,7 +277,7 @@ public class LibraryFragment extends BaseFragment implements Queries.CallBack,
             }
         }
         AlertDialogAboutUs.newInstance().setTxt(txt_fragment);
-        AlertDialogAboutUs.newInstance().show(getFragmentManager(), "about_us");
+        AlertDialogAboutUs.newInstance().show(getFragmentManager(), ABOUT_US);
         menuTranzaction();
     }
 
