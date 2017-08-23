@@ -81,7 +81,7 @@ public class ReaderActivity extends BaseActivity {
         mBookName = getIntent().getStringExtra(Const.BOOK_NAME);
         mUserIdSession = Prefs.getUserSession(getAct(), Const.USER_SESSION_ID);
 
-        mBookDataBaseLoader = BookDataBaseLoader.createBookDBLoader(this);
+        mBookDataBaseLoader = BookDataBaseLoader.getInstanceDb(this);
 
         File file = new File(mBookPath);
         File[] files = file.listFiles();

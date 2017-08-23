@@ -23,6 +23,7 @@ public class InvertedSeekBar extends AppCompatSeekBar {
     public InvertedSeekBar(Context context, AttributeSet attributeSet, int i) {
         super(context, attributeSet, i);
     }
+
     @Override
     protected synchronized void onDraw(Canvas canvas) {
         canvas.rotate(-180.0f);

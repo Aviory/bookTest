@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="@dimen/dialog_width"
+    android:layout_height="@dimen/dialog_height"
+    android:background="@drawable/dialog_background"
+    android:orientation="vertical">
+
+    <com.getbooks.android.ui.widget.ArialNormalTextView
+        style="@style/TextDialogsStyle"
+        android:layout_gravity="center"
+        android:gravity="top"
+        android:paddingBottom="@dimen/padding_dialog_bottom"
+        android:paddingTop="@dimen/padding_dialog_top"
+        android:text="@string/txt_log_out_question" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/img_cancel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:src="@drawable/round_arrow" />
+
+
+            <com.getbooks.android.ui.widget.ArialNormalTextView
+                android:id="@+id/txt_cancel"
+                style="@style/TextDialogsStyle"
+                android:layout_gravity="center"
+                android:text="@string/txt_cancel" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/img_log_out"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:src="@drawable/exit" />
+
+            <com.getbooks.android.ui.widget.ArialNormalTextView
+                android:id="@+id/txt_sign_out"
+                style="@style/TextDialogsStyle"
+                android:layout_gravity="center"
+                android:text="@string/txt_sign_out" />
+        </LinearLayout>
+
+    </LinearLayout>
+</LinearLayout>

@@ -109,7 +109,7 @@ public class LibraryFragment extends BaseFragment implements Queries.CallBack,
             mDownloadInfo = new DownloadInfo();
             mDownloadQueue = new DownloadQueue();
 
-            mBookDataBaseLoader = BookDataBaseLoader.createBookDBLoader(getAct());
+            mBookDataBaseLoader = BookDataBaseLoader.getInstanceDb(getAct());
 
             UiUtil.showDialog(getContext());
             Log.d("QQQ=", String.valueOf(Prefs.getUserSession(getAct(), Const.USER_SESSION_ID)));
@@ -408,9 +408,8 @@ public class LibraryFragment extends BaseFragment implements Queries.CallBack,
 
     @Subscribe
     public void onMessageEvent(Events.UpDateLibrary upDateLibrary) {
-        Log.d("Updatelibrary", "need update");
-        for (Book book : mLibrary){
-            if (book.getBookName().equals(upDateLibrary.getBookName())){
+        for (Book book : mLibrary) {
+            if (book.getBookName().equals(upDateLibrary.getBookName())) {
                 book.setIsBookFirstOpen(false);
                 mShelvesAdapter.notifyDataSetChanged();
             }

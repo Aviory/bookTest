@@ -6,7 +6,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
-import android.util.Log;
 import android.view.View;
 import android.webkit.CookieManager;
 import android.webkit.WebResourceError;
@@ -17,7 +16,6 @@ import android.webkit.WebViewClient;
 
 import com.getbooks.android.Const;
 import com.getbooks.android.R;
-import com.getbooks.android.api.Queries;
 import com.getbooks.android.db.BookDataBaseLoader;
 import com.getbooks.android.prefs.Prefs;
 import com.getbooks.android.ui.BaseFragment;
@@ -179,14 +177,14 @@ public class AuthorizationFragment extends BaseFragment {
 
     private void createUserSession(int userSessionId) {
         List<Integer> allUsersId = new ArrayList<>();
-        allUsersId.addAll(BookDataBaseLoader.createBookDBLoader(getAct()).getUsersIdSession());
+        allUsersId.addAll(BookDataBaseLoader.getInstanceDb(getAct()).getUsersIdSession());
         if (!allUsersId.isEmpty()) {
             if (!allUsersId.contains(userSessionId)) {
-                BookDataBaseLoader.createBookDBLoader(getAct()).createUserSession(userSessionId);
+                BookDataBaseLoader.getInstanceDb(getAct()).createUserSession(userSessionId);
                 Prefs.saveUserSession(getAct(), Const.USER_SESSION_ID, userSessionId);
             }
         } else {
-            BookDataBaseLoader.createBookDBLoader(getAct()).createUserSession(userSessionId);
+            BookDataBaseLoader.getInstanceDb(getAct()).createUserSession(userSessionId);
             Prefs.saveUserSession(getAct(), Const.USER_SESSION_ID, userSessionId);
         }
     }

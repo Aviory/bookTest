@@ -60,6 +60,7 @@ public class Events {
             isLibraryClose = libraryClose;
         }
     }
+
     public static class CloseContentMenuSetting {
         boolean isSettingMenuContentShow;
 
@@ -76,7 +77,7 @@ public class Events {
         }
     }
 
-    public static class UpDateLibrary{
+    public static class UpDateLibrary {
         String bookName;
 
         public String getBookName() {

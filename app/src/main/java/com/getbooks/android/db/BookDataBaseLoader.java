@@ -13,7 +13,6 @@ import java.util.List;
 public class BookDataBaseLoader {
 
     private BooksDataBase mBooksDataBase;
-    private static Context mContext;
     private static BookDataBaseLoader mBookDataBaseLoader;
 
     private BookDataBaseLoader(Context context) {
@@ -21,12 +20,11 @@ public class BookDataBaseLoader {
         mBooksDataBase.createDB();
     }
 
-    public static synchronized BookDataBaseLoader createBookDBLoader(Context context) {
+    public static synchronized BookDataBaseLoader getInstanceDb(Context context) {
         BookDataBaseLoader dataBaseLoader;
         synchronized (BookDataBaseLoader.class) {
             if (mBookDataBaseLoader == null) {
                 mBookDataBaseLoader = new BookDataBaseLoader(context.getApplicationContext());
-                mContext = context;
             }
             if (!(mBookDataBaseLoader.mBooksDataBase == null || mBookDataBaseLoader.mBooksDataBase.isSqlOpen())) {
                 mBookDataBaseLoader.mBooksDataBase.createDB();

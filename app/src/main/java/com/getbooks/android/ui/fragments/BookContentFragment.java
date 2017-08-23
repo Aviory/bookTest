@@ -55,7 +55,7 @@ public class BookContentFragment extends BaseFragment implements SelectorOfBookC
         if (getArguments() != null) {
             Bundle bundle = getArguments();
             String boomName = bundle.getString(Const.BOOK_NAME);
-            mBookDataBaseLoader = BookDataBaseLoader.createBookDBLoader(getAct());
+            mBookDataBaseLoader = BookDataBaseLoader.getInstanceDb(getAct());
             book = mBookDataBaseLoader.getCurrentBookDetailDb(Prefs.getUserSession(getAct(), Const.USER_SESSION_ID),
                     boomName);
             mChapterList = book.getChapterList().split(",");

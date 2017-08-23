@@ -56,5 +56,10 @@
     <string name="txt_highlights_list">הדגשה</string>
     <string name="txt_connection_fail">תקלה בחיבור לרשת</string>
     <string name="from" />
+    <string name="txt_log_out_question">לצאת מהחשבון?</string>
+    <string name="txt_cancel">ביטול</string>
+    <string name="txt_sign_out">לצאת</string>
+    <string name="txt_delete">למחוק</string>
+    <string name="txt_delete_book_question">הספרים שנבחרו ימחקו ממכשירכם אך ימשיכו להיות נגישים בענן. האם ברצונכם להמשיך במחיקה?</string>
 
 </resources>

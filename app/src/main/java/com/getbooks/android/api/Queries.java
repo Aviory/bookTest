@@ -183,7 +183,7 @@ public class Queries {
 
     private List<Book> checkDownloadedBook(List<Book> allBooks, int userId, Context context) {
         List<Book> allBooksLibrary = new ArrayList<>();
-        allBooksLibrary.addAll(BookDataBaseLoader.createBookDBLoader(context).getAllUserBookOnDevise(userId));
+        allBooksLibrary.addAll(BookDataBaseLoader.getInstanceDb(context).getAllUserBookOnDevise(userId));
         Log.d("QQQQQ-", String.valueOf(userId));
         Log.d("QQQQQ-", allBooksLibrary.toString());
         Log.d("QQQQQ-", String.valueOf(allBooksLibrary.size()));

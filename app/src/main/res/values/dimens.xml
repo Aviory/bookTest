@@ -128,4 +128,16 @@
     <dimen name="close_margin_add_note">15dp</dimen>
     <dimen name="add_note_txt_size">16sp</dimen>
 
+    <!-- Dialog sizes -->
+    <dimen name="dialog_width">250dp</dimen>
+    <dimen name="dialog_height">160dp</dimen>
+    <dimen name="log_out_question_size">16sp</dimen>
+    <dimen name="padding_dialog_bottom">30dp</dimen>
+    <dimen name="padding_dialog_top">30dp</dimen>
+
+    <!-- Dialog delete sizes -->
+    <dimen name="dialog_delete_width">285dp</dimen>
+    <dimen name="dialog_delete_height">188dp</dimen>
+    <dimen name="padding_sides_dialog_del">30dp</dimen>
+
 </resources>
