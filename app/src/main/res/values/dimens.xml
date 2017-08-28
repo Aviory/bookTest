@@ -90,6 +90,8 @@
     <dimen name="dialog_margin_about">20dp</dimen>
     <dimen name="margin_top_icon_about">7dp</dimen>
 
+    <!-- Left menu -->
+    <dimen name="left_menu_service_margin_bot">20dp</dimen>
     <dimen name="left_menu_txt_size">15sp</dimen>
     <dimen name="font_hader_about">20sp</dimen>
     <dimen name="font_body_about">17sp</dimen>
@@ -108,6 +110,16 @@
     <dimen name="btn_service_margin_left">37dp</dimen>
     <dimen name="txt_body_service_margin_left">48dp</dimen>
     <dimen name="btn_service_margin_top">23dp</dimen>
+    <dimen name="btn_close_webview_marg_left">15dp</dimen>
+
+    <dimen name="service_seek_bar_height">324dp</dimen>
+    <dimen name="service_seek_mar_marg_top">75dp</dimen>
+    <dimen name="servise_seek_bar_radius">3dp</dimen>
+    <dimen name="servise_margin_seek_bar">20dp</dimen>
+    <dimen name="servise_seek_bar_height_thumb">49dp</dimen>
+    <dimen name="service_seek_bar_width">6dp</dimen>
+    <dimen name="padding_scroll_bar">13dp</dimen>
+    <dimen name="padding_bottom_item">2dp</dimen>
 
     <!-- Reader sizes -->
     <dimen name="margin_book_mark">12dp</dimen>
@@ -140,15 +152,6 @@
     <dimen name="txt_margin_center_selector">45dp</dimen>
     <dimen name="separator_height_list">1dp</dimen>
     <dimen name="separator_width_list">1dp</dimen>
-    <dimen name="btn_close_webview_marg_left">15dp</dimen>
-    <dimen name="service_seek_bar_height">324dp</dimen>
-    <dimen name="service_seek_mar_marg_top">75dp</dimen>
-    <dimen name="servise_seek_bar_radius">3dp</dimen>
-    <dimen name="servise_margin_seek_bar">20dp</dimen>
-    <dimen name="servise_seek_bar_height_thumb">49dp</dimen>
-    <dimen name="service_seek_bar_width">6dp</dimen>
-    <dimen name="padding_scroll_bar">13dp</dimen>
-    <dimen name="padding_bottom_item">2dp</dimen>
 
 
     <!-- Add note dialog sizes -->

@@ -181,7 +181,6 @@ public class LibraryActivity extends BaseActivity implements Queries.CallBack,
                 LogUtil.log(this, "onFailure: <List<Text>> ");
             }
         });
-
     }
 
 
