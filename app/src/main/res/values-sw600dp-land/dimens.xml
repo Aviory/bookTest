@@ -43,6 +43,17 @@
     <dimen name="margin_recycler_content_left">80dp</dimen>
     <dimen name="margin_recycler_right">100dp</dimen>
     <dimen name="scroll_bar_width">12dp</dimen>
+    <dimen name="padding_scroll_bar">40dp</dimen>
+    <dimen name="padding_bottom_item">5dp</dimen>
+
+    <!-- Add note dialog sizes -->
+    <dimen name="close_margin_add_note">25dp</dimen>
+
+    <!-- Right menu sizes -->
+    <dimen name="right_margin_top_icon">34dp</dimen>
+    <dimen name="right_margin_left_icon">22dp</dimen>
+    <dimen name="right_margin_bot_icon">26dp</dimen>
+
     <dimen name="btn_close_webview_marg_left">15dp</dimen>
     <dimen name="service_seek_bar_height">324dp</dimen>
     <dimen name="service_seek_mar_marg_top">75dp</dimen>

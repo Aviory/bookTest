@@ -18,7 +18,7 @@
         style="@style/ScrollbarContentListStyle"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:paddingLeft="13dp"
+        android:paddingLeft="@dimen/padding_scroll_bar"
         android:layout_marginLeft="@dimen/margin_recycler_content_left"
         android:layout_marginRight="@dimen/margin_recycler_right"
         android:layout_marginTop="35dp"

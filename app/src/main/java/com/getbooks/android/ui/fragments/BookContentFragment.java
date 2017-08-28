@@ -4,25 +4,27 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.DividerItemDecoration;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
-import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.getbooks.android.Const;
 import com.getbooks.android.R;
+import com.getbooks.android.db.BookDataBaseLoader;
+import com.getbooks.android.events.Events;
+import com.getbooks.android.model.Book;
+import com.getbooks.android.prefs.Prefs;
 import com.getbooks.android.ui.BaseFragment;
 import com.getbooks.android.ui.activities.ReaderActivity;
 import com.getbooks.android.ui.adapter.RecyclerBookContent;
 import com.getbooks.android.ui.widget.SelectorOfBookContents;
 
-import java.util.List;
+import org.greenrobot.eventbus.EventBus;
 
 import butterknife.BindView;
 import butterknife.OnClick;
-import nl.siegmann.epublib.domain.TOCReference;
 
 /**
  * Created by marinaracu on 16.08.17.
@@ -39,18 +41,25 @@ public class BookContentFragment extends BaseFragment implements SelectorOfBookC
     RecyclerBookContent mBookContentAdapter;
     DividerItemDecoration dividerItemDecoration;
 
+    private Book book;
+
+    private String[] mChapterList;
+    private BookDataBaseLoader mBookDataBaseLoader;
+
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
         mSelectorOfBookContents.setOnItemSelectedListener(this);
-        Log.d("aaaaaaaaaa", "book content");
 
         if (getArguments() != null) {
             Bundle bundle = getArguments();
-            List<TOCReference> list = (List<TOCReference>) bundle.getSerializable("chapters");
-            initShelvesRecycler(list);
-            Log.d("aaaaaaaaa", String.valueOf(list));
+            String boomName = bundle.getString(Const.BOOK_NAME);
+            mBookDataBaseLoader = BookDataBaseLoader.getInstanceDb(getAct());
+            book = mBookDataBaseLoader.getCurrentBookDetailDb(Prefs.getUserSession(getAct(), Const.USER_SESSION_ID),
+                    boomName);
+            mChapterList = book.getChapterList().split(",");
+            initShelvesRecycler(mChapterList);
         }
     }
 
@@ -81,13 +90,13 @@ public class BookContentFragment extends BaseFragment implements SelectorOfBookC
     }
 
 
-    private void initShelvesRecycler(List<TOCReference> library) {
+    private void initShelvesRecycler(String[] chapterList) {
         mLinearLayoutManager = new LinearLayoutManager(getAct());
         mLinearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         mRecyclerBookContent.setLayoutManager(mLinearLayoutManager);
 
         if (mBookContentAdapter == null)
-            mBookContentAdapter = new RecyclerBookContent(library);
+            mBookContentAdapter = new RecyclerBookContent(chapterList);
         mRecyclerBookContent.setAdapter(mBookContentAdapter);
 
         if (dividerItemDecoration == null) {
@@ -100,6 +109,7 @@ public class BookContentFragment extends BaseFragment implements SelectorOfBookC
 
     @OnClick(R.id.img_close)
     protected void closeContentBokList() {
+        EventBus.getDefault().post(new Events.CloseContentMenuSetting(false));
         getAct().getSupportFragmentManager().beginTransaction().remove(BookContentFragment.this).commit();
     }
 }

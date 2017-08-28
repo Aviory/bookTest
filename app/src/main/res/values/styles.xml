@@ -61,6 +61,16 @@
         <item name="android:layout_gravity">left</item>
     </style>
 
+    <style name="RightMenuTextStyle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">@dimen/left_menu_txt_size</item>
+        <item name="android:textColor">@color/color_white</item>
+        <item name="android:gravity">center</item>
+        <item name="android:layout_gravity">right</item>
+    </style>
+
     <style name="TextContentSelectorStyle">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
@@ -70,6 +80,14 @@
         <item name="android:paddingLeft">@dimen/btn_background_padding</item>
         <item name="android:paddingTop">2dp</item>
         <item name="android:paddingBottom">3dp</item>
+    </style>
+
+
+    <style name="TextDialogsStyle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">@dimen/log_out_question_size</item>
+        <item name="android:textColor">@color/gray</item>
     </style>
 
 
@@ -91,6 +109,14 @@
         <item name="android:scrollbarFadeDuration">2000</item>
         <item name="android:scrollbarDefaultDelayBeforeFade">1000</item>
         <item name="android:verticalScrollbarPosition">left</item>
+    </style>
+
+    <style name="CustomRadioButtonStyle" parent="@android:style/Widget.CompoundButton.RadioButton">
+        <item name="android:button">@drawable/custom_btn_radio</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:layout_gravity">center</item>
     </style>
 
 </resources>

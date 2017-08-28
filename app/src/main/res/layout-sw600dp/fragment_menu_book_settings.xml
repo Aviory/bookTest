@@ -124,10 +124,10 @@
                     android:layout_weight="1"
                     android:src="@drawable/minus_blue" />
 
-                <ImageView
-                    android:layout_width="wrap_content"
+                <View
+                    android:layout_width="@dimen/separator_width_list"
                     android:layout_height="match_parent"
-                    android:background="@drawable/separator_book_settings" />
+                    android:background="@color/blue" />
 
                 <ImageView
                     android:layout_width="wrap_content"
@@ -145,7 +145,7 @@
         </LinearLayout>
 
         <View
-            android:layout_width="1dp"
+            android:layout_width="@dimen/separator_width_list"
             android:layout_height="match_parent"
             android:background="@color/blue" />
 
@@ -183,7 +183,7 @@
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="1dp"
+        android:layout_height="@dimen/separator_width_list"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="18dp"
         android:background="@color/blue" />
@@ -217,7 +217,7 @@
         </LinearLayout>
 
         <View
-            android:layout_width="1dp"
+            android:layout_width="@dimen/separator_width_list"
             android:layout_height="wrap_content"
             android:layout_marginBottom="10dp"
             android:background="@color/blue" />

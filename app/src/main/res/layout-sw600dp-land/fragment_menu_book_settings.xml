@@ -124,10 +124,10 @@
                     android:layout_weight="1"
                     android:src="@drawable/minus_blue" />
 
-                <ImageView
-                    android:layout_width="wrap_content"
+                <View
+                    android:layout_width="@dimen/separator_width_list"
                     android:layout_height="match_parent"
-                    android:background="@drawable/separator_book_settings" />
+                    android:background="@color/blue" />
 
                 <ImageView
                     android:layout_width="wrap_content"

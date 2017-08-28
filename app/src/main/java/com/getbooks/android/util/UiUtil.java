@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.Handler;
 import android.os.Looper;
 import android.text.TextUtils;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
@@ -27,10 +28,6 @@ public class UiUtil {
     private static MaterialDialog mMaterialDialog;
     private static Toast mToast;
 
-    public static void clearStack(Activity activity) {
-        new Handler().postDelayed(activity::finishAffinity, 2000);
-    }
-
     public static String decode(String str) {
         String result = "";
         try {
@@ -42,15 +39,16 @@ public class UiUtil {
         return result;
     }
 
-
     public static String encode(String str) {
-        String result = "";
         try {
-            return URLEncoder.encode(str.toString(), "utf-8");
+            if (!TextUtils.isEmpty(str)) {
+                str = URLEncoder.encode(str, "UTF-8");
+            }
         } catch (UnsupportedEncodingException e) {
             Log.d("error in encoding", e.getMessage());
+            e.printStackTrace();
         }
-        return result;
+        return str;
     }
 
     public static void showDialog(Context context) {
@@ -124,10 +122,10 @@ public class UiUtil {
     }
 
     public static void openActivity(Activity context, Class<?> tClass, boolean isCloseCurrentActivity,
-                                    String key, String value, String keyExtra, String valueExtra){
+                                    String key, String value, String keyExtra, String valueExtra) {
         Intent intent = new Intent(context, tClass);
         if (!TextUtils.isEmpty(value))
-        intent.putExtra(key, value);
+            intent.putExtra(key, value);
         intent.putExtra(keyExtra, valueExtra);
         context.startActivity(intent);
         if (isCloseCurrentActivity) context.finish();

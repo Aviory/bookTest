@@ -2,7 +2,7 @@ package com.getbooks.android.db;
 
 import android.content.Context;
 
-import com.getbooks.android.model.BookDetail;
+import com.getbooks.android.model.Book;
 
 import java.util.List;
 
@@ -13,7 +13,6 @@ import java.util.List;
 public class BookDataBaseLoader {
 
     private BooksDataBase mBooksDataBase;
-    private static Context mContext;
     private static BookDataBaseLoader mBookDataBaseLoader;
 
     private BookDataBaseLoader(Context context) {
@@ -21,12 +20,11 @@ public class BookDataBaseLoader {
         mBooksDataBase.createDB();
     }
 
-    public static synchronized BookDataBaseLoader createBookDBLoader(Context context) {
+    public static synchronized BookDataBaseLoader getInstanceDb(Context context) {
         BookDataBaseLoader dataBaseLoader;
         synchronized (BookDataBaseLoader.class) {
             if (mBookDataBaseLoader == null) {
                 mBookDataBaseLoader = new BookDataBaseLoader(context.getApplicationContext());
-                mContext = context;
             }
             if (!(mBookDataBaseLoader.mBooksDataBase == null || mBookDataBaseLoader.mBooksDataBase.isSqlOpen())) {
                 mBookDataBaseLoader.mBooksDataBase.createDB();
@@ -40,7 +38,7 @@ public class BookDataBaseLoader {
         mBooksDataBase.setUserIdSession(userSessionId);
     }
 
-    public void deleteUserSession(int userSession){
+    public void deleteUserSession(int userSession) {
         mBooksDataBase.deleteUserSession(userSession);
     }
 
@@ -48,11 +46,19 @@ public class BookDataBaseLoader {
         return mBooksDataBase.getUserIdSession();
     }
 
-    public void saveBookToDB(BookDetail bookDetail) {
-        mBooksDataBase.saveBook(bookDetail);
+    public void saveBookToDB(Book book) {
+        mBooksDataBase.saveBook(book);
     }
 
-    public List<BookDetail> getAllUserBookOnDevise(int userId) {
+    public void updateCurrentBookDb(Book book) {
+        mBooksDataBase.updateBook(book);
+    }
+
+    public List<Book> getAllUserBookOnDevise(int userId) {
         return mBooksDataBase.getAllUserBook(userId);
+    }
+
+    public Book getCurrentBookDetailDb(int userId, String bookName) {
+        return mBooksDataBase.getCurrentBookDetail(userId, bookName);
     }
 }

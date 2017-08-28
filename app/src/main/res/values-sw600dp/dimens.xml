@@ -104,6 +104,30 @@
     <dimen name="servise_margin_seek_bar">20dp</dimen>
     <dimen name="servise_seek_bar_height_thumb">49dp</dimen>
     <dimen name="service_seek_bar_width">6dp</dimen>
+    <dimen name="padding_scroll_bar">90dp</dimen>
+    <dimen name="padding_bottom_item">5dp</dimen>
+
+    <!-- Add note dialog sizes -->
+    <dimen name="close_margin_add_note">25dp</dimen>
+    <dimen name="add_note_txt_size">27sp</dimen>
+
+
+    <!-- Dialog sizes -->
+    <dimen name="log_out_question_size">27sp</dimen>
+    <dimen name="padding_dialog_bottom">100dp</dimen>
+    <dimen name="padding_dialog_top">67dp</dimen>
+    <dimen name="padding_bottom_dialog">50dp</dimen>
+
+    <!-- Dialog delete sizes -->
+    <dimen name="padding_dialog_del_bottom">53dp</dimen>
+    <dimen name="padding_dialog_del_top">63dp</dimen>
+    <dimen name="padding_sides_dialog_del">40dp</dimen>
+
+    <!-- Right menu sizes -->
+    <dimen name="right_margin_top_icon">34dp</dimen>
+    <dimen name="right_margin_left_icon">22dp</dimen>
+    <dimen name="right_margin_bot_icon">26dp</dimen>
+    <dimen name="padding_bottom_dialog_del">50dp</dimen>
 
 
 </resources>

@@ -118,5 +118,20 @@
     <string name="txt_book_content">content</string>
     <string name="txt_book_murks_list">bookmarks</string>
     <string name="txt_highlights_list">accent</string>
+    <string name="txt_connection_fail">Network connection failure</string>
+    <string name="from" />
+    <string name="txt_log_out_question">Sign out?</string>
+    <string name="txt_cancel">Cancel</string>
+    <string name="txt_sign_out">Sign Out</string>
+    <string name="txt_delete">Delete</string>
+    <string name="txt_delete_book_question">הספרים שנבחרו ימחקו ממכשירכם אך ימשיכו להיות נגישים בענן. האם ברצונכם להמשיך במחיקה?</string>
 
+    <!-- Right menu text -->
+    <string name="rigth_txt_screen_sett">screen setting</string>
+    <string name="rigth_txt_book_name">book name</string>
+    <string name="rigth_txt_author_name">author name</string>
+    <string name="rigth_txt_read_date">read date</string>
+    <string name="rigth_txt_date_add">add date</string>
+    <string name="rigth_txt_remove_books">remove books</string>
+    <string name="rigth_txt_order">order</string>
 </resources>

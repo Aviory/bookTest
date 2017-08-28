@@ -60,4 +60,32 @@ public class Events {
             isLibraryClose = libraryClose;
         }
     }
+
+    public static class CloseContentMenuSetting {
+        boolean isSettingMenuContentShow;
+
+        public CloseContentMenuSetting(boolean isSettingMenuContentShow) {
+            this.isSettingMenuContentShow = isSettingMenuContentShow;
+        }
+
+        public boolean isSettingMenuContentShow() {
+            return isSettingMenuContentShow;
+        }
+
+        public void setSettingMenuContentShow(boolean settingMenuContentShow) {
+            isSettingMenuContentShow = settingMenuContentShow;
+        }
+    }
+
+    public static class UpDateLibrary {
+        String bookName;
+
+        public String getBookName() {
+            return bookName;
+        }
+
+        public void setBookName(String bookName) {
+            this.bookName = bookName;
+        }
+    }
 }

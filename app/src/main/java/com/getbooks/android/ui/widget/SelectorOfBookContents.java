@@ -55,16 +55,13 @@ public class SelectorOfBookContents extends LinearLayout implements View.OnClick
         inflate(getContext(), R.layout.view_book_contents_selector, this);
         int j = 0;
         mTextViews = new TextView[count];
-        Log.d("CLick_tab", String.valueOf(mTextViews.length));
         for (int i = 0; i < getChildCount(); i++) {
-            Log.d("CLick_tab", String.valueOf(getChildCount()));
             if (getChildAt(i) instanceof TextView) {
                 mTextViews[j] = (TextView) getChildAt(i);
                 mTextViews[j].setOnClickListener(this);
                 mTextViews[j].setTextColor(mSelected == j ? mColorSelected : mColorUnselected);
                 mTextViews[j].setBackground(mSelected == j ? getResources().getDrawable(R.drawable.background_selector)
                         : getResources().getDrawable(R.drawable.background_transparent));
-                Log.d("CLick_tab", String.valueOf(mTextViews[j]));
                 j++;
             }
         }
