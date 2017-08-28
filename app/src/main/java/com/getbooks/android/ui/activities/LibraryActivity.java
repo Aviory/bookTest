@@ -216,7 +216,7 @@ public class LibraryActivity extends BaseActivity implements Queries.CallBack,
         }
     }
 
-    @OnClick(R.id.txt_order_history)
+    @OnClick(R.id.right_txt_screen_settings)
     protected void orderHistory() {
         menuTranzaction();
         AlertDialogStory.newInstance().show(getSupportFragmentManager(), HISTORY);
@@ -273,6 +273,27 @@ public class LibraryActivity extends BaseActivity implements Queries.CallBack,
         AlertDialogAboutUs.newInstance().setTxt(txt_fragment);
         AlertDialogAboutUs.newInstance().show(getSupportFragmentManager(), ABOUT_US);
         menuTranzaction();
+    }
+    @OnClick(R.id.right_txt_screen_settings)
+    protected void screenSettings() {
+
+    }
+
+    @OnClick(R.id.right_txt_order)
+    protected void order() {
+
+    }
+    @OnClick(R.id.rigth_txt_book_name)
+    protected void bookName() {
+
+    }
+    @OnClick(R.id.rigth_txt_read_date)
+    protected void readDate() {
+
+    }
+    @OnClick(R.id.rigth_txt_date_add)
+    protected void addDate() {
+
     }
 
     private void menuTranzaction(Fragment fragment, String tag){

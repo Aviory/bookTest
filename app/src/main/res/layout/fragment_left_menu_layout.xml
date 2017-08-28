@@ -70,7 +70,7 @@
         android:orientation="vertical">
 
         <com.getbooks.android.ui.widget.ArialNormalTextView
-            android:id="@+id/txt_order_history"
+            android:id="@+id/right_txt_screen_settings"
             style="@style/LeftMenuTextStyle"
             android:text="@string/txt_order_history" />
 

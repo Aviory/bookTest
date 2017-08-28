@@ -17,12 +17,12 @@
         android:orientation="vertical">
 
         <com.getbooks.android.ui.widget.ArialNormalTextView
-            android:id="@+id/txt_order_history"
+            android:id="@+id/right_txt_screen_settings"
             style="@style/RightMenuTextStyle"
             android:text="@string/rigth_txt_screen_sett" />
 
         <com.getbooks.android.ui.widget.ArialNormalTextView
-            android:id="@+id/rigth_txt_order"
+            android:id="@+id/right_txt_order"
             style="@style/RightMenuTextStyle"
             android:text="@string/rigth_txt_order" />
 
