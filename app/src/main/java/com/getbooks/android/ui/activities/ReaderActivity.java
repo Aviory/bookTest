@@ -16,7 +16,7 @@ import com.getbooks.android.R;
 import com.getbooks.android.db.BookDataBaseLoader;
 import com.getbooks.android.encryption.Decryption;
 import com.getbooks.android.events.Events;
-import com.getbooks.android.model.Book;
+import com.getbooks.android.model.BookModel;
 import com.getbooks.android.prefs.Prefs;
 import com.getbooks.android.ui.BaseActivity;
 import com.getbooks.android.ui.fragments.BookContentFragment;
@@ -38,6 +38,7 @@ import javax.crypto.NoSuchPaddingException;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import nl.siegmann.epublib.domain.Book;
 import nl.siegmann.epublib.domain.TOCReference;
 import nl.siegmann.epublib.epub.EpubReader;
 
@@ -67,8 +68,8 @@ public class ReaderActivity extends BaseActivity {
     private String mBookPath;
     private String mBookName;
     private int mUserIdSession;
-    private nl.siegmann.epublib.domain.Book mCurrentOpenBook;
-    private Book mCurrentBook;
+    private Book mCurrentOpenBook;
+    private BookModel mCurrentBookModel;
     private BookDataBaseLoader mBookDataBaseLoader;
 
     List<TOCReference> mTocReferenceList;
@@ -148,9 +149,9 @@ public class ReaderActivity extends BaseActivity {
     }
 
     private boolean isFirstOpenBookDetailFromDb() {
-        mCurrentBook = mBookDataBaseLoader.getCurrentBookDetailDb(mUserIdSession, mBookName);
-        Log.d("wwwwwwwwww", mCurrentBook.toString());
-        return mCurrentBook.isIsBookFirstOpen();
+        mCurrentBookModel = mBookDataBaseLoader.getCurrentBookDetailDb(mUserIdSession, mBookName);
+        Log.d("wwwwwwwwww", mCurrentBookModel.toString());
+        return mCurrentBookModel.isIsBookFirstOpen();
     }
 
     private void openFirstCurrentBook() {
@@ -158,9 +159,9 @@ public class ReaderActivity extends BaseActivity {
         for (int i = 0; i < mTocReferenceList.size(); i++) {
             chapterList.append(mTocReferenceList.get(i).getTitle()).append(",");
         }
-        mCurrentBook.setChapterList(chapterList.toString());
-        mCurrentBook.setIsBookFirstOpen(false);
-        mBookDataBaseLoader.updateCurrentBookDb(mCurrentBook);
+        mCurrentBookModel.setChapterList(chapterList.toString());
+        mCurrentBookModel.setIsBookFirstOpen(false);
+        mBookDataBaseLoader.updateCurrentBookDb(mCurrentBookModel);
     }
 
     @Subscribe

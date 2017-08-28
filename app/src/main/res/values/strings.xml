@@ -56,13 +56,13 @@
     <!--<string name="txt_tutorial_first_six">Delete \nhighlighting</string>-->
 
     <!-- Tutorial float text -->
-    <!--<string name="txt_tutorial_float_one">A short press on a book page \n opens control buttons</string>-->
+    <!--<string name="txt_tutorial_float_one">A short press on a bookModel page \n opens control buttons</string>-->
     <!--<string name="txt_tutorial_float_two">Switching help screens</string>-->
     <!--<string name="txt_tutorial_float_three">Settings \nschool</string>-->
     <!--<string name="txt_tutorial_float_four">Search</string>-->
     <!--<string name="txt_tutorial_float_five">Bookmarks \nfirefox</string>-->
     <!--<string name="txt_tutorial_float_six">Go to\n the library</string>-->
-    <!--<string name="txt_tutorial_float_bottom">Your place \n in the book</string>-->
+    <!--<string name="txt_tutorial_float_bottom">Your place \n in the bookModel</string>-->
     <string name="txt_page_book_tutorial">אֵמָה ווּדהַאוּז הייתה יפה, חכמה ועשירה, היו לה בית נוח ומזג נעים, ודומה שנתברכה במיטב מעלות החיים גם יחד; מלאו לה כמעט עשרים ואחת שנים, ובתקופת חיים זו דברים מעטים בלבד הטרידו את מנוחתה או הכעיסו אותה.
 
 היא הייתה הצעירה בשתי בנותיו של אב אוהב ומפנק עד מאוד, ובעקבות נישואי אחותה שימשה גבירת הבית מגיל צעיר למדי. אִמהּ מתה שנים רבות, רבות קודם לכן מכדי שתוכל לזכור בבירור את מגעה, ואת מקום האם מילאה אומנת שהייתה אישה נהדרת והרעיפה עליה חיבה לא פחותה מזו של אם.
@@ -104,7 +104,7 @@
     <string name="txt_restart_dialog">Do you want restart downloading of books?</string>
 
 
-    <!-- Book settings strings -->
+    <!-- BookModel settings strings -->
     <string name="txt_book_setting">Book Settings</string>
     <string name="txt_font">Font</string>
     <string name="txt_a_letter">a</string>
@@ -112,7 +112,7 @@
     <!-- Contents selector texts -->
     <string name="txt_book_content">content</string>
     <string name="txt_book_murks_list">bookmarks</string>
-    <string name="txt_highlights_list">accent</string>
+    <string name="txt_highlights_list">highlights</string>
     <string name="txt_connection_fail">Network connection failure</string>
     <string name="from" />
     <string name="txt_log_out_question">Sign out?</string>
@@ -123,7 +123,7 @@
 
     <!-- Right menu text -->
     <string name="rigth_txt_screen_sett">screen setting</string>
-    <string name="rigth_txt_book_name">book name</string>
+    <string name="rigth_txt_book_name">bookModel name</string>
     <string name="rigth_txt_author_name">author name</string>
     <string name="rigth_txt_read_date">read date</string>
     <string name="rigth_txt_date_add">add date</string>

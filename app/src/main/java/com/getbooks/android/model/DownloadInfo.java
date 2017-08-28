@@ -13,18 +13,22 @@ public class DownloadInfo implements Parcelable {
         QUEUED,
         DOWNLOADING,
         COMPLETE,
-        INTERRUPTED
+        INTERRUPTED,
+        SELECTED_DELETING_BOOKS
     }
+
     private volatile DownloadState mDownloadState = DownloadState.NOT_STARTED;
 
     public void setDownloadState(DownloadState state) {
         mDownloadState = state;
     }
+
     public DownloadState getDownloadState() {
         return mDownloadState;
     }
 
-    public DownloadInfo(){}
+    public DownloadInfo() {
+    }
 
     protected DownloadInfo(Parcel in) {
         mDownloadState = (DownloadState) in.readValue(DownloadState.class.getClassLoader());

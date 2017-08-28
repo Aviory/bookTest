@@ -12,7 +12,7 @@ import java.util.Calendar;
  * Created by marina on 11.08.17.
  */
 
-public class Book implements Parcelable {
+public class BookModel implements Parcelable {
     private String mBookAuthors;
     private int mUserId;
     private String mBookName;
@@ -42,14 +42,16 @@ public class Book implements Parcelable {
     private int mBookPhysicalPage;
     private int mLastReadingParagraph;
 
+    private boolean mIsBookSelected;
+
     private boolean mIsBookRented;
 
     private byte[] mBookInstance;
 
-    public Book() {
+    public BookModel() {
     }
 
-    protected Book(Parcel in) {
+    protected BookModel(Parcel in) {
         mBookAuthors = in.readString();
         mUserId = in.readInt();
         mBookName = in.readString();
@@ -79,15 +81,15 @@ public class Book implements Parcelable {
         mBookInstance = in.createByteArray();
     }
 
-    public static final Creator<Book> CREATOR = new Creator<Book>() {
+    public static final Creator<BookModel> CREATOR = new Creator<BookModel>() {
         @Override
-        public Book createFromParcel(Parcel in) {
-            return new Book(in);
+        public BookModel createFromParcel(Parcel in) {
+            return new BookModel(in);
         }
 
         @Override
-        public Book[] newArray(int size) {
-            return new Book[size];
+        public BookModel[] newArray(int size) {
+            return new BookModel[size];
         }
     };
 
@@ -332,9 +334,9 @@ public class Book implements Parcelable {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Book)) return false;
+        if (!(o instanceof BookModel)) return false;
 
-        Book that = (Book) o;
+        BookModel that = (BookModel) o;
 
         if (mUserId != that.mUserId) return false;
         if (!mBookName.equals(that.mBookName)) return false;
@@ -396,7 +398,7 @@ public class Book implements Parcelable {
 
     @Override
     public String toString() {
-        return "Book{" +
+        return "BookModel{" +
                 "mBookAuthors='" + mBookAuthors + '\'' +
                 ", mUserId=" + mUserId +
                 ", mBookName='" + mBookName + '\'' +
@@ -428,5 +430,13 @@ public class Book implements Parcelable {
                 ", mIsBookRented=" + mIsBookRented +
                 ", mBookInstance=" + Arrays.toString(mBookInstance) +
                 '}';
+    }
+
+    public boolean ismIsBookSelected() {
+        return mIsBookSelected;
+    }
+
+    public void setmIsBookSelected(boolean mIsBookSelected) {
+        this.mIsBookSelected = mIsBookSelected;
     }
 }

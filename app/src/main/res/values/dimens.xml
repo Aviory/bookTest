@@ -31,8 +31,9 @@
     <dimen name="separator_width">2dp</dimen>
     <dimen name="margin_menu_icon">20dp</dimen>
     <dimen name="txt_size">18sp</dimen>
+    <dimen name="remove_big_right_margin">20dp</dimen>
 
-    <!-- Menu book sizes -->
+    <!-- Menu bookModel sizes -->
     <dimen name="margin_bottom">11.8dp</dimen>
 
     <!-- Menu seek bar sizes -->
@@ -97,7 +98,7 @@
     <dimen name="markups_menu_width">170dp</dimen>
 
 
-    <!-- Book settings sizes -->
+    <!-- BookModel settings sizes -->
     <dimen name="book_setting_height">345dp</dimen>
     <dimen name="txt_margin_book_setting">25dp</dimen>
     <dimen name="margin_top_menu_br">26dp</dimen>
@@ -107,13 +108,13 @@
     <dimen name="letter_big_size">41sp</dimen>
     <dimen name="margin_bottom_menu_book_small">7dp</dimen>
     
-    <!-- Book contents list sizes -->
+    <!-- BookModel contents list sizes -->
     <dimen name="item_content_size">15sp</dimen>
     <dimen name="margin_recycler_content_left">20dp</dimen>
     <dimen name="margin_recycler_right">40dp</dimen>
     <dimen name="scroll_bar_width">6dp</dimen>
 
-    <!-- Book contents selector sizes -->
+    <!-- BookModel contents selector sizes -->
     <dimen name="txt_content_selector_size">15sp</dimen>
     <dimen name="txt_margin_top_selector">25dp</dimen>
     <dimen name="btn_background_padding">10dp</dimen>
@@ -144,5 +145,6 @@
     <dimen name="right_margin_left_icon">22dp</dimen>
     <dimen name="right_margin_bot_icon">26dp</dimen>
     <dimen name="padding_bottom_dialog_del">30dp</dimen>
+
 
 </resources>

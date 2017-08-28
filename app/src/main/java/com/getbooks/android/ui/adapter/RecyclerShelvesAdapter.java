@@ -2,16 +2,18 @@ package com.getbooks.android.ui.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.getbooks.android.R;
 import com.getbooks.android.chashe.PicassoCache;
-import com.getbooks.android.model.Book;
+import com.getbooks.android.model.BookModel;
 import com.getbooks.android.model.DownloadInfo;
 import com.squareup.picasso.Callback;
 
@@ -26,15 +28,23 @@ import butterknife.ButterKnife;
 
 public class RecyclerShelvesAdapter extends RecyclerView.Adapter<RecyclerShelvesAdapter.ViewHolder> {
 
-    private List<Book> mLibrary;
+    public interface UpdateUiSelectedCheckBox {
+        void selectedBookState();
+
+        void unSelectedBookState();
+    }
+
+    private List<BookModel> mLibrary;
     private Context mContext;
     private int mProgress = 0;
     private DownloadInfo mDownloadInfo;
+    private UpdateUiSelectedCheckBox mUpdateUiSelectedCheckBox;
 
 
-    public RecyclerShelvesAdapter(List<Book> mLibrary, Context context) {
+    public RecyclerShelvesAdapter(List<BookModel> mLibrary, Context context, UpdateUiSelectedCheckBox updateUiSelectedCheckBox) {
         this.mLibrary = mLibrary;
         this.mContext = context;
+        this.mUpdateUiSelectedCheckBox = updateUiSelectedCheckBox;
     }
 
 
@@ -48,6 +58,8 @@ public class RecyclerShelvesAdapter extends RecyclerView.Adapter<RecyclerShelves
     public void onBindViewHolder(ViewHolder holder, int position) {
         switch (mDownloadInfo.getDownloadState()) {
             case DOWNLOADING:
+                holder.mImageBookState.setVisibility(View.VISIBLE);
+                holder.mCheckBoxDeleteBook.setVisibility(View.INVISIBLE);
                 if (mProgress > 0 && mProgress <= 100) {
                     if (holder.mProgressBar.isIndeterminate()) {
                         holder.mProgressBar.setIndeterminate(false);
@@ -63,6 +75,8 @@ public class RecyclerShelvesAdapter extends RecyclerView.Adapter<RecyclerShelves
                 break;
             case NOT_STARTED:
             case COMPLETE:
+                holder.mImageBookState.setVisibility(View.VISIBLE);
+                holder.mCheckBoxDeleteBook.setVisibility(View.INVISIBLE);
                 holder.mProgressBar.setVisibility(View.INVISIBLE);
                 holder.mTextProgress.setVisibility(View.INVISIBLE);
                 mProgress = 0;
@@ -81,26 +95,60 @@ public class RecyclerShelvesAdapter extends RecyclerView.Adapter<RecyclerShelves
                                 holder.mImageCover.setImageResource(R.drawable.book_1);
                             }
                         });
-                Book book = mLibrary.get(position);
-                switch (book.getBookState()) {
+                BookModel bookModel = mLibrary.get(position);
+                switch (bookModel.getBookState()) {
                     case CLOUD_BOOK:
                         holder.mImageBookState.setImageResource(R.drawable.arrow_down_black);
                         break;
                     case PURCHASED_BOOK:
-                        if (book.isIsBookFirstOpen()) {
+                        if (bookModel.isIsBookFirstOpen()) {
                             holder.mImageNewBook.setVisibility(View.VISIBLE);
                         }
                         holder.mImageBookState.setImageResource(R.drawable.check_black);
                         break;
                     case RENTED_BOOK:
-                        if (book.isIsBookFirstOpen()) {
+                        if (bookModel.isIsBookFirstOpen()) {
                             holder.mImageNewBook.setVisibility(View.VISIBLE);
                         }
                         holder.mImageBookState.setImageResource(R.drawable.clock_black);
                         break;
                 }
                 break;
+            case SELECTED_DELETING_BOOKS:
+                holder.mImageBookState.setVisibility(View.INVISIBLE);
+                PicassoCache.getPicassoInstance(mContext).load(mLibrary.get(position).getImageDownloadLink())
+                        .into(holder.mImageCover, new Callback() {
+                            @Override
+                            public void onSuccess() {
+                            }
+
+                            @Override
+                            public void onError() {
+                                holder.mImageCover.setImageResource(R.drawable.book_1);
+                            }
+                        });
+                holder.mCheckBoxDeleteBook.setVisibility(View.VISIBLE);
+                if (mLibrary.get(position).ismIsBookSelected()) {
+                    mLibrary.get(position).setmIsBookSelected(false);
+                    holder.mCheckBoxDeleteBook.setChecked(true);
+                    mUpdateUiSelectedCheckBox.selectedBookState();
+                } else {
+                    mLibrary.get(position).setmIsBookSelected(true);
+                    holder.mCheckBoxDeleteBook.setChecked(false);
+                    mUpdateUiSelectedCheckBox.unSelectedBookState();
+                }
+                break;
         }
+    }
+
+    public void setSelectedDeletingBook(int position, DownloadInfo downloadInfo) {
+        mDownloadInfo = downloadInfo;
+        notifyItemChanged(position);
+    }
+
+    public void setSelectedAllDeletingBooks(DownloadInfo deletingState) {
+        mDownloadInfo = deletingState;
+        notifyDataSetChanged();
     }
 
     public void setStartProgress(int position, DownloadInfo downloadInfo) {
@@ -141,6 +189,8 @@ public class RecyclerShelvesAdapter extends RecyclerView.Adapter<RecyclerShelves
         protected TextView mTextProgress;
         @BindView(R.id.progress_bar)
         protected ProgressBar mProgressBar;
+        @BindView(R.id.check_box_delete)
+        protected CheckBox mCheckBoxDeleteBook;
 
         public ViewHolder(View itemView) {
             super(itemView);

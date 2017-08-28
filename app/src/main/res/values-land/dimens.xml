@@ -14,6 +14,6 @@
     <dimen name="margin_txt_center">15dp</dimen>
     <dimen name="margin_bottom_hand">5dp</dimen>
 
-    <!-- Book settings sizes -->
+    <!-- BookModel settings sizes -->
     <dimen name="width_menu_book_setting">660dp</dimen>
 </resources>
