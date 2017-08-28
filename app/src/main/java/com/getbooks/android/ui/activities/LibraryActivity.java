@@ -9,6 +9,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Parcelable;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -23,11 +25,14 @@ import android.widget.Toast;
 import com.getbooks.android.Const;
 import com.getbooks.android.R;
 import com.getbooks.android.api.Queries;
+import com.getbooks.android.api.QueriesTexts;
 import com.getbooks.android.db.BookDataBaseLoader;
 import com.getbooks.android.events.Events;
 import com.getbooks.android.model.Book;
 import com.getbooks.android.model.DownloadInfo;
 import com.getbooks.android.model.DownloadQueue;
+import com.getbooks.android.model.RequestModel;
+import com.getbooks.android.model.Text;
 import com.getbooks.android.model.enums.BookState;
 import com.getbooks.android.prefs.Prefs;
 import com.getbooks.android.receivers.DownloadResultReceiver;
@@ -35,9 +40,14 @@ import com.getbooks.android.receivers.NetworkStateReceiver;
 import com.getbooks.android.servises.DownloadService;
 import com.getbooks.android.ui.BaseActivity;
 import com.getbooks.android.ui.adapter.RecyclerShelvesAdapter;
+import com.getbooks.android.ui.dialog.AlertDialogAboutUs;
+import com.getbooks.android.ui.dialog.AlertDialogInstructions;
+import com.getbooks.android.ui.dialog.AlertDialogStory;
 import com.getbooks.android.ui.dialog.DeleteBookDialog;
 import com.getbooks.android.ui.dialog.LogOutDialog;
 import com.getbooks.android.ui.dialog.RestartDownloadingDialog;
+import com.getbooks.android.ui.fragments.left_menu_items.FragmentServicePrivacy;
+import com.getbooks.android.ui.fragments.left_menu_items.FragmentTutorial;
 import com.getbooks.android.ui.widget.RecyclerItemClickListener;
 import com.getbooks.android.util.FileUtil;
 import com.getbooks.android.util.LogUtil;
@@ -56,6 +66,9 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * Created by marina on 26.07.17.
@@ -94,7 +107,14 @@ public class LibraryActivity extends BaseActivity implements Queries.CallBack,
     private LogOutDialog mLogOutDialog;
     private DeleteBookDialog mDeleteBookDialog;
 
+    public final static String PRIVACY = "privacy";
+    public final static String INSTRUCTIONS = "instruction";
+    public final static String HISTORY = "history";
+    public final static String TUTORIAL = "tutorial";
+    public final static String ABOUT_US = "about_us";
+
     private static final String SAVE_LIBRARY = "com.getbooks.android.ui.fragments.save_library";
+    private List<Text> txt_list;
 
 
     @Override
@@ -149,6 +169,19 @@ public class LibraryActivity extends BaseActivity implements Queries.CallBack,
             dividerItemDecoration.setDrawable(getResources().getDrawable(R.drawable.polka));
             mRecyclerBookShelves.addItemDecoration(dividerItemDecoration);
         }
+        new QueriesTexts().getApi().getAllTexts().enqueue(new Callback<RequestModel>() {
+            @Override
+            public void onResponse(Call<RequestModel> call, Response<RequestModel> response) {
+                RequestModel s = response.body();
+                txt_list = s.getPopUps();
+            }
+
+            @Override
+            public void onFailure(Call<RequestModel> call, Throwable t) {
+                LogUtil.log(this, "onFailure: <List<Text>> ");
+            }
+        });
+
     }
 
 
@@ -184,11 +217,75 @@ public class LibraryActivity extends BaseActivity implements Queries.CallBack,
         }
     }
 
+    @OnClick(R.id.txt_order_history)
+    protected void orderHistory() {
+        menuTranzaction();
+        AlertDialogStory.newInstance().show(getSupportFragmentManager(), HISTORY);
+    }
+    @OnClick(R.id.txt_instruction)
+    protected void instruction() {
+        menuTranzaction();
+        AlertDialogInstructions.newInstance().show(getSupportFragmentManager(), INSTRUCTIONS);
+    }
+    @OnClick(R.id.txt_explanation_screens)
+    protected void explanationScreens() {
+        menuTranzaction();
+        FragmentTutorial.newInstance().show(getSupportFragmentManager(), TUTORIAL);
+    }
+    @OnClick(R.id.txt_service_privacy)
+    protected void servicePrivacy() {
+        String txt_fragment ="";
+        if(txt_list!=null){
+            for (Text t: txt_list) {
+                if(t.getPopupID()==Const.SERVISE_PRIVASY_RIGHT_BTN_TEXT_ID);{
+                    txt_fragment = t.getPopupText();
+                    break;
+                }
+            }
+        }
+        FragmentServicePrivacy fragment = (FragmentServicePrivacy) getSupportFragmentManager()
+                .findFragmentByTag(PRIVACY);
+        if(fragment==null)
+            menuTranzaction(FragmentServicePrivacy.getInstance(), PRIVACY);
+        else
+            getSupportFragmentManager().beginTransaction().show( FragmentServicePrivacy.getInstance()).commit();
+        FragmentServicePrivacy.getInstance().setText(txt_fragment);
+        UiUtil.hideView(mLeftMenuLayout);
+    }
+
     @OnClick(R.id.txt_log_out)
     protected void logOut() {
         mLogOutDialog = new LogOutDialog(this);
         mLogOutDialog.setOnItemLogOutListener(this);
         mLogOutDialog.show();
+    }
+
+    @OnClick(R.id.txt_about_us)
+    protected void aboutUs() {
+        String txt_fragment ="";
+        if(txt_list!=null){
+            for (Text t: txt_list) {
+                if(t.getPopupID()==Const.SERVISE_PRIVASY_ABOUT_US_TEXT_ID);{
+                    txt_fragment = t.getPopupText();
+                    break;
+                }
+            }
+        }
+        AlertDialogAboutUs.newInstance().setTxt(txt_fragment);
+        AlertDialogAboutUs.newInstance().show(getSupportFragmentManager(), ABOUT_US);
+        menuTranzaction();
+    }
+
+    private void menuTranzaction(Fragment fragment, String tag){
+        FragmentTransaction fragmentTransaction = getSupportFragmentManager()
+                .beginTransaction();
+        fragmentTransaction.replace(R.id.contaner_main, fragment, tag);
+        fragmentTransaction.commit();
+        UiUtil.hideView(mLeftMenuLayout);
+    }
+    private void menuTranzaction(){
+        getSupportFragmentManager().beginTransaction().hide( FragmentServicePrivacy.getInstance()).commit();
+        UiUtil.hideView(mLeftMenuLayout);
     }
 
 
