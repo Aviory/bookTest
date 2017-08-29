@@ -41,7 +41,7 @@
 
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/txt_service_privacy"
+        android:id="@+id/txt_body_service_privacy"
         style="@style/ScrollbarContentListStyle"
         android:layout_width="@dimen/txt_width_servise_body"
         android:layout_height="@dimen/txt_heigth_servise_body"
