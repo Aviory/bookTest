@@ -45,7 +45,7 @@ public class FragmentServicePrivacy extends Fragment implements View.OnClickList
         mBtnLeft.setOnClickListener(this);
         mBtnRigth = v.findViewById(R.id.btn_service_right);
         mBtnRigth.setOnClickListener(this);
-        mRecyclerView = v.findViewById(R.id.txt_service_privacy);
+        mRecyclerView = v.findViewById(R.id.txt_body_service_privacy);
        // mRecyclerView.setText(mText);
 
         close.setOnClickListener(new View.OnClickListener() {
