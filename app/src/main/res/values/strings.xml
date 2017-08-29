@@ -134,4 +134,7 @@
     <string name="rigth_txt_date_add">add date</string>
     <string name="rigth_txt_remove_books">remove books</string>
     <string name="rigth_txt_order">order</string>
+    <string name="setting_dialog_yes">yes</string>
+    <string name="setting_dialog_no">no</string>
+    <string name="setting_dialog_txt_body">אני מסכים לקבל עדכונים על ספרים חדשים, קידומי מכירות והודעות מערכת</string>
 </resources>

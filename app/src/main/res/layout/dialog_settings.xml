@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/dialog_background"
+    android:orientation="vertical">
+
+
+    <com.getbooks.android.ui.widget.ArialNormalTextView
+        style="@style/TextDialogsStyle"
+        android:layout_gravity="center"
+        android:gravity="top|center"
+        android:paddingBottom="@dimen/padding_dialog_del_bottom"
+        android:paddingLeft="@dimen/padding_sides_dialog_del"
+        android:paddingRight="@dimen/padding_sides_dialog_del"
+        android:paddingTop="@dimen/padding_dialog_del_top"
+        android:text="@string/setting_dialog_txt_body" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingBottom="@dimen/padding_bottom_dialog_del"
+        android:gravity="center_horizontal">
+
+
+        <RadioGroup
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal">
+
+            <RadioButton style="@style/CustomRadioButtonStyle"
+                android:id="@+id/setting_dialog_yes"/>
+
+            <com.getbooks.android.ui.widget.ArialNormalTextView
+                style="@style/TextDialogsStyle"
+                android:text="@string/setting_dialog_yes"
+                android:layout_marginLeft="@dimen/setting_dialog_txt_margin"/>
+
+            <RadioButton style="@style/CustomRadioButtonStyle"
+                android:id="@+id/setting_dialog_no"
+                android:checked="true"
+                android:layout_marginLeft="@dimen/setting_dialog_txt_margin"/>
+
+            <com.getbooks.android.ui.widget.ArialNormalTextView
+                android:layout_marginLeft="@dimen/setting_dialog_txt_margin"
+                style="@style/TextDialogsStyle"
+                android:text="@string/setting_dialog_no"/>
+
+        </RadioGroup>
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/img_close"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginBottom="@dimen/padding_dialog_del_top"
+        android:src="@drawable/close_blue" />
+
+
+</LinearLayout>

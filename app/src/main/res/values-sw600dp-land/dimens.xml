@@ -61,5 +61,6 @@
     <dimen name="servise_seek_bar_width">6dp</dimen>
     <dimen name="servise_margin_seek_bar">20dp</dimen>
     <dimen name="service_seek_bar_width">6dp</dimen>
+    <dimen name="setting_dialog_txt_margin">12dp</dimen>
 
 </resources>

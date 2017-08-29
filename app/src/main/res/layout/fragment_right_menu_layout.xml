@@ -76,15 +76,13 @@
             android:layout_weight="1"
             android:src="@drawable/sort" />
 
-        <RadioButton style="@style/CustomRadioButtonStyle" />
+        <ToggleButton style="@style/CustomToggleButtonStyle" />
 
-        <RadioButton style="@style/CustomRadioButtonStyle" />
+        <ToggleButton style="@style/CustomToggleButtonStyle" />
 
-        <RadioButton
-            style="@style/CustomRadioButtonStyle"
-            android:checked="true" />
+        <ToggleButton  style="@style/CustomToggleButtonStyle" />
 
-        <RadioButton style="@style/CustomRadioButtonStyle" />
+        <ToggleButton style="@style/CustomToggleButtonStyle" />
 
         <ImageView
             android:id="@+id/img_remove_book"

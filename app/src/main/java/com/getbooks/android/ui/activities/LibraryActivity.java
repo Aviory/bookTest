@@ -44,6 +44,7 @@ import com.getbooks.android.ui.dialog.AlertDialogAboutUs;
 import com.getbooks.android.ui.dialog.AlertDialogInstructions;
 import com.getbooks.android.ui.dialog.AlertDialogStory;
 import com.getbooks.android.ui.dialog.DeleteBookDialog;
+import com.getbooks.android.ui.dialog.DialogSettings;
 import com.getbooks.android.ui.dialog.LogOutDialog;
 import com.getbooks.android.ui.dialog.RestartDownloadingDialog;
 import com.getbooks.android.ui.fragments.left_menu_items.FragmentServicePrivacy;
@@ -216,7 +217,7 @@ public class LibraryActivity extends BaseActivity implements Queries.CallBack,
         }
     }
 
-    @OnClick(R.id.right_txt_screen_settings)
+    @OnClick(R.id.left_order_history)
     protected void orderHistory() {
         menuTranzaction();
         AlertDialogStory.newInstance().show(getSupportFragmentManager(), HISTORY);
@@ -276,7 +277,8 @@ public class LibraryActivity extends BaseActivity implements Queries.CallBack,
     }
     @OnClick(R.id.right_txt_screen_settings)
     protected void screenSettings() {
-
+        DialogSettings dialog = new DialogSettings(this);
+        dialog.show();
     }
 
     @OnClick(R.id.right_txt_order)

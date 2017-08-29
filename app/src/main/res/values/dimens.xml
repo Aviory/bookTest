@@ -174,5 +174,6 @@
     <dimen name="right_margin_left_icon">22dp</dimen>
     <dimen name="right_margin_bot_icon">26dp</dimen>
     <dimen name="padding_bottom_dialog_del">30dp</dimen>
+    <dimen name="setting_dialog_txt_margin">7dp</dimen>
 
 </resources>
