@@ -50,6 +50,10 @@ public class BookDataBaseLoader {
         mBooksDataBase.saveBook(bookModel);
     }
 
+    public void deleteBookFromDb(BookModel bookModel){
+        mBooksDataBase.deleteBook(bookModel);
+    }
+
     public void updateCurrentBookDb(BookModel bookModel) {
         mBooksDataBase.updateBook(bookModel);
     }

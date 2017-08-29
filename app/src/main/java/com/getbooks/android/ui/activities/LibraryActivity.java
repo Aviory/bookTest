@@ -161,12 +161,16 @@ public class LibraryActivity extends BaseActivity implements Queries.CallBack,
 
     @OnClick(R.id.txt_catalog)
     protected void catalogOpen() {
+        if (mDownloadInfo.getDownloadState().equals(DownloadInfo.DownloadState.SELECTED_DELETING_BOOKS))
+            clearSelectedDeletingBookState();
         Intent intent = new Intent(this, CatalogActivity.class);
         startActivity(intent);
     }
 
     @OnClick(R.id.img_menu)
     protected void openLefMenu(View view) {
+        if (mDownloadInfo.getDownloadState().equals(DownloadInfo.DownloadState.SELECTED_DELETING_BOOKS))
+            clearSelectedDeletingBookState();
         if (view.isActivated()) {
             view.setActivated(false);
             mLeftMenuLayout.bringToFront();
@@ -180,6 +184,8 @@ public class LibraryActivity extends BaseActivity implements Queries.CallBack,
 
     @OnClick(R.id.img_right_menu)
     protected void openRightMenu(View view) {
+        if (mDownloadInfo.getDownloadState().equals(DownloadInfo.DownloadState.SELECTED_DELETING_BOOKS))
+            clearSelectedDeletingBookState();
         if (view.isActivated()) {
             view.setActivated(false);
             mRightMenuLayout.bringToFront();
@@ -212,6 +218,7 @@ public class LibraryActivity extends BaseActivity implements Queries.CallBack,
 
     @OnClick(R.id.rigth_txt_remove_books)
     public void removeBook() {
+        UiUtil.hideView(mRightMenuLayout);
         mDownloadInfo.setDownloadState(DownloadInfo.DownloadState.SELECTED_DELETING_BOOKS);
         mShelvesAdapter.setSelectedAllDeletingBooks(mDownloadInfo);
     }
@@ -284,6 +291,7 @@ public class LibraryActivity extends BaseActivity implements Queries.CallBack,
                     case CLOUD_BOOK:
                         Toast.makeText(getAct(), "cloud bookModel", Toast.LENGTH_SHORT).show();
                         if (mDownloadInfo.getDownloadState().equals(DownloadInfo.DownloadState.SELECTED_DELETING_BOOKS)) {
+                            currentDownloadingBookModel = mLibrary.get(position);
                             mShelvesAdapter.setSelectedDeletingBook(position, mDownloadInfo);
                         } else {
                             BookModel bookModel = mLibrary.get(position);
@@ -293,6 +301,7 @@ public class LibraryActivity extends BaseActivity implements Queries.CallBack,
                         break;
                     case PURCHASED_BOOK:
                         if (mDownloadInfo.getDownloadState().equals(DownloadInfo.DownloadState.SELECTED_DELETING_BOOKS)) {
+                            currentDownloadingBookModel = mLibrary.get(position);
                             mShelvesAdapter.setSelectedDeletingBook(position, mDownloadInfo);
                         } else {
                             UiUtil.openActivity(getAct(), ReaderActivity.class, false,
@@ -301,6 +310,7 @@ public class LibraryActivity extends BaseActivity implements Queries.CallBack,
                         break;
                     case RENTED_BOOK:
                         if (mDownloadInfo.getDownloadState().equals(DownloadInfo.DownloadState.SELECTED_DELETING_BOOKS)) {
+                            currentDownloadingBookModel = mLibrary.get(position);
                             mShelvesAdapter.setSelectedDeletingBook(position, mDownloadInfo);
                         } else {
                             UiUtil.openActivity(getAct(), ReaderActivity.class, false,
@@ -312,6 +322,9 @@ public class LibraryActivity extends BaseActivity implements Queries.CallBack,
 
             @Override
             public void onItemLongClick(View view, int position) {
+                Toast.makeText(LibraryActivity.this, "On Long Item Click", Toast.LENGTH_SHORT).show();
+                currentDownloadingBookModel = mLibrary.get(position);
+                mDeletingBookQueue.addToDeletingQueue(currentDownloadingBookModel);
                 mDeleteBookDialog = new DeleteBookDialog(LibraryActivity.this);
                 mDeleteBookDialog.setOnItemLogOutListener(LibraryActivity.this);
                 mDeleteBookDialog.show();
@@ -321,12 +334,33 @@ public class LibraryActivity extends BaseActivity implements Queries.CallBack,
 
     @Override
     public void cancelBookDelete() {
+        if (mDownloadInfo.getDownloadState().equals(DownloadInfo.DownloadState.SELECTED_DELETING_BOOKS))
+            clearSelectedDeletingBookState();
         mDeleteBookDialog.dismiss();
     }
 
     @Override
     public void deleteBookClick() {
-
+        if (!mDeletingBookQueue.isDeletingQueueEmpty()) {
+            switch (currentDownloadingBookModel.getBookState()) {
+                case CLOUD_BOOK:
+                    if (currentDownloadingBookModel.isIsBookRented())
+                        mQueries.returnRentedBook(Prefs.getToken(this), this, currentDownloadingBookModel,
+                                mLibrary, mShelvesAdapter);
+                    break;
+                case RENTED_BOOK:
+                    mQueries.returnRentedBook(Prefs.getToken(this), this, currentDownloadingBookModel,
+                            mLibrary, mShelvesAdapter);
+                    break;
+                case PURCHASED_BOOK:
+                    mBookDataBaseLoader.deleteBookFromDb(currentDownloadingBookModel);
+                    currentDownloadingBookModel.setBookState(BookState.CLOUD_BOOK.getState());
+                    currentDownloadingBookModel.setIsBookFirstOpen(false);
+                    mShelvesAdapter.notifyItemChanged(currentDownloadingBookModel.getViewPosition());
+                    break;
+            }
+            mDeleteBookDialog.dismiss();
+        }
     }
 
     private void addToDownloadQueue(BookModel bookModel) {
@@ -557,13 +591,15 @@ public class LibraryActivity extends BaseActivity implements Queries.CallBack,
     public void selectedBookState() {
         if (mDeletingBookQueue.queueContainsBook(currentDownloadingBookModel)) return;
         mDeletingBookQueue.addToDeletingQueue(currentDownloadingBookModel);
-        mImageDeleteBook.setVisibility(View.VISIBLE);
+        if (!mDeletingBookQueue.isDeletingQueueEmpty())
+            mImageDeleteBook.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void unSelectedBookState() {
         mDeletingBookQueue.removeFromDeletingQueue(currentDownloadingBookModel);
-        mImageDeleteBook.setVisibility(View.INVISIBLE);
+        if (mDeletingBookQueue.isDeletingQueueEmpty())
+            mImageDeleteBook.setVisibility(View.INVISIBLE);
     }
 
     private void clearSelectedDeletingBookState() {
@@ -572,5 +608,7 @@ public class LibraryActivity extends BaseActivity implements Queries.CallBack,
         for (int i = 0; i < mLibrary.size(); i++) {
             mLibrary.get(i).setmIsBookSelected(false);
         }
+        mShelvesAdapter.setDownloadInfo(mDownloadInfo);
+        mShelvesAdapter.notifyDataSetChanged();
     }
 }

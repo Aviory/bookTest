@@ -21,6 +21,7 @@ public class DeletingBookQueue {
     }
 
     public void clearDeletingQueue() {
+        if (mDeletingBookList == null) return;
         mDeletingBookList.clear();
         mDeletingBookList = null;
     }
@@ -30,6 +31,7 @@ public class DeletingBookQueue {
     }
 
     public boolean isDeletingQueueEmpty() {
+        if (mDeletingBookList == null) return true;
         return mDeletingBookList.isEmpty();
     }
 
@@ -46,6 +48,7 @@ public class DeletingBookQueue {
     }
 
     public void removeFromDeletingQueue(BookModel bookModel) {
+        if (mDeletingBookList == null) return;
         mDeletingBookList.remove(bookModel);
     }
 }

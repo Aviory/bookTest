@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 import com.getbooks.android.model.BookModel;
 import com.getbooks.android.util.DateUtil;
@@ -266,6 +267,12 @@ public class BooksDataBase {
         contentValues.put(BooksDBContract.BookDetail.LAST_READING_PARAGRAPH, bookModel.getLastReadingParagraph());
         contentValues.put(BooksDBContract.BookDetail.BOOK_IS_FIRST_OPEN, bookModel.isIsBookFirstOpen() ? 1 : 0);
         mSqLiteDatabase.insert(Tables.BOOK_DETAILS, null, contentValues);
+    }
+
+    protected void deleteBook(BookModel bookModel) {
+        mSqLiteDatabase = mBookDBHelper.getReadableDatabase();
+        String query = BooksDBContract.BookDetail.BOOK_SKU + " =?";
+        mSqLiteDatabase.delete(Tables.BOOK_DETAILS, query, new String[]{String.valueOf(bookModel.getBookSku())});
     }
 
 

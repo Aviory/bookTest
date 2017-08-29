@@ -14,6 +14,7 @@ import com.getbooks.android.model.UserSession;
 import com.getbooks.android.model.enums.BookState;
 import com.getbooks.android.prefs.Prefs;
 import com.getbooks.android.ui.activities.AuthorizationActivity;
+import com.getbooks.android.ui.adapter.RecyclerShelvesAdapter;
 import com.getbooks.android.util.LogUtil;
 import com.getbooks.android.util.UiUtil;
 
@@ -21,6 +22,7 @@ import java.net.SocketException;
 import java.util.ArrayList;
 import java.util.List;
 
+import nl.siegmann.epublib.domain.Book;
 import retrofit2.Response;
 import rx.Observable;
 import rx.Subscriber;
@@ -72,6 +74,7 @@ public class Queries {
                             allLibraryBookModels.add(bookModel);
 
                         }
+                        Log.d("PPPPPPPPPPP-Rented", String.valueOf(rentedBooks.size()));
                     } else if (listRentedResponse.code() == 404) {
 //                        UiUtil.showToast(context, R.string.emty_rented_list);
                     }
@@ -89,6 +92,7 @@ public class Queries {
                             bookModel.setIsBookRented(false);
                             allLibraryBookModels.add(bookModel);
                         }
+                        Log.d("PPPPPPPPPPP-Purchased", String.valueOf(purchasedBooks.size()));
                     } else if (listPurchasedResponse.code() == 404) {
 //                        UiUtil.showToast(context, R.string.empty_purchased_list);
                     }
@@ -177,6 +181,22 @@ public class Queries {
                     if (responseBodyResponse.code() == 204) {
                         Prefs.clearPrefs(context);
                         UiUtil.openActivity(context, AuthorizationActivity.class, true, "", "", "", "");
+                    }
+                }).subscribe();
+    }
+
+    public void returnRentedBook(String deviceToken, Activity context, BookModel bookModel,
+                                 List<BookModel> library, RecyclerShelvesAdapter shelvesAdapter) {
+        ApiService apiService = ApiManager.getClientApiAry().create(ApiService.class);
+
+        apiService.returnBookRented(Const.WEBSITECODE, deviceToken, bookModel.getBookSku())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .doOnNext(responseBodyResponse -> {
+                    if (responseBodyResponse.code() == 204) {
+                        BookDataBaseLoader.getInstanceDb(context).deleteBookFromDb(bookModel);
+                        library.remove(bookModel);
+                        shelvesAdapter.upDateLibrary(library);
                     }
                 }).subscribe();
     }

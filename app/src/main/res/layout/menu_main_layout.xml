@@ -61,9 +61,9 @@
             android:id="@+id/img_delete_book"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:visibility="invisible"
             android:layout_marginRight="@dimen/remove_big_right_margin"
-            android:src="@drawable/bin_white_big" />
+            android:src="@drawable/bin_white_big"
+            android:visibility="invisible" />
 
         <ImageView
             android:id="@+id/img_right_menu"

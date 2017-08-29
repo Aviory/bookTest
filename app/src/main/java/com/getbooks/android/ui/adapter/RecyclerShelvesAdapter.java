@@ -15,6 +15,7 @@ import com.getbooks.android.R;
 import com.getbooks.android.chashe.PicassoCache;
 import com.getbooks.android.model.BookModel;
 import com.getbooks.android.model.DownloadInfo;
+import com.getbooks.android.model.enums.BookState;
 import com.squareup.picasso.Callback;
 
 import java.util.List;
@@ -115,7 +116,12 @@ public class RecyclerShelvesAdapter extends RecyclerView.Adapter<RecyclerShelves
                 }
                 break;
             case SELECTED_DELETING_BOOKS:
+                if (mLibrary.get(position).isIsBookFirstOpen()) {
+                    holder.mImageNewBook.setVisibility(View.VISIBLE);
+                }
                 holder.mImageBookState.setVisibility(View.INVISIBLE);
+                holder.mProgressBar.setVisibility(View.INVISIBLE);
+                holder.mTextProgress.setVisibility(View.INVISIBLE);
                 PicassoCache.getPicassoInstance(mContext).load(mLibrary.get(position).getImageDownloadLink())
                         .into(holder.mImageCover, new Callback() {
                             @Override
@@ -128,6 +134,12 @@ public class RecyclerShelvesAdapter extends RecyclerView.Adapter<RecyclerShelves
                             }
                         });
                 holder.mCheckBoxDeleteBook.setVisibility(View.VISIBLE);
+                Log.d("PPPPPPPPPPP", String.valueOf(mLibrary.get(position).isIsBookRented()) + " " +
+                        mLibrary.get(position).getBookState());
+                if (!mLibrary.get(position).isIsBookRented()
+                        && mLibrary.get(position).getBookState().equals(BookState.CLOUD_BOOK)){
+
+                }
                 if (mLibrary.get(position).ismIsBookSelected()) {
                     mLibrary.get(position).setmIsBookSelected(false);
                     holder.mCheckBoxDeleteBook.setChecked(true);
@@ -171,6 +183,11 @@ public class RecyclerShelvesAdapter extends RecyclerView.Adapter<RecyclerShelves
 
     public void setDownloadInfo(DownloadInfo downloadInfo) {
         mDownloadInfo = downloadInfo;
+    }
+
+    public void upDateLibrary(List<BookModel> newLibrary){
+        this.mLibrary = newLibrary;
+        notifyDataSetChanged();
     }
 
     @Override
