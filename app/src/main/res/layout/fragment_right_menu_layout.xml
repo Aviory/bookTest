@@ -76,13 +76,21 @@
             android:layout_weight="1"
             android:src="@drawable/sort" />
 
-        <ToggleButton style="@style/CustomToggleButtonStyle" />
+        <ToggleButton
+            style="@style/CustomToggleButtonStyle"
+            android:id="@+id/toggle_book_name"/>
 
-        <ToggleButton style="@style/CustomToggleButtonStyle" />
+        <ToggleButton
+            style="@style/CustomToggleButtonStyle"
+            android:id="@+id/toggle_author_name"/>
 
-        <ToggleButton  style="@style/CustomToggleButtonStyle" />
+        <ToggleButton
+            style="@style/CustomToggleButtonStyle"
+            android:id="@+id/toggle_read_date"/>
 
-        <ToggleButton style="@style/CustomToggleButtonStyle" />
+        <ToggleButton
+            style="@style/CustomToggleButtonStyle"
+            android:id="@+id/toggle_add_date"/>
 
         <ImageView
             android:id="@+id/img_remove_book"
