@@ -98,5 +98,9 @@
     <dimen name="right_margin_bot_icon">26dp</dimen>
     <dimen name="padding_bottom_dialog_del">50dp</dimen>
 
+    <!-- Item shelves sizes -->
+    <dimen name="book_width">137dp</dimen>
+    <dimen name="book_height">226dp</dimen>
+
 
 </resources>

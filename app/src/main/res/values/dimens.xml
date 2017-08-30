@@ -81,6 +81,8 @@
 
     <!-- Item shelves sizes -->
     <dimen name="margin_shelves">-10dp</dimen>
+    <dimen name="book_width">85dp</dimen>
+    <dimen name="book_height">141dp</dimen>
 
 
     <!-- Left Menu sizes -->

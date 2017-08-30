@@ -2,6 +2,7 @@ package com.getbooks.android.ui.activities;
 
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.Log;
@@ -28,6 +29,7 @@ import com.getbooks.android.ui.fragments.BookContentFragment;
 import com.getbooks.android.ui.fragments.BookSettingMenuFragment;
 import com.getbooks.android.ui.widget.CustomSeekBar;
 import com.getbooks.android.ui.widget.ReaderWebView;
+import com.getbooks.android.util.DateUtil;
 import com.webviewmarker.bossturban.webviewmarker.TextSelectionSupport;
 
 import org.greenrobot.eventbus.EventBus;
@@ -44,6 +46,8 @@ import java.nio.charset.Charset;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -94,6 +98,10 @@ public class ReaderActivity extends BaseActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            WebView.setWebContentsDebuggingEnabled(true);
+        }
 
         mBookPath = getIntent().getStringExtra(Const.BOOK_PATH);
         mBookName = getIntent().getStringExtra(Const.BOOK_NAME);
@@ -215,8 +223,8 @@ public class ReaderActivity extends BaseActivity {
             script.append("'").append(spineReferences.get(i).getResource().getHref()).append("',\n");
 
         try {
-            String htmlContent = readPage(spineReferences.get(7).getResource().getInputStream());
-//            Log.d("AAAAAAAAAAAAAA----", getHtmlContent(htmlContent));
+            String htmlContent = readPage(spineReferences.get(6).getResource().getInputStream());
+            Log.d("AAAAAAAAAAAAAA----", htmlContent);
             mReaderWebView.loadDataWithBaseURL("", getHtmlContent(htmlContent), "text/html", "UTF-8", null);
         } catch (IOException e) {
             e.printStackTrace();
@@ -302,5 +310,16 @@ public class ReaderActivity extends BaseActivity {
     public void onStop() {
         super.onStop();
         EventBus.getDefault().unregister(this);
+        updateLastReadTime();
+    }
+
+    private void updateLastReadTime() {
+        Calendar lastReadingDate = DateUtil.getDate(new Date().getTime());
+        Events.UpDateLibrary upDateLibrary = new Events.UpDateLibrary();
+        upDateLibrary.setBookName(mBookName);
+        upDateLibrary.setDateLastReading(lastReadingDate);
+        EventBus.getDefault().post(upDateLibrary);
+        mCurrentBookModel.setReadDateTime(lastReadingDate);
+        mBookDataBaseLoader.updateCurrentBookDb(mCurrentBookModel);
     }
 }

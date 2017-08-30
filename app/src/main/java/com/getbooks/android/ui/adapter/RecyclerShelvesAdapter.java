@@ -136,10 +136,6 @@ public class RecyclerShelvesAdapter extends RecyclerView.Adapter<RecyclerShelves
                 holder.mCheckBoxDeleteBook.setVisibility(View.VISIBLE);
                 Log.d("PPPPPPPPPPP", String.valueOf(mLibrary.get(position).isIsBookRented()) + " " +
                         mLibrary.get(position).getBookState());
-                if (!mLibrary.get(position).isIsBookRented()
-                        && mLibrary.get(position).getBookState().equals(BookState.CLOUD_BOOK)){
-
-                }
                 if (mLibrary.get(position).ismIsBookSelected()) {
                     mLibrary.get(position).setmIsBookSelected(false);
                     holder.mCheckBoxDeleteBook.setChecked(true);
@@ -185,7 +181,7 @@ public class RecyclerShelvesAdapter extends RecyclerView.Adapter<RecyclerShelves
         mDownloadInfo = downloadInfo;
     }
 
-    public void upDateLibrary(List<BookModel> newLibrary){
+    public void upDateLibrary(List<BookModel> newLibrary) {
         this.mLibrary = newLibrary;
         notifyDataSetChanged();
     }
