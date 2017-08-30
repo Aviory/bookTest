@@ -23,7 +23,6 @@ public class DeletingBookQueue {
     public void clearDeletingQueue() {
         if (mDeletingBookList == null) return;
         mDeletingBookList.clear();
-        mDeletingBookList = null;
     }
 
     public int getDeletingQueueSize() {

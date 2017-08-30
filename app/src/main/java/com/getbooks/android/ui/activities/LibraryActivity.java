@@ -333,11 +333,13 @@ public class LibraryActivity extends BaseActivity implements Queries.CallBack,
 
             @Override
             public void onItemLongClick(View view, int position) {
-                currentDownloadingBookModel = mLibrary.get(position);
-                mDeletingBookQueue.addToDeletingQueue(currentDownloadingBookModel);
-                mDeleteBookDialog = new DeleteBookDialog(LibraryActivity.this);
-                mDeleteBookDialog.setOnItemLogOutListener(LibraryActivity.this);
-                mDeleteBookDialog.show();
+                if (!mDownloadInfo.getDownloadState().equals(DownloadInfo.DownloadState.SELECTED_DELETING_BOOKS)) {
+                    currentDownloadingBookModel = mLibrary.get(position);
+                    mDeletingBookQueue.addToDeletingQueue(currentDownloadingBookModel);
+                    mDeleteBookDialog = new DeleteBookDialog(LibraryActivity.this);
+                    mDeleteBookDialog.setOnItemLogOutListener(LibraryActivity.this);
+                    mDeleteBookDialog.show();
+                }
             }
         }));
     }
@@ -621,7 +623,7 @@ public class LibraryActivity extends BaseActivity implements Queries.CallBack,
         for (int i = 0; i < mLibrary.size(); i++) {
             mLibrary.get(i).setmIsBookSelected(false);
         }
-        mNotDeletingBooksQueue.clearDeletingQueue();
+        mNotDeletingBooksQueue.clearQueue();
         mShelvesAdapter.setDownloadInfo(mDownloadInfo);
         mShelvesAdapter.notifyDataSetChanged();
     }

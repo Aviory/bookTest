@@ -76,6 +76,7 @@ public class RecyclerShelvesAdapter extends RecyclerView.Adapter<RecyclerShelves
                 break;
             case NOT_STARTED:
             case COMPLETE:
+                Log.d("PPPPPPPPPPP", String.valueOf(mLibrary.get(position).getBookState()));
                 holder.mImageBookState.setVisibility(View.VISIBLE);
                 holder.mCheckBoxDeleteBook.setVisibility(View.INVISIBLE);
                 holder.mProgressBar.setVisibility(View.INVISIBLE);
@@ -134,6 +135,13 @@ public class RecyclerShelvesAdapter extends RecyclerView.Adapter<RecyclerShelves
                             }
                         });
                 holder.mCheckBoxDeleteBook.setVisibility(View.VISIBLE);
+
+                holder.mImageCover.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Log.d("PPPPPPPPPPP", "holder click");
+                    }
+                });
                 Log.d("PPPPPPPPPPP", String.valueOf(mLibrary.get(position).isIsBookRented()) + " " +
                         mLibrary.get(position).getBookState());
                 if (mLibrary.get(position).ismIsBookSelected()) {

@@ -20,10 +20,9 @@ public class NotDeletingBooksQueue {
         mNotDeletingBookList.add(bookModel);
     }
 
-    public void clearDeletingQueue() {
+    public void clearQueue() {
         if (mNotDeletingBookList == null) return;
         mNotDeletingBookList.clear();
-        mNotDeletingBookList = null;
     }
 
     public int getQueueSize() {
