@@ -1,6 +1,6 @@
 package com.getbooks.android.util;
 
-import com.getbooks.android.model.Book;
+import com.getbooks.android.model.BookModel;
 
 import java.util.List;
 
@@ -16,7 +16,7 @@ public class CommonUtils {
         }
         return object;
     }
-    public static List<Book> authorSort(List<Book> list){
+    public static List<BookModel> authorSort(List<BookModel> list){
 
         return list;
     }
