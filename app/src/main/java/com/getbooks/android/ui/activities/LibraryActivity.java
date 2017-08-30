@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Rect;
 import android.net.ConnectivityManager;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Parcelable;
@@ -29,9 +28,11 @@ import com.getbooks.android.api.Queries;
 import com.getbooks.android.api.QueriesTexts;
 import com.getbooks.android.db.BookDataBaseLoader;
 import com.getbooks.android.events.Events;
-import com.getbooks.android.model.Book;
+import com.getbooks.android.model.BookModel;
+import com.getbooks.android.model.DeletingBookQueue;
 import com.getbooks.android.model.DownloadInfo;
 import com.getbooks.android.model.DownloadQueue;
+import com.getbooks.android.model.NotDeletingBooksQueue;
 import com.getbooks.android.model.RequestModel;
 import com.getbooks.android.model.Text;
 import com.getbooks.android.model.enums.BookState;
@@ -51,6 +52,7 @@ import com.getbooks.android.ui.dialog.RestartDownloadingDialog;
 import com.getbooks.android.ui.fragments.left_menu_items.FragmentServicePrivacy;
 import com.getbooks.android.ui.fragments.left_menu_items.FragmentTutorial;
 import com.getbooks.android.ui.widget.RecyclerItemClickListener;
+import com.getbooks.android.util.DateUtil;
 import com.getbooks.android.util.CommonUtils;
 import com.getbooks.android.util.FileUtil;
 import com.getbooks.android.util.LogUtil;
@@ -65,6 +67,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
@@ -79,7 +82,7 @@ import retrofit2.Response;
 
 public class LibraryActivity extends BaseActivity implements Queries.CallBack,
         DownloadResultReceiver.Receiver, RestartDownloadingDialog.OnItemRestartDownloadClick,
-        LogOutDialog.OnItemLogOutListener, DeleteBookDialog.OnItemDeleteDialogListener {
+        LogOutDialog.OnItemLogOutListener, DeleteBookDialog.OnItemDeleteDialogListener, RecyclerShelvesAdapter.UpdateUiSelectedCheckBox {
 
     @BindView(R.id.recyler_books_shelves)
     protected RecyclerView mRecyclerBookShelves;
@@ -93,6 +96,8 @@ public class LibraryActivity extends BaseActivity implements Queries.CallBack,
     protected ImageView mImageRightMenu;
     @BindView(R.id.rootMainView)
     protected RelativeLayout mRootLibraryLayout;
+    @BindView(R.id.img_delete_book)
+    protected ImageView mImageDeleteBook;
 
     @BindView(R.id.toggle_author_name)
     protected ToggleButton imgAuthorName;
@@ -104,7 +109,7 @@ public class LibraryActivity extends BaseActivity implements Queries.CallBack,
     protected ToggleButton imgReadDate;
 
     private Queries mQueries;
-    private List<Book> mLibrary;
+    private List<BookModel> mLibrary;
     private RecyclerShelvesAdapter mShelvesAdapter;
     private GridLayoutManager mGridLayoutManager;
     DividerItemDecoration dividerItemDecoration;
@@ -118,6 +123,9 @@ public class LibraryActivity extends BaseActivity implements Queries.CallBack,
     private BookDataBaseLoader mBookDataBaseLoader;
     private LogOutDialog mLogOutDialog;
     private DeleteBookDialog mDeleteBookDialog;
+    private DeletingBookQueue mDeletingBookQueue;
+    private NotDeletingBooksQueue mNotDeletingBooksQueue;
+    private BookModel currentDownloadingBookModel;
 
     public final static String PRIVACY = "privacy";
     public final static String INSTRUCTIONS = "instruction";
@@ -126,6 +134,9 @@ public class LibraryActivity extends BaseActivity implements Queries.CallBack,
     public final static String ABOUT_US = "about_us";
 
     private static final String SAVE_LIBRARY = "com.getbooks.android.ui.fragments.save_library";
+    private static final String SAVE_DOWNLOAD_STATE = "com.getbooks.android.ui.fragments.save_download_state";
+    private static final String SAVE_DIRECTORY_PATH = "com.getbooks.android.ui.fragments.save_directory_path";
+    private static final String SAVE_NETWORK_INFO = "com.getbooks.android.ui.fragments.save_network_info";
     private List<Text> txt_list;
 
 
@@ -136,19 +147,20 @@ public class LibraryActivity extends BaseActivity implements Queries.CallBack,
         mImageLeftMenu.setActivated(true);
         mImageRightMenu.setActivated(true);
 
+        mDownlodReceiver = new DownloadResultReceiver(new Handler());
+        mDownlodReceiver.setReceiver(this);
+
+        mNetworkReceiver = new NetworkStateReceiver();
+        getAct().registerReceiver(mNetworkReceiver,
+                new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+
+        mBookDataBaseLoader = BookDataBaseLoader.getInstanceDb(getAct());
+        mDownloadQueue = new DownloadQueue();
+        mDownloadInfo = new DownloadInfo();
+        mDeletingBookQueue = new DeletingBookQueue();
+        mNotDeletingBooksQueue = new NotDeletingBooksQueue();
+
         if (savedInstanceState == null) {
-            mDownlodReceiver = new DownloadResultReceiver(new Handler());
-            mDownlodReceiver.setReceiver(this);
-
-            mNetworkReceiver = new NetworkStateReceiver();
-            getAct().registerReceiver(mNetworkReceiver,
-                    new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
-
-            mDownloadInfo = new DownloadInfo();
-            mDownloadQueue = new DownloadQueue();
-
-            mBookDataBaseLoader = BookDataBaseLoader.getInstanceDb(getAct());
-
             UiUtil.showDialog(this);
             Log.d("QQQ=", String.valueOf(Prefs.getUserSession(getAct(), Const.USER_SESSION_ID)));
             mQueries = new Queries();
@@ -164,14 +176,14 @@ public class LibraryActivity extends BaseActivity implements Queries.CallBack,
         return R.layout.fragment_library;
     }
 
-    private void initShelvesRecycler(List<Book> library) {
+    private void initShelvesRecycler(List<BookModel> library) {
         mGridLayoutManager = new GridLayoutManager(this,
                 getResources().getInteger(R.integer.count_column_book));
         mGridLayoutManager.setOrientation(GridLayoutManager.VERTICAL);
         mRecyclerBookShelves.setLayoutManager(mGridLayoutManager);
 
         if (mShelvesAdapter == null)
-            mShelvesAdapter = new RecyclerShelvesAdapter(library, this);
+            mShelvesAdapter = new RecyclerShelvesAdapter(library, this, this);
         mRecyclerBookShelves.setAdapter(mShelvesAdapter);
 
         mShelvesAdapter.setDownloadInfo(mDownloadInfo);
@@ -198,12 +210,16 @@ public class LibraryActivity extends BaseActivity implements Queries.CallBack,
 
     @OnClick(R.id.txt_catalog)
     protected void catalogOpen() {
+        if (mDownloadInfo.getDownloadState().equals(DownloadInfo.DownloadState.SELECTED_DELETING_BOOKS))
+            clearSelectedDeletingBookState();
         Intent intent = new Intent(this, CatalogActivity.class);
         startActivity(intent);
     }
 
     @OnClick(R.id.img_menu)
     protected void openLefMenu(View view) {
+        if (mDownloadInfo.getDownloadState().equals(DownloadInfo.DownloadState.SELECTED_DELETING_BOOKS))
+            clearSelectedDeletingBookState();
         if (view.isActivated()) {
             view.setActivated(false);
             mLeftMenuLayout.bringToFront();
@@ -217,6 +233,8 @@ public class LibraryActivity extends BaseActivity implements Queries.CallBack,
 
     @OnClick(R.id.img_right_menu)
     protected void openRightMenu(View view) {
+        if (mDownloadInfo.getDownloadState().equals(DownloadInfo.DownloadState.SELECTED_DELETING_BOOKS))
+            clearSelectedDeletingBookState();
         if (view.isActivated()) {
             view.setActivated(false);
             mRightMenuLayout.bringToFront();
@@ -345,38 +363,42 @@ public class LibraryActivity extends BaseActivity implements Queries.CallBack,
 
     @OnClick(R.id.rigth_txt_remove_books)
     public void removeBook() {
-        mDeleteBookDialog = new DeleteBookDialog(this);
-        mDeleteBookDialog.setOnItemLogOutListener(this);
+        UiUtil.hideView(mRightMenuLayout);
+        for (int i = 0; i < mLibrary.size(); i++) {
+            if (!mLibrary.get(i).isIsBookRented()
+                    && mLibrary.get(i).getBookState().equals(BookState.CLOUD_BOOK)) {
+                mNotDeletingBooksQueue.addToQueue(mLibrary.get(i));
+            }
+        }
+        mLibrary.removeAll(mNotDeletingBooksQueue.getAllBooksQueue());
+        mDownloadInfo.setDownloadState(DownloadInfo.DownloadState.SELECTED_DELETING_BOOKS);
+        mShelvesAdapter.setSelectedAllDeletingBooks(mDownloadInfo);
+    }
+
+    @OnClick(R.id.img_delete_book)
+    protected void deleteBooks() {
+        mDeleteBookDialog = new DeleteBookDialog(LibraryActivity.this);
+        mDeleteBookDialog.setOnItemLogOutListener(LibraryActivity.this);
         mDeleteBookDialog.show();
     }
-
-    @Override
-    public void cancelBookDelete() {
-        mDeleteBookDialog.dismiss();
-    }
-
-    @Override
-    public void deleteBookClick() {
-
-    }
-
 
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState) {
         super.onRestoreInstanceState(savedInstanceState);
         mLibrary = savedInstanceState.getParcelableArrayList(SAVE_LIBRARY);
+        mDirectoryPath = savedInstanceState.getString(SAVE_DIRECTORY_PATH);
+        mIsNetworkActive = savedInstanceState.getBoolean(SAVE_NETWORK_INFO);
         if (mLibrary != null)
             initShelvesRecycler(mLibrary);
-        mDownloadInfo = new DownloadInfo();
-        mDownloadInfo.setDownloadState(savedInstanceState.getParcelable("aaaa"));
-        Log.d("aaaaaaaa", String.valueOf(mDownloadInfo.getDownloadState()));
     }
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putParcelableArrayList(SAVE_LIBRARY, (ArrayList<? extends Parcelable>) mLibrary);
-        outState.putParcelable("aaaa", mDownloadInfo);
+        outState.putString(SAVE_DIRECTORY_PATH, mDirectoryPath);
+        outState.putBoolean(SAVE_NETWORK_INFO, mIsNetworkActive);
+
     }
 
     @Override
@@ -391,7 +413,7 @@ public class LibraryActivity extends BaseActivity implements Queries.CallBack,
     }
 
     @Override
-    public void onCompleted(List<Book> library) {
+    public void onCompleted(List<BookModel> library) {
         this.mLibrary = library;
         mDirectoryPath = FileUtil.isCreatedDirectory(getAct(), Prefs.getUserSession(getAct(), Const.USER_SESSION_ID));
         LogUtil.log("FileUtil", mDirectoryPath);
@@ -414,31 +436,87 @@ public class LibraryActivity extends BaseActivity implements Queries.CallBack,
 
     private void clickBook() {
         mRecyclerBookShelves.addOnItemTouchListener(new RecyclerItemClickListener(
-                getAct().getApplicationContext(), (view, position) -> {
-            switch (mLibrary.get(position).getBookState()) {
-                case CLOUD_BOOK:
-                    Toast.makeText(getAct(), "cloud book", Toast.LENGTH_SHORT).show();
-                    Book book = mLibrary.get(position);
-                    book.setViewPosition(position);
-                    addToDownloadQueue(book);
-                    break;
-                case PURCHASED_BOOK:
-                    UiUtil.openActivity(getAct(), ReaderActivity.class, false,
-                            Const.BOOK_PATH, mDirectoryPath, Const.BOOK_NAME, mLibrary.get(position).getBookName());
-                    break;
-                case RENTED_BOOK:
-                    UiUtil.openActivity(getAct(), ReaderActivity.class, false,
-                            Const.BOOK_PATH, mDirectoryPath, Const.BOOK_NAME, mLibrary.get(position).getBookName());
-                    break;
+                getAct().getApplicationContext(), mRecyclerBookShelves, new RecyclerItemClickListener.OnItemClickListener() {
+            @Override
+            public void onItemClick(View view, int position) {
+                switch (mLibrary.get(position).getBookState()) {
+                    case CLOUD_BOOK:
+                        if (mDownloadInfo.getDownloadState().equals(DownloadInfo.DownloadState.SELECTED_DELETING_BOOKS)) {
+                            currentDownloadingBookModel = mLibrary.get(position);
+                            mShelvesAdapter.setSelectedDeletingBook(position, mDownloadInfo);
+                        } else {
+                            BookModel bookModel = mLibrary.get(position);
+                            bookModel.setViewPosition(position);
+                            addToDownloadQueue(bookModel);
+                        }
+                        break;
+                    case PURCHASED_BOOK:
+                        if (mDownloadInfo.getDownloadState().equals(DownloadInfo.DownloadState.SELECTED_DELETING_BOOKS)) {
+                            currentDownloadingBookModel = mLibrary.get(position);
+                            mShelvesAdapter.setSelectedDeletingBook(position, mDownloadInfo);
+                        } else {
+                            UiUtil.openActivity(getAct(), ReaderActivity.class, false,
+                                    Const.BOOK_PATH, mDirectoryPath, Const.BOOK_NAME, mLibrary.get(position).getBookName());
+                        }
+                        break;
+                    case RENTED_BOOK:
+                        if (mDownloadInfo.getDownloadState().equals(DownloadInfo.DownloadState.SELECTED_DELETING_BOOKS)) {
+                            currentDownloadingBookModel = mLibrary.get(position);
+                            mShelvesAdapter.setSelectedDeletingBook(position, mDownloadInfo);
+                        } else {
+                            UiUtil.openActivity(getAct(), ReaderActivity.class, false,
+                                    Const.BOOK_PATH, mDirectoryPath, Const.BOOK_NAME, mLibrary.get(position).getBookName());
+                        }
+                        break;
+                }
             }
 
+            @Override
+            public void onItemLongClick(View view, int position) {
+                currentDownloadingBookModel = mLibrary.get(position);
+                mDeletingBookQueue.addToDeletingQueue(currentDownloadingBookModel);
+                mDeleteBookDialog = new DeleteBookDialog(LibraryActivity.this);
+                mDeleteBookDialog.setOnItemLogOutListener(LibraryActivity.this);
+                mDeleteBookDialog.show();
+            }
         }));
     }
 
-    private void addToDownloadQueue(Book book) {
-        if (mDownloadQueue.queueContainsBook(book)) return;
+    @Override
+    public void cancelBookDelete() {
+        if (mDownloadInfo.getDownloadState().equals(DownloadInfo.DownloadState.SELECTED_DELETING_BOOKS))
+            clearSelectedDeletingBookState();
+        mDeleteBookDialog.dismiss();
+    }
+
+    @Override
+    public void deleteBookClick() {
+        if (!mDeletingBookQueue.isDeletingQueueEmpty()) {
+            switch (currentDownloadingBookModel.getBookState()) {
+                case CLOUD_BOOK:
+                    if (currentDownloadingBookModel.isIsBookRented())
+                        mQueries.returnRentedBook(Prefs.getToken(this), this, currentDownloadingBookModel,
+                                mLibrary, mShelvesAdapter);
+                    break;
+                case RENTED_BOOK:
+                    mQueries.returnRentedBook(Prefs.getToken(this), this, currentDownloadingBookModel,
+                            mLibrary, mShelvesAdapter);
+                    break;
+                case PURCHASED_BOOK:
+                    mBookDataBaseLoader.deleteBookFromDb(currentDownloadingBookModel);
+                    currentDownloadingBookModel.setBookState(BookState.CLOUD_BOOK.getState());
+                    currentDownloadingBookModel.setIsBookFirstOpen(false);
+                    mShelvesAdapter.notifyItemChanged(currentDownloadingBookModel.getViewPosition());
+                    break;
+            }
+            mDeleteBookDialog.dismiss();
+        }
+    }
+
+    private void addToDownloadQueue(BookModel bookModel) {
+        if (mDownloadQueue.queueContainsBook(bookModel)) return;
         if (mIsNetworkActive) {
-            mDownloadQueue.addToDownloadQueue(book);
+            mDownloadQueue.addToDownloadQueue(bookModel);
 
             switch (mDownloadInfo.getDownloadState()) {
                 case NOT_STARTED:
@@ -448,16 +526,14 @@ public class LibraryActivity extends BaseActivity implements Queries.CallBack,
         }
     }
 
-    private Book currentDownloadingBook;
-
-    private void downloadBook(Book book) {
-        currentDownloadingBook = book;
+    private void downloadBook(BookModel bookModel) {
+        currentDownloadingBookModel = bookModel;
         // Starting Download Service
         Intent intent = new Intent(Intent.ACTION_SYNC, null, getAct(), DownloadService.class);
         // Send optional extras to Download IntentService
-        intent.putExtra("url", book.getBookDownloadLink());
+        intent.putExtra("url", bookModel.getBookDownloadLink());
         intent.putExtra("receiver", mDownlodReceiver);
-        intent.putExtra("bookName", book.getBookName());
+        intent.putExtra("bookName", bookModel.getBookName());
         intent.putExtra("directoryPath", mDirectoryPath);
 
         getAct().startService(intent);
@@ -469,19 +545,19 @@ public class LibraryActivity extends BaseActivity implements Queries.CallBack,
             case DownloadService.STATUS_RUNNING:
                 mDownloadInfo.setDownloadState(DownloadInfo.DownloadState.DOWNLOADING);
                 // Show progress bar
-                mShelvesAdapter.setStartProgress(currentDownloadingBook.getViewPosition(), mDownloadInfo);
+                mShelvesAdapter.setStartProgress(currentDownloadingBookModel.getViewPosition(), mDownloadInfo);
                 break;
 
             case DownloadService.STATUS_PROGRESS:
                 // Extract result from bundle and fill GridData
                 int progress = resultData.getInt("progress");
-                mShelvesAdapter.setProgressRefresh(progress, currentDownloadingBook.getViewPosition(), mDownloadInfo);
+                mShelvesAdapter.setProgressRefresh(progress, currentDownloadingBookModel.getViewPosition(), mDownloadInfo);
                 break;
 
             case DownloadService.STATUS_FINISHED:
                 saveBook();
                 // Hide progress
-                mShelvesAdapter.setEndProgress(currentDownloadingBook.getViewPosition(), mDownloadInfo);
+                mShelvesAdapter.setEndProgress(currentDownloadingBookModel.getViewPosition(), mDownloadInfo);
                 downloadNextBookQueue("Ok");
 
                 break;
@@ -489,7 +565,7 @@ public class LibraryActivity extends BaseActivity implements Queries.CallBack,
             case DownloadService.STATUS_ERROR:
                 mDownloadInfo.setDownloadState(DownloadInfo.DownloadState.COMPLETE);
                 // Handle the error
-                mShelvesAdapter.setEndProgress(currentDownloadingBook.getViewPosition(), mDownloadInfo);
+                mShelvesAdapter.setEndProgress(currentDownloadingBookModel.getViewPosition(), mDownloadInfo);
 
                 String error = resultData.getString(Intent.EXTRA_TEXT);
                 downloadNextBookQueue(error);
@@ -503,7 +579,7 @@ public class LibraryActivity extends BaseActivity implements Queries.CallBack,
             if (!error.contains("SSLException") && !error.contains("SocketException")
                     && !error.contains("UnknownHostException")) {
                 // Remove downloaded book from queue
-                mDownloadQueue.removeFromDownloadQueue(currentDownloadingBook);
+                mDownloadQueue.removeFromDownloadQueue(currentDownloadingBookModel);
             }
             // Start new download
             if (mDownloadInfo.getDownloadState().equals(DownloadInfo.DownloadState.COMPLETE)) {
@@ -518,37 +594,37 @@ public class LibraryActivity extends BaseActivity implements Queries.CallBack,
     }
 
     private void saveBook() {
-        currentDownloadingBook.setIsBookFirstOpen(true);
-        if (currentDownloadingBook.isIsBookRented()) {
-            currentDownloadingBook.setBookState(BookState.RENTED_BOOK.getState());
+        currentDownloadingBookModel.setIsBookFirstOpen(true);
+        if (currentDownloadingBookModel.isIsBookRented()) {
+            currentDownloadingBookModel.setBookState(BookState.RENTED_BOOK.getState());
         } else {
-            currentDownloadingBook.setBookState(BookState.PURCHASED_BOOK.getState());
+            currentDownloadingBookModel.setBookState(BookState.PURCHASED_BOOK.getState());
         }
-
-        mShelvesAdapter.notifyItemChanged(currentDownloadingBook.getViewPosition());
+        currentDownloadingBookModel.setCreatedDate(DateUtil.getDate(new Date().getTime()));
+        mShelvesAdapter.notifyItemChanged(currentDownloadingBookModel.getViewPosition());
         mDownloadInfo.setDownloadState(DownloadInfo.DownloadState.COMPLETE);
 
-        Log.d("QQQQQ------", currentDownloadingBook.toString());
+        Log.d("QQQQQ------", currentDownloadingBookModel.toString());
 //        getByteBookInstance();
 
         saveBookToDbIfNotExist();
     }
 
     private void saveBookToDbIfNotExist() {
-        List<Book> dataBaseBooks = new ArrayList<>();
-        dataBaseBooks.addAll(mBookDataBaseLoader.getAllUserBookOnDevise(Prefs.getUserSession(getAct(), Const.USER_SESSION_ID)));
-        if (!dataBaseBooks.isEmpty()) {
-            if (!dataBaseBooks.contains(currentDownloadingBook)) {
-                mBookDataBaseLoader.saveBookToDB(currentDownloadingBook);
+        List<BookModel> dataBaseBookModels = new ArrayList<>();
+        dataBaseBookModels.addAll(mBookDataBaseLoader.getAllUserBookOnDevise(Prefs.getUserSession(getAct(), Const.USER_SESSION_ID)));
+        if (!dataBaseBookModels.isEmpty()) {
+            if (!dataBaseBookModels.contains(currentDownloadingBookModel)) {
+                mBookDataBaseLoader.saveBookToDB(currentDownloadingBookModel);
             }
         } else {
-            mBookDataBaseLoader.saveBookToDB(currentDownloadingBook);
+            mBookDataBaseLoader.saveBookToDB(currentDownloadingBookModel);
         }
     }
 
     private void getByteBookInstance() {
         String bookPath = mDirectoryPath
-                + "/" + currentDownloadingBook.getBookName() + ".epub";
+                + "/" + currentDownloadingBookModel.getBookName() + ".epub";
 
         File bookFile = new File(bookPath);
         int bookSize = (int) bookFile.length();
@@ -558,7 +634,7 @@ public class LibraryActivity extends BaseActivity implements Queries.CallBack,
             BufferedInputStream bufferedInputStream = new BufferedInputStream(new FileInputStream(bookFile));
             bufferedInputStream.read(bookBytes, 0, bookBytes.length);
             bufferedInputStream.close();
-            currentDownloadingBook.setBookInstance(bookBytes);
+            currentDownloadingBookModel.setBookInstance(bookBytes);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -566,7 +642,7 @@ public class LibraryActivity extends BaseActivity implements Queries.CallBack,
         }
 
         FileUtil.deleteDir(new File(mDirectoryPath
-                + "/" + currentDownloadingBook.getBookName() + ".epub"));
+                + "/" + currentDownloadingBookModel.getBookName() + ".epub"));
     }
 
     @Subscribe
@@ -586,9 +662,10 @@ public class LibraryActivity extends BaseActivity implements Queries.CallBack,
 
     @Subscribe
     public void onMessageEvent(Events.UpDateLibrary upDateLibrary) {
-        for (Book book : mLibrary) {
-            if (book.getBookName().equals(upDateLibrary.getBookName())) {
-                book.setIsBookFirstOpen(false);
+        for (BookModel bookModel : mLibrary) {
+            if (bookModel.getBookName().equals(upDateLibrary.getBookName())) {
+                bookModel.setIsBookFirstOpen(false);
+                bookModel.setReadDateTime(upDateLibrary.getDateLastReading());
                 mShelvesAdapter.notifyDataSetChanged();
             }
         }
@@ -604,7 +681,7 @@ public class LibraryActivity extends BaseActivity implements Queries.CallBack,
 
     @Override
     public void restartDownloadClick() {
-        downloadBook(currentDownloadingBook);
+        downloadBook(currentDownloadingBookModel);
         closeRestartDownloadDialog();
     }
 
@@ -638,9 +715,7 @@ public class LibraryActivity extends BaseActivity implements Queries.CallBack,
         getAct().stopService(intent);
         closeRestartDownloadDialog();
         mDownlodReceiver.setReceiver(null);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            getAct().unregisterReceiver(mNetworkReceiver);
-        }
+        getAct().unregisterReceiver(mNetworkReceiver);
     }
 
     private void closeRestartDownloadDialog() {
@@ -659,8 +734,35 @@ public class LibraryActivity extends BaseActivity implements Queries.CallBack,
             mImageLeftMenu.setActivated(true);
             UiUtil.hideView(mRightMenuLayout);
             mImageRightMenu.setActivated(true);
-
         }
         return super.dispatchTouchEvent(ev);
+    }
+
+    @Override
+    public void selectedBookState() {
+        if (mDeletingBookQueue.queueContainsBook(currentDownloadingBookModel)) return;
+        mDeletingBookQueue.addToDeletingQueue(currentDownloadingBookModel);
+        if (!mDeletingBookQueue.isDeletingQueueEmpty())
+            mImageDeleteBook.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void unSelectedBookState() {
+        mDeletingBookQueue.removeFromDeletingQueue(currentDownloadingBookModel);
+        if (mDeletingBookQueue.isDeletingQueueEmpty())
+            mImageDeleteBook.setVisibility(View.INVISIBLE);
+    }
+
+    private void clearSelectedDeletingBookState() {
+        mDownloadInfo.setDownloadState(DownloadInfo.DownloadState.NOT_STARTED);
+        mImageDeleteBook.setVisibility(View.INVISIBLE);
+        mDeletingBookQueue.clearDeletingQueue();
+        mLibrary.addAll(mNotDeletingBooksQueue.getAllBooksQueue());
+        for (int i = 0; i < mLibrary.size(); i++) {
+            mLibrary.get(i).setmIsBookSelected(false);
+        }
+        mNotDeletingBooksQueue.clearDeletingQueue();
+        mShelvesAdapter.setDownloadInfo(mDownloadInfo);
+        mShelvesAdapter.notifyDataSetChanged();
     }
 }

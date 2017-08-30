@@ -5,8 +5,9 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
-import com.getbooks.android.model.Book;
+import com.getbooks.android.model.BookModel;
 import com.getbooks.android.util.DateUtil;
 import com.getbooks.android.util.LogUtil;
 
@@ -146,8 +147,8 @@ public class BooksDataBase {
         return users;
     }
 
-    protected List<Book> getAllUserBook(int userId) {
-        List<Book> alUserBooks = new ArrayList<>();
+    protected List<BookModel> getAllUserBook(int userId) {
+        List<BookModel> alUserBookModels = new ArrayList<>();
         mSqLiteDatabase = mBookDBHelper.getReadableDatabase();
         String query = "SELECT * FROM " + Tables.BOOK_DETAILS + " WHERE " + BooksDBContract.BookDetail.USER_ID +
                 " = " + userId;
@@ -155,46 +156,46 @@ public class BooksDataBase {
         if (cursor != null) {
             while (cursor.moveToNext()) {
                 Calendar calendar = null;
-                Book book = new Book();
-                book.setUserId(cursor.getInt(cursor.getColumnIndex(BooksDBContract.BookDetail.USER_ID)));
-                book.setBookSku(cursor.getString(cursor.getColumnIndex(BooksDBContract.BookDetail.BOOK_SKU)));
-                book.setBookName(cursor.getString(cursor.getColumnIndex(BooksDBContract.BookDetail.BOOK_NAME)));
-                book.setImageDownloadLink(cursor.getString(cursor.getColumnIndex(BooksDBContract.BookDetail.BOOK_IMAGE_DOWNLOAD_URL)));
-                book.setBookDownloadLink(cursor.getString(cursor.getColumnIndex(BooksDBContract.BookDetail.BOOK_DOWNLOAD_LINK)));
-                book.setBookState(cursor.getString(cursor.getColumnIndex(BooksDBContract.BookDetail.BOOK_STATE)));
-                book.setBookInstance(cursor.getBlob(cursor.getColumnIndex(BooksDBContract.BookDetail.BOOK_INSTANCE)));
-                book.setBookImage(cursor.getString(cursor.getColumnIndex(BooksDBContract.BookDetail.BOOK_IMAGE)));
-                book.setBookContentID(cursor.getString(cursor.getColumnIndex(BooksDBContract.BookDetail.BOOK_CONTENT_ID)));
-                book.setBookPublishers(cursor.getString(cursor.getColumnIndex(BooksDBContract.BookDetail.BOOK_PUBLISHERS)));
-                book.setBookAuthors(cursor.getString(cursor.getColumnIndex(BooksDBContract.BookDetail.BOOK_AUTHORS)));
-                book.setBookLanguage(cursor.getString(cursor.getColumnIndex(BooksDBContract.BookDetail.BOOK_LANGUAGE)));
-                book.setBookLanguageDirection(cursor.getString(cursor.getColumnIndex(BooksDBContract.BookDetail.BOOK_LANGUAGE_DIRECTION)));
-                book.setBookIsEncrypted(cursor.getInt(cursor.getColumnIndex(BooksDBContract.BookDetail.BOOK_IS_ENCRYPTED)) == 1);
-                book.setBookPublishedYear(cursor.getString(cursor.getColumnIndex(BooksDBContract.BookDetail.BOOK_PUBLISHED_YEAR)));
-                book.setReadDateTime(cursor.getLong(cursor.getColumnIndex(BooksDBContract.BookDetail.READ_DATE_TIME)) == 0 ? null :
+                BookModel bookModel = new BookModel();
+                bookModel.setUserId(cursor.getInt(cursor.getColumnIndex(BooksDBContract.BookDetail.USER_ID)));
+                bookModel.setBookSku(cursor.getString(cursor.getColumnIndex(BooksDBContract.BookDetail.BOOK_SKU)));
+                bookModel.setBookName(cursor.getString(cursor.getColumnIndex(BooksDBContract.BookDetail.BOOK_NAME)));
+                bookModel.setImageDownloadLink(cursor.getString(cursor.getColumnIndex(BooksDBContract.BookDetail.BOOK_IMAGE_DOWNLOAD_URL)));
+                bookModel.setBookDownloadLink(cursor.getString(cursor.getColumnIndex(BooksDBContract.BookDetail.BOOK_DOWNLOAD_LINK)));
+                bookModel.setBookState(cursor.getString(cursor.getColumnIndex(BooksDBContract.BookDetail.BOOK_STATE)));
+                bookModel.setBookInstance(cursor.getBlob(cursor.getColumnIndex(BooksDBContract.BookDetail.BOOK_INSTANCE)));
+                bookModel.setBookImage(cursor.getString(cursor.getColumnIndex(BooksDBContract.BookDetail.BOOK_IMAGE)));
+                bookModel.setBookContentID(cursor.getString(cursor.getColumnIndex(BooksDBContract.BookDetail.BOOK_CONTENT_ID)));
+                bookModel.setBookPublishers(cursor.getString(cursor.getColumnIndex(BooksDBContract.BookDetail.BOOK_PUBLISHERS)));
+                bookModel.setBookAuthors(cursor.getString(cursor.getColumnIndex(BooksDBContract.BookDetail.BOOK_AUTHORS)));
+                bookModel.setBookLanguage(cursor.getString(cursor.getColumnIndex(BooksDBContract.BookDetail.BOOK_LANGUAGE)));
+                bookModel.setBookLanguageDirection(cursor.getString(cursor.getColumnIndex(BooksDBContract.BookDetail.BOOK_LANGUAGE_DIRECTION)));
+                bookModel.setBookIsEncrypted(cursor.getInt(cursor.getColumnIndex(BooksDBContract.BookDetail.BOOK_IS_ENCRYPTED)) == 1);
+                bookModel.setBookPublishedYear(cursor.getString(cursor.getColumnIndex(BooksDBContract.BookDetail.BOOK_PUBLISHED_YEAR)));
+                bookModel.setReadDateTime(cursor.getLong(cursor.getColumnIndex(BooksDBContract.BookDetail.READ_DATE_TIME)) == 0 ? null :
                         DateUtil.getDate(cursor.getLong(cursor.getColumnIndex(BooksDBContract.BookDetail.READ_DATE_TIME))));
-                book.setBookAtTheEnd(cursor.getInt(cursor.getColumnIndex(BooksDBContract.BookDetail.IS_BOOK_AT_THE_END)) != 0);
-                book.setBookIsDeleted(cursor.getInt(cursor.getColumnIndex(BooksDBContract.BookDetail.IS_DELETED)) == 1);
-                book.setUpdateDate(cursor.getInt(cursor.getColumnIndex(BooksDBContract.BookDetail.LAST_UPDATED)));
-                book.setLastPage(cursor.getInt(cursor.getColumnIndex(BooksDBContract.BookDetail.BOOK_LAST_PAGE)));
+                bookModel.setBookAtTheEnd(cursor.getInt(cursor.getColumnIndex(BooksDBContract.BookDetail.IS_BOOK_AT_THE_END)) != 0);
+                bookModel.setBookIsDeleted(cursor.getInt(cursor.getColumnIndex(BooksDBContract.BookDetail.IS_DELETED)) == 1);
+                bookModel.setUpdateDate(cursor.getInt(cursor.getColumnIndex(BooksDBContract.BookDetail.LAST_UPDATED)));
+                bookModel.setLastPage(cursor.getInt(cursor.getColumnIndex(BooksDBContract.BookDetail.BOOK_LAST_PAGE)));
                 if (cursor.getLong(cursor.getColumnIndex(BooksDBContract.BookDetail.BOOK_CREATED_DATE)) != 0) {
                     calendar = DateUtil.getDate(cursor.getLong(cursor.getColumnIndex(BooksDBContract.BookDetail.BOOK_CREATED_DATE)));
                 }
-                book.setCreatedDate(calendar);
-                book.setLastChapter(cursor.getInt(cursor.getColumnIndex(BooksDBContract.BookDetail.BOOK_LAST_CHAPTER)));
-                book.setChapterList(cursor.getString(cursor.getColumnIndex(BooksDBContract.BookDetail.BOOK_CHAPTER_LIST)));
-                book.setBookPhysicalPage(cursor.getInt(cursor.getColumnIndex(BooksDBContract.BookDetail.BOOK_PHYSICAL_PAGE)));
-                book.setLastReadingParagraph(cursor.getInt(cursor.getColumnIndex(BooksDBContract.BookDetail.LAST_READING_PARAGRAPH)));
-                book.setIsBookFirstOpen(cursor.getInt(cursor.getColumnIndex(BooksDBContract.BookDetail.BOOK_IS_FIRST_OPEN)) != 0);
+                bookModel.setCreatedDate(calendar);
+                bookModel.setLastChapter(cursor.getInt(cursor.getColumnIndex(BooksDBContract.BookDetail.BOOK_LAST_CHAPTER)));
+                bookModel.setChapterList(cursor.getString(cursor.getColumnIndex(BooksDBContract.BookDetail.BOOK_CHAPTER_LIST)));
+                bookModel.setBookPhysicalPage(cursor.getInt(cursor.getColumnIndex(BooksDBContract.BookDetail.BOOK_PHYSICAL_PAGE)));
+                bookModel.setLastReadingParagraph(cursor.getInt(cursor.getColumnIndex(BooksDBContract.BookDetail.LAST_READING_PARAGRAPH)));
+                bookModel.setIsBookFirstOpen(cursor.getInt(cursor.getColumnIndex(BooksDBContract.BookDetail.BOOK_IS_FIRST_OPEN)) != 0);
 
-                alUserBooks.add(book);
+                alUserBookModels.add(bookModel);
             }
         }
-        return alUserBooks;
+        return alUserBookModels;
     }
 
-    protected Book getCurrentBookDetail(int userId, String bookName) {
-        Book book = new Book();
+    protected BookModel getCurrentBookDetail(int userId, String bookName) {
+        BookModel bookModel = new BookModel();
         mSqLiteDatabase = mBookDBHelper.getReadableDatabase();
         String query = "SELECT * FROM " + Tables.BOOK_DETAILS + " WHERE " + BooksDBContract.BookDetail.USER_ID +
                 " =?" + " AND " + BooksDBContract.BookDetail.BOOK_NAME + " =?";
@@ -202,107 +203,113 @@ public class BooksDataBase {
         if (cursor != null) {
             while (cursor.moveToNext()) {
                 Calendar calendar = null;
-                book.setUserId(cursor.getInt(cursor.getColumnIndex(BooksDBContract.BookDetail.USER_ID)));
-                book.setBookSku(cursor.getString(cursor.getColumnIndex(BooksDBContract.BookDetail.BOOK_SKU)));
-                book.setBookName(cursor.getString(cursor.getColumnIndex(BooksDBContract.BookDetail.BOOK_NAME)));
-                book.setImageDownloadLink(cursor.getString(cursor.getColumnIndex(BooksDBContract.BookDetail.BOOK_IMAGE_DOWNLOAD_URL)));
-                book.setBookDownloadLink(cursor.getString(cursor.getColumnIndex(BooksDBContract.BookDetail.BOOK_DOWNLOAD_LINK)));
-                book.setBookState(cursor.getString(cursor.getColumnIndex(BooksDBContract.BookDetail.BOOK_STATE)));
-                book.setBookInstance(cursor.getBlob(cursor.getColumnIndex(BooksDBContract.BookDetail.BOOK_INSTANCE)));
-                book.setBookImage(cursor.getString(cursor.getColumnIndex(BooksDBContract.BookDetail.BOOK_IMAGE)));
-                book.setBookContentID(cursor.getString(cursor.getColumnIndex(BooksDBContract.BookDetail.BOOK_CONTENT_ID)));
-                book.setBookPublishers(cursor.getString(cursor.getColumnIndex(BooksDBContract.BookDetail.BOOK_PUBLISHERS)));
-                book.setBookAuthors(cursor.getString(cursor.getColumnIndex(BooksDBContract.BookDetail.BOOK_AUTHORS)));
-                book.setBookLanguage(cursor.getString(cursor.getColumnIndex(BooksDBContract.BookDetail.BOOK_LANGUAGE)));
-                book.setBookLanguageDirection(cursor.getString(cursor.getColumnIndex(BooksDBContract.BookDetail.BOOK_LANGUAGE_DIRECTION)));
-                book.setBookIsEncrypted(cursor.getInt(cursor.getColumnIndex(BooksDBContract.BookDetail.BOOK_IS_ENCRYPTED)) == 1);
-                book.setBookPublishedYear(cursor.getString(cursor.getColumnIndex(BooksDBContract.BookDetail.BOOK_PUBLISHED_YEAR)));
-                book.setReadDateTime(cursor.getLong(cursor.getColumnIndex(BooksDBContract.BookDetail.READ_DATE_TIME)) == 0 ? null :
+                bookModel.setUserId(cursor.getInt(cursor.getColumnIndex(BooksDBContract.BookDetail.USER_ID)));
+                bookModel.setBookSku(cursor.getString(cursor.getColumnIndex(BooksDBContract.BookDetail.BOOK_SKU)));
+                bookModel.setBookName(cursor.getString(cursor.getColumnIndex(BooksDBContract.BookDetail.BOOK_NAME)));
+                bookModel.setImageDownloadLink(cursor.getString(cursor.getColumnIndex(BooksDBContract.BookDetail.BOOK_IMAGE_DOWNLOAD_URL)));
+                bookModel.setBookDownloadLink(cursor.getString(cursor.getColumnIndex(BooksDBContract.BookDetail.BOOK_DOWNLOAD_LINK)));
+                bookModel.setBookState(cursor.getString(cursor.getColumnIndex(BooksDBContract.BookDetail.BOOK_STATE)));
+                bookModel.setBookInstance(cursor.getBlob(cursor.getColumnIndex(BooksDBContract.BookDetail.BOOK_INSTANCE)));
+                bookModel.setBookImage(cursor.getString(cursor.getColumnIndex(BooksDBContract.BookDetail.BOOK_IMAGE)));
+                bookModel.setBookContentID(cursor.getString(cursor.getColumnIndex(BooksDBContract.BookDetail.BOOK_CONTENT_ID)));
+                bookModel.setBookPublishers(cursor.getString(cursor.getColumnIndex(BooksDBContract.BookDetail.BOOK_PUBLISHERS)));
+                bookModel.setBookAuthors(cursor.getString(cursor.getColumnIndex(BooksDBContract.BookDetail.BOOK_AUTHORS)));
+                bookModel.setBookLanguage(cursor.getString(cursor.getColumnIndex(BooksDBContract.BookDetail.BOOK_LANGUAGE)));
+                bookModel.setBookLanguageDirection(cursor.getString(cursor.getColumnIndex(BooksDBContract.BookDetail.BOOK_LANGUAGE_DIRECTION)));
+                bookModel.setBookIsEncrypted(cursor.getInt(cursor.getColumnIndex(BooksDBContract.BookDetail.BOOK_IS_ENCRYPTED)) == 1);
+                bookModel.setBookPublishedYear(cursor.getString(cursor.getColumnIndex(BooksDBContract.BookDetail.BOOK_PUBLISHED_YEAR)));
+                bookModel.setReadDateTime(cursor.getLong(cursor.getColumnIndex(BooksDBContract.BookDetail.READ_DATE_TIME)) == 0 ? null :
                         DateUtil.getDate(cursor.getLong(cursor.getColumnIndex(BooksDBContract.BookDetail.READ_DATE_TIME))));
-                book.setBookAtTheEnd(cursor.getInt(cursor.getColumnIndex(BooksDBContract.BookDetail.IS_BOOK_AT_THE_END)) != 0);
-                book.setBookIsDeleted(cursor.getInt(cursor.getColumnIndex(BooksDBContract.BookDetail.IS_DELETED)) == 1);
-                book.setUpdateDate(cursor.getInt(cursor.getColumnIndex(BooksDBContract.BookDetail.LAST_UPDATED)));
-                book.setLastPage(cursor.getInt(cursor.getColumnIndex(BooksDBContract.BookDetail.BOOK_LAST_PAGE)));
+                bookModel.setBookAtTheEnd(cursor.getInt(cursor.getColumnIndex(BooksDBContract.BookDetail.IS_BOOK_AT_THE_END)) != 0);
+                bookModel.setBookIsDeleted(cursor.getInt(cursor.getColumnIndex(BooksDBContract.BookDetail.IS_DELETED)) == 1);
+                bookModel.setUpdateDate(cursor.getInt(cursor.getColumnIndex(BooksDBContract.BookDetail.LAST_UPDATED)));
+                bookModel.setLastPage(cursor.getInt(cursor.getColumnIndex(BooksDBContract.BookDetail.BOOK_LAST_PAGE)));
                 if (cursor.getLong(cursor.getColumnIndex(BooksDBContract.BookDetail.BOOK_CREATED_DATE)) != 0) {
                     calendar = DateUtil.getDate(cursor.getLong(cursor.getColumnIndex(BooksDBContract.BookDetail.BOOK_CREATED_DATE)));
                 }
-                book.setCreatedDate(calendar);
-                book.setLastChapter(cursor.getInt(cursor.getColumnIndex(BooksDBContract.BookDetail.BOOK_LAST_CHAPTER)));
-                book.setChapterList(cursor.getString(cursor.getColumnIndex(BooksDBContract.BookDetail.BOOK_CHAPTER_LIST)));
-                book.setBookPhysicalPage(cursor.getInt(cursor.getColumnIndex(BooksDBContract.BookDetail.BOOK_PHYSICAL_PAGE)));
-                book.setLastReadingParagraph(cursor.getInt(cursor.getColumnIndex(BooksDBContract.BookDetail.LAST_READING_PARAGRAPH)));
-                book.setIsBookFirstOpen(cursor.getInt(cursor.getColumnIndex(BooksDBContract.BookDetail.BOOK_IS_FIRST_OPEN)) != 0);
+                bookModel.setCreatedDate(calendar);
+                bookModel.setLastChapter(cursor.getInt(cursor.getColumnIndex(BooksDBContract.BookDetail.BOOK_LAST_CHAPTER)));
+                bookModel.setChapterList(cursor.getString(cursor.getColumnIndex(BooksDBContract.BookDetail.BOOK_CHAPTER_LIST)));
+                bookModel.setBookPhysicalPage(cursor.getInt(cursor.getColumnIndex(BooksDBContract.BookDetail.BOOK_PHYSICAL_PAGE)));
+                bookModel.setLastReadingParagraph(cursor.getInt(cursor.getColumnIndex(BooksDBContract.BookDetail.LAST_READING_PARAGRAPH)));
+                bookModel.setIsBookFirstOpen(cursor.getInt(cursor.getColumnIndex(BooksDBContract.BookDetail.BOOK_IS_FIRST_OPEN)) != 0);
             }
         }
-        return book;
+        return bookModel;
     }
 
-    protected void saveBook(Book book) {
+    protected void saveBook(BookModel bookModel) {
         ContentValues contentValues = new ContentValues();
-        contentValues.put(BooksDBContract.BookDetail.USER_ID, book.getUserId());
-        contentValues.put(BooksDBContract.BookDetail.BOOK_SKU, book.getBookSku());
-        contentValues.put(BooksDBContract.BookDetail.BOOK_NAME, book.getBookName());
-        contentValues.put(BooksDBContract.BookDetail.BOOK_IMAGE_DOWNLOAD_URL, book.getImageDownloadLink());
-        contentValues.put(BooksDBContract.BookDetail.BOOK_DOWNLOAD_LINK, book.getBookDownloadLink());
-        contentValues.put(BooksDBContract.BookDetail.BOOK_STATE, book.getBookState().getState());
-        contentValues.put(BooksDBContract.BookDetail.BOOK_INSTANCE, book.getBookInstance());
-        contentValues.put(BooksDBContract.BookDetail.BOOK_IMAGE, book.getBookImage());
-        contentValues.put(BooksDBContract.BookDetail.BOOK_CONTENT_ID, book.getBookContentID());
-        contentValues.put(BooksDBContract.BookDetail.BOOK_PUBLISHERS, book.getBookPublishers());
-        contentValues.put(BooksDBContract.BookDetail.BOOK_AUTHORS, book.getBookAuthors());
-        contentValues.put(BooksDBContract.BookDetail.BOOK_LANGUAGE, book.getBookLanguage());
-        contentValues.put(BooksDBContract.BookDetail.BOOK_LANGUAGE_DIRECTION, book.getBookLanguageDirection());
-        contentValues.put(BooksDBContract.BookDetail.BOOK_IS_ENCRYPTED, book.isBookIsEncrypted() ? 1 : 0);
-        contentValues.put(BooksDBContract.BookDetail.BOOK_PUBLISHED_YEAR, book.getBookPublishedYear());
-        contentValues.put(BooksDBContract.BookDetail.READ_DATE_TIME, book.getReadDateTime() == null ? 0 : book.getReadDateTime().getTimeInMillis());
-        contentValues.put(BooksDBContract.BookDetail.IS_BOOK_AT_THE_END, book.isBookAtTheEnd() ? 1 : 0);
+        contentValues.put(BooksDBContract.BookDetail.USER_ID, bookModel.getUserId());
+        contentValues.put(BooksDBContract.BookDetail.BOOK_SKU, bookModel.getBookSku());
+        contentValues.put(BooksDBContract.BookDetail.BOOK_NAME, bookModel.getBookName());
+        contentValues.put(BooksDBContract.BookDetail.BOOK_IMAGE_DOWNLOAD_URL, bookModel.getImageDownloadLink());
+        contentValues.put(BooksDBContract.BookDetail.BOOK_DOWNLOAD_LINK, bookModel.getBookDownloadLink());
+        contentValues.put(BooksDBContract.BookDetail.BOOK_STATE, bookModel.getBookState().getState());
+        contentValues.put(BooksDBContract.BookDetail.BOOK_INSTANCE, bookModel.getBookInstance());
+        contentValues.put(BooksDBContract.BookDetail.BOOK_IMAGE, bookModel.getBookImage());
+        contentValues.put(BooksDBContract.BookDetail.BOOK_CONTENT_ID, bookModel.getBookContentID());
+        contentValues.put(BooksDBContract.BookDetail.BOOK_PUBLISHERS, bookModel.getBookPublishers());
+        contentValues.put(BooksDBContract.BookDetail.BOOK_AUTHORS, bookModel.getBookAuthors());
+        contentValues.put(BooksDBContract.BookDetail.BOOK_LANGUAGE, bookModel.getBookLanguage());
+        contentValues.put(BooksDBContract.BookDetail.BOOK_LANGUAGE_DIRECTION, bookModel.getBookLanguageDirection());
+        contentValues.put(BooksDBContract.BookDetail.BOOK_IS_ENCRYPTED, bookModel.isBookIsEncrypted() ? 1 : 0);
+        contentValues.put(BooksDBContract.BookDetail.BOOK_PUBLISHED_YEAR, bookModel.getBookPublishedYear());
+        contentValues.put(BooksDBContract.BookDetail.READ_DATE_TIME, bookModel.getReadDateTime() == null ? 0 : bookModel.getReadDateTime().getTimeInMillis());
+        contentValues.put(BooksDBContract.BookDetail.IS_BOOK_AT_THE_END, bookModel.isBookAtTheEnd() ? 1 : 0);
         contentValues.put(BooksDBContract.BookDetail.IS_DELETED, 0);
-        contentValues.put(BooksDBContract.BookDetail.LAST_UPDATED, book.getUpdateDate());
-        contentValues.put(BooksDBContract.BookDetail.BOOK_LAST_PAGE, book.getLastPage());
-        contentValues.put(BooksDBContract.BookDetail.BOOK_CREATED_DATE, book.getCreatedDate() == null ? 0 : book.getCreatedDate().getTimeInMillis());
-        contentValues.put(BooksDBContract.BookDetail.BOOK_LAST_CHAPTER, book.getLastChapter());
-        contentValues.put(BooksDBContract.BookDetail.BOOK_CHAPTER_LIST, book.getChapterList());
-        contentValues.put(BooksDBContract.BookDetail.BOOK_PHYSICAL_PAGE, book.getBookPhysicalPage());
-        contentValues.put(BooksDBContract.BookDetail.LAST_READING_PARAGRAPH, book.getLastReadingParagraph());
-        contentValues.put(BooksDBContract.BookDetail.BOOK_IS_FIRST_OPEN, book.isIsBookFirstOpen() ? 1 : 0);
+        contentValues.put(BooksDBContract.BookDetail.LAST_UPDATED, bookModel.getUpdateDate());
+        contentValues.put(BooksDBContract.BookDetail.BOOK_LAST_PAGE, bookModel.getLastPage());
+        contentValues.put(BooksDBContract.BookDetail.BOOK_CREATED_DATE, bookModel.getCreatedDate() == null ? 0 : bookModel.getCreatedDate().getTimeInMillis());
+        contentValues.put(BooksDBContract.BookDetail.BOOK_LAST_CHAPTER, bookModel.getLastChapter());
+        contentValues.put(BooksDBContract.BookDetail.BOOK_CHAPTER_LIST, bookModel.getChapterList());
+        contentValues.put(BooksDBContract.BookDetail.BOOK_PHYSICAL_PAGE, bookModel.getBookPhysicalPage());
+        contentValues.put(BooksDBContract.BookDetail.LAST_READING_PARAGRAPH, bookModel.getLastReadingParagraph());
+        contentValues.put(BooksDBContract.BookDetail.BOOK_IS_FIRST_OPEN, bookModel.isIsBookFirstOpen() ? 1 : 0);
         mSqLiteDatabase.insert(Tables.BOOK_DETAILS, null, contentValues);
     }
 
+    protected void deleteBook(BookModel bookModel) {
+        mSqLiteDatabase = mBookDBHelper.getReadableDatabase();
+        String query = BooksDBContract.BookDetail.BOOK_SKU + " =?";
+        mSqLiteDatabase.delete(Tables.BOOK_DETAILS, query, new String[]{String.valueOf(bookModel.getBookSku())});
+    }
 
-    protected void updateBook(Book book) {
+
+    protected void updateBook(BookModel bookModel) {
         mSqLiteDatabase = mBookDBHelper.getReadableDatabase();
         String query = BooksDBContract.BookDetail.USER_ID + " =?" +
                 " AND " + BooksDBContract.BookDetail.BOOK_NAME + " =?";
 
         ContentValues contentValues = new ContentValues();
-        contentValues.put(BooksDBContract.BookDetail.USER_ID, book.getUserId());
-        contentValues.put(BooksDBContract.BookDetail.BOOK_SKU, book.getBookSku());
-        contentValues.put(BooksDBContract.BookDetail.BOOK_NAME, book.getBookName());
-        contentValues.put(BooksDBContract.BookDetail.BOOK_IMAGE_DOWNLOAD_URL, book.getImageDownloadLink());
-        contentValues.put(BooksDBContract.BookDetail.BOOK_DOWNLOAD_LINK, book.getBookDownloadLink());
-        contentValues.put(BooksDBContract.BookDetail.BOOK_STATE, book.getBookState().getState());
-        contentValues.put(BooksDBContract.BookDetail.BOOK_INSTANCE, book.getBookInstance());
-        contentValues.put(BooksDBContract.BookDetail.BOOK_IMAGE, book.getBookImage());
-        contentValues.put(BooksDBContract.BookDetail.BOOK_CONTENT_ID, book.getBookContentID());
-        contentValues.put(BooksDBContract.BookDetail.BOOK_PUBLISHERS, book.getBookPublishers());
-        contentValues.put(BooksDBContract.BookDetail.BOOK_AUTHORS, book.getBookAuthors());
-        contentValues.put(BooksDBContract.BookDetail.BOOK_LANGUAGE, book.getBookLanguage());
-        contentValues.put(BooksDBContract.BookDetail.BOOK_LANGUAGE_DIRECTION, book.getBookLanguageDirection());
-        contentValues.put(BooksDBContract.BookDetail.BOOK_IS_ENCRYPTED, book.isBookIsEncrypted() ? 1 : 0);
-        contentValues.put(BooksDBContract.BookDetail.BOOK_PUBLISHED_YEAR, book.getBookPublishedYear());
-        contentValues.put(BooksDBContract.BookDetail.READ_DATE_TIME, book.getReadDateTime() == null ? 0 : book.getReadDateTime().getTimeInMillis());
-        contentValues.put(BooksDBContract.BookDetail.IS_BOOK_AT_THE_END, book.isBookAtTheEnd() ? 1 : 0);
+        contentValues.put(BooksDBContract.BookDetail.USER_ID, bookModel.getUserId());
+        contentValues.put(BooksDBContract.BookDetail.BOOK_SKU, bookModel.getBookSku());
+        contentValues.put(BooksDBContract.BookDetail.BOOK_NAME, bookModel.getBookName());
+        contentValues.put(BooksDBContract.BookDetail.BOOK_IMAGE_DOWNLOAD_URL, bookModel.getImageDownloadLink());
+        contentValues.put(BooksDBContract.BookDetail.BOOK_DOWNLOAD_LINK, bookModel.getBookDownloadLink());
+        contentValues.put(BooksDBContract.BookDetail.BOOK_STATE, bookModel.getBookState().getState());
+        contentValues.put(BooksDBContract.BookDetail.BOOK_INSTANCE, bookModel.getBookInstance());
+        contentValues.put(BooksDBContract.BookDetail.BOOK_IMAGE, bookModel.getBookImage());
+        contentValues.put(BooksDBContract.BookDetail.BOOK_CONTENT_ID, bookModel.getBookContentID());
+        contentValues.put(BooksDBContract.BookDetail.BOOK_PUBLISHERS, bookModel.getBookPublishers());
+        contentValues.put(BooksDBContract.BookDetail.BOOK_AUTHORS, bookModel.getBookAuthors());
+        contentValues.put(BooksDBContract.BookDetail.BOOK_LANGUAGE, bookModel.getBookLanguage());
+        contentValues.put(BooksDBContract.BookDetail.BOOK_LANGUAGE_DIRECTION, bookModel.getBookLanguageDirection());
+        contentValues.put(BooksDBContract.BookDetail.BOOK_IS_ENCRYPTED, bookModel.isBookIsEncrypted() ? 1 : 0);
+        contentValues.put(BooksDBContract.BookDetail.BOOK_PUBLISHED_YEAR, bookModel.getBookPublishedYear());
+        contentValues.put(BooksDBContract.BookDetail.READ_DATE_TIME, bookModel.getReadDateTime() == null ? 0 : bookModel.getReadDateTime().getTimeInMillis());
+        contentValues.put(BooksDBContract.BookDetail.IS_BOOK_AT_THE_END, bookModel.isBookAtTheEnd() ? 1 : 0);
         contentValues.put(BooksDBContract.BookDetail.IS_DELETED, 0);
-        contentValues.put(BooksDBContract.BookDetail.LAST_UPDATED, book.getUpdateDate());
-        contentValues.put(BooksDBContract.BookDetail.BOOK_LAST_PAGE, book.getLastPage());
-        contentValues.put(BooksDBContract.BookDetail.BOOK_CREATED_DATE, book.getCreatedDate() == null ? 0 : book.getCreatedDate().getTimeInMillis());
-        contentValues.put(BooksDBContract.BookDetail.BOOK_LAST_CHAPTER, book.getLastChapter());
-        contentValues.put(BooksDBContract.BookDetail.BOOK_CHAPTER_LIST, book.getChapterList());
-        contentValues.put(BooksDBContract.BookDetail.BOOK_PHYSICAL_PAGE, book.getBookPhysicalPage());
-        contentValues.put(BooksDBContract.BookDetail.LAST_READING_PARAGRAPH, book.getLastReadingParagraph());
-        contentValues.put(BooksDBContract.BookDetail.BOOK_IS_FIRST_OPEN, book.isIsBookFirstOpen() ? 1 : 0);
+        contentValues.put(BooksDBContract.BookDetail.LAST_UPDATED, bookModel.getUpdateDate());
+        contentValues.put(BooksDBContract.BookDetail.BOOK_LAST_PAGE, bookModel.getLastPage());
+        contentValues.put(BooksDBContract.BookDetail.BOOK_CREATED_DATE, bookModel.getCreatedDate() == null ? 0 : bookModel.getCreatedDate().getTimeInMillis());
+        contentValues.put(BooksDBContract.BookDetail.BOOK_LAST_CHAPTER, bookModel.getLastChapter());
+        contentValues.put(BooksDBContract.BookDetail.BOOK_CHAPTER_LIST, bookModel.getChapterList());
+        contentValues.put(BooksDBContract.BookDetail.BOOK_PHYSICAL_PAGE, bookModel.getBookPhysicalPage());
+        contentValues.put(BooksDBContract.BookDetail.LAST_READING_PARAGRAPH, bookModel.getLastReadingParagraph());
+        contentValues.put(BooksDBContract.BookDetail.BOOK_IS_FIRST_OPEN, bookModel.isIsBookFirstOpen() ? 1 : 0);
         mSqLiteDatabase.update(Tables.BOOK_DETAILS, contentValues, query,
-                new String[]{Integer.toString(book.getUserId()), book.getBookName()});
+                new String[]{Integer.toString(bookModel.getUserId()), bookModel.getBookName()});
     }
 
 }

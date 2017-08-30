@@ -53,4 +53,13 @@ public interface ApiService {
     Observable<Response<UserSession>> detUserSession(@Path("websiteCode") String aff_pelephone,
                                                      @Path("deviceToken") String tokenDevice);
 
+    @Headers({
+            "Accept:application/json",
+            "SecretKey:de@Dc0W4her0"
+    })
+    @DELETE("glibrary/rentedbooks/{websiteCode}/{deviceToken}/sku/{rentBookSku}")
+    Observable<Response<ResponseBody>> returnBookRented(@Path("websiteCode") String aff_pelephone,
+                                                        @Path("deviceToken") String tokenDevice,
+                                                        @Path("rentBookSku") String retBookSku);
+
 }

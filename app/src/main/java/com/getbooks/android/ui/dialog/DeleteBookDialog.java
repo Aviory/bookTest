@@ -69,8 +69,8 @@ public class DeleteBookDialog extends AlertDialog implements View.OnClickListene
                     mOnItemDeleteDialogListener.cancelBookDelete();
                 }
                 break;
-            case R.id.txt_sign_out:
-            case R.id.img_log_out:
+            case R.id.txt_delete:
+            case R.id.img_delete:
                 if (mOnItemDeleteDialogListener != null) {
                     mOnItemDeleteDialogListener.deleteBookClick();
                 }

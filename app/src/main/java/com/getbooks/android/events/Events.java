@@ -2,6 +2,8 @@ package com.getbooks.android.events;
 
 import com.getbooks.android.model.enums.NetworkState;
 
+import java.util.Calendar;
+
 /**
  * Created by marina on 12.07.17.
  */
@@ -79,6 +81,15 @@ public class Events {
 
     public static class UpDateLibrary {
         String bookName;
+        Calendar dateLastReading;
+
+        public Calendar getDateLastReading() {
+            return dateLastReading;
+        }
+
+        public void setDateLastReading(Calendar dateLastReading) {
+            this.dateLastReading = dateLastReading;
+        }
 
         public String getBookName() {
             return bookName;

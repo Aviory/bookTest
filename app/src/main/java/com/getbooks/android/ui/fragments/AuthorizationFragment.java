@@ -151,7 +151,7 @@ public class AuthorizationFragment extends BaseFragment {
             LogUtil.log(this, url + "last");
             String cookies = CookieManager.getInstance().getCookie(url);
             if (null != getAct())
-            Prefs.saveCookieUserSession(getAct(), cookies);
+                Prefs.saveCookieUserSession(getAct(), cookies);
             LogUtil.log(this, "Save user cookies session");
             mProgressBar.dismiss();
         }

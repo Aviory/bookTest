@@ -2,9 +2,11 @@ package com.getbooks.android.ui.widget;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.AdapterView;
 
 /**
  * Created by marina on 08.08.17.
@@ -16,15 +18,25 @@ public class RecyclerItemClickListener implements RecyclerView.OnItemTouchListen
     GestureDetector mGestureDetector;
 
     public interface OnItemClickListener {
-        public void onItemClick(View view, int position);
+        void onItemClick(View view, int position);
+
+        void onItemLongClick(View view, int position);
     }
 
-    public RecyclerItemClickListener(Context context, OnItemClickListener listener) {
+    public RecyclerItemClickListener(Context context, RecyclerView recyclerView, OnItemClickListener listener) {
         mListener = listener;
         mGestureDetector = new GestureDetector(context, new GestureDetector.SimpleOnGestureListener() {
             @Override
             public boolean onSingleTapUp(MotionEvent e) {
                 return true;
+            }
+
+            @Override
+            public void onLongPress(MotionEvent e) {
+                View child = recyclerView.findChildViewUnder(e.getX(), e.getY());
+                if (child != null && listener != null) {
+                    listener.onItemLongClick(child, recyclerView.getChildAdapterPosition(child));
+                }
             }
         });
     }
@@ -41,8 +53,7 @@ public class RecyclerItemClickListener implements RecyclerView.OnItemTouchListen
     }
 
     @Override
-    public void onTouchEvent(RecyclerView rv, MotionEvent e) {
-
+    public void onTouchEvent(RecyclerView view, MotionEvent e) {
     }
 
     @Override

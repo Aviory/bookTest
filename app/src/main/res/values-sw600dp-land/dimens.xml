@@ -22,6 +22,8 @@
 
     <!-- Tutorial text float screen sizes-->
     <dimen name="margin_txt_center">100dp</dimen>
+
+    <!-- Service and privacy screen sizes-->
     <dimen name="txt_heigth_servise_body">414dp</dimen>
     <dimen name="btn_service_margin_right">445dp</dimen>
     <dimen name="btn_service_margin_left">236dp</dimen>
@@ -33,13 +35,22 @@
     <dimen name="btn_left_service_margin">236dp</dimen>
     <dimen name="btn_right_servise_margin_left">445dp</dimen>
 
+    <dimen name="service_seek_bar_height">324dp</dimen>
+    <dimen name="service_seek_mar_marg_top">75dp</dimen>
+    <dimen name="servise_seek_bar_radius">3dp</dimen>
+    <dimen name="servise_seek_bar_width">6dp</dimen>
+    <dimen name="servise_margin_seek_bar">20dp</dimen>
+    <dimen name="service_seek_bar_width">6dp</dimen>
+    <dimen name="setting_dialog_txt_margin">12dp</dimen>
+
+
     <!-- Seek bar sizes -->
     <dimen name="margin_book_mark">40dp</dimen>
 
-    <!-- Book contents selector sizes -->
+    <!-- BookModel contents selector sizes -->
     <dimen name="txt_margin_center_selector">150dp</dimen>
 
-    <!-- Book contents list sizes -->
+    <!-- BookModel contents list sizes -->
     <dimen name="margin_recycler_content_left">80dp</dimen>
     <dimen name="margin_recycler_right">100dp</dimen>
     <dimen name="scroll_bar_width">12dp</dimen>
@@ -54,13 +65,10 @@
     <dimen name="right_margin_left_icon">22dp</dimen>
     <dimen name="right_margin_bot_icon">26dp</dimen>
 
+    <!-- Menu main sizes -->
+    <dimen name="remove_big_right_margin">50dp</dimen>
+
+    <!-- left menu webview sizes -->
     <dimen name="btn_close_webview_marg_left">15dp</dimen>
-    <dimen name="service_seek_bar_height">324dp</dimen>
-    <dimen name="service_seek_mar_marg_top">75dp</dimen>
-    <dimen name="servise_seek_bar_radius">3dp</dimen>
-    <dimen name="servise_seek_bar_width">6dp</dimen>
-    <dimen name="servise_margin_seek_bar">20dp</dimen>
-    <dimen name="service_seek_bar_width">6dp</dimen>
-    <dimen name="setting_dialog_txt_margin">12dp</dimen>
 
 </resources>

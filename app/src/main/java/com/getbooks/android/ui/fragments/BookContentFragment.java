@@ -14,7 +14,7 @@ import com.getbooks.android.Const;
 import com.getbooks.android.R;
 import com.getbooks.android.db.BookDataBaseLoader;
 import com.getbooks.android.events.Events;
-import com.getbooks.android.model.Book;
+import com.getbooks.android.model.BookModel;
 import com.getbooks.android.prefs.Prefs;
 import com.getbooks.android.ui.BaseFragment;
 import com.getbooks.android.ui.activities.ReaderActivity;
@@ -41,7 +41,7 @@ public class BookContentFragment extends BaseFragment implements SelectorOfBookC
     RecyclerBookContent mBookContentAdapter;
     DividerItemDecoration dividerItemDecoration;
 
-    private Book book;
+    private BookModel bookModel;
 
     private String[] mChapterList;
     private BookDataBaseLoader mBookDataBaseLoader;
@@ -56,9 +56,9 @@ public class BookContentFragment extends BaseFragment implements SelectorOfBookC
             Bundle bundle = getArguments();
             String boomName = bundle.getString(Const.BOOK_NAME);
             mBookDataBaseLoader = BookDataBaseLoader.getInstanceDb(getAct());
-            book = mBookDataBaseLoader.getCurrentBookDetailDb(Prefs.getUserSession(getAct(), Const.USER_SESSION_ID),
+            bookModel = mBookDataBaseLoader.getCurrentBookDetailDb(Prefs.getUserSession(getAct(), Const.USER_SESSION_ID),
                     boomName);
-            mChapterList = book.getChapterList().split(",");
+            mChapterList = bookModel.getChapterList().split(",");
             initShelvesRecycler(mChapterList);
         }
     }
@@ -78,7 +78,7 @@ public class BookContentFragment extends BaseFragment implements SelectorOfBookC
         Log.d("BookContents", "onItemSelected: " + mSelectorOfBookContents.getText());
         switch (id) {
             case 0:
-                Toast.makeText(getAct(), "Book content", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getAct(), "BookModel content", Toast.LENGTH_SHORT).show();
                 break;
             case 1:
                 Toast.makeText(getAct(), "BookMurks list", Toast.LENGTH_SHORT).show();

@@ -7,13 +7,14 @@ import android.widget.Toast;
 
 import com.getbooks.android.Const;
 import com.getbooks.android.db.BookDataBaseLoader;
-import com.getbooks.android.model.Book;
+import com.getbooks.android.model.BookModel;
 import com.getbooks.android.model.PurchasedBook;
 import com.getbooks.android.model.RentedBook;
 import com.getbooks.android.model.UserSession;
 import com.getbooks.android.model.enums.BookState;
 import com.getbooks.android.prefs.Prefs;
 import com.getbooks.android.ui.activities.AuthorizationActivity;
+import com.getbooks.android.ui.adapter.RecyclerShelvesAdapter;
 import com.getbooks.android.util.LogUtil;
 import com.getbooks.android.util.UiUtil;
 
@@ -21,6 +22,7 @@ import java.net.SocketException;
 import java.util.ArrayList;
 import java.util.List;
 
+import nl.siegmann.epublib.domain.Book;
 import retrofit2.Response;
 import rx.Observable;
 import rx.Subscriber;
@@ -41,7 +43,7 @@ public class Queries {
     public interface CallBack {
         void onError(Throwable throwable);
 
-        void onCompleted(List<Book> library);
+        void onCompleted(List<BookModel> library);
 
         void onFinish();
     }
@@ -57,21 +59,22 @@ public class Queries {
                 (listRentedResponse, listPurchasedResponse) -> {
                     List<RentedBook> rentedBooks = new ArrayList<RentedBook>();
                     List<PurchasedBook> purchasedBooks = new ArrayList<PurchasedBook>();
-                    List<Book> allLibraryBooks = new ArrayList<Book>();
+                    List<BookModel> allLibraryBookModels = new ArrayList<BookModel>();
                     if (listRentedResponse.code() == 200) {
                         rentedBooks.addAll(listRentedResponse.body());
                         for (RentedBook rentedBook : rentedBooks) {
-                            Book book = new Book();
-                            book.setUserId(userId);
-                            book.setBookName(rentedBook.getRentBookName().replaceAll("\\P{L}", ""));
-                            book.setImageDownloadLink(rentedBook.getRentBookImage());
-                            book.setBookDownloadLink(rentedBook.getRentBookDownloadLink());
-                            book.setBookSku(rentedBook.getRentBookSku());
-                            book.setBookState(BookState.CLOUD_BOOK.getState());
-                            book.setIsBookRented(true);
-                            allLibraryBooks.add(book);
+                            BookModel bookModel = new BookModel();
+                            bookModel.setUserId(userId);
+                            bookModel.setBookName(rentedBook.getRentBookName().replaceAll("\\P{L}", ""));
+                            bookModel.setImageDownloadLink(rentedBook.getRentBookImage());
+                            bookModel.setBookDownloadLink(rentedBook.getRentBookDownloadLink());
+                            bookModel.setBookSku(rentedBook.getRentBookSku());
+                            bookModel.setBookState(BookState.CLOUD_BOOK.getState());
+                            bookModel.setIsBookRented(true);
+                            allLibraryBookModels.add(bookModel);
 
                         }
+                        Log.d("PPPPPPPPPPP-Rented", String.valueOf(rentedBooks.size()));
                     } else if (listRentedResponse.code() == 404) {
 //                        UiUtil.showToast(context, R.string.emty_rented_list);
                     }
@@ -79,22 +82,23 @@ public class Queries {
                     if (listPurchasedResponse.code() == 200) {
                         purchasedBooks.addAll(listPurchasedResponse.body());
                         for (PurchasedBook purchasedBook : purchasedBooks) {
-                            Book book = new Book();
-                            book.setUserId(userId);
-                            book.setBookName(purchasedBook.getPurchasedBookName().replaceAll("\\P{L}", ""));
-                            book.setImageDownloadLink(purchasedBook.getPurchasedBookImage());
-                            book.setBookDownloadLink(purchasedBook.getPurchasedBookDownloadLink());
-                            book.setBookSku(purchasedBook.getPurchasedBookSku());
-                            book.setBookState(BookState.CLOUD_BOOK.getState());
-                            book.setIsBookRented(false);
-                            allLibraryBooks.add(book);
+                            BookModel bookModel = new BookModel();
+                            bookModel.setUserId(userId);
+                            bookModel.setBookName(purchasedBook.getPurchasedBookName().replaceAll("\\P{L}", ""));
+                            bookModel.setImageDownloadLink(purchasedBook.getPurchasedBookImage());
+                            bookModel.setBookDownloadLink(purchasedBook.getPurchasedBookDownloadLink());
+                            bookModel.setBookSku(purchasedBook.getPurchasedBookSku());
+                            bookModel.setBookState(BookState.CLOUD_BOOK.getState());
+                            bookModel.setIsBookRented(false);
+                            allLibraryBookModels.add(bookModel);
                         }
+                        Log.d("PPPPPPPPPPP-Purchased", String.valueOf(purchasedBooks.size()));
                     } else if (listPurchasedResponse.code() == 404) {
 //                        UiUtil.showToast(context, R.string.empty_purchased_list);
                     }
 
-                    List<Book> library = new ArrayList<Book>();
-                    library.addAll(checkDownloadedBook(allLibraryBooks, userId, context));
+                    List<BookModel> library = new ArrayList<BookModel>();
+                    library.addAll(checkDownloadedBook(allLibraryBookModels, userId, context));
                     return library;
                 })
                 .doOnUnsubscribe(() -> {
@@ -103,7 +107,7 @@ public class Queries {
                 })
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
-                .subscribe(new Subscriber<List<Book>>() {
+                .subscribe(new Subscriber<List<BookModel>>() {
                     @Override
                     public void onCompleted() {
                         LogUtil.log(this, "OnCompleted");
@@ -127,7 +131,7 @@ public class Queries {
                     }
 
                     @Override
-                    public void onNext(List<Book> library) {
+                    public void onNext(List<BookModel> library) {
                         if (mCallBack != null) {
                             mCallBack.onCompleted(library);
                         }
@@ -181,20 +185,36 @@ public class Queries {
                 }).subscribe();
     }
 
-    private List<Book> checkDownloadedBook(List<Book> allBooks, int userId, Context context) {
-        List<Book> allBooksLibrary = new ArrayList<>();
+    public void returnRentedBook(String deviceToken, Activity context, BookModel bookModel,
+                                 List<BookModel> library, RecyclerShelvesAdapter shelvesAdapter) {
+        ApiService apiService = ApiManager.getClientApiAry().create(ApiService.class);
+
+        apiService.returnBookRented(Const.WEBSITECODE, deviceToken, bookModel.getBookSku())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .doOnNext(responseBodyResponse -> {
+                    if (responseBodyResponse.code() == 204) {
+                        BookDataBaseLoader.getInstanceDb(context).deleteBookFromDb(bookModel);
+                        library.remove(bookModel);
+                        shelvesAdapter.upDateLibrary(library);
+                    }
+                }).subscribe();
+    }
+
+    private List<BookModel> checkDownloadedBook(List<BookModel> allBookModels, int userId, Context context) {
+        List<BookModel> allBooksLibrary = new ArrayList<>();
         allBooksLibrary.addAll(BookDataBaseLoader.getInstanceDb(context).getAllUserBookOnDevise(userId));
         Log.d("QQQQQ-", String.valueOf(userId));
         Log.d("QQQQQ-", allBooksLibrary.toString());
         Log.d("QQQQQ-", String.valueOf(allBooksLibrary.size()));
         if (!allBooksLibrary.isEmpty()) {
-            for (Book book : allBooks) {
-                if (!allBooksLibrary.contains(book)) {
-                    allBooksLibrary.add(book);
+            for (BookModel bookModel : allBookModels) {
+                if (!allBooksLibrary.contains(bookModel)) {
+                    allBooksLibrary.add(bookModel);
                 }
             }
         } else {
-            allBooksLibrary.addAll(allBooks);
+            allBooksLibrary.addAll(allBookModels);
         }
         return allBooksLibrary;
     }

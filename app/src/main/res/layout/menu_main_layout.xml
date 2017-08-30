@@ -9,60 +9,68 @@
         android:gravity="center"
         android:orientation="horizontal">
 
-    <ImageView
-        android:id="@+id/img_menu"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/margin_icon_top"
-        android:layout_marginLeft="@dimen/menu_icon_margin"
-        android:layout_marginTop="@dimen/margin_icon_top"
-        android:background="@drawable/menu" />
+        <ImageView
+            android:id="@+id/img_menu"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/margin_icon_top"
+            android:layout_marginLeft="@dimen/menu_icon_margin"
+            android:layout_marginTop="@dimen/margin_icon_top"
+            android:background="@drawable/menu" />
 
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/margin_menu_icon"
-        android:background="@drawable/lib" />
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/margin_menu_icon"
+            android:background="@drawable/lib" />
 
-    <Space
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="0.2" />
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.2" />
 
-    <com.getbooks.android.ui.widget.ArialNormalTextView
-        android:id="@+id/txt_library"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="@android:color/white"
-        android:text="@string/txt_library"
-        android:textSize="@dimen/txt_size" />
+        <com.getbooks.android.ui.widget.ArialNormalTextView
+            android:id="@+id/txt_library"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/txt_library"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/txt_size" />
 
-    <ImageView
-        android:layout_width="@dimen/separator_width"
-        android:layout_height="@dimen/separator_height"
-        android:layout_marginLeft="@dimen/margin_smallest"
-        android:layout_marginRight="@dimen/margin_smallest"
-        android:background="@android:color/white" />
+        <ImageView
+            android:layout_width="@dimen/separator_width"
+            android:layout_height="@dimen/separator_height"
+            android:layout_marginLeft="@dimen/margin_smallest"
+            android:layout_marginRight="@dimen/margin_smallest"
+            android:background="@android:color/white" />
 
-    <com.getbooks.android.ui.widget.ArialNormalTextView
-        android:id="@+id/txt_catalog"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="@color/color_white_transluent"
-        android:text="@string/txt_catalog"
-        android:textSize="@dimen/txt_size" />
+        <com.getbooks.android.ui.widget.ArialNormalTextView
+            android:id="@+id/txt_catalog"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/txt_catalog"
+            android:textColor="@color/color_white_transluent"
+            android:textSize="@dimen/txt_size" />
 
-    <Space
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="0.2" />
+        <Space
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.2" />
 
-    <ImageView
-        android:id="@+id/img_right_menu"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginRight="@dimen/menu_icon_margin"
-        android:background="@drawable/settings" />
+        <ImageView
+            android:id="@+id/img_delete_book"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/remove_big_right_margin"
+            android:src="@drawable/bin_white_big"
+            android:visibility="invisible" />
+
+        <ImageView
+            android:id="@+id/img_right_menu"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/menu_icon_margin"
+            android:background="@drawable/settings" />
 
     </LinearLayout>
 </merge>
