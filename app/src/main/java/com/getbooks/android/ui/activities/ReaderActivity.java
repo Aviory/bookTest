@@ -309,8 +309,8 @@ public class ReaderActivity extends BaseActivity {
     @Override
     public void onStop() {
         super.onStop();
-        EventBus.getDefault().unregister(this);
         updateLastReadTime();
+        EventBus.getDefault().unregister(this);
     }
 
     private void updateLastReadTime() {
