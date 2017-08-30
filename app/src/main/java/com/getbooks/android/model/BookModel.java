@@ -25,9 +25,9 @@ public class BookModel implements Parcelable {
     private String mBookLanguageDirection;
     private String mBookPublishedYear;
     private String mBookPublishers;
-    private Calendar mReadDateTime;
+    private Calendar mReadDateTime;//
     private int mUpdateDate;
-    private Calendar mCreatedDate;
+    private Calendar mCreatedDate;//
     private boolean mIsBookAtTheEnd;
     private int mLastPage;
     private String mImageDownloadLink;

@@ -9,6 +9,8 @@ import android.view.ViewGroup;
 import com.getbooks.android.R;
 import com.getbooks.android.util.LogUtil;
 
+import butterknife.OnClick;
+
 /**
  * Created by avi on 21.08.17.
  */
@@ -20,6 +22,10 @@ public class PagerTutorialAdapter extends PagerAdapter {
     public PagerTutorialAdapter(Context context) {
         mContext = context;
     }
+    @OnClick(R.id.img_close)
+    protected void  closeTutorials(){
+        LogUtil.log(this, "lllllllll");
+    }
 
     @Override
     public Object instantiateItem(ViewGroup collection, int position) {
@@ -27,12 +33,6 @@ public class PagerTutorialAdapter extends PagerAdapter {
         LayoutInflater inflater = LayoutInflater.from(mContext);
         ViewGroup layout = (ViewGroup) inflater.inflate(customPagerEnum.getLayoutResId(), collection, false);
         collection.addView(layout);
-        layout.findViewById(R.id.img_close).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                LogUtil.log(this, "lllllllll");
-            }
-        });
         return layout;
     }
 

@@ -51,7 +51,10 @@ import com.getbooks.android.ui.dialog.LogOutDialog;
 import com.getbooks.android.ui.dialog.RestartDownloadingDialog;
 import com.getbooks.android.ui.fragments.left_menu_items.FragmentServicePrivacy;
 import com.getbooks.android.ui.fragments.left_menu_items.FragmentTutorial;
+import com.getbooks.android.ui.fragments.left_menu_items.TutorialFragment;
+import com.getbooks.android.ui.widget.ArialNormalTextView;
 import com.getbooks.android.ui.widget.RecyclerItemClickListener;
+import com.getbooks.android.util.CompareUtil;
 import com.getbooks.android.util.DateUtil;
 import com.getbooks.android.util.CommonUtils;
 import com.getbooks.android.util.FileUtil;
@@ -67,8 +70,11 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.TreeSet;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -82,7 +88,7 @@ import retrofit2.Response;
 
 public class LibraryActivity extends BaseActivity implements Queries.CallBack,
         DownloadResultReceiver.Receiver, RestartDownloadingDialog.OnItemRestartDownloadClick,
-        LogOutDialog.OnItemLogOutListener, DeleteBookDialog.OnItemDeleteDialogListener, RecyclerShelvesAdapter.UpdateUiSelectedCheckBox {
+        LogOutDialog.OnItemLogOutListener, DeleteBookDialog.OnItemDeleteDialogListener, RecyclerShelvesAdapter.UpdateUiSelectedCheckBox, View.OnClickListener {
 
     @BindView(R.id.recyler_books_shelves)
     protected RecyclerView mRecyclerBookShelves;
@@ -107,6 +113,15 @@ public class LibraryActivity extends BaseActivity implements Queries.CallBack,
     protected ToggleButton imgAddDate;
     @BindView(R.id.toggle_read_date)
     protected ToggleButton imgReadDate;
+
+    @BindView(R.id.rigth_txt_book_name)
+    protected ArialNormalTextView txtBookName;
+    @BindView(R.id.rigth_txt_author_name)
+    protected ArialNormalTextView txtAuthorName;
+    @BindView(R.id.rigth_txt_read_date)
+    protected ArialNormalTextView txtReadDate;
+    @BindView(R.id.rigth_txt_date_add)
+    protected ArialNormalTextView txtAddDate;
 
     private Queries mQueries;
     private List<BookModel> mLibrary;
@@ -143,7 +158,6 @@ public class LibraryActivity extends BaseActivity implements Queries.CallBack,
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         mImageLeftMenu.setActivated(true);
         mImageRightMenu.setActivated(true);
 
@@ -169,6 +183,15 @@ public class LibraryActivity extends BaseActivity implements Queries.CallBack,
         }
 
         clickBook();
+
+        txtBookName.setOnClickListener(this);
+        imgBookName.setOnClickListener(this);
+        txtAuthorName.setOnClickListener(this);
+        imgAuthorName.setOnClickListener(this);
+        txtReadDate.setOnClickListener(this);
+        imgReadDate.setOnClickListener(this);
+        txtAddDate.setOnClickListener(this);
+        imgAddDate.setOnClickListener(this);
     }
 
     @Override
@@ -258,8 +281,18 @@ public class LibraryActivity extends BaseActivity implements Queries.CallBack,
     }
     @OnClick(R.id.txt_explanation_screens)
     protected void explanationScreens() {
-        menuTranzaction();
-        FragmentTutorial.newInstance().show(getSupportFragmentManager(), TUTORIAL);
+        TutorialFragment fragment = (TutorialFragment) getSupportFragmentManager()
+                .findFragmentByTag(TUTORIAL);
+        if(fragment==null){
+            FragmentTransaction fragmentTransaction = getSupportFragmentManager()
+                    .beginTransaction();
+            fragmentTransaction.replace(R.id.contaner_tutorial, TutorialFragment.getInstance(), TUTORIAL);
+            fragmentTransaction.commit();
+            menuTranzaction();
+        }
+        else
+            getSupportFragmentManager().beginTransaction().show( TutorialFragment.getInstance()).commit();
+        UiUtil.hideView(mLeftMenuLayout);
     }
     @OnClick(R.id.txt_service_privacy)
     protected void servicePrivacy() {
@@ -314,27 +347,79 @@ public class LibraryActivity extends BaseActivity implements Queries.CallBack,
     protected void order() {
 
     }
-    @OnClick(R.id.rigth_txt_book_name)
-    protected void sortByBookName() {
-        if(imgBookName.isChecked()){
-            imgBookName.setChecked(false);
-            initShelvesRecycler(mLibrary);
-        }else {
-            imgBookName.setChecked(true);
-            initShelvesRecycler(CommonUtils.authorSort(mLibrary));
+
+    @Override
+    public void onClick(View view) {//right menu radio listener
+        switch (view.getId()){
+            case R.id.toggle_book_name:
+                if(imgBookName.isChecked())
+                    imgBookName.setChecked(false);
+                else
+                    imgBookName.setChecked(true);
+            case R.id.rigth_txt_book_name:
+                if(imgBookName.isChecked()){
+                    imgBookName.setChecked(false);
+                    initShelvesRecycler(mLibrary);
+                }else {
+                    imgBookName.setChecked(true);
+                    imgAuthorName.setChecked(false);
+                    imgAddDate.setChecked(false);
+                    imgReadDate.setChecked(false);
+                    initShelvesRecycler(CompareUtil.compareByAuthorName(mLibrary));
+                }
+                break;
+            case R.id.toggle_author_name:
+                if(imgAuthorName.isChecked())
+                    imgAuthorName.setChecked(false);
+                else
+                    imgAuthorName.setChecked(true);
+            case R.id.rigth_txt_author_name:
+                if(imgAuthorName.isChecked()){
+                    imgAuthorName.setChecked(false);
+                    initShelvesRecycler(mLibrary);
+                }else {
+                    imgAuthorName.setChecked(true);
+                    imgBookName.setChecked(false);
+                    imgAddDate.setChecked(false);
+                    imgReadDate.setChecked(false);
+                    initShelvesRecycler(CompareUtil.compareByBookName(mLibrary));
+                }
+                break;
+            case R.id.toggle_add_date:
+                if(imgAddDate.isChecked())
+                    imgAddDate.setChecked(false);
+                else
+                    imgAddDate.setChecked(true);
+            case R.id.rigth_txt_date_add:
+                if(imgAddDate.isChecked()){
+                    imgAddDate.setChecked(false);
+                    initShelvesRecycler(mLibrary);
+                }else {
+                    imgAddDate.setChecked(true);
+                    imgBookName.setChecked(false);
+                    imgAuthorName.setChecked(false);
+                    imgReadDate.setChecked(false);
+                    initShelvesRecycler(CompareUtil.compareByAddDate(mLibrary));
+                }
+                break;
+            case R.id.toggle_read_date:
+                if(imgReadDate.isChecked())
+                    imgReadDate.setChecked(false);
+                else
+                    imgReadDate.setChecked(true);
+            case R.id.rigth_txt_read_date:
+                if(imgReadDate.isChecked()){
+                    imgReadDate.setChecked(false);
+                    initShelvesRecycler(mLibrary);
+                }else {
+                    imgReadDate.setChecked(true);
+                    imgBookName.setChecked(false);
+                    imgAddDate.setChecked(false);
+                    imgAuthorName.setChecked(false);
+                    initShelvesRecycler(CompareUtil.compareByReadDate(mLibrary));
+                }
+                break;
         }
-    }
-    @OnClick(R.id.rigth_txt_author_name)
-    protected void sortByAuthorName() {
-
-    }
-    @OnClick(R.id.rigth_txt_read_date)
-    protected void readDate() {
-
-    }
-    @OnClick(R.id.rigth_txt_date_add)
-    protected void addDate() {
-
     }
 
     private void menuTranzaction(Fragment fragment, String tag){
@@ -342,13 +427,14 @@ public class LibraryActivity extends BaseActivity implements Queries.CallBack,
                 .beginTransaction();
         fragmentTransaction.replace(R.id.contaner_main, fragment, tag);
         fragmentTransaction.commit();
+        getSupportFragmentManager().beginTransaction().show(fragment).commit();
+
         UiUtil.hideView(mLeftMenuLayout);
     }
     private void menuTranzaction(){
         getSupportFragmentManager().beginTransaction().hide( FragmentServicePrivacy.getInstance()).commit();
         UiUtil.hideView(mLeftMenuLayout);
     }
-
 
     @Override
     public void cancelLogOut() {

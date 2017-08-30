@@ -78,10 +78,12 @@
 
         <ToggleButton
             style="@style/CustomToggleButtonStyle"
-            android:id="@+id/toggle_book_name"/>
+            android:id="@+id/toggle_book_name"
+            android:checked="false"/>
 
         <ToggleButton
             style="@style/CustomToggleButtonStyle"
+            android:checked="false"
             android:id="@+id/toggle_author_name"/>
 
         <ToggleButton

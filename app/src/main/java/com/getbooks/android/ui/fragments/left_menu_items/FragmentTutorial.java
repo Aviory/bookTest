@@ -17,19 +17,25 @@ import com.getbooks.android.R;
 import com.getbooks.android.ui.adapter.PagerTutorialAdapter;
 import com.getbooks.android.util.LogUtil;
 
+import butterknife.OnClick;
+
 /**
  * Created by avi on 21.08.17.
  */
 
 public class FragmentTutorial extends DialogFragment {
     protected ViewPager mViewPagerTutorials;
-    ImageView close;
     private static FragmentTutorial mFragmentTutorial;
 
     public static FragmentTutorial newInstance(){
         if(mFragmentTutorial==null)
             mFragmentTutorial = new FragmentTutorial();
         return mFragmentTutorial;
+    }
+    @OnClick(R.id.img_close)
+    protected void imgClose(){
+        dismiss();
+        LogUtil.log(this, "aaaaaaaaaaaaaaaa");
     }
 
     @Nullable
@@ -44,17 +50,6 @@ public class FragmentTutorial extends DialogFragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         startViewPagerTutorials();
-        if(view.findViewById(R.id.img_close)!=null){
-            close = view.findViewById(R.id.img_close);
-            close.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    dismiss();
-                    LogUtil.log(this, "aaaaaaaaaaaaaaaa");
-                }
-            });
-        }
-
     }
 
     @Override
