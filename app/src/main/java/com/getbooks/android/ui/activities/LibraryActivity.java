@@ -50,13 +50,11 @@ import com.getbooks.android.ui.dialog.DialogSettings;
 import com.getbooks.android.ui.dialog.LogOutDialog;
 import com.getbooks.android.ui.dialog.RestartDownloadingDialog;
 import com.getbooks.android.ui.fragments.left_menu_items.FragmentServicePrivacy;
-import com.getbooks.android.ui.fragments.left_menu_items.FragmentTutorial;
 import com.getbooks.android.ui.fragments.left_menu_items.TutorialFragment;
 import com.getbooks.android.ui.widget.ArialNormalTextView;
 import com.getbooks.android.ui.widget.RecyclerItemClickListener;
 import com.getbooks.android.util.CompareUtil;
 import com.getbooks.android.util.DateUtil;
-import com.getbooks.android.util.CommonUtils;
 import com.getbooks.android.util.FileUtil;
 import com.getbooks.android.util.LogUtil;
 import com.getbooks.android.util.UiUtil;
@@ -288,11 +286,10 @@ public class LibraryActivity extends BaseActivity implements Queries.CallBack,
                     .beginTransaction();
             fragmentTransaction.replace(R.id.contaner_tutorial, TutorialFragment.getInstance(), TUTORIAL);
             fragmentTransaction.commit();
-            menuTranzaction();
         }
         else
             getSupportFragmentManager().beginTransaction().show( TutorialFragment.getInstance()).commit();
-        UiUtil.hideView(mLeftMenuLayout);
+        menuTranzaction();
     }
     @OnClick(R.id.txt_service_privacy)
     protected void servicePrivacy() {
