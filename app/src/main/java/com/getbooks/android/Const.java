@@ -23,7 +23,7 @@ public final class Const {
     public static final String SHOW_TUTORIALS_COUNT = "show_tutorials_count";
     public static final String USER_SESSION_ID = "user_session_id";
     public static final String COOKIE_USER_SESSION = "cookie_user_session";
-    public static final String PUSH_NITIFY_BY_UPDATE = "push_notify_update";
+    public static final String PUSH_NOTIFY_BY_UPDATE = "push_notify_update";
 
     public static final int SPLASH_TIME_OUT = 1500;
 

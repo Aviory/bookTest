@@ -68,11 +68,8 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.Date;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.TreeSet;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -758,7 +755,7 @@ public class LibraryActivity extends BaseActivity implements Queries.CallBack,
 
     @Subscribe
     public void onMessageEvent(Events.UpDateMainScreen upDateMainScreen) {
-        boolean isUpDate = Prefs.getBooleanProperty(this, Const.PUSH_NITIFY_BY_UPDATE);
+        boolean isUpDate = Prefs.getBooleanProperty(this, Const.PUSH_NOTIFY_BY_UPDATE);
         if(isUpDate)
             restartDownloading();
     }
