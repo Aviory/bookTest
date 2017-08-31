@@ -2,6 +2,8 @@ package com.getbooks.android.ui.dialog;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.SharedPreferences;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StyleRes;
@@ -11,7 +13,11 @@ import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.TextView;
 
+import com.getbooks.android.Const;
 import com.getbooks.android.R;
+import com.getbooks.android.events.Events;
+import com.getbooks.android.prefs.Prefs;
+import com.getbooks.android.ui.activities.LibraryActivity;
 import com.getbooks.android.util.LogUtil;
 
 /**
@@ -19,6 +25,7 @@ import com.getbooks.android.util.LogUtil;
  */
 
 public class DialogSettings extends AlertDialog implements View.OnClickListener{
+
     private ImageView mImageCancelBookDelete;
     private RadioButton mRadioButtonYes;
     private RadioButton mRadioButtonNo;
@@ -47,11 +54,12 @@ public class DialogSettings extends AlertDialog implements View.OnClickListener{
     @Override
     public void dismiss() {
         super.dismiss();
-        LogUtil.log(this, "dismiss");
         if(mRadioButtonYes.isChecked()){
-
+            Prefs.setBooleanProperty(getContext(), Const.PUSH_NITIFY_BY_UPDATE, true);
+            LogUtil.log(this, "setStateUpDate(true)");
         }else {
-
+            Prefs.setBooleanProperty(getContext(), Const.PUSH_NITIFY_BY_UPDATE, false);
+            LogUtil.log(this, "setStateUpDate(false)");
         }
     }
 

@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.ImageView;
 
@@ -21,45 +22,58 @@ import com.getbooks.android.ui.widget.ArialNormalTextView;
  */
 
 public class AlertDialogInstructions extends DialogFragment {
+    ImageView close;
 
-        public static AlertDialogInstructions newInstance(){
-            AlertDialogInstructions alertDialogInstructions = new AlertDialogInstructions();
-            return alertDialogInstructions;
-        }
+    public static AlertDialogInstructions newInstance(){
+        AlertDialogInstructions alertDialogInstructions = new AlertDialogInstructions();
+        return alertDialogInstructions;
+    }
 
-        @Nullable
-        @Override
-        public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-            View v = inflater.inflate(R.layout.left_menu_story, container, false);
-            WebView myBrowser = (WebView)v.findViewById(R.id.webview_story);
-            myBrowser.loadUrl("https://pelephone.getbooks.co.il/dev/how-it-works");
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View v = inflater.inflate(R.layout.webview_layout, container, false);
+        WebView myBrowser = (WebView)v.findViewById(R.id.webview);
+        myBrowser.setHorizontalScrollBarEnabled(false);
+        myBrowser.setVerticalScrollBarEnabled(false);
+        WebSettings webSettings = myBrowser.getSettings();
+        webSettings.setJavaScriptEnabled(true);
+        myBrowser.loadUrl("https://pelephone.getbooks.co.il/dev/how-it-works");
 
-            ImageView close = (ImageView) v.findViewById(R.id.about_us_close);
-            ArialNormalTextView text = (ArialNormalTextView) v.findViewById(R.id.txt_about);
+        close = (ImageView) v.findViewById(R.id.img_close_catalog);
+        close.setVisibility(View.VISIBLE);
+        ArialNormalTextView text = (ArialNormalTextView) v.findViewById(R.id.txt_about);
 
-            close.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    dismiss();
-                }
-            });
-            return v;
-        }
-        @Override
-        public Dialog onCreateDialog(Bundle savedInstanceState) {
-            Dialog dialog = super.onCreateDialog(savedInstanceState);
-            dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
-            return dialog;
-        }
-
-        @Override
-        public void onStart() {
-            super.onStart();
-            Dialog dialog = getDialog();
-            if (dialog != null) {
-                dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        close.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dismiss();
+                close.setVisibility(View.GONE);
             }
+        });
+        return v;
+    }
+    @Override
+    public Dialog onCreateDialog(Bundle savedInstanceState) {
+        Dialog dialog = super.onCreateDialog(savedInstanceState);
+        dialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
+        return dialog;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        Dialog dialog = getDialog();
+        if (dialog != null) {
+            dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         }
     }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        close.setVisibility(View.GONE);
+    }
+}
 

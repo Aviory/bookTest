@@ -756,6 +756,13 @@ public class LibraryActivity extends BaseActivity implements Queries.CallBack,
         }
     }
 
+    @Subscribe
+    public void onMessageEvent(Events.UpDateMainScreen upDateMainScreen) {
+        boolean isUpDate = Prefs.getBooleanProperty(this, Const.PUSH_NITIFY_BY_UPDATE);
+        if(isUpDate)
+            restartDownloading();
+    }
+
     private void restartDownloading() {
         if (mDownloadQueue.getDownloadQueueSize() != 0) {
             mRestartDownloadingDialog = new RestartDownloadingDialog(getAct());

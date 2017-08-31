@@ -3,6 +3,7 @@ package com.getbooks.android.ui.fragments.left_menu_items;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,21 +12,27 @@ import android.widget.ImageView;
 import android.widget.RadioButton;
 
 import com.getbooks.android.R;
+import com.getbooks.android.ui.adapter.RecyclerBookContent;
+
+import butterknife.BindView;
 
 /**
  * Created by avi on 18.08.17.
  */
 
 public class FragmentServicePrivacy extends Fragment implements View.OnClickListener{
-    private String mText;
+
+    private RecyclerView mRecyclerView;
+    private String textBody;
     private RadioButton mBtnLeft;
     private RadioButton mBtnRigth;
-    private RecyclerView mRecyclerView;
 
     private static FragmentServicePrivacy mFragmentServicePrivacy;
+    private LinearLayoutManager mLinearLayoutManager;
+    private RecyclerBookContent mBookContentAdapter;
 
-    public void setText(String txt) {
-        this.mText = txt;
+    public void setText(String textBody) {
+        this.textBody = textBody;
     }
 
     public static FragmentServicePrivacy getInstance() {
@@ -46,7 +53,7 @@ public class FragmentServicePrivacy extends Fragment implements View.OnClickList
         mBtnRigth = v.findViewById(R.id.btn_service_right);
         mBtnRigth.setOnClickListener(this);
         mRecyclerView = v.findViewById(R.id.txt_body_service_privacy);
-       // mRecyclerView.setText(mText);
+        mInitRecycler(textBody);
 
         close.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -57,14 +64,24 @@ public class FragmentServicePrivacy extends Fragment implements View.OnClickList
         return v;
     }
 
+    private void mInitRecycler(String textBody) {
+        String[] textArray = {textBody};
+        mLinearLayoutManager = new LinearLayoutManager(getActivity());
+        mLinearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        mRecyclerView.setLayoutManager(mLinearLayoutManager);
+        mBookContentAdapter = new RecyclerBookContent(textArray);
+        mRecyclerView.setAdapter(mBookContentAdapter);
+//        mRecyclerView.setAdapter();
+    }
+
     @Override
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.btn_service_left:
-
+                mInitRecycler("");
                 break;
             case R.id.btn_service_right:
-
+                mInitRecycler(textBody);
                 break;
         }
     }

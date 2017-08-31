@@ -1,9 +1,12 @@
 package com.getbooks.android;
 
+import com.getbooks.android.events.Events;
 import com.getbooks.android.util.LogUtil;
 import com.getbooks.android.util.NotificationUtil;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
+
+import org.greenrobot.eventbus.EventBus;
 
 /**
  * Created by marina on 11.07.17.
@@ -31,5 +34,6 @@ public class GetbooksFirebaseMessagingService extends FirebaseMessagingService {
         // message, here is where that should be initiated.
         NotificationUtil.showNotification(this, remoteMessage.getNotification().getTitle(),
                 remoteMessage.getNotification().getBody());
+        EventBus.getDefault().post(new Events.UpDateMainScreen());
     }
 }

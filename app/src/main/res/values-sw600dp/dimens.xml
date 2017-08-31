@@ -59,10 +59,11 @@
     <dimen name="btn_service_padding_bot">3dp</dimen>
     <dimen name="btn_service_margin_right">160dp</dimen>
     <dimen name="btn_service_margin_left">137dp</dimen>
-    <dimen name="txt_body_service_margin_left">64dp</dimen>
+    <dimen name="txt_body_service_margin_left">26dp</dimen>
+    <dimen name="txt_body_service_margin_right">67dp</dimen>
     <dimen name="btn_service_margin_top">40dp</dimen>
-    <dimen name="txt_heigth_servise_body">414dp</dimen>
-    <dimen name="txt_width_servise_body">957dp</dimen>
+    <dimen name="txt_heigth_servise_body">835dp</dimen>
+    <dimen name="txt_width_servise_body">701dp</dimen>
     <dimen name="btn_left_service_margin">137dp</dimen>
     <dimen name="btn_right_servise_margin_left">160dp</dimen>
     <dimen name="btn_close_webview_marg_left">15dp</dimen>

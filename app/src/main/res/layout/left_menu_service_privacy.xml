@@ -4,7 +4,9 @@
     android:layout_height="match_parent"
     android:minHeight="1000dp"
     android:minWidth="1000dp"
-    android:background="@color/color_white">
+    android:background="@color/color_white"
+    android:focusable="true"
+    android:clickable="true">
 
     <RadioGroup
         android:id="@+id/radioGroup1"
@@ -43,12 +45,12 @@
     <android.support.v7.widget.RecyclerView
         android:id="@+id/txt_body_service_privacy"
         style="@style/ScrollbarContentListStyle"
-        android:layout_width="@dimen/txt_width_servise_body"
+        android:layout_width="match_parent"
         android:layout_height="@dimen/txt_heigth_servise_body"
-        android:paddingLeft="13dp"
         android:layout_below="@id/radioGroup1"
         android:layout_marginTop="@dimen/txt_service_margin_top"
         android:layout_marginLeft="@dimen/txt_body_service_margin_left"
+        android:layout_marginRight="@dimen/txt_body_service_margin_right"
         android:textSize="@dimen/txt_size_body_servis_privacy"
         android:textColor="@color/gray"
         android:gravity="center_horizontal"

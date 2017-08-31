@@ -28,7 +28,8 @@
     <dimen name="btn_service_margin_right">445dp</dimen>
     <dimen name="btn_service_margin_left">236dp</dimen>
     <dimen name="left_menu_service_margin_bot">40dp</dimen>
-    <dimen name="txt_body_service_margin_left">164dp</dimen>
+    <dimen name="txt_body_service_margin_left">100dp</dimen>
+    <dimen name="txt_body_service_margin_right">159dp</dimen>
     <dimen name="txt_service_margin_top">30dp</dimen>
     <dimen name="btn_service_margin_top">24dp</dimen>
     <dimen name="btn_service_margin_between">445dp</dimen>

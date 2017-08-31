@@ -99,4 +99,16 @@ public class Events {
             this.bookName = bookName;
         }
     }
+
+    public static class UpDateMainScreen {
+        boolean isUpDate;
+
+        public boolean getStateUpDate() {
+            return isUpDate;
+        }
+
+        public void setStateUpDate(boolean isUpDate) {
+            this.isUpDate = isUpDate;
+        }
+    }
 }

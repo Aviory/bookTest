@@ -128,7 +128,7 @@
 
     <!-- Right menu text -->
     <string name="rigth_txt_screen_sett">screen setting</string>
-    <string name="rigth_txt_book_name">bookModel name</string>
+    <string name="rigth_txt_book_name">book name</string>
     <string name="rigth_txt_author_name">author name</string>
     <string name="rigth_txt_read_date">read date</string>
     <string name="rigth_txt_date_add">add date</string>
