@@ -269,31 +269,34 @@ public class LibraryActivity extends BaseActivity implements Queries.CallBack,
         menuTranzaction();
         AlertDialogStory.newInstance().show(getSupportFragmentManager(), HISTORY);
     }
+
     @OnClick(R.id.txt_instruction)
     protected void instruction() {
         menuTranzaction();
         AlertDialogInstructions.newInstance().show(getSupportFragmentManager(), INSTRUCTIONS);
     }
+
     @OnClick(R.id.txt_explanation_screens)
     protected void explanationScreens() {
         TutorialFragment fragment = (TutorialFragment) getSupportFragmentManager()
                 .findFragmentByTag(TUTORIAL);
-        if(fragment==null){
+        if (fragment == null) {
             FragmentTransaction fragmentTransaction = getSupportFragmentManager()
                     .beginTransaction();
             fragmentTransaction.replace(R.id.contaner_tutorial, TutorialFragment.getInstance(), TUTORIAL);
             fragmentTransaction.commit();
-        }
-        else
-            getSupportFragmentManager().beginTransaction().show( TutorialFragment.getInstance()).commit();
+        } else
+            getSupportFragmentManager().beginTransaction().show(TutorialFragment.getInstance()).commit();
         menuTranzaction();
     }
+
     @OnClick(R.id.txt_service_privacy)
     protected void servicePrivacy() {
-        String txt_fragment ="";
-        if(txt_list!=null){
-            for (Text t: txt_list) {
-                if(t.getPopupID()==Const.SERVISE_PRIVASY_RIGHT_BTN_TEXT_ID);{
+        String txt_fragment = "";
+        if (txt_list != null) {
+            for (Text t : txt_list) {
+                if (t.getPopupID() == Const.SERVISE_PRIVASY_RIGHT_BTN_TEXT_ID) ;
+                {
                     txt_fragment = t.getPopupText();
                     break;
                 }
@@ -301,10 +304,10 @@ public class LibraryActivity extends BaseActivity implements Queries.CallBack,
         }
         FragmentServicePrivacy fragment = (FragmentServicePrivacy) getSupportFragmentManager()
                 .findFragmentByTag(PRIVACY);
-        if(fragment==null)
+        if (fragment == null)
             menuTranzaction(FragmentServicePrivacy.getInstance(), PRIVACY);
         else
-            getSupportFragmentManager().beginTransaction().show( FragmentServicePrivacy.getInstance()).commit();
+            getSupportFragmentManager().beginTransaction().show(FragmentServicePrivacy.getInstance()).commit();
         FragmentServicePrivacy.getInstance().setText(txt_fragment);
         UiUtil.hideView(mLeftMenuLayout);
     }
@@ -318,10 +321,11 @@ public class LibraryActivity extends BaseActivity implements Queries.CallBack,
 
     @OnClick(R.id.txt_about_us)
     protected void aboutUs() {
-        String txt_fragment ="";
-        if(txt_list!=null){
-            for (Text t: txt_list) {
-                if(t.getPopupID()==Const.SERVISE_PRIVASY_ABOUT_US_TEXT_ID);{
+        String txt_fragment = "";
+        if (txt_list != null) {
+            for (Text t : txt_list) {
+                if (t.getPopupID() == Const.SERVISE_PRIVASY_ABOUT_US_TEXT_ID) ;
+                {
                     txt_fragment = t.getPopupText();
                     break;
                 }
@@ -331,6 +335,7 @@ public class LibraryActivity extends BaseActivity implements Queries.CallBack,
         AlertDialogAboutUs.newInstance().show(getSupportFragmentManager(), ABOUT_US);
         menuTranzaction();
     }
+
     @OnClick(R.id.right_txt_screen_settings)
     protected void screenSettings() {
         DialogSettings dialog = new DialogSettings(this);
@@ -344,17 +349,17 @@ public class LibraryActivity extends BaseActivity implements Queries.CallBack,
 
     @Override
     public void onClick(View view) {//right menu radio listener
-        switch (view.getId()){
+        switch (view.getId()) {
             case R.id.toggle_book_name:
-                if(imgBookName.isChecked())
+                if (imgBookName.isChecked())
                     imgBookName.setChecked(false);
                 else
                     imgBookName.setChecked(true);
             case R.id.rigth_txt_book_name:
-                if(imgBookName.isChecked()){
+                if (imgBookName.isChecked()) {
                     imgBookName.setChecked(false);
                     initShelvesRecycler(mLibrary);
-                }else {
+                } else {
                     imgBookName.setChecked(true);
                     imgAuthorName.setChecked(false);
                     imgAddDate.setChecked(false);
@@ -363,15 +368,15 @@ public class LibraryActivity extends BaseActivity implements Queries.CallBack,
                 }
                 break;
             case R.id.toggle_author_name:
-                if(imgAuthorName.isChecked())
+                if (imgAuthorName.isChecked())
                     imgAuthorName.setChecked(false);
                 else
                     imgAuthorName.setChecked(true);
             case R.id.rigth_txt_author_name:
-                if(imgAuthorName.isChecked()){
+                if (imgAuthorName.isChecked()) {
                     imgAuthorName.setChecked(false);
                     initShelvesRecycler(mLibrary);
-                }else {
+                } else {
                     imgAuthorName.setChecked(true);
                     imgBookName.setChecked(false);
                     imgAddDate.setChecked(false);
@@ -380,15 +385,15 @@ public class LibraryActivity extends BaseActivity implements Queries.CallBack,
                 }
                 break;
             case R.id.toggle_add_date:
-                if(imgAddDate.isChecked())
+                if (imgAddDate.isChecked())
                     imgAddDate.setChecked(false);
                 else
                     imgAddDate.setChecked(true);
             case R.id.rigth_txt_date_add:
-                if(imgAddDate.isChecked()){
+                if (imgAddDate.isChecked()) {
                     imgAddDate.setChecked(false);
                     initShelvesRecycler(mLibrary);
-                }else {
+                } else {
                     imgAddDate.setChecked(true);
                     imgBookName.setChecked(false);
                     imgAuthorName.setChecked(false);
@@ -397,15 +402,15 @@ public class LibraryActivity extends BaseActivity implements Queries.CallBack,
                 }
                 break;
             case R.id.toggle_read_date:
-                if(imgReadDate.isChecked())
+                if (imgReadDate.isChecked())
                     imgReadDate.setChecked(false);
                 else
                     imgReadDate.setChecked(true);
             case R.id.rigth_txt_read_date:
-                if(imgReadDate.isChecked()){
+                if (imgReadDate.isChecked()) {
                     imgReadDate.setChecked(false);
                     initShelvesRecycler(mLibrary);
-                }else {
+                } else {
                     imgReadDate.setChecked(true);
                     imgBookName.setChecked(false);
                     imgAddDate.setChecked(false);
@@ -416,7 +421,7 @@ public class LibraryActivity extends BaseActivity implements Queries.CallBack,
         }
     }
 
-    private void menuTranzaction(Fragment fragment, String tag){
+    private void menuTranzaction(Fragment fragment, String tag) {
         FragmentTransaction fragmentTransaction = getSupportFragmentManager()
                 .beginTransaction();
         fragmentTransaction.replace(R.id.contaner_main, fragment, tag);
@@ -425,8 +430,9 @@ public class LibraryActivity extends BaseActivity implements Queries.CallBack,
 
         UiUtil.hideView(mLeftMenuLayout);
     }
-    private void menuTranzaction(){
-        getSupportFragmentManager().beginTransaction().hide( FragmentServicePrivacy.getInstance()).commit();
+
+    private void menuTranzaction() {
+        getSupportFragmentManager().beginTransaction().hide(FragmentServicePrivacy.getInstance()).commit();
         UiUtil.hideView(mLeftMenuLayout);
     }
 
@@ -756,7 +762,7 @@ public class LibraryActivity extends BaseActivity implements Queries.CallBack,
     @Subscribe
     public void onMessageEvent(Events.UpDateMainScreen upDateMainScreen) {
         boolean isUpDate = Prefs.getBooleanProperty(this, Const.PUSH_NOTIFY_BY_UPDATE);
-        if(isUpDate)
+        if (isUpDate)
             restartDownloading();
     }
 

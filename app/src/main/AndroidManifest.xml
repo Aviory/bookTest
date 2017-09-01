@@ -14,19 +14,19 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
-        android:theme="@style/AppTheme"
         android:supportsRtl="false"
+        android:theme="@style/AppTheme"
         tools:replace="android:allowBackup">
 
         <activity
             android:name=".ui.activities.SplashActivity"
             android:theme="@style/SplashScreenTheme"
             android:windowSoftInputMode="adjustResize">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+            <!--<intent-filter>-->
+            <!--<action android:name="android.intent.action.MAIN" />-->
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+            <!--<category android:name="android.intent.category.LAUNCHER" />-->
+            <!--</intent-filter>-->
         </activity>
 
         <activity android:name=".ui.activities.TutorialsActivity" />
@@ -41,7 +41,13 @@
 
         <activity android:name=".ui.activities.LibraryActivity" />
 
-        <activity android:name=".ui.activities.ReaderActivity" />
+        <activity android:name=".ui.activities.ReaderActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
 
         <receiver android:name=".receivers.NetworkStateReceiver">
             <intent-filter>

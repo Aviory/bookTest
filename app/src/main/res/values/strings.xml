@@ -147,4 +147,14 @@
     <string name="pattern">\\{\\{(-?\\d+\\.?\\d*)\\,(-?\\d+\\.?\\d*)\\}\\,\\s\\{(-?\\d+\\.?\\d*)\\,(-?\\d+\\.?\\d*)\\}\\}</string>
     <!--<string name="pattern2">\\{\\{(-?\\d+\\.?\\d*)\\,(-?\\d+\\.?\\d*)\\}\\,\\s\\{(-?\\d+\\.?\\d*)\\,(-?\\d+\\.?\\d*)\\}\\}</string>-->
     <string name="script_tag_method_call"><![CDATA[<script type=\"text/javascript\">%s</script>]]></string>
+
+    <string name="copy">Copy</string>
+    <string name="share">Share</string>
+    <string name="define">Define</string>
+    <string name="highlight">Highlight</string>
+    <string name="copied">Copied</string>
+    <string name="send_to">Send to</string>
+    <string name="getHighlightString">javascript:alert(getHighlightString(\'%s\'))</string>
+    <string name="sethighlightstyle">javascript:alert(setHighlightStyle(\'%s\'));</string>
+
 </resources>
