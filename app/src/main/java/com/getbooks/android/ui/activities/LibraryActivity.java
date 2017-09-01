@@ -16,6 +16,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -58,6 +59,7 @@ import com.getbooks.android.util.DateUtil;
 import com.getbooks.android.util.FileUtil;
 import com.getbooks.android.util.LogUtil;
 import com.getbooks.android.util.UiUtil;
+import com.getbooks.android.skyepubreader.HomeActivity;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -148,6 +150,16 @@ public class LibraryActivity extends BaseActivity implements Queries.CallBack,
     private static final String SAVE_DIRECTORY_PATH = "com.getbooks.android.ui.fragments.save_directory_path";
     private static final String SAVE_NETWORK_INFO = "com.getbooks.android.ui.fragments.save_network_info";
     private List<Text> txt_list;
+
+    @BindView(R.id.opentSryTest)
+    protected Button mOpenSkyTest;
+
+    @OnClick(R.id.opentSryTest)
+    protected void openSkeTest(){
+        Intent intent = new Intent(this, HomeActivity.class);
+        this.startActivity(intent);
+
+    }
 
 
     @Override
