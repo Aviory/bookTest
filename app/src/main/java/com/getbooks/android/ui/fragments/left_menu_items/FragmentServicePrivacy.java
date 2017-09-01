@@ -11,10 +11,12 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 
+import com.getbooks.android.Const;
 import com.getbooks.android.R;
+import com.getbooks.android.model.Text;
 import com.getbooks.android.ui.adapter.RecyclerBookContent;
 
-import butterknife.BindView;
+import java.util.List;
 
 /**
  * Created by avi on 18.08.17.
@@ -23,7 +25,8 @@ import butterknife.BindView;
 public class FragmentServicePrivacy extends Fragment implements View.OnClickListener{
 
     private RecyclerView mRecyclerView;
-    private String textBody;
+    private String mRightBtnText;
+    private String mLeftBtnText;
     private RadioButton mBtnLeft;
     private RadioButton mBtnRigth;
 
@@ -31,8 +34,17 @@ public class FragmentServicePrivacy extends Fragment implements View.OnClickList
     private LinearLayoutManager mLinearLayoutManager;
     private RecyclerBookContent mBookContentAdapter;
 
-    public void setText(String textBody) {
-        this.textBody = textBody;
+    public void setText(List<Text> txt_list) {
+        if(txt_list!=null){
+            for (Text t: txt_list) {
+                if(t.getPopupID().equals(Const.SERVISE_PRIVASY_RIGHT_BTN_TEXT_ID)){
+                    mRightBtnText = t.getPopupText();
+                }
+                if(t.getPopupID().equals(Const.SERVISE_PRIVASY_LEFT_BTN_TEXT_ID)){
+                    mLeftBtnText = t.getPopupText();
+                }
+            }
+        }
     }
 
     public static FragmentServicePrivacy getInstance() {
@@ -46,14 +58,14 @@ public class FragmentServicePrivacy extends Fragment implements View.OnClickList
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.left_menu_service_privacy, container, false);
+        View v = inflater.inflate(R.layout.fragment_left_menu_service_privacy, container, false);
         ImageView close = v.findViewById(R.id.service_privacy_close);
         mBtnLeft = v.findViewById(R.id.btn_service_left);
         mBtnLeft.setOnClickListener(this);
         mBtnRigth = v.findViewById(R.id.btn_service_right);
         mBtnRigth.setOnClickListener(this);
         mRecyclerView = v.findViewById(R.id.txt_body_service_privacy);
-        mInitRecycler(textBody);
+        mInitRecycler(mRightBtnText);
 
         close.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -78,10 +90,10 @@ public class FragmentServicePrivacy extends Fragment implements View.OnClickList
     public void onClick(View view) {
         switch (view.getId()){
             case R.id.btn_service_left:
-                mInitRecycler("");
+                mInitRecycler(mLeftBtnText);
                 break;
             case R.id.btn_service_right:
-                mInitRecycler(textBody);
+                mInitRecycler(mRightBtnText);
                 break;
         }
     }

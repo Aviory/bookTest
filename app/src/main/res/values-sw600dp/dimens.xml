@@ -65,7 +65,7 @@
     <dimen name="txt_heigth_servise_body">835dp</dimen>
     <dimen name="txt_width_servise_body">701dp</dimen>
     <dimen name="btn_left_service_margin">137dp</dimen>
-    <dimen name="btn_right_servise_margin_left">160dp</dimen>
+    <dimen name="btn_right_servise_margin_left">121dp</dimen>
     <dimen name="btn_close_webview_marg_left">15dp</dimen>
     <dimen name="service_seek_bar_height">324dp</dimen>
     <dimen name="service_seek_mar_marg_top">75dp</dimen>

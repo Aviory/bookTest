@@ -290,22 +290,13 @@ public class LibraryActivity extends BaseActivity implements Queries.CallBack,
     }
     @OnClick(R.id.txt_service_privacy)
     protected void servicePrivacy() {
-        String txt_fragment ="";
-        if(txt_list!=null){
-            for (Text t: txt_list) {
-                if(t.getPopupID()==Const.SERVISE_PRIVASY_RIGHT_BTN_TEXT_ID);{
-                    txt_fragment = t.getPopupText();
-                    break;
-                }
-            }
-        }
         FragmentServicePrivacy fragment = (FragmentServicePrivacy) getSupportFragmentManager()
                 .findFragmentByTag(PRIVACY);
         if(fragment==null)
             menuTranzaction(FragmentServicePrivacy.getInstance(), PRIVACY);
         else
             getSupportFragmentManager().beginTransaction().show( FragmentServicePrivacy.getInstance()).commit();
-        FragmentServicePrivacy.getInstance().setText(txt_fragment);
+        FragmentServicePrivacy.getInstance().setText(txt_list);
         UiUtil.hideView(mLeftMenuLayout);
     }
 
@@ -318,23 +309,13 @@ public class LibraryActivity extends BaseActivity implements Queries.CallBack,
 
     @OnClick(R.id.txt_about_us)
     protected void aboutUs() {
-        String txt_fragment ="";
-        if(txt_list!=null){
-            for (Text t: txt_list) {
-                if(t.getPopupID()==Const.SERVISE_PRIVASY_ABOUT_US_TEXT_ID);{
-                    txt_fragment = t.getPopupText();
-                    break;
-                }
-            }
-        }
-        AlertDialogAboutUs.newInstance().setTxt(txt_fragment);
+        AlertDialogAboutUs.newInstance().setTxt(txt_list);
         AlertDialogAboutUs.newInstance().show(getSupportFragmentManager(), ABOUT_US);
         menuTranzaction();
     }
     @OnClick(R.id.right_txt_screen_settings)
     protected void screenSettings() {
-        DialogSettings dialog = new DialogSettings(this);
-        dialog.show();
+        DialogSettings.newInstance(this).show();
     }
 
     @OnClick(R.id.right_txt_order)

@@ -12,28 +12,39 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.ImageView;
 
+import com.getbooks.android.Const;
 import com.getbooks.android.R;
+import com.getbooks.android.model.Text;
 import com.getbooks.android.ui.widget.ArialNormalTextView;
+
+import java.util.List;
 
 /**
  * Created by Avi on 14.08.2017.
  */
 
 public class AlertDialogAboutUs extends DialogFragment {
-    String txt;
-    private static AlertDialogAboutUs f;
+    private String mTextBody;
+    private static AlertDialogAboutUs mAlertDialogAboutUs;
 
-    public void setTxt(String txt) {
-        this.txt = txt;
+    public void setTxt(List<Text> txt_list) {
+        if(txt_list!=null){
+            for (Text t: txt_list) {
+                if(t.getPopupID().equals(Const.ABOUT_US_TEXT_ID)){
+                    mTextBody = t.getPopupText();
+                    break;
+                }
+            }
+        }
     }
 
     public AlertDialogAboutUs(){}
 
     public static AlertDialogAboutUs newInstance(){
-        if(f==null)
-            f = new AlertDialogAboutUs();
+        if(mAlertDialogAboutUs ==null)
+            mAlertDialogAboutUs = new AlertDialogAboutUs();
 
-        return f;
+        return mAlertDialogAboutUs;
     }
 
     @Nullable
@@ -42,7 +53,7 @@ public class AlertDialogAboutUs extends DialogFragment {
         View v = inflater.inflate(R.layout.left_menu_about_us, container, false);
         ImageView close = (ImageView) v.findViewById(R.id.about_us_close);
         ArialNormalTextView text = (ArialNormalTextView) v.findViewById(R.id.txt_about);
-        text.setText(txt);
+        text.setText(mTextBody);
         close.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

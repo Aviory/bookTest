@@ -34,7 +34,7 @@
     <dimen name="btn_service_margin_top">24dp</dimen>
     <dimen name="btn_service_margin_between">445dp</dimen>
     <dimen name="btn_left_service_margin">236dp</dimen>
-    <dimen name="btn_right_servise_margin_left">445dp</dimen>
+    <dimen name="btn_right_servise_margin_left">403dp</dimen>
 
     <dimen name="service_seek_bar_height">324dp</dimen>
     <dimen name="service_seek_mar_marg_top">75dp</dimen>

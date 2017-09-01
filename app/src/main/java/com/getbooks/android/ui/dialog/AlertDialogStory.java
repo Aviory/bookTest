@@ -46,8 +46,8 @@ public class AlertDialogStory extends DialogFragment {
         myBrowser = (WebView)v.findViewById(R.id.webview);
         myBrowser.setHorizontalScrollBarEnabled(false);
         myBrowser.setVerticalScrollBarEnabled(false);
-        WebSettings webSettings = myBrowser.getSettings();
-        webSettings.setJavaScriptEnabled(true);
+//        WebSettings webSettings = myBrowser.getSettings();
+//        webSettings.setJavaScriptEnabled(true);
 
         HashMap<String, String> map = new HashMap<String, String>();
         String token = Prefs.getToken(getActivity());

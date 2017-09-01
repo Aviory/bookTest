@@ -36,8 +36,8 @@ public class AlertDialogInstructions extends DialogFragment {
         WebView myBrowser = (WebView)v.findViewById(R.id.webview);
         myBrowser.setHorizontalScrollBarEnabled(false);
         myBrowser.setVerticalScrollBarEnabled(false);
-        WebSettings webSettings = myBrowser.getSettings();
-        webSettings.setJavaScriptEnabled(true);
+//        WebSettings webSettings = myBrowser.getSettings();
+//        webSettings.setJavaScriptEnabled(true);
         myBrowser.loadUrl("https://pelephone.getbooks.co.il/dev/how-it-works");
 
         close = (ImageView) v.findViewById(R.id.img_close_catalog);

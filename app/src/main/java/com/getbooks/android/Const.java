@@ -36,6 +36,7 @@ public final class Const {
     public static final String BOOK_NAME = "book_name";
 
     //right menu const
-    public static final String SERVISE_PRIVASY_RIGHT_BTN_TEXT_ID = "4984";
-    public static final String SERVISE_PRIVASY_ABOUT_US_TEXT_ID = "4972";
+    public static final String SERVISE_PRIVASY_RIGHT_BTN_TEXT_ID = "4808";
+    public static final String SERVISE_PRIVASY_LEFT_BTN_TEXT_ID = "4984";
+    public static final String ABOUT_US_TEXT_ID = "4972";
 }

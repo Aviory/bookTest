@@ -24,6 +24,11 @@ public class DialogSettings extends AlertDialog implements View.OnClickListener{
     private RadioButton mRadioButtonYes;
     private RadioButton mRadioButtonNo;
 
+    public static DialogSettings newInstance(Context context){
+        DialogSettings dialogSettings = new DialogSettings(context);
+        return dialogSettings;
+    }
+
     public DialogSettings(@NonNull Context context) {
         super(context);
     }
