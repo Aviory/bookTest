@@ -50,7 +50,7 @@ public class CompareUtil {
         @Override
         public int compare(BookModel a, BookModel b) {
             if(a.getBookName()!=null && b.getBookName()!=null)
-                return a.getBookName().compareTo(b.getBookName());
+                return b.getBookName().compareTo(a.getBookName());
             return 0;
         }
     }
@@ -59,7 +59,7 @@ public class CompareUtil {
         @Override
         public int compare(BookModel a, BookModel b) {
             if(a.getBookAuthors()!=null && b.getBookAuthors()!=null)
-                return a.getBookAuthors().compareTo(b.getBookAuthors());
+                return b.getBookAuthors().compareTo(a.getBookAuthors());
             return 0;
         }
     }
@@ -67,8 +67,12 @@ public class CompareUtil {
 
         @Override
         public int compare(BookModel a, BookModel b) {
-            if(a.getBookAuthors()!=null && b.getBookAuthors()!=null)
-                return a.getReadDateTime().compareTo(b.getReadDateTime());
+            if(a.getReadDateTime()!=null && b.getReadDateTime()!=null){
+                if(a.getReadDateTime().before(b.getReadDateTime()))
+                    return -1;
+                else if(a.getReadDateTime().after(b.getReadDateTime()))
+                    return 1;
+            }
             return 0;
         }
     }
@@ -76,8 +80,12 @@ public class CompareUtil {
 
         @Override
         public int compare(BookModel a, BookModel b) {
-            if(a.getBookAuthors()!=null && b.getBookAuthors()!=null)
-                return a.getCreatedDate().compareTo(b.getCreatedDate());
+            if(a.getCreatedDate()!=null && b.getCreatedDate()!=null){
+                if(a.getCreatedDate().before(b.getCreatedDate()))
+                    return -1;
+                else if(a.getCreatedDate().after(b.getCreatedDate()))
+                    return 1;
+            }
             return 0;
         }
     }
