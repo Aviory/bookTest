@@ -25,22 +25,14 @@
 
     <!-- Service and privacy screen sizes-->
     <dimen name="txt_heigth_servise_body">414dp</dimen>
-    <dimen name="btn_service_margin_right">445dp</dimen>
-    <dimen name="btn_service_margin_left">236dp</dimen>
     <dimen name="left_menu_service_margin_bot">40dp</dimen>
     <dimen name="txt_body_service_margin_left">100dp</dimen>
     <dimen name="txt_body_service_margin_right">159dp</dimen>
     <dimen name="txt_service_margin_top">30dp</dimen>
     <dimen name="btn_service_margin_top">24dp</dimen>
-    <dimen name="btn_service_margin_between">445dp</dimen>
     <dimen name="btn_left_service_margin">236dp</dimen>
-    <dimen name="btn_right_servise_margin_left">403dp</dimen>
 
-    <dimen name="service_seek_bar_height">324dp</dimen>
-    <dimen name="service_seek_mar_marg_top">75dp</dimen>
     <dimen name="servise_seek_bar_radius">3dp</dimen>
-    <dimen name="servise_seek_bar_width">6dp</dimen>
-    <dimen name="servise_margin_seek_bar">20dp</dimen>
     <dimen name="service_seek_bar_width">6dp</dimen>
     <dimen name="setting_dialog_txt_margin">12dp</dimen>
 
