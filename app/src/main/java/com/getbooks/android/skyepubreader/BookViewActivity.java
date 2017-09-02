@@ -1,34 +1,19 @@
 package com.getbooks.android.skyepubreader;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.URLDecoder;
-import java.nio.charset.Charset;
 import java.util.ArrayList;
-import java.util.Locale;
-
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
 
 import com.getbooks.android.GetbooksApplication;
 import com.getbooks.android.R;
+import com.getbooks.android.ui.widget.CustomSeekBar;
+import com.getbooks.android.util.AnimUtil;
 import com.skytree.epub.Book;
-import com.skytree.epub.BookInformation;
 import com.skytree.epub.BookmarkListener;
 import com.skytree.epub.Caret;
 import com.skytree.epub.ClickListener;
-import com.skytree.epub.ContentListener;
 import com.skytree.epub.Highlight;
 import com.skytree.epub.HighlightListener;
 import com.skytree.epub.Highlights;
@@ -59,15 +44,12 @@ import com.skytree.epub.ReflowableControl;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.ActivityManager.MemoryInfo;
-import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.res.Configuration;
-import android.gesture.GestureOverlayView;
-import android.gesture.GestureOverlayView.OnGestureListener;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.BitmapFactory.Options;
@@ -76,44 +58,27 @@ import android.graphics.Color;
 import android.graphics.ColorFilter;
 import android.graphics.ColorMatrixColorFilter;
 import android.graphics.Paint;
-import android.graphics.Paint.Style;
 import android.graphics.Path;
 import android.graphics.PixelFormat;
-import android.graphics.PorterDuff.Mode;
 import android.graphics.Rect;
 import android.graphics.RectF;
-import android.graphics.Shader.TileMode;
 import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.ClipDrawable;
-import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.GradientDrawable.Orientation;
-import android.graphics.drawable.InsetDrawable;
-import android.graphics.drawable.LayerDrawable;
-import android.graphics.drawable.ShapeDrawable;
-import android.graphics.drawable.shapes.OvalShape;
 import android.graphics.drawable.shapes.RectShape;
 import android.graphics.drawable.shapes.RoundRectShape;
-import android.graphics.drawable.shapes.Shape;
-import android.hardware.Camera.Size;
-import android.media.audiofx.BassBoost.Settings;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Vibrator;
-import android.support.v4.content.ContextCompat;
-import android.text.Editable;
 import android.text.TextUtils.TruncateAt;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.TypedValue;
-import android.view.ActionMode;
-import android.view.ContextMenu;
-import android.view.ContextMenu.ContextMenuInfo;
 import android.view.Display;
 import android.view.GestureDetector;
 import android.view.Gravity;
@@ -122,17 +87,16 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
-import android.view.View.OnKeyListener;
 import android.view.View.OnTouchListener;
-import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageButton;
-import android.widget.ImageView.ScaleType;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
@@ -144,18 +108,33 @@ import android.widget.TextView.OnEditorActionListener;
 import android.widget.Toast;
 import android.widget.RelativeLayout.LayoutParams;
 
-import com.skytree.epub.Parallel;
-import com.skytree.epub.VideoListener;
-
-import android.graphics.PorterDuff;
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 public class BookViewActivity extends Activity {
+    @BindView(R.id.custom_seek_bar)
+    protected CustomSeekBar mCustomSeekBarLayout;
     ReflowableControl rv;
+    @BindView(R.id.reader_layout)
     RelativeLayout ePubView;
-    Button debugButton0;
-    Button debugButton1;
-    Button debugButton2;
-    Button debugButton3;
+    @BindView(R.id.stub)
+    FrameLayout viewStub;
+    @BindView(R.id.menu_book)
+    protected LinearLayout mMenuBookLayout;
+    @BindView(R.id.txt_page)
+    protected TextView titleLabel;
+    @BindView(R.id.txt_current_page)
+    protected TextView pageIndexLabel;
+    @BindView(R.id.txt_all_pages)
+    protected TextView secondaryIndexLabel;
+    @BindView(R.id.img_book_murks_content)
+    protected ImageView mImageBookContent;
+    @BindView(R.id.img_book_setting)
+    protected ImageView mImageBookSetting;
+    @BindView(R.id.img_book_search)
+    protected ImageView mImageBookSearch;
+    @BindView(R.id.img_book_close)
+    protected ImageView mImageBookClose;
 
     ImageButton rotationButton;
     ImageButton listButton;
@@ -166,11 +145,12 @@ public class BookViewActivity extends Activity {
 
     boolean isRotationLocked;
 
-    TextView titleLabel;
+    //    TextView titleLabel;
     TextView authorLabel;
-    TextView pageIndexLabel;
-    TextView secondaryIndexLabel;
+//    TextView pageIndexLabel;
+//    TextView secondaryIndexLabel;
 
+    @BindView(R.id.sky_seek_bar)
     SkySeekBar seekBar;
     OnSeekBarChangeListener seekListener;
     SkyBox seekBox;
@@ -502,18 +482,18 @@ public class BookViewActivity extends Activity {
                 Color.argb(240, 94, 61, 35), Color.LTGRAY, Color.argb(240, 94, 61, 35),
                 Color.argb(120, 160, 124, 95), Color.DKGRAY, 0x22222222,
                 "Phone-Portrait-White.png", "Phone-Landscape-White.png",
-                "Phone-Landscape-Double-White.png", R.drawable.bookmark_blue));
+                "Phone-Landscape-Double-White.png", R.drawable.bookmark2x));
         themes.add(new Theme("brown", Color.BLACK, 0xffece3c7, Color.argb(240, 94, 61, 35),
                 Color.argb(255, 255, 255, 255), Color.argb(240, 94, 61, 35), Color.argb(120, 160, 124, 95),
                 Color.DKGRAY, 0x22222222, "Phone-Portrait-Brown.png", "Phone-Landscape-Brown.png",
-                "Phone-Landscape-Double-Brown.png", R.drawable.bookmark_blue));
+                "Phone-Landscape-Double-Brown.png", R.drawable.bookmark2x));
         themes.add(new Theme("black", Color.LTGRAY, 0xff323230, Color.LTGRAY, Color.LTGRAY, Color.LTGRAY,
                 Color.LTGRAY, Color.LTGRAY, 0x77777777, null, null, "Phone-Landscape-Double-Black.png",
-                R.drawable.add_bookmark));
+                R.drawable.bookmark2x));
         themes.add(new Theme("Leaf", 0xFF1F7F0E, 0xffF8F7EA, 0xFF186D08, Color.LTGRAY, 0xFF186D08, 0xFF186D08,
-                Color.DKGRAY, 0x22222222, null, null, null, R.drawable.add_bookmark));
+                Color.DKGRAY, 0x22222222, null, null, null, R.drawable.bookmark2x));
         themes.add(new Theme("夕陽", 0xFFA13A0A, 0xFFF6DFD9, 0xFFA13A0A, 0xFFDC4F0E, 0xFFA13A0A, 0xFFA13A0A,
-                Color.DKGRAY, 0x22222222, null, null, null, R.drawable.add_bookmark));
+                Color.DKGRAY, 0x22222222, null, null, null, R.drawable.bookmark2x));
         this.setBrightness((float) setting.brightness);
         // create highlights object to contains highlights of this book.
         highlights = new Highlights();
@@ -533,20 +513,23 @@ public class BookViewActivity extends Activity {
         autoStartPlayingWhenNewPagesLoaded = this.setting.autoStartPlaying;
         autoMoveChapterWhenParallesFinished = this.setting.autoLoadNewChapter;
 
-        ePubView = new RelativeLayout(this);
-
-        RelativeLayout.LayoutParams rlp = new RelativeLayout.LayoutParams(
-                RelativeLayout.LayoutParams.FILL_PARENT,
-                RelativeLayout.LayoutParams.FILL_PARENT);
-        ePubView.setLayoutParams(rlp);
+//        ePubView = new RelativeLayout(this);
+//
+//        RelativeLayout.LayoutParams rlp = new RelativeLayout.LayoutParams(
+//                RelativeLayout.LayoutParams.FILL_PARENT,
+//                RelativeLayout.LayoutParams.FILL_PARENT);
+//        ePubView.setLayoutParams(rlp);
 
         RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
                 RelativeLayout.LayoutParams.WRAP_CONTENT,
                 RelativeLayout.LayoutParams.WRAP_CONTENT); // width,height
         if (this.getOSVersion() >= 11) {
-            rv = new ReflowableControl(this);// in case that device supports transparent webkit, the background image under the content can be shown. in some devices, content may be overlapped.
+            // in case that device supports transparent webkit, the background image under the content can be shown.
+            // in some devices, content may be overlapped.
+            rv = new ReflowableControl(this);
         } else {
-            rv = new ReflowableControl(this, getCurrentTheme().backgroundColor); // in case that device can not support transparent webkit, the background color will be set in one color.
+            // in case that device can not support transparent webkit, the background color will be set in one color.
+            rv = new ReflowableControl(this, getCurrentTheme().backgroundColor);
         }
 
         // if false highlight will be drawed on the back of text - this is default.
@@ -565,7 +548,7 @@ public class BookViewActivity extends Activity {
 
 
 /*
-		// delay times for proper operations.
+        // delay times for proper operations.
 		// !! DO NOT SET these values if there's no issue on your epub reader. !!
 		// !! if delayTime is decresed, performance will be increase
 		// !! if delayTime is set to too low value, a lot of problem can be occurred.
@@ -752,7 +735,8 @@ public class BookViewActivity extends Activity {
         rv.setTTSSpeedRate(1.0f);        // if value is 2.0f , the speed is double times faster than normal. 1.0f is normal speed;
 
         // Add ReflowableView into Main View.
-        ePubView.addView(rv);
+//        ePubView.addView(rv);
+        viewStub.addView(rv);
 
         this.makeControls();
         this.makeBoxes();
@@ -761,8 +745,17 @@ public class BookViewActivity extends Activity {
         if (this.isRTL) {
             this.seekBar.setReversed(true);
         }
-        setContentView(ePubView);
+//        setContentView(ePubView);
         this.isInitialized = true;
+    }
+
+    private void addBookMenuLayout() {
+        LinearLayout parent = new LinearLayout(this);
+
+        parent.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
+        parent.setOrientation(LinearLayout.HORIZONTAL);
+
+
     }
 
     // if the current theme should be changed while book is opened,
@@ -791,11 +784,14 @@ public class BookViewActivity extends Activity {
         // the first  Rect should be the rect of background image itself
         // the second Rect is used to define the inner client area which the real contentView will reside.
         if (this.isDoublePagedForLandscape) {
-            rv.setBackgroundForLandscape(this.getBackgroundForLandscape(), new Rect(0, 0, 2004, 1506), new Rect(32, 0, 2004 - 32, 1506));            // Android Rect - left,top,right,bottom
+            rv.setBackgroundForLandscape(this.getBackgroundForLandscape(),
+                    new Rect(0, 0, 2004, 1506), new Rect(32, 0, 2004 - 32, 1506));            // Android Rect - left,top,right,bottom
         } else {
-            rv.setBackgroundForLandscape(this.getBackgroundForLandscape(), new Rect(0, 0, 2004, 1506), new Rect(0, 0, 2004 - 32, 1506));            // Android Rect - left,top,right,bottom
+            rv.setBackgroundForLandscape(this.getBackgroundForLandscape(), new Rect(0, 0, 2004, 1506),
+                    new Rect(0, 0, 2004 - 32, 1506));            // Android Rect - left,top,right,bottom
         }
-        rv.setBackgroundForPortrait(this.getBackgroundForPortrait(), new Rect(0, 0, 1002, 1506), new Rect(0, 0, 1002 - 32, 1506));            // Android Rect - left,top,right,bottom
+        rv.setBackgroundForPortrait(this.getBackgroundForPortrait(), new Rect(0, 0, 1002, 1506),
+                new Rect(0, 0, 1002 - 32, 1506));            // Android Rect - left,top,right,bottom
 
         // setBackgroundColor is used to set the background color in initial time.
         // changeBackgroundColor is used to set the background color in run time.
@@ -821,11 +817,13 @@ public class BookViewActivity extends Activity {
     }
 
     public void enableHaptic() {
-        android.provider.Settings.System.putInt(getContentResolver(), android.provider.Settings.System.HAPTIC_FEEDBACK_ENABLED, 1);
+//        android.provider.Settings.System.putInt(getContentResolver(),
+// android.provider.Settings.System.HAPTIC_FEEDBACK_ENABLED, 1);
     }
 
     public void disableHaptic() {
-        android.provider.Settings.System.putInt(getContentResolver(), android.provider.Settings.System.HAPTIC_FEEDBACK_ENABLED, 0);
+//        android.provider.Settings.System.putInt(getContentResolver(),
+// android.provider.Settings.System.HAPTIC_FEEDBACK_ENABLED, 0);
     }
 
 
@@ -2566,7 +2564,14 @@ public class BookViewActivity extends Activity {
         this.listButton.setVisibility(View.VISIBLE);
         this.fontButton.setVisibility(View.VISIBLE);
         if (!rv.isScrollMode()) this.searchButton.setVisibility(View.VISIBLE);
-        if (!rv.isPaging()) this.seekBar.setVisibility(View.VISIBLE);
+//        if (!rv.isPaging()) this.seekBar.setVisibility(View.VISIBLE);
+//        if (!rv.isPaging()) mCustomSeekBarLayout.setVisibility(View.VISIBLE);
+//        if (!rv.isPaging()) mMenuBookLayout.setVisibility(View.VISIBLE);
+//        if (!rv.isPaging()) titleLabel.setVisibility(View.VISIBLE);
+        if (!rv.isPaging()) {
+            Log.d("qqqqqqqqqq", "animatio");
+            AnimUtil.showAnim(mMenuBookLayout, titleLabel, mCustomSeekBarLayout, this);
+        }
     }
 
     public void hideControls() {
@@ -2578,8 +2583,13 @@ public class BookViewActivity extends Activity {
         this.fontButton.setVisibility(View.GONE);
         this.searchButton.setVisibility(View.INVISIBLE);
         this.searchButton.setVisibility(View.GONE);
-        this.seekBar.setVisibility(View.INVISIBLE);
-        this.seekBar.setVisibility(View.GONE);
+//        mCustomSeekBarLayout.setVisibility(View.INVISIBLE);
+//        mCustomSeekBarLayout.setVisibility(View.GONE);
+//        this.seekBar.setVisibility(View.INVISIBLE);
+//        this.seekBar.setVisibility(View.GONE);
+        AnimUtil.hideAnim(mMenuBookLayout, titleLabel, mCustomSeekBarLayout, this);
+//        mMenuBookLayout.setVisibility(View.GONE);
+//        titleLabel.setVisibility(View.GONE);
     }
 
     public boolean isAboveIcecream() {
@@ -2624,24 +2634,34 @@ public class BookViewActivity extends Activity {
         if (this.isRotationLocked)
             rotationButton = this.makeImageButton(9000, R.drawable.rotationlocked2x, ps(42), ps(42));
         else rotationButton = this.makeImageButton(9000, R.drawable.rotation2x, ps(42), ps(42));
-        listButton = this.makeImageButton(9001, R.drawable.list2x, getPS(bs), getPS(bs));
-        fontButton = this.makeImageButton(9002, R.drawable.font2x, getPS(bs), getPS(bs));
-        searchButton = this.makeImageButton(9003, R.drawable.search2x, getPS(bs), getPS(bs));
+        listButton = this.makeImageButton(0, R.drawable.list2x, getPS(bs), getPS(bs));
+        fontButton = this.makeImageButton(0, R.drawable.font2x, getPS(bs), getPS(bs));
+        searchButton = this.makeImageButton(0, R.drawable.search2x, getPS(bs), getPS(bs));
         rotationButton.setOnTouchListener(new ImageButtonHighlighterOnTouchListener(rotationButton));
         listButton.setOnTouchListener(new ImageButtonHighlighterOnTouchListener(listButton));
         fontButton.setOnTouchListener(new ImageButtonHighlighterOnTouchListener(fontButton));
         searchButton.setOnTouchListener(new ImageButtonHighlighterOnTouchListener(searchButton));
 
-        titleLabel = this.makeLabel(3000, title, Gravity.CENTER_HORIZONTAL, 17, Color.argb(240, 94, 61, 35));    // setTextSize in android uses sp (Scaled Pixel) as default, they say that sp guarantees the device dependent size, but as usual in android it can't be 100% sure.
-        authorLabel = this.makeLabel(3000, author, Gravity.CENTER_HORIZONTAL, 17, Color.argb(240, 94, 61, 35));
-        pageIndexLabel = this.makeLabel(3000, "......", Gravity.CENTER_HORIZONTAL, 13, Color.argb(240, 94, 61, 35));
-        secondaryIndexLabel = this.makeLabel(3000, "......", Gravity.CENTER_HORIZONTAL, 13, Color.argb(240, 94, 61, 35));
+        mImageBookContent.setId(9001);
+        mImageBookContent.setOnClickListener(listener);
+        mImageBookSetting.setId(9002);
+        mImageBookSetting.setOnClickListener(listener);
+        mImageBookSearch.setId(9003);
+        mImageBookSearch.setOnClickListener(listener);
 
+//        titleLabel = this.makeLabel(3000, title, Gravity.CENTER_HORIZONTAL, 17, Color.argb(240, 94, 61, 35));    // setTextSize in android uses sp (Scaled Pixel) as default, they say that sp guarantees the device dependent size, but as usual in android it can't be 100% sure.
+        authorLabel = this.makeLabel(3000, author, Gravity.CENTER_HORIZONTAL, 17, Color.argb(240, 94, 61, 35));
+//        pageIndexLabel = this.makeLabel(3000, "......", Gravity.CENTER_HORIZONTAL, 13, Color.argb(240, 94, 61, 35));
+//        secondaryIndexLabel = this.makeLabel(3000, "......", Gravity.CENTER_HORIZONTAL, 13, Color.argb(240, 94, 61, 35));
+
+        titleLabel.setId(3000);
+        pageIndexLabel.setId(3000);
+        secondaryIndexLabel.setId(3000);
 //		rv.customView.addView(rotationButton);
 //		rv.customView.addView(listButton);
 //		rv.customView.addView(fontButton);
 //		rv.customView.addView(searchButton);
-        rv.customView.addView(titleLabel);
+//        rv.customView.addView(titleLabel);
         rv.customView.addView(authorLabel);
 
         ePubView.addView(rotationButton);
@@ -2651,10 +2671,10 @@ public class BookViewActivity extends Activity {
 //		ePubView.addView(titleLabel);
 //		ePubView.addView(authorLabel);
 
-        ePubView.addView(pageIndexLabel);
-        ePubView.addView(secondaryIndexLabel);
+//        ePubView.addView(pageIndexLabel);
+//        ePubView.addView(secondaryIndexLabel);
 
-        seekBar = new SkySeekBar(this);
+//        seekBar = new SkySeekBar(this);
         seekBar.setMax(999);
         seekBar.setId(999);
 //        RectShape rectShape = new RectShape();
@@ -2663,14 +2683,18 @@ public class BookViewActivity extends Activity {
 //        thumb.getPaint().setColor(theme.seekThumbColor);
 //        thumb.setIntrinsicHeight(getPS(28));
 //        thumb.setIntrinsicWidth(getPS(28));
-        Drawable drawable = ContextCompat.getDrawable(this ,R.drawable.thumb);
-        seekBar.setThumb(drawable);
+//        Drawable drawableThumb = ContextCompat.getDrawable(this, R.drawable.thumb);
+//        Drawable drawableBackground = ContextCompat.getDrawable(this, R.drawable.seek_bar_background);
+//        Drawable drawableProgress = ContextCompat.getDrawable(this, R.drawable.seek_bar_progress_fill);
+//        seekBar.setThumb(drawableThumb);
 //        seekBar.setThumb(thumb);
-        seekBar.setBackgroundColor(Color.BLUE);
+//        seekBar.setBackgroundColor(Color.BLUE);
         seekBar.setOnSeekBarChangeListener(new SeekBarDelegate());
-        seekBar.setProgressDrawable(new DottedDrawable(theme.seekBarColor));
-        seekBar.setThumbOffset(-3);
-        seekBar.setMinimumHeight(24);
+//        seekBar.setBackgroundResource(R.drawable.seek_bar_background);
+//        seekBar.setProgressDrawable(drawableProgress);
+//        seekBar.setProgressDrawable(new DottedDrawable(theme.seekBarColor));
+//        seekBar.setThumbOffset(-3);
+//        seekBar.setMinimumHeight(24);
 
         int filterColor = theme.controlColor;
         rotationButton.setColorFilter(filterColor);
@@ -2680,10 +2704,10 @@ public class BookViewActivity extends Activity {
 
         authorLabel.setTextColor(filterColor);
         titleLabel.setTextColor(filterColor);
-        pageIndexLabel.setTextColor(filterColor);
-        secondaryIndexLabel.setTextColor(filterColor);
+//        pageIndexLabel.setTextColor(filterColor);
+//        secondaryIndexLabel.setTextColor(filterColor);
 
-        ePubView.addView(seekBar);
+//        ePubView.addView(seekBar);
     }
 
     public void makePagingView() {
@@ -2725,7 +2749,7 @@ public class BookViewActivity extends Activity {
                 this.setLocation(fontButton, pxr(40 + (48 + 5) * 2), pyt(15));
 
 
-                this.setFrame(seekBar, seekLeft, pyb(125), seekWidth, ps(36));
+//                this.setFrame(seekBar, seekLeft, pyb(125), seekWidth, ps(36));
                 int brx = 36 + (44) * 1;
                 int bry = 23;
                 bookmarkRect = new Rect(pxr(brx), pyt(bry), pxr(brx - 40), pyt(bry + 40));
@@ -2737,7 +2761,7 @@ public class BookViewActivity extends Activity {
                 this.setLocation(searchButton, pxr(60 + (48 + 5) * 3), pyt(5));
                 this.setLocation(fontButton, pxr(60 + (48 + 5) * 2), pyt(5));
 
-                this.setFrame(seekBar, seekLeft, pyb(108), seekWidth, ps(36));
+//                this.setFrame(seekBar, seekLeft, pyb(108), seekWidth, ps(36));
                 int brx = 40 + (48 + 12) * 1;
                 int bry = 14;
                 bookmarkRect = new Rect(pxr(brx), pyt(bry), pxr(brx - 40), pyt(bry + 40));
@@ -2755,7 +2779,7 @@ public class BookViewActivity extends Activity {
                 this.setLocation(fontButton, pxr(rx + (65) * 2), pyt(oy));
 
 
-                this.setFrame(seekBar, seekLeft, pyb(140), seekWidth, ps(45));
+//                this.setFrame(seekBar, seekLeft, pyb(140), seekWidth, ps(45));
                 int brx = rx - 10 + (44) * 1;
                 int bry = oy + 10;
                 bookmarkRect = new Rect(pxr(brx), pyt(bry), pxr(brx - 50), pyt(bry + 50));
@@ -2772,7 +2796,7 @@ public class BookViewActivity extends Activity {
                 this.setLocation(fontButton, pxr(rx + (65) * 2), pyt(oy));
 
 
-                this.setFrame(seekBar, seekLeft, pyb(123), seekWidth, ps(45));
+//                this.setFrame(seekBar, seekLeft, pyb(123), seekWidth, ps(45));
 
                 int brx = rx - 20 + (48 + 12) * 1;
                 int bry = oy + 10;
@@ -2780,10 +2804,11 @@ public class BookViewActivity extends Activity {
                 bookmarkedRect = new Rect(pxr(brx), pyt(bry), pxr(brx - 38), pyt(bry + 70));
             }
         }
-        RelativeLayout.LayoutParams sl = (RelativeLayout.LayoutParams) seekBar.getLayoutParams();
-        this.setFrame(pagingView, sl.leftMargin, sl.topMargin, sl.width, sl.height);
+//        LinearLayout.LayoutParams sl = (LinearLayout.LayoutParams) ePubView.getLayoutParams();
+//        LinearLayout.LayoutParams sl = (LinearLayout.LayoutParams) seekBar.getLayoutParams();
+//        this.setFrame(pagingView, sl.leftMargin, sl.topMargin, sl.width, sl.height);
 
-        this.recalcLabelsLayout();
+//        this.recalcLabelsLayout();
         this.enableControlAfterPagination();
     }
 
@@ -3106,9 +3131,12 @@ public class BookViewActivity extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_reader);
         app = (GetbooksApplication) getApplication();
         sd = new SkyDatabase(this);
         setting = sd.fetchSetting();
+//        ePubView = (RelativeLayout) findViewById(R.id.reader_layout);
+        ButterKnife.bind(this);
         registerSkyReceiver(); // New in SkyEpub SDK 7.x
         this.makeFullScreen();
         this.makeLayout();
@@ -3847,8 +3875,8 @@ public class BookViewActivity extends Activity {
             // TODO Auto-generated method stub
             String customScript = null;
 //			customScript = "function ignoreBookStyle() { document.styleSheets[0].disabled = true; } ignoreBookStyle();";
-			/*
-			customScript = "" +
+            /*
+            customScript = "" +
 					"function preventPreloadVideo() {" +
 						"var videos = document.getElementsByTagName('video');" +
 						"for (var i=0; i<videos.length; i++) {" +
@@ -3861,7 +3889,7 @@ public class BookViewActivity extends Activity {
 						    +"sound.play(); }";
 			*/
 /*
-			customScript = "function beep() {"+
+            customScript = "function beep() {"+
 				    "var sound = new Audio('data:audio/wav;base64,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qJrx4KOQjahZxWbcZgztj2c49nKmkId44S71j0c8eV9yDK6uPRzx5X18eDvjvQ6yKo9ZSS6l//8elePK/Lf//IInrOF/FvDoADYAGBMGb7FtErm5MXMlmPAJQVgWta7Zx2go+8xJ0UiCb8LHHdftWyLJE0QIAIsI+UbXu67dZMjmgDGCGl1H+vpF4NSDckSIkk7Vd+sxEhBQMRU8j/12UIRhzSaUdQ+rQU5kGeFxm+hb1oh6pWWmv3uvmReDl0UnvtapVaIzo1jZbf/pD6ElLqSX+rUmOQNpJFa/r+sa4e/pBlAABoAAAAA3CUgShLdGIxsY7AUABPRrgCABdDuQ5GC7DqPQCgbbJUAoRSUj+NIEig0YfyWUho1VBBBA//uQZB4ABZx5zfMakeAAAAmwAAAAF5F3P0w9GtAAACfAAAAAwLhMDmAYWMgVEG1U0FIGCBgXBXAtfMH10000EEEEEECUBYln03TTTdNBDZopopYvrTTdNa325mImNg3TTPV9q3pmY0xoO6bv3r00y+IDGid/9aaaZTGMuj9mpu9Mpio1dXrr5HERTZSmqU36A3CumzN/9Robv/Xx4v9ijkSRSNLQhAWumap82WRSBUqXStV/YcS+XVLnSS+WLDroqArFkMEsAS+eWmrUzrO0oEmE40RlMZ5+ODIkAyKAGUwZ3mVKmcamcJnMW26MRPgUw6j+LkhyHGVGYjSUUKNpuJUQoOIAyDvEyG8S5yfK6dhZc0Tx1KI/gviKL6qvvFs1+bWtaz58uUNnryq6kt5RzOCkPWlVqVX2a/EEBUdU1KrXLf40GoiiFXK///qpoiDXrOgqDR38JB0bw7SoL+ZB9o1RCkQjQ2CBYZKd/+VJxZRRZlqSkKiws0WFxUyCwsKiMy7hUVFhIaCrNQsKkTIsLivwKKigsj8XYlwt/WKi2N4d//uQRCSAAjURNIHpMZBGYiaQPSYyAAABLAAAAAAAACWAAAAApUF/Mg+0aohSIRobBAsMlO//Kk4soosy1JSFRYWaLC4qZBYWFRGZdwqKiwkNBVmoWFSJkWFxX4FFRQWR+LsS4W/rFRb/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////VEFHAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAU291bmRib3kuZGUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAMjAwNGh0dHA6Ly93d3cuc291bmRib3kuZGUAAAAAAAAAACU=');"
 				    +"sound.play(); } beep();" ;
 */
@@ -4148,7 +4176,8 @@ public class BookViewActivity extends Activity {
         rotationButton.setEnabled(false);
         searchButton.setEnabled(false);
         fontButton.setEnabled(false);
-        seekBar.setVisibility(View.INVISIBLE);
+        mCustomSeekBarLayout.setVisibility(View.INVISIBLE);
+//        seekBar.setVisibility(View.INVISIBLE);
     }
 
     public void enableControlAfterPagination() {
@@ -4164,7 +4193,8 @@ public class BookViewActivity extends Activity {
         rotationButton.setEnabled(true);
         searchButton.setEnabled(true);
         fontButton.setEnabled(true);
-        seekBar.setVisibility(View.VISIBLE);
+        mCustomSeekBarLayout.setVisibility(View.VISIBLE);
+//        seekBar.setVisibility(View.VISIBLE);
         if (rv.isGlobalPagination()) {
             seekBar.setMax(rv.getNumberOfPagesInBook() - 1);
             seekBar.setProgress(rv.getPageIndexInBook());
