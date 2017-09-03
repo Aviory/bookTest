@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:layout_gravity="center"
     android:gravity="center"
     android:orientation="horizontal">
@@ -14,6 +14,7 @@
         android:src="@drawable/bin_blue" />
 
     <LinearLayout
+        android:id="@+id/layout_markup_item"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -22,15 +23,16 @@
 
         <com.getbooks.android.ui.widget.ArialNormalTextView
             android:id="@+id/txt_book_murk"
+            style="@style/ContentItemListTextStyle"
             android:layout_gravity="center"
-            android:gravity="center"
-            style="@style/ContentItemListTextStyle" />
+            android:gravity="center" />
 
         <com.getbooks.android.ui.widget.ArialNormalTextView
-            android:id="@+id/txt_book_murk_name"
+            android:id="@+id/txt_book_murk_date"
+            style="@style/ContentItemListTextStyle"
             android:layout_gravity="center"
-            android:gravity="center"
-            style="@style/ContentItemListTextStyle" />
+            android:layout_marginTop="10dp"
+            android:gravity="center" />
 
     </LinearLayout>
 

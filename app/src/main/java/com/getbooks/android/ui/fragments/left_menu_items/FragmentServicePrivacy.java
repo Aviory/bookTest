@@ -12,15 +12,16 @@ import android.widget.ImageView;
 import android.widget.RadioButton;
 
 import com.getbooks.android.R;
-import com.getbooks.android.ui.adapter.RecyclerBookContent;
+import com.getbooks.android.ui.adapter.RecyclerBookContentAdapter;
+import com.getbooks.android.ui.adapter.ServicePrivacyAdapter;
 
-import butterknife.BindView;
+import java.util.Arrays;
 
 /**
  * Created by avi on 18.08.17.
  */
 
-public class FragmentServicePrivacy extends Fragment implements View.OnClickListener{
+public class FragmentServicePrivacy extends Fragment implements View.OnClickListener {
 
     private RecyclerView mRecyclerView;
     private String textBody;
@@ -29,7 +30,7 @@ public class FragmentServicePrivacy extends Fragment implements View.OnClickList
 
     private static FragmentServicePrivacy mFragmentServicePrivacy;
     private LinearLayoutManager mLinearLayoutManager;
-    private RecyclerBookContent mBookContentAdapter;
+    private ServicePrivacyAdapter mBookContentAdapter;
 
     public void setText(String textBody) {
         this.textBody = textBody;
@@ -37,7 +38,7 @@ public class FragmentServicePrivacy extends Fragment implements View.OnClickList
 
     public static FragmentServicePrivacy getInstance() {
 
-        if(mFragmentServicePrivacy==null){
+        if (mFragmentServicePrivacy == null) {
             mFragmentServicePrivacy = new FragmentServicePrivacy();
         }
         return mFragmentServicePrivacy;
@@ -58,7 +59,7 @@ public class FragmentServicePrivacy extends Fragment implements View.OnClickList
         close.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                getActivity().getSupportFragmentManager().beginTransaction().hide( FragmentServicePrivacy.getInstance()).commit();
+                getActivity().getSupportFragmentManager().beginTransaction().hide(FragmentServicePrivacy.getInstance()).commit();
             }
         });
         return v;
@@ -69,14 +70,14 @@ public class FragmentServicePrivacy extends Fragment implements View.OnClickList
         mLinearLayoutManager = new LinearLayoutManager(getActivity());
         mLinearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         mRecyclerView.setLayoutManager(mLinearLayoutManager);
-        mBookContentAdapter = new RecyclerBookContent(textArray);
+        mBookContentAdapter = new ServicePrivacyAdapter(textArray);
         mRecyclerView.setAdapter(mBookContentAdapter);
 //        mRecyclerView.setAdapter();
     }
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()){
+        switch (view.getId()) {
             case R.id.btn_service_left:
                 mInitRecycler("");
                 break;

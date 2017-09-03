@@ -12,14 +12,14 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 /**
- * Created by marinaracu on 17.08.17.
+ * Created by marinaracu on 03.09.17.
  */
 
-public class RecyclerBookContent extends RecyclerView.Adapter<RecyclerBookContent.ViewHolder> {
+public class ServicePrivacyAdapter extends RecyclerView.Adapter<ServicePrivacyAdapter.ViewHolder> {
 
     String[] mChapterArray;
 
-    public RecyclerBookContent(String[] tocReferenceList) {
+    public ServicePrivacyAdapter(String[] tocReferenceList) {
         this.mChapterArray = tocReferenceList;
     }
 

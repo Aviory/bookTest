@@ -1,34 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:orientation="horizontal">
 
     <ImageView
+        android:id="@+id/img_remove_highlight"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
         android:src="@drawable/bin_blue" />
 
     <LinearLayout
+        android:id="@+id/layout_highlight_item"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"
+        android:gravity="right"
         android:orientation="vertical">
 
         <com.getbooks.android.ui.widget.ArialNormalTextView
-            android:id="@+id/txt_book_highlights"
-            android:gravity="right"
-            style="@style/ContentItemListTextStyle" />
+            android:id="@+id/txt_book_highlights_chapter"
+            style="@style/ContentItemListTextStyle"
+            android:gravity="right" />
 
         <com.getbooks.android.ui.widget.ArialNormalTextView
             android:id="@+id/txt_book_highlights_date"
-            android:gravity="right"
-            style="@style/ContentItemListTextStyle" />
+            style="@style/ContentItemListTextStyle"
+            android:gravity="right" />
 
         <com.getbooks.android.ui.widget.ArialNormalTextView
             android:id="@+id/txt_book_highlights_content"
-            android:gravity="right"
-            style="@style/ContentItemListTextStyle" />
+            style="@style/ContentItemListTextStyle"
+            android:layout_marginTop="10dp"
+            android:gravity="right" />
     </LinearLayout>
 
 </LinearLayout>

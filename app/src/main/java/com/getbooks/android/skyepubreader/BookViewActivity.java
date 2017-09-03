@@ -5,11 +5,16 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.URLDecoder;
 import java.util.ArrayList;
+import java.util.List;
 
 import com.getbooks.android.GetbooksApplication;
 import com.getbooks.android.R;
+import com.getbooks.android.events.Events;
+import com.getbooks.android.model.BookMarkItemModel;
+import com.getbooks.android.ui.adapter.RecyclerBookContentAdapter;
+import com.getbooks.android.ui.fragments.BookContentFragment;
+import com.getbooks.android.ui.fragments.BookSettingMenuFragment;
 import com.getbooks.android.ui.widget.CustomSeekBar;
-import com.getbooks.android.util.AnimUtil;
 import com.skytree.epub.Book;
 import com.skytree.epub.BookmarkListener;
 import com.skytree.epub.Caret;
@@ -44,6 +49,7 @@ import com.skytree.epub.ReflowableControl;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.ActivityManager.MemoryInfo;
+import android.app.FragmentTransaction;
 import android.content.BroadcastReceiver;
 import android.content.ClipboardManager;
 import android.content.Context;
@@ -94,7 +100,6 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
-import android.widget.HorizontalScrollView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -108,10 +113,15 @@ import android.widget.TextView.OnEditorActionListener;
 import android.widget.Toast;
 import android.widget.RelativeLayout.LayoutParams;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
-public class BookViewActivity extends Activity {
+public class BookViewActivity extends Activity implements BookSettingMenuFragment.ChangeBookSettingListener,
+        BookContentFragment.FillBookContentListener, RecyclerBookContentAdapter.BookContentListener {
     @BindView(R.id.custom_seek_bar)
     protected CustomSeekBar mCustomSeekBarLayout;
     ReflowableControl rv;
@@ -135,11 +145,9 @@ public class BookViewActivity extends Activity {
     protected ImageView mImageBookSearch;
     @BindView(R.id.img_book_close)
     protected ImageView mImageBookClose;
+    @BindView(R.id.content_book_settings)
+    protected FrameLayout mBookSettingsLayoutContent;
 
-    ImageButton rotationButton;
-    ImageButton listButton;
-    ImageButton fontButton;
-    ImageButton searchButton;
     Rect bookmarkRect;
     Rect bookmarkedRect;
 
@@ -179,21 +187,9 @@ public class BookViewActivity extends Activity {
     ScrollView searchScrollView;
     LinearLayout searchResultView;
 
-    SkyBox fontBox;
-    SeekBar brightBar;
-    Button increaseButton;
-    Button decreaseButton;
-    ImageButton increaseLineSpaceButton;
-    ImageButton decreaseLineSpaceButton;
 
     String fontNames[] = {"Book Fonts", "Sans Serif", "Serif", "Monospace"};
-    LinearLayout fontListView;
 
-    SkyLayout listBox;
-    Button contentListButton;
-    Button bookmarkListButton;
-    Button highlightListButton;
-    ScrollView listScrollView;
     LinearLayout listView;
     Button listTopButton;
 
@@ -490,10 +486,10 @@ public class BookViewActivity extends Activity {
         themes.add(new Theme("black", Color.LTGRAY, 0xff323230, Color.LTGRAY, Color.LTGRAY, Color.LTGRAY,
                 Color.LTGRAY, Color.LTGRAY, 0x77777777, null, null, "Phone-Landscape-Double-Black.png",
                 R.drawable.bookmark2x));
-        themes.add(new Theme("Leaf", 0xFF1F7F0E, 0xffF8F7EA, 0xFF186D08, Color.LTGRAY, 0xFF186D08, 0xFF186D08,
-                Color.DKGRAY, 0x22222222, null, null, null, R.drawable.bookmark2x));
-        themes.add(new Theme("夕陽", 0xFFA13A0A, 0xFFF6DFD9, 0xFFA13A0A, 0xFFDC4F0E, 0xFFA13A0A, 0xFFA13A0A,
-                Color.DKGRAY, 0x22222222, null, null, null, R.drawable.bookmark2x));
+//        themes.add(new Theme("Leaf", 0xFF1F7F0E, 0xffF8F7EA, 0xFF186D08, Color.LTGRAY, 0xFF186D08, 0xFF186D08,
+//                Color.DKGRAY, 0x22222222, null, null, null, R.drawable.bookmark2x));
+//        themes.add(new Theme("夕陽", 0xFFA13A0A, 0xFFF6DFD9, 0xFFA13A0A, 0xFFDC4F0E, 0xFFA13A0A, 0xFFA13A0A,
+//                Color.DKGRAY, 0x22222222, null, null, null, R.drawable.bookmark2x));
         this.setBrightness((float) setting.brightness);
         // create highlights object to contains highlights of this book.
         highlights = new Highlights();
@@ -749,14 +745,6 @@ public class BookViewActivity extends Activity {
         this.isInitialized = true;
     }
 
-    private void addBookMenuLayout() {
-        LinearLayout parent = new LinearLayout(this);
-
-        parent.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
-        parent.setOrientation(LinearLayout.HORIZONTAL);
-
-
-    }
 
     // if the current theme should be changed while book is opened,
     // use this function.
@@ -872,10 +860,54 @@ public class BookViewActivity extends Activity {
         this.ePubView.removeView(colorBox);
         this.ePubView.removeView(noteBox);
         this.ePubView.removeView(searchBox);
-        this.ePubView.removeView(listBox);
         this.ePubView.removeView(mediaBox);
         this.ePubView.removeView(pagingView);
     }
+
+    protected void openBookSetting() {
+        EventBus.getDefault().post(new Events.CloseContentMenuSetting(true));
+        BookSettingMenuFragment newFragment = new BookSettingMenuFragment();
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        ft.replace(R.id.content_book_settings, newFragment).commit();
+        newFragment.setChangeBookSettingListener(this);
+    }
+
+    private void openBookContent() {
+        EventBus.getDefault().post(new Events.CloseContentMenuSetting(true));
+        BookContentFragment newFragment = new BookContentFragment();
+        FragmentTransaction ft = getFragmentManager().beginTransaction();
+        ft.replace(R.id.content_book_settings, newFragment).commit();
+        newFragment.setFillBookContentListener(this);
+    }
+
+    @OnClick(R.id.img_book_close)
+    protected void closeBook() {
+        super.onBackPressed();
+    }
+
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+//        updateLastReadTime();
+        EventBus.getDefault().unregister(this);
+    }
+
+    @Subscribe
+    public void onMassageEvent(Events.CloseContentMenuSetting closeContentMenuSetting) {
+        if (closeContentMenuSetting.isSettingMenuContentShow()) {
+            mBookSettingsLayoutContent.setVisibility(View.VISIBLE);
+        } else {
+            mBookSettingsLayoutContent.setVisibility(View.INVISIBLE);
+        }
+    }
+
 
     public void makeBoxes() {
         this.removeBoxes();
@@ -886,11 +918,10 @@ public class BookViewActivity extends Activity {
         this.makeColorBox();
         this.makeNoteBox();
         this.makeSearchBox();
-        this.makeFontBox();
-        this.makeListBox();
         this.makeMediaBox();
         this.makePagingView();
     }
+
 
     public void makeOutsideButton() {
         outsideButton = new Button(this);
@@ -980,6 +1011,133 @@ public class BookViewActivity extends Activity {
         seekBox.setArrowPosition((int) cx + ps(46), (int) sx, slw);
         op = position;
     }
+
+    @Override
+    public void fillBookContentList(int id, List<BookMarkItemModel> contentList,
+                                    RecyclerBookContentAdapter bookContentAdapter) {
+        listSelectedIndex = id;
+        // show contents..
+        if (listSelectedIndex == 0) fillBookContentList(contentList, bookContentAdapter);
+        else if (listSelectedIndex == 1) fillBookMarkBookList(contentList, bookContentAdapter);
+        else if (listSelectedIndex == 2) fillBookHighlightsList(contentList, bookContentAdapter);
+    }
+
+    private void fillBookContentList(List<BookMarkItemModel> contentList, RecyclerBookContentAdapter bookContentAdapter) {
+        contentList.clear();
+        BookMarkItemModel bookMarkItemModel;
+        NavPoints nps = rv.getNavPoints();
+        for (int i = 0; i < nps.getSize(); i++) {
+            NavPoint np = nps.getNavPoint(i);
+            bookMarkItemModel = new BookMarkItemModel(np.text, "", "", i, null);
+            contentList.add(bookMarkItemModel);
+        }
+        bookContentAdapter.setBookContentListener(this);
+        bookContentAdapter.notifyDataSetChanged();
+    }
+
+
+    private void fillBookMarkBookList(List<BookMarkItemModel> contentList, RecyclerBookContentAdapter bookContentAdapter) {
+        contentList.clear();
+        ArrayList<PageInformation> pis = sd.fetchBookmarks(this.bookCode);
+        BookMarkItemModel bookMarkItemModel;
+        for (int i = 0; i < pis.size(); i++) {
+            PageInformation pi = pis.get(i);
+            int ci = pi.chapterIndex;
+            if (rv.isRTL()) {
+                ci = rv.getNumberOfChapters() - ci - 1;
+            }
+            String chapterTitle = rv.getChapterTitle(ci);
+            if (chapterTitle == null || chapterTitle.isEmpty()) chapterTitle = "Chapter " + ci;
+
+            bookMarkItemModel = new BookMarkItemModel(chapterTitle, pi.datetime, "", pi.code, pi);
+            contentList.add(bookMarkItemModel);
+        }
+        bookContentAdapter.setBookContentListener(this);
+        bookContentAdapter.notifyDataSetChanged();
+    }
+
+    private void fillBookHighlightsList(List<BookMarkItemModel> contentList, RecyclerBookContentAdapter bookContentAdapter) {
+        contentList.clear();
+        BookMarkItemModel bookMarkItemModel;
+        Highlights highlights = sd.fetchAllHighlights(this.bookCode);
+        for (int i = 0; i < highlights.getSize(); i++) {
+            Highlight highlight = highlights.getHighlight(i);
+
+            int ci = highlight.chapterIndex;
+            if (rv.isRTL()) {
+                ci = rv.getNumberOfChapters() - ci - 1;
+            }
+            String chapterTitle = rv.getChapterTitle(ci);
+            if (chapterTitle == null || chapterTitle.isEmpty()) chapterTitle = "Chapter " + ci;
+
+
+            bookMarkItemModel = new BookMarkItemModel(chapterTitle, highlight.datetime,
+                    highlight.text, highlight.code, highlight);
+            contentList.add(bookMarkItemModel);
+        }
+        bookContentAdapter.setBookContentListener(this);
+        bookContentAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void openChapter(int indexChapter) {
+        int index = indexChapter;
+        NavPoints nps = rv.getNavPoints();
+        targetNavPoint = nps.getNavPoint(index);
+        new Handler().postDelayed(new Runnable() {
+            public void run() {
+                isPagesHidden = false;
+                showPages();
+                rv.gotoPageByNavPoint(targetNavPoint);
+            }
+        }, 200);
+        getFragmentManager().beginTransaction().remove(getFragmentManager().
+                findFragmentById(R.id.content_book_settings)).commit();
+    }
+
+    PageInformation targetPI = null;
+
+    @Override
+    public void openMarkupPage(Object pageInformation) {
+        PageInformation pi = (PageInformation) pageInformation;
+        targetPI = pi;
+        new Handler().postDelayed(new Runnable() {
+            public void run() {
+                isPagesHidden = false;
+                showPages();
+                rv.gotoPageByPagePositionInBook(targetPI.pagePositionInBook);
+            }
+        }, 200);
+        getFragmentManager().beginTransaction().remove(getFragmentManager().
+                findFragmentById(R.id.content_book_settings)).commit();
+    }
+
+    Highlight targetHighlight = null;
+
+    @Override
+    public void openHighlight(Object highlightItem) {
+        Log.d("eeeeee", "openHighlight");
+        Highlight highlight = (Highlight) highlightItem;
+        targetHighlight = highlight;
+        new Handler().postDelayed(new Runnable() {
+            public void run() {
+                isPagesHidden = false;
+                showPages();
+                rv.gotoPageByHighlight(targetHighlight);
+            }
+        }, 200);
+        getFragmentManager().beginTransaction().remove(getFragmentManager().
+                findFragmentById(R.id.content_book_settings)).commit();
+    }
+
+    @Override
+    public void removeHighlight(int id) {
+        Toast.makeText(this, "removeHighlight", Toast.LENGTH_SHORT).show();
+        sd.deleteBookmarkByCode(id);
+        getFragmentManager().beginTransaction().remove(getFragmentManager().
+                findFragmentById(R.id.content_book_settings)).commit();
+    }
+
 
     class ButtonHighlighterOnTouchListener implements OnTouchListener {
         final Button button;
@@ -1631,177 +1789,6 @@ public class BookViewActivity extends Activity {
         });
     }
 
-    public void makeFontBox() {
-        int boxColor = Color.rgb(241, 238, 229);
-        int innerBoxColor = Color.rgb(246, 244, 239);
-        int inlineColor = Color.rgb(133, 105, 75);
-
-        int width = 450;
-        int height = 500;
-        fontBox = new SkyBox(this);
-        fontBox.setBoxColor(boxColor);
-        fontBox.setArrowHeight(ps(25));
-        fontBox.setArrowDirection(false);
-        setFrame(fontBox, ps(50), ps(200), ps(width), ps(height));
-
-        ScrollView fontBoxScrollView = new ScrollView(this);
-        this.setFrame(fontBoxScrollView, ps(5), ps(10), ps(440), ps(height - 50));
-        fontBox.contentView.addView(fontBoxScrollView);    // NEW
-
-        SkyLayout contentLayout = new SkyLayout(this);
-        fontBoxScrollView.addView(contentLayout, new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT));
-
-        // #1 first make brightness controller
-        // brView is the box containing the bright slider.
-        int FY = 10;
-        View brView = new View(this);
-        RoundRectShape rrs = new RoundRectShape(new float[]{ps(5), ps(5), ps(5), ps(5), ps(5), ps(5), ps(5), ps(5)}, null, null);
-        SkyDrawable srd = new SkyDrawable(rrs, innerBoxColor, inlineColor, 1);
-        brView.setBackgroundDrawable(srd);
-        setFrame(brView, ps(20), ps(FY), ps(width - 40), ps(53));
-        contentLayout.addView(brView);
-        // darker and brighter icons
-        int SBS = 60;
-        ImageButton sbb = this.makeImageButton(9005, R.drawable.brightness2x, ps(SBS), ps(SBS));
-        setFrame(sbb, ps(50), ps(FY), ps(SBS), ps(SBS));
-        sbb.setAlpha(200);
-        int BBS = 70;
-        ImageButton bbb = this.makeImageButton(9006, R.drawable.brightness2x, ps(BBS), ps(BBS));
-        setFrame(bbb, ps(width - 110), ps(FY - 5), ps(BBS), ps(BBS));
-        bbb.setAlpha(200);
-        contentLayout.addView(sbb);
-        contentLayout.addView(bbb);
-        // making bright slider
-        brightBar = new SeekBar(this);
-        brightBar.setMax(999);
-        brightBar.setId(997);
-        brightBar.setBackgroundColor(Color.TRANSPARENT);
-        brightBar.setOnSeekBarChangeListener(new SeekBarDelegate());
-        brightBar.setProgressDrawable(new LineDrawable(Color.rgb(160, 160, 160), ps(10)));
-        brightBar.setThumbOffset(-1);
-        setFrame(brightBar, ps(100), ps(FY + 4), ps(width - 210), ps(50));
-        contentLayout.addView(brightBar);
-
-
-        // #2 second make decrese/increse font size buttons
-        // decrease font size Button
-        int FBY = 80;
-        decreaseButton = new Button(this);
-        setFrame(decreaseButton, ps(20), ps(FBY), ps(width - 40 - 20) / 2, ps(60));
-        decreaseButton.setText(getString(R.string.chara));
-        decreaseButton.setGravity(Gravity.CENTER);
-        decreaseButton.setTextSize(14);
-        decreaseButton.setId(5000);
-        RoundRectShape drs = new RoundRectShape(new float[]{ps(5), ps(5), ps(5), ps(5), ps(5), ps(5), ps(5), ps(5)}, null, null);
-        SkyDrawable drd = new SkyDrawable(drs, innerBoxColor, inlineColor, 1);
-        decreaseButton.setBackgroundDrawable(drd);
-        decreaseButton.setOnClickListener(listener);
-        decreaseButton.setOnTouchListener(new ButtonHighlighterOnTouchListener(decreaseButton));
-        contentLayout.addView(decreaseButton);
-        // inccrease font size Button
-        increaseButton = new Button(this);
-        setFrame(increaseButton, ps(10 + width / 2), ps(FBY), ps(width - 40 - 20) / 2, ps(60));
-        increaseButton.setText(getString(R.string.chara));
-        increaseButton.setTextSize(18);
-        increaseButton.setGravity(Gravity.CENTER);
-        increaseButton.setId(5001);
-        RoundRectShape irs = new RoundRectShape(new float[]{ps(5), ps(5), ps(5), ps(5), ps(5), ps(5), ps(5), ps(5)}, null, null);
-        SkyDrawable ird = new SkyDrawable(irs, innerBoxColor, inlineColor, 1);
-        increaseButton.setBackgroundDrawable(ird);
-        increaseButton.setOnClickListener(listener);
-        increaseButton.setOnTouchListener(new ButtonHighlighterOnTouchListener(increaseButton));
-        contentLayout.addView(increaseButton);
-
-        // # 3 make the button to increase/decrese line spacing.
-        int LBY = 145;
-        // deccrease line space Button
-        decreaseLineSpaceButton = this.makeImageButton(9005, R.drawable.decline2x, ps(30), ps(30));
-        setFrame(decreaseLineSpaceButton, ps(20), ps(LBY), ps(width - 40 - 20) / 2, ps(60));
-        decreaseLineSpaceButton.setId(4000);
-        drs = new RoundRectShape(new float[]{ps(5), ps(5), ps(5), ps(5), ps(5), ps(5), ps(5), ps(5)}, null, null);
-        drd = new SkyDrawable(drs, innerBoxColor, inlineColor, 1);
-        decreaseLineSpaceButton.setBackgroundDrawable(drd);
-        decreaseLineSpaceButton.setOnClickListener(listener);
-        decreaseLineSpaceButton.setOnTouchListener(new ImageButtonHighlighterOnTouchListener(decreaseLineSpaceButton));
-        contentLayout.addView(decreaseLineSpaceButton);
-        // inccrease line space Button
-        increaseLineSpaceButton = this.makeImageButton(9005, R.drawable.incline2x, ps(30), ps(30));
-        setFrame(increaseLineSpaceButton, ps(10 + width / 2), ps(LBY), ps(width - 40 - 20) / 2, ps(60));
-        increaseLineSpaceButton.setId(4001);
-        irs = new RoundRectShape(new float[]{ps(5), ps(5), ps(5), ps(5), ps(5), ps(5), ps(5), ps(5)}, null, null);
-        ird = new SkyDrawable(irs, innerBoxColor, inlineColor, 1);
-        increaseLineSpaceButton.setBackgroundDrawable(ird);
-        increaseLineSpaceButton.setOnClickListener(listener);
-        increaseLineSpaceButton.setOnTouchListener(new ImageButtonHighlighterOnTouchListener(increaseLineSpaceButton));
-        contentLayout.addView(increaseLineSpaceButton);
-
-
-        // #4 make themes selector.
-        int TY = 220;
-        int TH = 70;
-        int TW = (width - 40 - 20) / 3;
-
-        HorizontalScrollView themeScrollView = new HorizontalScrollView(this);
-        themesView = new LinearLayout(this);
-        themesView.setOrientation(LinearLayout.HORIZONTAL);
-
-        themeScrollView.addView(themesView, new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
-
-        for (int i = 0; i < this.themes.size(); i++) {
-            Theme theme = themes.get(i);
-            Button themeButton = new Button(this);
-            LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(ps(TW), ps(TH));
-            layoutParams.setMargins(0, 0, 24, 0);
-            themesView.addView(themeButton, layoutParams);
-            RoundRectShape rs = new RoundRectShape(new float[]{ps(5), ps(5), ps(5), ps(5), ps(5), ps(5), ps(5), ps(5)}, null, null);
-            SkyDrawable brd = new SkyDrawable(rs, theme.backgroundColor, Color.BLACK, 1);
-            themeButton.setBackgroundDrawable(brd);
-            themeButton.setText(theme.name);
-            themeButton.setTextColor(theme.foregroundColor);
-            themeButton.setId(7000 + i);
-            themeButton.setOnClickListener(listener);
-        }
-
-        this.setFrame(themeScrollView, ps(20), ps(TY), ps(width - 40), ps(90));
-        contentLayout.addView(themeScrollView);
-
-        // #5 font list box
-        int SY = 310;
-        int fontButtonHeight = 80;
-        int fontListHeight;
-        fontListHeight = fontButtonHeight * fonts.size();
-        fontListView = new LinearLayout(this);
-        fontListView.setOrientation(LinearLayout.VERTICAL);
-        contentLayout.addView(fontListView);
-        this.setFrame(fontListView, ps(20), ps(SY), ps(width - 40), ps(fontListHeight));
-        int inlineColor2 = Color.argb(140, 133, 105, 75);
-
-        for (int i = 0; i < fonts.size(); i++) {
-            CustomFont customFont = fonts.get(i);
-            Button fontButton = new Button(this);
-            fontButton.setText(customFont.fontFaceName);
-            fontButton.setTextSize(20);
-            Typeface tf = null;
-            if (customFont.fontFileName == null || customFont.fontFileName.isEmpty()) {
-                tf = this.getTypeface(customFont.fontFaceName, Typeface.BOLD);
-            } else {
-                tf = Typeface.createFromAsset(getAssets(), "fonts/" + customFont.fontFileName);
-            }
-            if (tf != null) fontButton.setTypeface(tf);
-            fontButton.setId(5100 + i);
-            RoundRectShape rs = new RoundRectShape(new float[]{ps(5), ps(5), ps(5), ps(5), ps(5), ps(5), ps(5), ps(5)}, null, null);
-            SkyDrawable brd = new SkyDrawable(rs, innerBoxColor, inlineColor2, 1);
-            fontButton.setBackgroundDrawable(brd);
-            this.setFrame(fontButton, ps(0), ps(0), ps(width - 40), ps(fontButtonHeight));
-            fontListView.addView(fontButton);
-            fontButton.setOnClickListener(listener);
-            fontButton.setOnTouchListener(new ButtonHighlighterOnTouchListener(fontButton));
-        }
-
-        this.ePubView.addView(fontBox);
-        this.hideFontBox();
-    }
-
     public Typeface getTypeface(String fontName, int fontStyle) {
         Typeface tf = null;
         if (fontName.toLowerCase().contains("book")) {
@@ -1843,8 +1830,6 @@ public class BookViewActivity extends Activity {
     }
 
     public void hideFontBox() {
-        fontBox.setVisibility(View.INVISIBLE);
-        fontBox.setVisibility(View.GONE);
         isBoxesShown = false;
         this.hideOutsideButton();
     }
@@ -1880,128 +1865,13 @@ public class BookViewActivity extends Activity {
                 top = ps(120);
             }
         }
-
-        fontBox.setVisibility(View.VISIBLE);
         int sh = this.getHeight() - ps(240);
         int rh = sh - ps(150);
-        this.setFrame(fontBox, left, top, ps(width), ps(height));
-        fontBox.setArrowHeight(ps(25));
-        fontBox.setArrowPosition(pxr(160), left, ps(width));
-        brightBar.setProgress((int) (setting.brightness * 999));
 
         this.checkSettings();
     }
 
-    public void makeListBox() {
-        this.listBox = new SkyLayout(this);
-        listBox.setBackgroundColor(Color.TRANSPARENT);
-//		listBox.setBackgroundColor(this.themes.get(this.themeIndex).backgroundColor | 0xD0000000);
-        listTopButton = new Button(this);
-        listTopButton.setId(9009);
-        listTopButton.setOnClickListener(listener);
-        listTopButton.setBackgroundColor(Color.TRANSPARENT);
-
-        GradientDrawable gradForChecked = new GradientDrawable(Orientation.TOP_BOTTOM, new int[]{0xff407ee6, 0xff6ca2f9});
-        GradientDrawable grad = new GradientDrawable(Orientation.TOP_BOTTOM, new int[]{0xfff4f4f4, 0xffcdcdcd});
-        this.contentListButton = new Button(this);
-        this.contentListButton.setId(2700);
-        this.contentListButton.setOnClickListener(listener);
-        this.contentListButton.setText(getString(R.string.contents));
-        this.contentListButton.setTextSize(13);
-
-        this.bookmarkListButton = new Button(this);
-        this.bookmarkListButton.setId(2701);
-        this.bookmarkListButton.setOnClickListener(listener);
-        this.bookmarkListButton.setText(getString(R.string.bookmark));
-        this.bookmarkListButton.setTextSize(13);
-
-        this.highlightListButton = new Button(this);
-        this.highlightListButton.setId(2702);
-        this.highlightListButton.setOnClickListener(listener);
-        this.highlightListButton.setText(getString(R.string.highlight));
-        this.highlightListButton.setTextSize(13);
-
-        this.listScrollView = new ScrollView(this);
-        this.listView = new LinearLayout(this);
-        listView.setOrientation(LinearLayout.VERTICAL);
-
-        this.listBox.addView(listTopButton);
-        this.listBox.addView(contentListButton);
-        this.listBox.addView(bookmarkListButton);
-        this.listBox.addView(highlightListButton);
-
-        this.listBox.addView(listScrollView);
-        this.listScrollView.addView(listView, new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT));
-
-        this.ePubView.addView(this.listBox);
-        this.hideListBox();
-    }
-
-    public void hideListBox() {
-        listBox.setVisibility(View.INVISIBLE);
-        listBox.setVisibility(View.GONE);
-        isBoxesShown = false;
-        this.hideOutsideButton();
-    }
-
-
-    public void showListBox() {
-        isBoxesShown = true;
-        this.showOutsideButton();
-        int lx, ly, lw, lh;
-        if (this.isDoublePagedForLandscape && !this.isPortrait()) {
-            lw = this.getWidth() / 2;
-            lh = this.getHeight();
-            lx = this.getWidth() / 2;
-            ly = 0;
-        } else {
-            lx = 0;
-            ly = 0;
-            lw = this.getWidth();
-            lh = this.getHeight();
-        }
-        this.setFrame(listBox, lx, ly, lw, lh);
-
-        float tbh = .1f;    // topButton height ratio;
-        float bgy = .12f;    // buttons guide line y ratio
-        float bhr = .15f;
-        float lgx = .1f;    // left guide line x ratio
-        float sgty = .22f;    // scrollBox top ratio
-        float sgby = .1f;    // scrollBox bottom ratio
-
-        int bh = ps(50); // button height;
-
-        this.setFrame(listTopButton, 0, 0, lw, (int) (lh * tbh));    // topButton to hide listBox
-        this.setFrame(contentListButton, (int) (lw * lgx), (int) (lh * bgy), (int) ((lw - (lw * lgx * 2)) / 3), bh);
-        this.setFrame(bookmarkListButton, (int) (lw * lgx) + (int) ((lw - (lw * lgx * 2)) / 3), (int) (lh * bgy), (int) ((lw - (lw * lgx * 2)) / 3), bh);
-        this.setFrame(highlightListButton, (int) (lw * lgx) + (int) ((lw - (lw * lgx * 2)) / 3) * 2, (int) (lh * bgy), (int) ((lw - (lw * lgx * 2)) / 3), bh);
-
-        this.setFrame(this.listScrollView, (int) (lw * lgx), (int) (lh * sgty), (int) (lw - (lw * lgx * 2)), (int) (lh - (lh * sgty + lh * sgby)));
-
-        this.checkListButton(listSelectedIndex);
-        this.listBox.setVisibility(View.VISIBLE);
-    }
-
     int listSelectedIndex = 0;
-
-    public void checkListButton(int index) {
-        GradientDrawable gradChecked = new GradientDrawable(Orientation.TOP_BOTTOM, new int[]{0xff407ee6, 0xff6ca2f9});
-        gradChecked.setStroke(ps(1), Color.BLUE);
-        GradientDrawable grad = new GradientDrawable(Orientation.TOP_BOTTOM, new int[]{0xfff4f4f4, 0xffcdcdcd});
-        grad.setStroke(ps(1), Color.LTGRAY);
-        listSelectedIndex = index;
-        Button buttons[] = {contentListButton, bookmarkListButton, highlightListButton};
-        for (int i = 0; i < buttons.length; i++) {
-            Button button = buttons[i];
-            button.setBackgroundDrawable(grad);
-        }
-        Button target = buttons[index];
-        target.setBackgroundDrawable(gradChecked);
-        // show contents..
-        if (listSelectedIndex == 0) fillContentsList();
-        else if (listSelectedIndex == 1) fillBookmarkList();
-        else if (listSelectedIndex == 2) fillHighlightList();
-    }
 
     private void displayNavPoints() {
         NavPoints nps = rv.getNavPoints();
@@ -2020,24 +1890,6 @@ public class BookViewActivity extends Activity {
         }
     }
 
-    public void fillContentsList() {
-        this.listView.removeAllViews();
-        NavPoints nps = rv.getNavPoints();
-        for (int i = 0; i < nps.getSize(); i++) {
-            NavPoint np = nps.getNavPoint(i);
-            Button contentButton = new Button(this);
-            contentButton.setBackgroundColor(Color.TRANSPARENT);
-            contentButton.setText(np.text);
-            Theme theme = getCurrentTheme();
-            contentButton.setTextColor(theme.foregroundColor);
-            contentButton.setTextSize(14);
-            contentButton.setGravity(Gravity.LEFT);
-            contentButton.setId(i);
-            contentButton.setOnClickListener(contentDelegate);
-            listView.addView(contentButton);
-            debug("" + i + ":" + np.text);
-        }
-    }
 
     NavPoint targetNavPoint = null;
     private OnClickListener contentDelegate = new OnClickListener() {
@@ -2059,61 +1911,6 @@ public class BookViewActivity extends Activity {
         }
     };
 
-
-    public void fillBookmarkList() {
-        this.listView.removeAllViews();
-        ArrayList<PageInformation> pis = sd.fetchBookmarks(this.bookCode);
-        for (int i = 0; i < pis.size(); i++) {
-            int textColor = Color.BLACK;
-            Theme theme = getCurrentTheme();
-            textColor = theme.foregroundColor;
-            PageInformation pi = pis.get(i);
-            SkyLayout item = new SkyLayout(this);
-            setFrame(item, 0, 0, listBox.getWidth(), ps(80));
-            ImageButton mark = this.makeImageButton(9898, R.drawable.bookmarked2x, ps(50), ps(90));
-            item.addView(mark);
-            setFrame(mark, ps(10), ps(5), ps(60), ps(120));
-            int ci = pi.chapterIndex;
-            if (rv.isRTL()) {
-                ci = rv.getNumberOfChapters() - ci - 1;
-            }
-            String chapterTitle = rv.getChapterTitle(ci);
-            if (chapterTitle == null || chapterTitle.isEmpty()) chapterTitle = "Chapter " + ci;
-            TextView chapterLabel = this.makeLabel(9899, chapterTitle, Gravity.LEFT, 16, textColor);
-            setFrame(chapterLabel, ps(80), ps(5), this.listBox.getWidth() - ps(80), ps(40));
-            item.addView(chapterLabel);
-            TextView dateLabel = this.makeLabel(9899, pi.datetime, Gravity.LEFT, 12, textColor);
-            setFrame(dateLabel, this.listBox.getWidth() - ps(50 + 250), ps(48), this.listBox.getWidth() - ps(40), ps(40));
-            View lineView = new View(this);
-            lineView.setBackgroundColor(Color.LTGRAY);
-            setFrame(lineView, 0, ps(79), this.listBox.getWidth(), ps(1));
-            item.addView(dateLabel);
-            item.addView(lineView);
-            item.setSkyLayoutListener(bookmarkListDelegate);
-            item.setId(pi.code);
-            item.data = pi;
-
-            Button deleteButton = new Button(this);
-            GradientDrawable grad = new GradientDrawable(Orientation.TOP_BOTTOM, new int[]{0xffcf666e, 0xff671521});
-            grad.setStroke(ps(2), 0xff282828);
-            deleteButton.setBackgroundDrawable(grad);
-            deleteButton.setText(getString(R.string.delete));
-            deleteButton.setTextSize(12);
-            deleteButton.setTypeface(null, Typeface.BOLD);
-            deleteButton.setTextColor(Color.WHITE);
-            deleteButton.setId(pi.code);
-            deleteButton.setVisibility(View.INVISIBLE);
-            deleteButton.setVisibility(View.GONE);
-            deleteButton.setOnClickListener(deleteBookmarkDelegate);
-            int dw = ps(120);
-            int dh = ps(50);
-            setFrame(deleteButton, this.listView.getWidth() - dw, (ps(80) - dh) / 2, dw, dh);
-            item.deleteControl = deleteButton;
-            item.addView(deleteButton);
-
-            this.listView.addView(item);
-        }
-    }
 
     View tempView;
     Drawable tempDrawable;
@@ -2195,6 +1992,7 @@ public class BookViewActivity extends Activity {
             SkyDrawable ed = new SkyDrawable(rs, Color.TRANSPARENT, Color.TRANSPARENT, ps(1));
             blinkBackground(view, sd, ed);
             targetPI = pi;
+            Log.d("rrrrrrrrr", String.valueOf(targetPI.pagePositionInBook));
             new Handler().postDelayed(new Runnable() {
                 public void run() {
                     isPagesHidden = false;
@@ -2205,81 +2003,6 @@ public class BookViewActivity extends Activity {
         }
     };
 
-    public void fillHighlightList() {
-        Theme theme = getCurrentTheme();
-        int textColor = theme.foregroundColor;
-        this.listView.removeAllViews();
-        Highlights highlights = sd.fetchAllHighlights(this.bookCode);
-        for (int i = 0; i < highlights.getSize(); i++) {
-            Highlight highlight = highlights.getHighlight(i);
-            SkyLayout item = new SkyLayout(this);
-            int ci = highlight.chapterIndex;
-            if (rv.isRTL()) {
-                ci = rv.getNumberOfChapters() - ci - 1;
-            }
-            String chapterTitle = rv.getChapterTitle(ci);
-            if (chapterTitle == null || chapterTitle.isEmpty()) chapterTitle = "Chapter " + ci;
-
-            TextView chapterLabel = this.makeLabel(9899, chapterTitle, Gravity.LEFT, 16, textColor);
-            setFrame(chapterLabel, ps(20), ps(5), this.listView.getWidth() - ps(20), ps(40));
-            item.addView(chapterLabel);
-
-            GradientDrawable textGrad = new GradientDrawable(Orientation.TOP_BOTTOM, new int[]{getBrighterColor(highlight.color), getDarkerColor(highlight.color)});
-            TextView textLabel = this.makeLabel(9899, highlight.text, Gravity.LEFT, 16, Color.BLACK);
-            setFrame(textLabel, ps(20), ps(5 + 40 + 5), this.listView.getWidth() - ps(20), ps(70));
-            textLabel.setBackgroundDrawable(textGrad);
-            textLabel.getBackground().setAlpha(180);
-
-            item.addView(textLabel);
-
-            int noteHeight = 0;
-
-            if (highlight.isNote && highlight.note != null && highlight.note.length() != 0 && !highlight.note.equalsIgnoreCase("null")) {
-                TextView noteLabel = this.makeLabel(9899, highlight.note, Gravity.LEFT, 16, Color.BLACK);
-                noteLabel.setTextColor(getDarkerColor(highlight.color));
-                noteHeight = 70;
-                setFrame(noteLabel, ps(20), ps(5 + 40 + 5 + 70 + 5), this.listView.getWidth() - ps(20), ps(noteHeight));
-                item.addView(noteLabel);
-            }
-
-            TextView dateLabel = this.makeLabel(9899, highlight.datetime, Gravity.RIGHT, 12, textColor);
-            int lw = this.listView.getWidth();
-            setFrame(dateLabel, 0, ps(5 + 40 + 5 + 70 + 5 + noteHeight + 5), lw, ps(40));
-            item.addView(dateLabel);
-
-            int itemHeight = ps(5 + 40 + 5 + 90 + 5 + noteHeight + 5 + 15 + 5);
-
-            View lineView = new View(this);
-            lineView.setBackgroundColor(Color.LTGRAY);
-            setFrame(lineView, 0, itemHeight - ps(1), this.listView.getWidth(), ps(1));
-            item.addView(lineView);
-
-            setFrame(item, 0, 0, listView.getWidth(), itemHeight);
-            item.setSkyLayoutListener(highlightListDelegate);
-            item.setId(highlight.code);
-            item.data = highlight;
-
-            Button deleteButton = new Button(this);
-            GradientDrawable grad = new GradientDrawable(Orientation.TOP_BOTTOM, new int[]{0xffcf666e, 0xff671521});
-            grad.setStroke(ps(2), 0xff282828);
-            deleteButton.setBackgroundDrawable(grad);
-            deleteButton.setText(getString(R.string.delete));
-            deleteButton.setTypeface(null, Typeface.BOLD);
-            deleteButton.setTextColor(Color.WHITE);
-            deleteButton.setTextSize(12);
-            deleteButton.setId(highlight.code);
-            deleteButton.setVisibility(View.INVISIBLE);
-            deleteButton.setVisibility(View.GONE);
-            deleteButton.setOnClickListener(deleteHighlightDelegate);
-            int dw = ps(120);
-            int dh = ps(50);
-            setFrame(deleteButton, this.listView.getWidth() - dw, (itemHeight - dh) / 2, dw, dh);
-            item.deleteControl = deleteButton;
-            item.addView(deleteButton);
-
-            this.listView.addView(item);
-        }
-    }
 
     private void beep(int ms) {
         Vibrator vibe = (Vibrator) this.getSystemService(Context.VIBRATOR_SERVICE);
@@ -2560,36 +2283,24 @@ public class BookViewActivity extends Activity {
     }
 
     public void showControls() {
-        this.rotationButton.setVisibility(View.VISIBLE);
-        this.listButton.setVisibility(View.VISIBLE);
-        this.fontButton.setVisibility(View.VISIBLE);
-        if (!rv.isScrollMode()) this.searchButton.setVisibility(View.VISIBLE);
 //        if (!rv.isPaging()) this.seekBar.setVisibility(View.VISIBLE);
-//        if (!rv.isPaging()) mCustomSeekBarLayout.setVisibility(View.VISIBLE);
-//        if (!rv.isPaging()) mMenuBookLayout.setVisibility(View.VISIBLE);
-//        if (!rv.isPaging()) titleLabel.setVisibility(View.VISIBLE);
+        if (!rv.isPaging()) mCustomSeekBarLayout.setVisibility(View.VISIBLE);
+        if (!rv.isPaging()) mMenuBookLayout.setVisibility(View.VISIBLE);
+        if (!rv.isPaging()) titleLabel.setVisibility(View.VISIBLE);
         if (!rv.isPaging()) {
             Log.d("qqqqqqqqqq", "animatio");
-            AnimUtil.showAnim(mMenuBookLayout, titleLabel, mCustomSeekBarLayout, this);
+//            AnimUtil.showAnim(mMenuBookLayout, titleLabel, mCustomSeekBarLayout, this);
         }
     }
 
     public void hideControls() {
-        this.rotationButton.setVisibility(View.INVISIBLE);
-        this.rotationButton.setVisibility(View.GONE);
-        this.listButton.setVisibility(View.INVISIBLE);
-        this.listButton.setVisibility(View.GONE);
-        this.fontButton.setVisibility(View.INVISIBLE);
-        this.fontButton.setVisibility(View.GONE);
-        this.searchButton.setVisibility(View.INVISIBLE);
-        this.searchButton.setVisibility(View.GONE);
-//        mCustomSeekBarLayout.setVisibility(View.INVISIBLE);
+        mCustomSeekBarLayout.setVisibility(View.INVISIBLE);
 //        mCustomSeekBarLayout.setVisibility(View.GONE);
 //        this.seekBar.setVisibility(View.INVISIBLE);
 //        this.seekBar.setVisibility(View.GONE);
-        AnimUtil.hideAnim(mMenuBookLayout, titleLabel, mCustomSeekBarLayout, this);
-//        mMenuBookLayout.setVisibility(View.GONE);
-//        titleLabel.setVisibility(View.GONE);
+//        AnimUtil.hideAnim(mMenuBookLayout, titleLabel, mCustomSeekBarLayout, this);
+        mMenuBookLayout.setVisibility(View.INVISIBLE);
+        titleLabel.setVisibility(View.INVISIBLE);
     }
 
     public boolean isAboveIcecream() {
@@ -2611,14 +2322,8 @@ public class BookViewActivity extends Activity {
     }
 
     public void removeControls() {
-        rv.customView.removeView(rotationButton);
         rv.customView.removeView(titleLabel);
         rv.customView.removeView(authorLabel);
-
-        ePubView.removeView(rotationButton);
-        ePubView.removeView(listButton);
-        ePubView.removeView(fontButton);
-        ePubView.removeView(searchButton);
 
         ePubView.removeView(pageIndexLabel);
         ePubView.removeView(secondaryIndexLabel);
@@ -2631,17 +2336,8 @@ public class BookViewActivity extends Activity {
         Theme theme = getCurrentTheme();
 
         int bs = 38;
-        if (this.isRotationLocked)
-            rotationButton = this.makeImageButton(9000, R.drawable.rotationlocked2x, ps(42), ps(42));
-        else rotationButton = this.makeImageButton(9000, R.drawable.rotation2x, ps(42), ps(42));
-        listButton = this.makeImageButton(0, R.drawable.list2x, getPS(bs), getPS(bs));
-        fontButton = this.makeImageButton(0, R.drawable.font2x, getPS(bs), getPS(bs));
-        searchButton = this.makeImageButton(0, R.drawable.search2x, getPS(bs), getPS(bs));
-        rotationButton.setOnTouchListener(new ImageButtonHighlighterOnTouchListener(rotationButton));
-        listButton.setOnTouchListener(new ImageButtonHighlighterOnTouchListener(listButton));
-        fontButton.setOnTouchListener(new ImageButtonHighlighterOnTouchListener(fontButton));
-        searchButton.setOnTouchListener(new ImageButtonHighlighterOnTouchListener(searchButton));
 
+        /// id for rotation bu
         mImageBookContent.setId(9001);
         mImageBookContent.setOnClickListener(listener);
         mImageBookSetting.setId(9002);
@@ -2657,57 +2353,18 @@ public class BookViewActivity extends Activity {
         titleLabel.setId(3000);
         pageIndexLabel.setId(3000);
         secondaryIndexLabel.setId(3000);
-//		rv.customView.addView(rotationButton);
-//		rv.customView.addView(listButton);
-//		rv.customView.addView(fontButton);
-//		rv.customView.addView(searchButton);
-//        rv.customView.addView(titleLabel);
         rv.customView.addView(authorLabel);
 
-        ePubView.addView(rotationButton);
-        ePubView.addView(listButton);
-        ePubView.addView(fontButton);
-        if (!rv.isScrollMode()) ePubView.addView(searchButton);
-//		ePubView.addView(titleLabel);
-//		ePubView.addView(authorLabel);
-
-//        ePubView.addView(pageIndexLabel);
-//        ePubView.addView(secondaryIndexLabel);
-
-//        seekBar = new SkySeekBar(this);
         seekBar.setMax(999);
         seekBar.setId(999);
-//        RectShape rectShape = new RectShape();
-//        ShapeDrawable thumb = new ShapeDrawable(rectShape);
 //
-//        thumb.getPaint().setColor(theme.seekThumbColor);
-//        thumb.setIntrinsicHeight(getPS(28));
-//        thumb.setIntrinsicWidth(getPS(28));
-//        Drawable drawableThumb = ContextCompat.getDrawable(this, R.drawable.thumb);
-//        Drawable drawableBackground = ContextCompat.getDrawable(this, R.drawable.seek_bar_background);
-//        Drawable drawableProgress = ContextCompat.getDrawable(this, R.drawable.seek_bar_progress_fill);
-//        seekBar.setThumb(drawableThumb);
-//        seekBar.setThumb(thumb);
-//        seekBar.setBackgroundColor(Color.BLUE);
         seekBar.setOnSeekBarChangeListener(new SeekBarDelegate());
-//        seekBar.setBackgroundResource(R.drawable.seek_bar_background);
-//        seekBar.setProgressDrawable(drawableProgress);
-//        seekBar.setProgressDrawable(new DottedDrawable(theme.seekBarColor));
-//        seekBar.setThumbOffset(-3);
-//        seekBar.setMinimumHeight(24);
 
         int filterColor = theme.controlColor;
-        rotationButton.setColorFilter(filterColor);
-        listButton.setColorFilter(filterColor);
-        fontButton.setColorFilter(filterColor);
-        searchButton.setColorFilter(filterColor);
 
         authorLabel.setTextColor(filterColor);
         titleLabel.setTextColor(filterColor);
-//        pageIndexLabel.setTextColor(filterColor);
-//        secondaryIndexLabel.setTextColor(filterColor);
 
-//        ePubView.addView(seekBar);
     }
 
     public void makePagingView() {
@@ -2743,25 +2400,12 @@ public class BookViewActivity extends Activity {
 
         if (!this.isTablet()) {                // for phones   					- tested with Galaxy S2, Galaxy S3, Galaxy S4
             if (this.isPortrait()) {
-                this.setLocation(rotationButton, pxl(20), pyt(15 - 2));
-                this.setLocation(listButton, pxl(20 + (48 + 5) * 1), pyt(15));
-                this.setLocation(searchButton, pxr(40 + (48 + 5) * 3), pyt(15));
-                this.setLocation(fontButton, pxr(40 + (48 + 5) * 2), pyt(15));
-
-
-//                this.setFrame(seekBar, seekLeft, pyb(125), seekWidth, ps(36));
                 int brx = 36 + (44) * 1;
                 int bry = 23;
                 bookmarkRect = new Rect(pxr(brx), pyt(bry), pxr(brx - 40), pyt(bry + 40));
                 bookmarkedRect = new Rect(pxr(brx), pyt(bry), pxr(brx - 38), pyt(bry + 70));
             } else {
                 int sd = ps(40);
-                this.setLocation(rotationButton, pxl(10), pyt(5 - 2));
-                this.setLocation(listButton, pxl(10 + (48 + 5) * 1), pyt(5));
-                this.setLocation(searchButton, pxr(60 + (48 + 5) * 3), pyt(5));
-                this.setLocation(fontButton, pxr(60 + (48 + 5) * 2), pyt(5));
-
-//                this.setFrame(seekBar, seekLeft, pyb(108), seekWidth, ps(36));
                 int brx = 40 + (48 + 12) * 1;
                 int bry = 14;
                 bookmarkRect = new Rect(pxr(brx), pyt(bry), pxr(brx - 40), pyt(bry + 40));
@@ -2773,13 +2417,6 @@ public class BookViewActivity extends Activity {
                 int rx = 100;
                 int oy = 30;
 
-                this.setLocation(rotationButton, pxl(ox), pyt(oy - 2));
-                this.setLocation(listButton, pxl(ox + (65) * 1), pyt(oy));
-                this.setLocation(searchButton, pxr(rx + (65) * 3), pyt(oy));
-                this.setLocation(fontButton, pxr(rx + (65) * 2), pyt(oy));
-
-
-//                this.setFrame(seekBar, seekLeft, pyb(140), seekWidth, ps(45));
                 int brx = rx - 10 + (44) * 1;
                 int bry = oy + 10;
                 bookmarkRect = new Rect(pxr(brx), pyt(bry), pxr(brx - 50), pyt(bry + 50));
@@ -2790,23 +2427,12 @@ public class BookViewActivity extends Activity {
                 int rx = 130;
                 int oy = 20;
 
-                this.setLocation(rotationButton, pxl(ox), pyt(oy - 2));
-                this.setLocation(listButton, pxl(ox + (65) * 1), pyt(oy));
-                this.setLocation(searchButton, pxr(rx + (65) * 3), pyt(oy));
-                this.setLocation(fontButton, pxr(rx + (65) * 2), pyt(oy));
-
-
-//                this.setFrame(seekBar, seekLeft, pyb(123), seekWidth, ps(45));
-
                 int brx = rx - 20 + (48 + 12) * 1;
                 int bry = oy + 10;
                 bookmarkRect = new Rect(pxr(brx), pyt(bry), pxr(brx - 40), pyt(bry + 40));
                 bookmarkedRect = new Rect(pxr(brx), pyt(bry), pxr(brx - 38), pyt(bry + 70));
             }
         }
-//        LinearLayout.LayoutParams sl = (LinearLayout.LayoutParams) ePubView.getLayoutParams();
-//        LinearLayout.LayoutParams sl = (LinearLayout.LayoutParams) seekBar.getLayoutParams();
-//        this.setFrame(pagingView, sl.leftMargin, sl.topMargin, sl.width, sl.height);
 
 //        this.recalcLabelsLayout();
         this.enableControlAfterPagination();
@@ -2986,6 +2612,74 @@ public class BookViewActivity extends Activity {
         lp.screenBrightness = brightness;
         getWindow().setAttributes(lp);
     }
+
+    @Override
+    public void changeScreenBrightness(int progress) {
+        setting.brightness = (float) progress / (float) 999.f;
+        setBrightness((float) setting.brightness);
+    }
+
+    @Override
+    public void increaseLineSpacing() {
+        if (this.setting.lineSpacing != 4) {
+            this.setting.lineSpacing++;
+            this.checkSettings();
+            rv.changeLineSpacing(this.getRealLineSpace(setting.lineSpacing));
+        }
+    }
+
+    @Override
+    public void dicreaseLineSpacing() {
+        if (this.setting.lineSpacing != 0) {
+            this.setting.lineSpacing--;
+            this.checkSettings();
+            rv.changeLineSpacing(this.getRealLineSpace(setting.lineSpacing));
+        }
+    }
+
+    @Override
+    public void increaseFontSize() {
+        if (this.setting.fontSize != 4) {
+            this.setting.fontSize++;
+            rv.changeFont(setting.fontName, this.getRealFontSize(setting.fontSize));
+        }
+        this.checkSettings();
+    }
+
+    @Override
+    public void dicreaseFontSize() {
+        if (this.setting.fontSize != 0) {
+            this.setting.fontSize--;
+            rv.changeFont(setting.fontName, this.getRealFontSize(setting.fontSize));
+        }
+        this.checkSettings();
+    }
+
+    @Override
+    public void checkSettingsBook() {
+    }
+
+    @Override
+    public void applyThemeBook(int themeIndex) {
+        if (themeIndex > themes.size() - 1 || themeIndex < 0) return;
+        this.setThemeIndex(themeIndex);
+        this.applyThemeToRV(themeIndex);
+        this.applyThemeToUI(themeIndex);
+        this.recalcFrames();
+        this.processPageMoved(rv.getPageInformation());
+    }
+
+    @Override
+    public void applyBookFont(int fontIndex) {
+        CustomFont customFont = this.getCustomFont(fontIndex);
+        String name = customFont.getFullName();
+        if (!setting.fontName.equalsIgnoreCase(name)) {
+            setting.fontName = name;
+            checkSettings();
+            rv.changeFont(setting.fontName, this.getRealFontSize(setting.fontSize));
+        }
+    }
+
 
     public boolean isPortrait() {
         int orientation = getResources().getConfiguration().orientation;
@@ -3209,7 +2903,6 @@ public class BookViewActivity extends Activity {
         icon.setBounds(0, 0, bs, bs);
         Bitmap iconBitmap = ((BitmapDrawable) icon).getBitmap();
         Bitmap bitmapResized = Bitmap.createScaledBitmap(iconBitmap, bs, bs, false);
-        rotationButton.setImageBitmap(bitmapResized);
     }
 
     private void changePlayAndPauseButton() {
@@ -3232,16 +2925,10 @@ public class BookViewActivity extends Activity {
     boolean isPagesHidden = false;
 
     private void hidePages() {
-        this.rotationButton.setVisibility(View.INVISIBLE);
-        this.fontButton.setVisibility(View.INVISIBLE);
-        this.searchButton.setVisibility(View.INVISIBLE);
         this.seekBar.setVisibility(View.INVISIBLE);
         this.pageIndexLabel.setVisibility(View.INVISIBLE);
         this.mediaBox.setVisibility(View.INVISIBLE);
 
-        this.rotationButton.setVisibility(View.GONE);
-        this.fontButton.setVisibility(View.GONE);
-        this.searchButton.setVisibility(View.GONE);
         this.seekBar.setVisibility(View.GONE);
         this.pageIndexLabel.setVisibility(View.GONE);
         this.mediaBox.setVisibility(View.GONE);
@@ -3250,15 +2937,11 @@ public class BookViewActivity extends Activity {
             this.secondaryIndexLabel.setVisibility(View.INVISIBLE);
             this.secondaryIndexLabel.setVisibility(View.GONE);
         }
-        this.showListBox();
         rv.hidePages();
         rv.setVisibility(View.INVISIBLE);
     }
 
     private void showPages() {
-        this.rotationButton.setVisibility(View.VISIBLE);
-        this.fontButton.setVisibility(View.VISIBLE);
-        this.searchButton.setVisibility(View.VISIBLE);
         this.seekBar.setVisibility(View.VISIBLE);
         this.pageIndexLabel.setVisibility(View.VISIBLE);
         if (!this.isPortrait() && this.isDoublePagedForLandscape) {
@@ -3268,7 +2951,6 @@ public class BookViewActivity extends Activity {
         if (rv.isMediaOverlayAvailable() && setting.mediaOverlay) {
             this.mediaBox.setVisibility(View.VISIBLE);
         }
-        this.hideListBox();
         rv.showPages();
         rv.setVisibility(View.VISIBLE);
     }
@@ -3385,8 +3067,10 @@ public class BookViewActivity extends Activity {
                 rotationPressed();
             } else if (arg.getId() == 9001 || arg.getId() == 9009) {    // listPressed
                 listPressed();
+                openBookContent();
             } else if (arg.getId() == 9002) {    // fontPressed
                 fontPressed();
+                openBookSetting();
             } else if (arg.getId() == 9003) {    // searchPressed
                 searchPressed();
             }
@@ -3476,11 +3160,11 @@ public class BookViewActivity extends Activity {
 
             // list processing
             if (arg.getId() == 2700) {
-                checkListButton(0);
+//                checkListButton(0);
             } else if (arg.getId() == 2701) {
-                checkListButton(1);
+//                checkListButton(1);
             } else if (arg.getId() == 2702) {
-                checkListButton(2);
+//                checkListButton(2);
             }
 
             // list processing
@@ -3527,60 +3211,7 @@ public class BookViewActivity extends Activity {
     }
 
     public void checkSettings() {
-        if (this.setting.fontSize == 0) {
-            decreaseButton.setTextColor(Color.LTGRAY);
-        } else {
-            decreaseButton.setTextColor(Color.BLACK);
-        }
 
-        if (this.setting.fontSize == 4) {
-            increaseButton.setTextColor(Color.LTGRAY);
-        } else {
-            increaseButton.setTextColor(Color.BLACK);
-        }
-
-
-        increaseLineSpaceButton.setEnabled(true);
-        decreaseLineSpaceButton.setEnabled(true);
-        increaseLineSpaceButton.setColorFilter(Color.BLACK);
-        decreaseLineSpaceButton.setColorFilter(Color.BLACK);
-        if (this.setting.lineSpacing == 4) {
-            increaseLineSpaceButton.setEnabled(false);
-            increaseLineSpaceButton.setColorFilter(Color.LTGRAY);
-        }
-
-        if (this.setting.lineSpacing == 0) {
-            decreaseLineSpaceButton.setEnabled(false);
-            decreaseLineSpaceButton.setColorFilter(Color.LTGRAY);
-        }
-
-
-        int fontIndex = this.getFontIndex(setting.fontName);
-        for (int i = 0; i < fontListView.getChildCount(); i++) {
-            Button button = (Button) fontListView.getChildAt(i);
-            button.setTextColor(Color.BLACK);
-
-        }
-        for (int i = 0; i < fontListView.getChildCount(); i++) {
-            Button button = (Button) fontListView.getChildAt(i);
-            if (button.getId() == (fontIndex + 5100)) {
-                button.setTextColor(Color.BLUE);
-            }
-        }
-
-        for (int i = 0; i < themesView.getChildCount(); i++) {
-            Button button = (Button) themesView.getChildAt(i);
-            Typeface tf = null;
-            int size = 13;
-            if (button.getId() == (themeIndex + 7000)) {
-                tf = this.getTypeface(setting.fontName, Typeface.BOLD);
-                size = 18;
-            } else {
-                tf = this.getTypeface(setting.fontName, Typeface.NORMAL);
-            }
-            button.setTypeface(tf);
-            button.setTextSize(size);
-        }
     }
 
 
@@ -3669,7 +3300,6 @@ public class BookViewActivity extends Activity {
         this.hideNoteBox();
         this.hideSearchBox();
         this.hideFontBox();
-        this.hideListBox();
         if (isPagesHidden) this.showPages();
     }
 
@@ -4170,12 +3800,6 @@ public class BookViewActivity extends Activity {
         setIndexLabelsText(-1, -1); // do not display.
 
         Theme theme = this.getCurrentTheme();
-        rotationButton.setColorFilter(theme.controlHighlightColor);
-        searchButton.setColorFilter(theme.controlHighlightColor);
-        fontButton.setColorFilter(theme.controlHighlightColor);
-        rotationButton.setEnabled(false);
-        searchButton.setEnabled(false);
-        fontButton.setEnabled(false);
         mCustomSeekBarLayout.setVisibility(View.INVISIBLE);
 //        seekBar.setVisibility(View.INVISIBLE);
     }
@@ -4187,12 +3811,6 @@ public class BookViewActivity extends Activity {
         setIndexLabelsText(pi, tn);
 
         Theme theme = this.getCurrentTheme();
-        rotationButton.setColorFilter(theme.controlColor);
-        searchButton.setColorFilter(theme.controlColor);
-        fontButton.setColorFilter(theme.controlColor);
-        rotationButton.setEnabled(true);
-        searchButton.setEnabled(true);
-        fontButton.setEnabled(true);
         mCustomSeekBarLayout.setVisibility(View.VISIBLE);
 //        seekBar.setVisibility(View.VISIBLE);
         if (rv.isGlobalPagination()) {
@@ -4479,7 +4097,7 @@ public class BookViewActivity extends Activity {
     @Override
     protected void onPause() {
         super.onPause();
-//		log("onPause() in BookViewActivity");
+        Log.d("eee", "onPause() in BookViewActivity");
         sd.updatePosition(bookCode, pagePositionInBook);
         sd.updateSetting(setting);
 
@@ -4490,11 +4108,6 @@ public class BookViewActivity extends Activity {
         this.enableHaptic();
     }
 
-    @Override
-    protected void onStop() {
-        super.onStop();
-//		log("onStop() in BookViewActivity");
-    }
 
     @Override
     protected void onRestart() {
@@ -4509,12 +4122,6 @@ public class BookViewActivity extends Activity {
 
         rv.playFirstParallelInPage();
         this.disableHaptic();
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-//		log("onStart() in BookViewActivity");
     }
 
     @Override
