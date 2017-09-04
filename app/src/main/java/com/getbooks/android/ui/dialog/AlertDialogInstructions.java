@@ -10,8 +10,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.ImageView;
 
 import com.getbooks.android.R;
@@ -36,8 +38,9 @@ public class AlertDialogInstructions extends DialogFragment {
         WebView myBrowser = (WebView)v.findViewById(R.id.webview);
         myBrowser.setHorizontalScrollBarEnabled(false);
         myBrowser.setVerticalScrollBarEnabled(false);
-//        WebSettings webSettings = myBrowser.getSettings();
-//        webSettings.setJavaScriptEnabled(true);
+        WebSettings webSettings = myBrowser.getSettings();
+        webSettings.setJavaScriptEnabled(true);
+        myBrowser.setWebViewClient(new WebViewClient());
         myBrowser.loadUrl("https://pelephone.getbooks.co.il/dev/how-it-works");
 
         close = (ImageView) v.findViewById(R.id.img_close_catalog);

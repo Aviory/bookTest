@@ -24,6 +24,7 @@ import android.widget.Toast;
 import android.widget.ToggleButton;
 
 import com.getbooks.android.Const;
+import com.getbooks.android.GetbooksInternalStorage;
 import com.getbooks.android.R;
 import com.getbooks.android.api.Queries;
 import com.getbooks.android.api.QueriesTexts;
@@ -72,6 +73,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -199,6 +203,26 @@ public class LibraryActivity extends BaseActivity implements Queries.CallBack,
         imgReadDate.setOnClickListener(this);
         txtAddDate.setOnClickListener(this);
         imgAddDate.setOnClickListener(this);
+
+        GetbooksInternalStorage fileManager = new GetbooksInternalStorage();
+        fileManager.execute();
+        try {
+            List<File> mInternalLibrary = fileManager.get(3, TimeUnit.SECONDS);
+            Log.d("Files in ui size: ", String.valueOf(mInternalLibrary.size()));
+            if(mInternalLibrary!=null){
+                for (File file:mInternalLibrary) {
+                    BookModel tmp = new BookModel();
+                    tmp.setBookName(file.getName());
+                    mLibrary.add(tmp);
+                }
+            }
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (TimeoutException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override

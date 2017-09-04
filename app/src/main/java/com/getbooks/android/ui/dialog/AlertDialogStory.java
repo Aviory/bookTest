@@ -14,6 +14,7 @@ import android.view.Window;
 import android.webkit.CookieManager;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.ImageView;
 
 import com.getbooks.android.Const;
@@ -46,9 +47,9 @@ public class AlertDialogStory extends DialogFragment {
         myBrowser = (WebView)v.findViewById(R.id.webview);
         myBrowser.setHorizontalScrollBarEnabled(false);
         myBrowser.setVerticalScrollBarEnabled(false);
-//        WebSettings webSettings = myBrowser.getSettings();
-//        webSettings.setJavaScriptEnabled(true);
-
+        WebSettings webSettings = myBrowser.getSettings();
+        webSettings.setJavaScriptEnabled(true);
+        myBrowser.setWebViewClient(new WebViewClient());
         HashMap<String, String> map = new HashMap<String, String>();
         String token = Prefs.getToken(getActivity());
         LogUtil.log(this, "token: "+token);
