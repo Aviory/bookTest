@@ -181,7 +181,7 @@ public class BookSettingMenuFragment extends Fragment implements View.OnTouchLis
     }
 
     @Override
-    public void appleFont(int fontIndex) {
+    public void applyFont(int fontIndex) {
         mChangeBookSettingListener.applyBookFont(fontIndex);
     }
 

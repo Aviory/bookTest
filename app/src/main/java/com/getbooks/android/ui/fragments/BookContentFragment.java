@@ -74,6 +74,7 @@ public class BookContentFragment extends Fragment implements SelectorOfBookConte
         mSelectorOfBookContents.setOnItemSelectedListener(this);
         mBookContentList = new ArrayList<>();
         initShelvesRecycler(mBookContentList);
+        mFillBookContentListener.fillBookContentList(0, mBookContentList, mBookContentAdapter);
 
         if (getArguments() != null) {
 //            Bundle bundle = getArguments();

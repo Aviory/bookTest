@@ -14,6 +14,7 @@ public final class Const {
 
     //Authorization constant
     public static final String AUTH_URL = "https://pelephone.getbooks.co.il/dev/customer/account/login/";
+//    public static final String AUTH_URL = "http://pelelogin.getbooks.co.il/";
     public static final String REDIRECT_URL = "https://pelephone.getbooks.co.il/dev/customer/account/";
 
 
