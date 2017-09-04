@@ -2,10 +2,14 @@ package com.getbooks.android.util;
 
 import android.animation.Animator;
 import android.app.Activity;
+import android.content.ClipData;
+import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.os.Handler;
 import android.os.Looper;
+import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -13,6 +17,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.getbooks.android.R;
+import com.getbooks.android.reader.UnderlinedTextView;
 import com.getbooks.android.ui.dialog.MaterialDialog;
 
 import java.io.UnsupportedEncodingException;
@@ -130,4 +135,55 @@ public class UiUtil {
         context.startActivity(intent);
         if (isCloseCurrentActivity) context.finish();
     }
+
+
+    ///////////////////////////
+    public static void setBackColorToTextView(UnderlinedTextView textView, String type) {
+        Context context = textView.getContext();
+        if (type.equals("highlight-yellow")) {
+            textView.setBackgroundColor(ContextCompat.getColor(context,
+                    R.color.yellow));
+            textView.setUnderlineWidth(0.0f);
+        } else if (type.equals("highlight-green")) {
+            textView.setBackgroundColor(ContextCompat.getColor(context,
+                    R.color.green));
+            textView.setUnderlineWidth(0.0f);
+        } else if (type.equals("highlight-blue")) {
+            textView.setBackgroundColor(ContextCompat.getColor(context,
+                    R.color.blue));
+            textView.setUnderlineWidth(0.0f);
+        } else if (type.equals("highlight-pink")) {
+            textView.setBackgroundColor(ContextCompat.getColor(context,
+                    R.color.pink));
+            textView.setUnderlineWidth(0.0f);
+        } else if (type.equals("highlight-underline")) {
+            textView.setUnderLineColor(ContextCompat.getColor(context,
+                    android.R.color.holo_red_dark));
+            textView.setUnderlineWidth(2.0f);
+        }
+    }
+
+    public static float convertDpToPixel(float dp, Context context) {
+        Resources resources = context.getResources();
+        DisplayMetrics metrics = resources.getDisplayMetrics();
+        float px = dp * ((float) metrics.densityDpi / DisplayMetrics.DENSITY_DEFAULT);
+        return px;
+    }
+
+    public static void copyToClipboard(Context context, String text) {
+        ClipboardManager clipboard =
+                (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
+        ClipData clip = ClipData.newPlainText("copy", text);
+        clipboard.setPrimaryClip(clip);
+    }
+
+    public static void share(Context context, String text) {
+        Intent sendIntent = new Intent();
+        sendIntent.setAction(Intent.ACTION_SEND);
+        sendIntent.putExtra(Intent.EXTRA_TEXT, text);
+        sendIntent.setType("text/plain");
+        context.startActivity(Intent.createChooser(sendIntent,
+                context.getResources().getText(R.string.send_to)));
+    }
+
 }

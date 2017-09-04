@@ -101,10 +101,10 @@ public class Queries {
                     library.addAll(checkDownloadedBook(allLibraryBookModels, userId, context));
                     return library;
                 })
-                .doOnUnsubscribe(() -> {
-                    LogUtil.log(this, "OnUnsubscribe");
-
-                })
+//                .doOnUnsubscribe(() -> {
+//                    LogUtil.log(this, "OnUnsubscribe");
+//
+//                })
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe(new Subscriber<List<BookModel>>() {

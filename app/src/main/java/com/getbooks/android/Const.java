@@ -34,9 +34,15 @@ public final class Const {
     public static final String BOOKS_DIRECTORY = "GetBooks";
     public static final String BOOK_PATH = "book_path";
     public static final String BOOK_NAME = "book_name";
+    public static final int PORT_NUMBER = 8080;
+    public static final String LOCALHOST = "http://127.0.0.1:" + PORT_NUMBER + "/";
 
     //right menu const
     public static final String SERVISE_PRIVASY_RIGHT_BTN_TEXT_ID = "4808";
     public static final String SERVISE_PRIVASY_LEFT_BTN_TEXT_ID = "4984";
     public static final String ABOUT_US_TEXT_ID = "4972";
+
+
+
+
 }
