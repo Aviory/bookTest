@@ -14,7 +14,6 @@ import android.widget.RadioButton;
 import com.getbooks.android.Const;
 import com.getbooks.android.R;
 import com.getbooks.android.model.Text;
-import com.getbooks.android.ui.adapter.RecyclerBookContent;
 import com.getbooks.android.ui.adapter.RecyclerBookContentAdapter;
 import com.getbooks.android.ui.adapter.ServicePrivacyAdapter;
 
