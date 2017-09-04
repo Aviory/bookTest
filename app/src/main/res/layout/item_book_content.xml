@@ -5,6 +5,7 @@
     android:layout_marginTop="10dp"
     android:layout_marginBottom="10dp"
     android:layout_gravity="center"
+    android:id="@+id/layout_chapter_item"
     android:orientation="vertical">
 
     <com.getbooks.android.ui.widget.ArialNormalTextView

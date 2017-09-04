@@ -13,5 +13,11 @@
     <color name="color_white_transluent">#63ffffff</color>
     <color name="color_black">#ff001436</color>
     <color name="color_bege_light">#f1f1f2</color>
+    <color name="yellow">#FFEB6B</color>
+    <color name="green">#C0ED72</color>
+    <color name="pink">#FFB0CA</color>
+    <color name="gray_text">#B6B6B6</color>
+    <color name="red">#ff0000</color>
+    <color name="transparent_black">#80000000</color>
 </resources>
 
