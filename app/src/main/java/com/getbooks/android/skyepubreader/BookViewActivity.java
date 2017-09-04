@@ -179,9 +179,6 @@ public class BookViewActivity extends Activity implements BookSettingMenuFragmen
     SkyBox seekBox;
     TextView seekLabel;
 
-//    SkyBox menuBox;
-    Button highlightMenuButton;
-    Button noteMenuButton;
     Rect boxFrame;
 
     SkyBox highlightBox;
@@ -492,14 +489,14 @@ public class BookViewActivity extends Activity implements BookSettingMenuFragmen
         themes.add(new Theme("white", Color.BLACK, 0xffffffff,
                 Color.argb(240, 94, 61, 35), Color.LTGRAY, Color.argb(240, 94, 61, 35),
                 Color.argb(120, 160, 124, 95), Color.DKGRAY, 0x22222222,
-                "Phone-Portrait-White.png", "Phone-Landscape-White.png",
-                "Phone-Landscape-Double-White.png", R.drawable.add_bookmark));
+                "white_book_background.png", "white_book_background.png",
+                "white_book_background.png", R.drawable.add_bookmark));
         themes.add(new Theme("brown", Color.BLACK, 0xffece3c7, Color.argb(240, 94, 61, 35),
                 Color.argb(255, 255, 255, 255), Color.argb(240, 94, 61, 35), Color.argb(120, 160, 124, 95),
-                Color.DKGRAY, 0x22222222, "Phone-Portrait-Brown.png", "Phone-Landscape-Brown.png",
-                "Phone-Landscape-Double-Brown.png", R.drawable.add_bookmark));
+                Color.DKGRAY, 0x22222222, "beige_book_background.png", "beige_book_background.png",
+                "beige_book_background.png", R.drawable.add_bookmark));
         themes.add(new Theme("black", Color.LTGRAY, 0xff323230, Color.LTGRAY, Color.LTGRAY, Color.LTGRAY,
-                Color.LTGRAY, Color.LTGRAY, 0x77777777, null, null, "Phone-Landscape-Double-Black.png",
+                Color.LTGRAY, Color.LTGRAY, 0x77777777, null, null, "black_book_background.png",
                 R.drawable.add_bookmark));
 //        themes.add(new Theme("Leaf", 0xFF1F7F0E, 0xffF8F7EA, 0xFF186D08, Color.LTGRAY, 0xFF186D08, 0xFF186D08,
 //                Color.DKGRAY, 0x22222222, null, null, null, R.drawable.bookmark2x));
@@ -919,7 +916,7 @@ public class BookViewActivity extends Activity implements BookSettingMenuFragmen
         if (closeContentMenuSetting.isSettingMenuContentShow()) {
             mBookSettingsLayoutContent.setVisibility(View.VISIBLE);
         } else {
-            mBookSettingsLayoutContent.setVisibility(View.INVISIBLE);
+            mBookSettingsLayoutContent.setVisibility(View.GONE);
         }
     }
 
@@ -1106,8 +1103,7 @@ public class BookViewActivity extends Activity implements BookSettingMenuFragmen
                 rv.gotoPageByNavPoint(targetNavPoint);
             }
         }, 200);
-        getFragmentManager().beginTransaction().remove(getFragmentManager().
-                findFragmentById(R.id.content_book_settings)).commit();
+        closeSettingsMenu();
     }
 
     PageInformation targetPI = null;
@@ -1123,16 +1119,14 @@ public class BookViewActivity extends Activity implements BookSettingMenuFragmen
                 rv.gotoPageByPagePositionInBook(targetPI.pagePositionInBook);
             }
         }, 200);
-        getFragmentManager().beginTransaction().remove(getFragmentManager().
-                findFragmentById(R.id.content_book_settings)).commit();
+        closeSettingsMenu();
     }
 
     @Override
     public void removeMarkup(int id) {
         Toast.makeText(this, "removeMarkup", Toast.LENGTH_SHORT).show();
         sd.deleteBookmarkByCode(id);
-        getFragmentManager().beginTransaction().remove(getFragmentManager().
-                findFragmentById(R.id.content_book_settings)).commit();
+        closeSettingsMenu();
     }
 
     Highlight targetHighlight = null;
@@ -1149,8 +1143,7 @@ public class BookViewActivity extends Activity implements BookSettingMenuFragmen
                 rv.gotoPageByHighlight(targetHighlight);
             }
         }, 200);
-        getFragmentManager().beginTransaction().remove(getFragmentManager().
-                findFragmentById(R.id.content_book_settings)).commit();
+        closeSettingsMenu();
     }
 
     @Override
@@ -1158,8 +1151,7 @@ public class BookViewActivity extends Activity implements BookSettingMenuFragmen
         Toast.makeText(this, "removeHighlight", Toast.LENGTH_SHORT).show();
         Highlight highlight = (Highlight) object;
         rv.deleteHighlight(highlight);
-        getFragmentManager().beginTransaction().remove(getFragmentManager().
-                findFragmentById(R.id.content_book_settings)).commit();
+        closeSettingsMenu();
     }
 
 
@@ -1312,25 +1304,22 @@ public class BookViewActivity extends Activity implements BookSettingMenuFragmen
         highlightBox.contentView.addView(trashButtonInHighlightBox);
         highlightBox.contentView.addView(shareButtonInHighlightBox);
 
-//		rv.customView.addView(highlightBox);
         ePubView.addView(highlightBox);
         this.hideHighlightBox();
     }
 
     public void showHighlightBox() {
-        Toast.makeText(this, "showHighlightBox", Toast.LENGTH_SHORT).show();
         this.showOutsideButton();
         this.setFrame(highlightBox, boxFrame.left, boxFrame.top, boxFrame.width(), boxFrame.height());
         highlightBox.setArrowDirection(isArrowDown);
         highlightBox.arrowPosition = arrowPosition;
-        highlightBox.arrowHeight = mLayoutHighlightMenu.getHeight();
+        highlightBox.arrowHeight = ps(25);
         highlightBox.boxColor = ContextCompat.getColor(this, R.color.blue);
         highlightBox.setVisibility(View.VISIBLE);
         isBoxesShown = true;
     }
 
     public void showHighlightBox(Rect startRect, Rect endRect) {
-        Toast.makeText(this, "showHighlightBox!!!", Toast.LENGTH_SHORT).show();
         this.showOutsideButton();
         highlightBox.setVisibility(View.VISIBLE);
         this.moveSkyBox(highlightBox, ps(280), ps(85), startRect, endRect);
@@ -1402,17 +1391,13 @@ public class BookViewActivity extends Activity implements BookSettingMenuFragmen
     }
 
     public void showMenuBox(Rect startRect, Rect endRect) {
-//        menuBox.setVisibility(View.VISIBLE);
+        this.moveSkyBox(mLayoutHighlightMenu, ps(280), ps(85), startRect, endRect);
+//        this.moveSkyBox(mLayoutHighlightMenu, mLayoutHighlightMenu.getWidth(), mLayoutHighlightMenu.getHeight(), startRect, endRect);
         mLayoutHighlightMenu.setVisibility(View.VISIBLE);
-//        this.moveSkyBox(menuBox, ps(280), ps(85), startRect, endRect);
-        this.moveHighlightMenu(mLayoutHighlightMenu, ps(280), ps(85), startRect, endRect);
         isBoxesShown = true;
     }
 
     public void hideMenuBox() {
-//        if (menuBox.getVisibility() != View.VISIBLE) return;
-//        menuBox.setVisibility(View.INVISIBLE);
-//        menuBox.setVisibility(View.GONE);
         if (mLayoutHighlightMenu.getVisibility() != View.VISIBLE) return;
         mLayoutHighlightMenu.setVisibility(View.GONE);
         isBoxesShown = false;
@@ -2040,20 +2025,6 @@ public class BookViewActivity extends Activity implements BookSettingMenuFragmen
     }
 
 
-    private OnClickListener deleteHighlightDelegate = new OnClickListener() {
-        public void onClick(View arg) {
-            int targetCode = arg.getId();
-            for (int i = 0; i < listView.getChildCount(); i++) {
-                SkyLayout view = (SkyLayout) listView.getChildAt(i);
-                if (view.getId() == targetCode) {
-                    Highlight target = (Highlight) view.data;
-                    listView.removeViewAt(i);
-                    rv.deleteHighlight(target);
-                }
-            }
-        }
-    };
-
     private SkyLayoutListener highlightListDelegate = new SkyLayoutListener() {
         @Override
         public void onShortPress(SkyLayout view, MotionEvent e) {
@@ -2170,15 +2141,20 @@ public class BookViewActivity extends Activity implements BookSettingMenuFragmen
         this.changePlayAndPauseButton();
     }
 
-    public void moveSkyBox(SkyBox box, int boxWidth, int boxHeight, Rect startRect, Rect endRect) {
-        RelativeLayout.LayoutParams params =
-                (RelativeLayout.LayoutParams) box.getLayoutParams();
+    public void moveSkyBox(Object box, int boxWidth, int boxHeight, Rect startRect, Rect endRect) {
+        RelativeLayout.LayoutParams params = null;
+        if (box instanceof SkyBox) {
+            SkyBox skyBox = (SkyBox) box;
+            params = (RelativeLayout.LayoutParams) skyBox.getLayoutParams();
+        } else if (box instanceof LinearLayout) {
+            LinearLayout linearLayout = (LinearLayout) box;
+            params = (RelativeLayout.LayoutParams) linearLayout.getLayoutParams();
+        }
         int topMargin = ps(80);
         int bottomMargin = ps(80);
         int boxTop = 0;
         int boxLeft = 0;
         int arrowX;
-        boolean isArrowDown;
 
         if (startRect.top - topMargin > boxHeight) {
             boxTop = startRect.top - boxHeight - ps(10);
@@ -2203,14 +2179,27 @@ public class BookViewActivity extends Activity implements BookSettingMenuFragmen
             boxLeft = (int) (this.getWidth() * .1);
         }
 
-        box.setArrowPosition(arrowX, boxLeft, boxWidth);
-        box.setArrowDirection(isArrowDown);
-        params.leftMargin = boxLeft;
-        params.topMargin = boxTop;
-        params.width = boxWidth;
-        params.height = boxHeight;
-        box.setLayoutParams(params);
-        box.invalidate();
+        if (box instanceof SkyBox) {
+            SkyBox skyBox = (SkyBox) box;
+            skyBox.setArrowPosition(arrowX, boxLeft, boxWidth);
+            setArrowPosition(arrowX, boxLeft, boxWidth);
+            skyBox.setArrowDirection(isArrowDown);
+            params.leftMargin = boxLeft;
+            params.topMargin = boxTop;
+            params.width = boxWidth;
+            params.height = boxHeight;
+            skyBox.setLayoutParams(params);
+            skyBox.invalidate();
+        } else if (box instanceof LinearLayout) {
+            LinearLayout linearLayout = (LinearLayout) box;
+            setArrowPosition(arrowX, boxLeft, boxWidth);
+            params.leftMargin = boxLeft;
+            params.topMargin = boxTop;
+            params.width = boxWidth;
+            params.height = boxHeight;
+            linearLayout.setLayoutParams(params);
+            linearLayout.invalidate();
+        }
 
         boxFrame = new Rect();
         boxFrame.left = boxLeft;
@@ -2225,58 +2214,6 @@ public class BookViewActivity extends Activity implements BookSettingMenuFragmen
     public void setArrowPosition(int arrowX, int boxLeft, int boxWidth) {
         this.arrowPosition = arrowX - boxLeft;
     }
-
-
-    public void moveHighlightMenu(LinearLayout box, int boxWidth, int boxHeight, Rect startRect, Rect endRect) {
-        RelativeLayout.LayoutParams params =
-                (RelativeLayout.LayoutParams) box.getLayoutParams();
-        int topMargin = ps(80);
-        int bottomMargin = ps(80);
-        int boxTop = 0;
-        int boxLeft = 0;
-        int arrowX;
-//        boolean isArrowDown;
-
-        if (startRect.top - topMargin > boxHeight) {
-            boxTop = startRect.top - boxHeight - ps(10);
-            boxLeft = (startRect.left + startRect.width() / 2 - boxWidth / 2);
-            arrowX = (startRect.left + startRect.width() / 2);
-            isArrowDown = true;
-        } else if ((this.getHeight() - endRect.bottom) - bottomMargin > boxHeight) { // ????????? ????????? ????????? ?????????.
-            boxTop = endRect.bottom + ps(10);
-            boxLeft = (endRect.left + endRect.width() / 2 - boxWidth / 2);
-            arrowX = (endRect.left + endRect.width() / 2);
-            isArrowDown = false;
-        } else {
-            boxTop = ps(100);
-            boxLeft = (startRect.left + startRect.width() / 2 - boxWidth / 2);
-            arrowX = (startRect.left + startRect.width() / 2);
-            isArrowDown = true;
-        }
-
-        if (boxLeft + boxWidth > this.getWidth() * .9) {
-            boxLeft = (int) (this.getWidth() * .9) - boxWidth;
-        } else if (boxLeft < this.getWidth() * .1) {
-            boxLeft = (int) (this.getWidth() * .1);
-        }
-
-        setArrowPosition(arrowX, boxLeft, boxWidth);
-//        box.setArrowPosition(arrowX, boxLeft, boxWidth);
-//        box.setArrowDirection(isArrowDown);
-        params.leftMargin = boxLeft;
-        params.topMargin = boxTop;
-        params.width = boxWidth;
-        params.height = boxHeight;
-//        box.setLayoutParams(params);
-//        box.invalidate();
-
-        boxFrame = new Rect();
-        boxFrame.left = box.getLeft();
-        boxFrame.top = box.getTop();
-        boxFrame.right = box.getRight();
-        boxFrame.bottom = box.getBottom();
-    }
-
 
     public ImageButton makeImageButton(int id, int resId, int width, int height) {
         RelativeLayout.LayoutParams param = new RelativeLayout.LayoutParams(
@@ -2657,6 +2594,8 @@ public class BookViewActivity extends Activity implements BookSettingMenuFragmen
 //        secondaryIndexLabel.setText(st);
         mPercentPagesSeekBar.setText(per);
         mCurrentTextPageSeekBar.setText(pt);
+        mPercentPagesSeekBar.setVisibility(View.VISIBLE);
+        mCurrentTextPageSeekBar.setVisibility(View.VISIBLE);
     }
 
     class SeekBarDelegate implements OnSeekBarChangeListener {
@@ -2939,6 +2878,8 @@ public class BookViewActivity extends Activity implements BookSettingMenuFragmen
         setting = sd.fetchSetting();
         ButterKnife.bind(this);
         registerSkyReceiver(); // New in SkyEpub SDK 7.x
+        mPercentPagesSeekBar.setVisibility(View.INVISIBLE);
+        mCurrentTextPageSeekBar.setVisibility(View.INVISIBLE);
         this.makeFullScreen();
         this.makeLayout();
     }
@@ -4475,7 +4416,7 @@ class SkyBox extends RelativeLayout {
 
         paint.setColor(this.strokeColor);
         paint.setStyle(Paint.Style.STROKE);
-        paint.setStrokeWidth(2);
+        paint.setStrokeWidth(5);
         boxPath.addPath(arrowPath);
         canvas.drawPath(boxPath, paint);
 
@@ -4567,57 +4508,6 @@ class DottedDrawable extends Drawable {
     @Override
     public void setColorFilter(ColorFilter cf) {
         // TODO Auto-generated method stub
-    }
-}
-
-class LineDrawable extends Drawable {
-    private Paint mPaint;
-    private int mColor;
-    private int mStrokeWidth;
-
-    public LineDrawable(int color, int strokeWidth) {
-        mPaint = new Paint();
-        mPaint.setStrokeWidth(3);
-        mColor = color;
-        mStrokeWidth = strokeWidth;
-    }
-
-    @Override
-    protected boolean onLevelChange(int level) {
-        invalidateSelf();
-        return true;
-    }
-
-    @Override
-    public void setAlpha(int alpha) {
-    }
-
-    public void setColor(int color) {
-        this.mColor = color;
-    }
-
-    public void setStokeWidth(int strokeWidth) {
-        mStrokeWidth = strokeWidth;
-    }
-
-    @Override
-    public int getOpacity() {
-        return PixelFormat.TRANSLUCENT;
-    }
-
-    @Override
-    public void draw(Canvas canvas) {
-        Rect b = getBounds();
-        mPaint.setColor(mColor);
-        mPaint.setStrokeWidth(mStrokeWidth);
-        mPaint.setStyle(Paint.Style.FILL);
-        canvas.drawLine(0, b.height() / 2 + b.height() * 0.1f, b.width(), b.height() / 2 + b.height() * .1f, mPaint);
-    }
-
-    @Override
-    public void setColorFilter(ColorFilter cf) {
-        // TODO Auto-generated method stub
-
     }
 }
 
