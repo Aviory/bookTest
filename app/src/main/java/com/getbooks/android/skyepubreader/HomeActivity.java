@@ -110,7 +110,6 @@ public class HomeActivity extends Activity {
     LinearLayout homeView = null;
     RelativeLayout topView = null;
     View dummyView = null;
-    SkyDatabase sd;
     SkyUtility st;
     final private String TAG = "EPub";
 

@@ -1,6 +1,7 @@
 package com.getbooks.android.skyepubreader;
 
 import java.io.File;
+import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.URLDecoder;
@@ -15,6 +16,7 @@ import com.getbooks.android.ui.adapter.RecyclerBookContentAdapter;
 import com.getbooks.android.ui.fragments.BookContentFragment;
 import com.getbooks.android.ui.fragments.BookSettingMenuFragment;
 import com.getbooks.android.ui.widget.CustomSeekBar;
+import com.getbooks.android.util.FileUtil;
 import com.skytree.epub.Book;
 import com.skytree.epub.BookmarkListener;
 import com.skytree.epub.Caret;
@@ -198,6 +200,8 @@ public class BookViewActivity extends Activity implements BookSettingMenuFragmen
     EditText searchEditor;
     ScrollView searchScrollView;
     LinearLayout searchResultView;
+    String bookPath;
+    String directoryPath;
 
 
     String fontNames[] = {"Book Fonts", "Sans Serif", "Serif", "Monospace"};
@@ -470,7 +474,12 @@ public class BookViewActivity extends Activity implements BookSettingMenuFragmen
 
     public void onDestroy() {
         // Stop loading the ad.
-        this.unregisterSkyReceiver(); // New in SkyEpub sdk 7.x
+        this.unregisterSkyReceiver();// New in SkyEpub sdk 7.x
+        try {
+            FileUtil.deleteDecryptedBook(directoryPath, fileName);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         super.onDestroy();
     }
 
@@ -585,7 +594,8 @@ public class BookViewActivity extends Activity implements BookSettingMenuFragmen
         // Be sure that the file exists before setting.
 //        rv.setBookPath(SkySetting.getStorageDirectory() + "/books/" + fileName);
         Log.d("ssssssssss", SkySetting.getStorageDirectory() + "/books/" + fileName);
-        String bookPath = bundle.getString("DERECTORYPATH") +"/"+ fileName;
+        directoryPath = bundle.getString("DERECTORYPATH") +"/";
+        bookPath = bundle.getString("DERECTORYPATH") +"/"+ fileName;
         rv.setBookPath(bookPath);
 
         // if true, double pages will be displayed on landscape mode.
