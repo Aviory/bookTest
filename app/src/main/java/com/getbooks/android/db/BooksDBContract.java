@@ -41,6 +41,69 @@ public class BooksDBContract {
         String LAST_READING_PARAGRAPH = "LastReadingParagraph";
         String BOOK_CREATED_DATE = "BookCreatedDate";
         String BOOK_IS_FIRST_OPEN = "IsBookFirstOpen";
+        String TYPE = "type";
+        String POSITION = "position";
+        String IS_GLOBAL_PAGINATION = "isGlobalPagination";
+        String IS_VERTICAL_WRITING = "isVerticalWriting";
+        String ETC = "etc";
+        String SPREAD = "spread";
+        String ORIENTATION = "orientation";
+    }
+
+    interface BookSettingsColumns {
+        String USER_ID = "user_id";
+        String BOOK_CODE = "BookCode";
+        String FONT_NAME = "FontName";
+        String FONT_SIZE = "FontSize";
+        String LINE_SPACING = "LineSpacing";
+        String FOREGROUND = "Foreground";
+        String BACKGROUND = "Background";
+        String THEME = "Theme";
+        String BRIGHTNESS = "Brightness";
+        String TRANSITION_TYPE = "TransitionType";
+        String LOCK_ROTATION = "LockRotation";
+        String DOUBLE_PAGED = "DoublePaged";
+        String ALLOW3G = "Allow3G";
+        String GLOBAL_PAGINATION = "GlobalPagination";
+        String MEDIA_OVERLAY = "MediaOverlay";
+        String TTS = "TTS";
+        String AUTO_START_PLAYING = "AutoStartPlaying";
+        String AUTO_LOAD_NEW_CHAPTER = "AutoLoadNewChapter";
+        String HIGHLIGHT_TEXT_TO_VOICE = "HighlightTextToVoice";
+    }
+
+    interface HighlightsColumn {
+        String USER_ID = "user_id";
+        String BOOK_CODE = "bookCode";
+        String CODE = "code";
+        String CHAPTER_INDEX = "chapterIndex";
+        String START_INDEX = "startIndex";
+        String START_OFFSET = "startOffset";
+        String END_INDEX = "endIndex";
+        String END_OFFSET = "endOffset";
+        String COLOR = "color";
+        String TEXT = "text";
+        String NOTE = "note";
+        String IS_NOTE = "isNote";
+        String DATA_TIME = "datetime";
+        String STYLE = "style";
+    }
+
+    interface PagingColumn {
+        String USER_ID = "user_id";
+        String BOOK_CODE = "bookCode";
+        String CODE = "code";
+        String CHAPTER_INDEX = "chapterIndex";
+        String NUMBER_OF_PAGES_IN_CHAPTER = "NumberOfPagesInChapter";
+        String FONT_NAME = "FontName";
+        String FONT_SIZE = "FontSize";
+        String LINE_SPACING = "LineSpacing";
+        String WIDTH = "Width";
+        String HEIGHT = "height";
+        String VERTICAL_GAP_RATIO = "VerticalGapRatio";
+        String HORIZONTAL_GAP_RATIO = "HorizontalGapRatio";
+        String IS_PORTRAIT = "IsPortrait";
+        String IS_DOUBLE_PAGED_FOR_LANDSCAPE = "IsDoublePagedForLandscape";
     }
 
     interface BookMarkupsColumns {
@@ -56,6 +119,13 @@ public class BooksDBContract {
         String SECTION_ID = "sectionId";
         String NOTE_TEXT = "noteText";
         String BOOK_MARK_ALL = "bookmark_all";
+        String BOOK_CODE = "BookCode";
+        String CODE = "code";
+        String CHAPTER_INDEX = "chapterIndex";
+        String PAGE_POSITION_IN_CHAPTER = "pagePositionInChapter";
+        String PAGE_POSITION_IN_BOOK = "pagePositionInBook";
+        String DATE_TIME = "datetime";
+        String CREATED_DATE = "PagePositionInBook";
     }
 
     private BooksDBContract() {
@@ -78,8 +148,21 @@ public class BooksDBContract {
 
     }
 
+    public static class BookSetting implements BaseColumns, BookSettingsColumns {
+
+    }
+
     public static class BookMarkups implements BaseColumns, BookMarkupsColumns {
 
     }
 
+    public static class BookHighlights implements BaseColumns, HighlightsColumn {
+
+    }
+
+    public static class BookPaging implements BaseColumns, PagingColumn {
+
+    }
+
 }
+

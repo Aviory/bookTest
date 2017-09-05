@@ -3,7 +3,11 @@ package com.getbooks.android.db;
 import android.content.Context;
 
 import com.getbooks.android.model.BookModel;
+import com.getbooks.android.skyepubreader.SkySetting;
+import com.skytree.epub.PageInformation;
+import com.skytree.epub.PagingInformation;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -64,5 +68,45 @@ public class BookDataBaseLoader {
 
     public BookModel getCurrentBookDetailDb(int userId, String bookName) {
         return mBooksDataBase.getCurrentBookDetail(userId, bookName);
+    }
+
+    public SkySetting fetchSettingDB(){
+        return mBooksDataBase.fetchSettingFromDB();
+    }
+
+    public void upaDateSettingFromDb(SkySetting skySetting){
+        mBooksDataBase.updateSettingFromDB(skySetting);
+    }
+
+    public void insertBookMarkToDb(PageInformation pageInformation){
+        mBooksDataBase.insertBookmark(pageInformation);
+    }
+
+    public void deleteBookmarkByCodeDb(int code){
+        mBooksDataBase.deleteBookmarkByCode(code);
+    }
+
+    private void deleteBookMarksByBookCodeDb(int bookCode){
+        mBooksDataBase.deleteBookmarksByBookCode(bookCode);
+    }
+
+    public void deleteHighlightByBookCodeDb(int bookCode){
+        mBooksDataBase.deleteHighlightsByBookCode(bookCode);
+    }
+
+    public void deletePagingByBookCodeDb(int bookCode){
+        mBooksDataBase.deletePagingByBookCode(bookCode);
+    }
+
+    public int getBookMarkCodeDb(PageInformation pageInformation){
+        return mBooksDataBase.getBookmarkCode(pageInformation);
+    }
+
+    public List<PageInformation> fetchBookmarksDb(int bookCode){
+        return mBooksDataBase.fetchBookmarks(bookCode);
+    }
+
+    public PagingInformation fetchPagingInformationDb(PagingInformation pagingInformation){
+        return mBooksDataBase.fetchPagingInformation(pagingInformation);
     }
 }

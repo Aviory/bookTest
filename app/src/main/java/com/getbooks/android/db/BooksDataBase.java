@@ -8,12 +8,18 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 import com.getbooks.android.model.BookModel;
+import com.getbooks.android.skyepubreader.SkySetting;
 import com.getbooks.android.util.DateUtil;
 import com.getbooks.android.util.LogUtil;
+import com.skytree.epub.BookInformation;
+import com.skytree.epub.PageInformation;
+import com.skytree.epub.PagingInformation;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Locale;
 
 /**
  * Created by marina on 10.08.17.
@@ -32,7 +38,10 @@ public class BooksDataBase {
     public interface Tables {
         String USERS = "Users";
         String BOOK_DETAILS = "BookDetails";
-        String BOOK_MARKUPS = "BookMarkups";
+        String BOOK_SETTING = "Setting";
+        String BOOK_MARKUPS = "Markups";
+        String BOOK_HIGHLIGHT = "Highlight";
+        String BOOK_PAGING = "Paging";
     }
 
     private static final String CREATE_TABLE_USERS = new StringBuilder().append("CREATE TABLE IF NOT EXISTS ")
@@ -69,7 +78,14 @@ public class BooksDataBase {
             .append(BooksDBContract.BookDetail.BOOK_PHYSICAL_PAGE).append(" INTEGER, ")
             .append(BooksDBContract.BookDetail.LAST_READING_PARAGRAPH).append(" INTEGER, ")
             .append(BooksDBContract.BookDetail.BOOK_IS_FIRST_OPEN).append(" INTEGER, ")
-            .append(BooksDBContract.BookDetail.BOOK_CREATED_DATE).append(" DATETIME")
+            .append(BooksDBContract.BookDetail.BOOK_CREATED_DATE).append(" DATETIME, ")
+            .append(BooksDBContract.BookDetail.TYPE).append(" INTEGER, ")
+            .append(BooksDBContract.BookDetail.POSITION).append(" REAL DEFAULT 0, ")
+            .append(BooksDBContract.BookDetail.IS_GLOBAL_PAGINATION).append(" INTEGER DEFAULT 0, ")
+            .append(BooksDBContract.BookDetail.IS_VERTICAL_WRITING).append(" INTEGER DEFAULT 0, ")
+            .append(BooksDBContract.BookDetail.ETC).append(" TEXT, ")
+            .append(BooksDBContract.BookDetail.SPREAD).append(" INTEGER DEFAULT 0, ")
+            .append(BooksDBContract.BookDetail.ORIENTATION).append(" INTEGER DEFAULT 0 ")
             .append(")").toString();
 
     private static final String CREATE_TABLE_BOOK_MARKUPS = new StringBuilder().append("CREATE TABLE IF NOT EXISTS  ")
@@ -86,9 +102,96 @@ public class BooksDataBase {
             .append(BooksDBContract.BookMarkups.TEXT_LENGTH).append(" INTEGER, ")
             .append(BooksDBContract.BookMarkups.SECTION_ID).append(" INTEGER, ")
             .append(BooksDBContract.BookMarkups.NOTE_TEXT).append(" TEXT, ")
-            .append(BooksDBContract.BookMarkups.BOOK_MARK_ALL).append(" TEXT ")
+            .append(BooksDBContract.BookMarkups.BOOK_MARK_ALL).append(" TEXT, ")
+            .append(BooksDBContract.BookMarkups.BOOK_CODE).append(" INTEGER NOT NULL, ")
+            .append(BooksDBContract.BookMarkups.CODE).append(" INTEGER UNIQUE PRIMARY KEY AUTOINCREMENT NOT NULL, ")
+            .append(BooksDBContract.BookMarkups.CHAPTER_INDEX).append(" INTEGER, ")
+            .append(BooksDBContract.BookMarkups.PAGE_POSITION_IN_CHAPTER).append(" REAL, ")
+            .append(BooksDBContract.BookMarkups.PAGE_POSITION_IN_BOOK).append(" REAL, ")
+            .append(BooksDBContract.BookMarkups.DATE_TIME).append(" TEXT, ")
+            .append(BooksDBContract.BookMarkups.CREATED_DATE).append(" TEXT ")
             .append(")").toString();
 
+    private static final String CREATE_TABLE_BOOK_SETTING = new StringBuilder().append("CREATE TABLE IF NOT EXISTS  ")
+            .append(Tables.BOOK_SETTING).append("(")
+            .append(BooksDBContract.BookSetting._ID).append(" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,")
+            .append(BooksDBContract.BookSetting.USER_ID).append(" INTEGER, ")
+            .append(BooksDBContract.BookSetting.BOOK_CODE).append(" INTEGER NOT NULL, ")
+            .append(BooksDBContract.BookSetting.FONT_NAME).append(" TEXT DEFAULT '', ")
+            .append(BooksDBContract.BookSetting.FONT_SIZE).append(" INTEGER DEFAULT 2, ")
+            .append(BooksDBContract.BookSetting.LINE_SPACING).append(" INTEGER DEFAULT -1, ")
+            .append(BooksDBContract.BookSetting.FOREGROUND).append(" INTEGER DEFAULT -1, ")
+            .append(BooksDBContract.BookSetting.BACKGROUND).append(" INTEGER DEFAULT -1, ")
+            .append(BooksDBContract.BookSetting.THEME).append(" INTEGER DEFAULT 0, ")
+            .append(BooksDBContract.BookSetting.BRIGHTNESS).append(" REAL DEFAULT 1, ")
+            .append(BooksDBContract.BookSetting.TRANSITION_TYPE).append(" INTEGER DEFAULT 2, ")
+            .append(BooksDBContract.BookSetting.LOCK_ROTATION).append(" INTEGER DEFAULT 1, ")
+            .append(BooksDBContract.BookSetting.DOUBLE_PAGED).append(" INTEGER DEFAULT 0, ")
+            .append(BooksDBContract.BookSetting.ALLOW3G).append(" INTEGER DEFAULT 0, ")
+            .append(BooksDBContract.BookSetting.GLOBAL_PAGINATION).append(" INTEGER DEFAULT 0, ")
+            .append(BooksDBContract.BookSetting.MEDIA_OVERLAY).append(" INTEGER DEFAULT 1, ")
+            .append(BooksDBContract.BookSetting.TTS).append(" INTEGER DEFAULT 0, ")
+            .append(BooksDBContract.BookSetting.AUTO_START_PLAYING).append(" INTEGER DEFAULT 1, ")
+            .append(BooksDBContract.BookSetting.AUTO_LOAD_NEW_CHAPTER).append(" INTEGER DEFAULT 1, ")
+            .append(BooksDBContract.BookSetting.HIGHLIGHT_TEXT_TO_VOICE).append(" INTEGER DEFAULT 1 ")
+            .append(")").toString();
+
+    private static final String CREATE_TABLE_HIGHLIGHT = new StringBuilder().append("CREATE TABLE IF NOT EXISTS  ")
+            .append(Tables.BOOK_HIGHLIGHT).append("(")
+            .append(BooksDBContract.BookHighlights._ID).append(" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,")
+            .append(BooksDBContract.BookHighlights.USER_ID).append(" INTEGER, ")
+            .append(BooksDBContract.BookHighlights.BOOK_CODE).append(" INTEGER NOT NULL, ")
+            .append(BooksDBContract.BookHighlights.CODE).append(" INTEGER UNIQUE PRIMARY KEY AUTOINCREMENT NOT NULL, ")
+            .append(BooksDBContract.BookHighlights.CHAPTER_INDEX).append(" INTEGER, ")
+            .append(BooksDBContract.BookHighlights.START_INDEX).append(" INTEGER, ")
+            .append(BooksDBContract.BookHighlights.START_OFFSET).append(" INTEGER, ")
+            .append(BooksDBContract.BookHighlights.END_INDEX).append(" INTEGER, ")
+            .append(BooksDBContract.BookHighlights.END_OFFSET).append(" INTEGER, ")
+            .append(BooksDBContract.BookHighlights.COLOR).append(" INTEGER, ")
+            .append(BooksDBContract.BookHighlights.TEXT).append(" TEXT, ")
+            .append(BooksDBContract.BookHighlights.NOTE).append(" TEXT, ")
+            .append(BooksDBContract.BookHighlights.IS_NOTE).append(" INTEGER, ")
+            .append(BooksDBContract.BookHighlights.DATA_TIME).append(" TEXT, ")
+            .append(BooksDBContract.BookHighlights.STYLE).append(" INTEGER ")
+            .append(")").toString();
+
+    private static final String CREATE_TABLE_PAGING = new StringBuilder().append("CREATE TABLE IF NOT EXISTS  ")
+            .append(Tables.BOOK_PAGING).append("(")
+            .append(BooksDBContract.BookPaging._ID).append(" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,")
+            .append(BooksDBContract.BookPaging.USER_ID).append(" INTEGER, ")
+            .append(BooksDBContract.BookPaging.BOOK_CODE).append(" INTEGER NOT NULL, ")
+            .append(BooksDBContract.BookPaging.CODE).append(" INTEGER UNIQUE PRIMARY KEY AUTOINCREMENT NOT NULL, ")
+            .append(BooksDBContract.BookPaging.CHAPTER_INDEX).append(" INTEGER, ")
+            .append(BooksDBContract.BookPaging.NUMBER_OF_PAGES_IN_CHAPTER).append(" INTEGER, ")
+            .append(BooksDBContract.BookPaging.FONT_NAME).append(" TEXT, ")
+            .append(BooksDBContract.BookPaging.FONT_SIZE).append(" INTEGER, ")
+            .append(BooksDBContract.BookPaging.LINE_SPACING).append(" INTEGER, ")
+            .append(BooksDBContract.BookPaging.WIDTH).append(" INTEGER, ")
+            .append(BooksDBContract.BookPaging.HEIGHT).append(" INTEGER, ")
+            .append(BooksDBContract.BookPaging.VERTICAL_GAP_RATIO).append(" REAL, ")
+            .append(BooksDBContract.BookPaging.HORIZONTAL_GAP_RATIO).append(" REAL, ")
+            .append(BooksDBContract.BookPaging.IS_PORTRAIT).append(" INTEGER, ")
+            .append(BooksDBContract.BookPaging.IS_DOUBLE_PAGED_FOR_LANDSCAPE).append(" INTEGER ")
+            .append(")").toString();
+
+
+            /*
+    CREATE TABLE IF NOT EXISTS Paging (
+            0 BookCode INTEGER NOT NULL,
+            1 Code INTEGER UNIQUE PRIMARY KEY AUTOINCREMENT NOT NULL,
+            2 ChapterIndex INTEGER,
+            3 NumberOfPagesInChapter INTEGER,
+            4 FontName TEXT,
+            5 FontSize INTEGER,
+            6 LineSpacing INTEGER,
+            7 Width INTEGER,
+            8 Height INTEGER,
+            9 VerticalGapRatio REAL,
+            A HorizontalGapRatio REAL,
+            B IsPortrait INTEGER,
+            C IsDoublePagedForLandscape INTEGER
+            );
+    */
 
     class BookDBHelper extends SQLiteOpenHelper {
 
@@ -102,6 +205,9 @@ public class BooksDataBase {
             sqLiteDatabase.execSQL(CREATE_TABLE_USERS);
             sqLiteDatabase.execSQL(CREATE_TABLE_BOOK_DETAILS);
             sqLiteDatabase.execSQL(CREATE_TABLE_BOOK_MARKUPS);
+            sqLiteDatabase.execSQL(CREATE_TABLE_BOOK_SETTING);
+            sqLiteDatabase.execSQL(CREATE_TABLE_HIGHLIGHT);
+            sqLiteDatabase.execSQL(CREATE_TABLE_PAGING);
         }
 
         @Override
@@ -312,4 +418,253 @@ public class BooksDataBase {
                 new String[]{Integer.toString(bookModel.getUserId()), bookModel.fileName});
     }
 
+    protected SkySetting fetchSettingFromDB() {
+        SkySetting setting = new SkySetting();
+        mSqLiteDatabase = mBookDBHelper.getReadableDatabase();
+        String sql = "SELECT * FROM Setting where BookCode=0";
+        Cursor result = mSqLiteDatabase.rawQuery(sql, null);
+        if (result != null) {
+            while (result.moveToNext()) {
+                setting.bookCode = result.getInt(result.getColumnIndex(BooksDBContract.BookSetting.BOOK_CODE));
+                setting.fontName = result.getString(result.getColumnIndex(BooksDBContract.BookSetting.FONT_NAME));
+                setting.fontSize = result.getInt(result.getColumnIndex(BooksDBContract.BookSetting.FONT_SIZE));
+                setting.lineSpacing = result.getInt(result.getColumnIndex(BooksDBContract.BookSetting.LINE_SPACING));
+                setting.foreground = result.getInt(result.getColumnIndex(BooksDBContract.BookSetting.FOREGROUND));
+                setting.background = result.getInt(result.getColumnIndex(BooksDBContract.BookSetting.BACKGROUND));
+                setting.theme = result.getInt(result.getColumnIndex(BooksDBContract.BookSetting.THEME));
+                setting.brightness = result.getDouble(result.getColumnIndex(BooksDBContract.BookSetting.BRIGHTNESS));
+                setting.transitionType = result.getInt(result.getColumnIndex(BooksDBContract.BookSetting.TRANSITION_TYPE));
+                setting.lockRotation = result.getInt(result.getColumnIndex(BooksDBContract.BookSetting.LOCK_ROTATION)) != 0;
+                setting.doublePaged = result.getInt(result.getColumnIndex(BooksDBContract.BookSetting.DOUBLE_PAGED)) != 0;
+                setting.allow3G = result.getInt(result.getColumnIndex(BooksDBContract.BookSetting.ALLOW3G)) != 0;
+                setting.globalPagination = result.getInt(result.getColumnIndex(BooksDBContract.BookSetting.GLOBAL_PAGINATION)) != 0;
+
+                setting.mediaOverlay = result.getInt(result.getColumnIndex(BooksDBContract.BookSetting.MEDIA_OVERLAY)) != 0;
+                setting.tts = result.getInt(result.getColumnIndex(BooksDBContract.BookSetting.TTS)) != 0;
+                setting.autoStartPlaying = result.getInt(result.getColumnIndex(BooksDBContract.BookSetting.AUTO_START_PLAYING)) != 0;
+                setting.autoLoadNewChapter = result.getInt(result.getColumnIndex(BooksDBContract.BookSetting.AUTO_LOAD_NEW_CHAPTER)) != 0;
+                setting.highlightTextToVoice = result.getInt(result.getColumnIndex(BooksDBContract.BookSetting.HIGHLIGHT_TEXT_TO_VOICE)) != 0;
+
+
+                result.close();
+                return setting;
+            }
+        }
+        result.close();
+        return null;
+    }
+
+    // Using db method
+    // It's global setting for all books
+    protected void updateSettingFromDB(SkySetting setting) {
+        mSqLiteDatabase = mBookDBHelper.getReadableDatabase();
+        ContentValues values = new ContentValues();
+        values.put(BooksDBContract.BookSetting.FONT_NAME, setting.fontName);
+        values.put(BooksDBContract.BookSetting.FONT_SIZE, setting.fontSize);
+        values.put(BooksDBContract.BookSetting.LINE_SPACING, setting.lineSpacing);
+        values.put(BooksDBContract.BookSetting.FOREGROUND, setting.foreground);
+        values.put(BooksDBContract.BookSetting.BACKGROUND, setting.background);
+        values.put(BooksDBContract.BookSetting.THEME, setting.theme);
+        values.put(BooksDBContract.BookSetting.BRIGHTNESS, setting.brightness);
+        values.put(BooksDBContract.BookSetting.TRANSITION_TYPE, setting.transitionType);
+        values.put(BooksDBContract.BookSetting.LOCK_ROTATION, setting.lockRotation ? 1 : 0);
+        values.put(BooksDBContract.BookSetting.DOUBLE_PAGED, setting.doublePaged ? 1 : 0);
+        values.put(BooksDBContract.BookSetting.ALLOW3G, setting.allow3G ? 1 : 0);
+        values.put(BooksDBContract.BookSetting.GLOBAL_PAGINATION, setting.globalPagination ? 1 : 0);
+
+        values.put(BooksDBContract.BookSetting.MEDIA_OVERLAY, setting.mediaOverlay ? 1 : 0);
+        values.put(BooksDBContract.BookSetting.TTS, setting.tts ? 1 : 0);
+        values.put(BooksDBContract.BookSetting.AUTO_START_PLAYING, setting.autoStartPlaying ? 1 : 0);
+        values.put(BooksDBContract.BookSetting.AUTO_LOAD_NEW_CHAPTER, setting.autoLoadNewChapter ? 1 : 0);
+        values.put(BooksDBContract.BookSetting.HIGHLIGHT_TEXT_TO_VOICE, setting.highlightTextToVoice ? 1 : 0);
+
+        String where = "BookCode=0";
+        mSqLiteDatabase.update("Setting", values, where, null);
+    }
+
+    protected String getDateString() {
+        Calendar c = Calendar.getInstance();
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String formattedDate = df.format(c.getTime());
+        return formattedDate;
+    }
+
+    // Using db method
+    protected void insertBookmark(PageInformation pi) {
+        mSqLiteDatabase = mBookDBHelper.getReadableDatabase();
+        double ppb = pi.pagePositionInBook;
+        double ppc = pi.pagePositionInChapter;
+        int ci = pi.chapterIndex;
+        int bc = pi.bookCode;
+        String dateInString = this.getDateString();
+
+        ContentValues values = new ContentValues();
+        values.put(BooksDBContract.BookMarkups.BOOK_CODE, pi.bookCode);
+        values.put(BooksDBContract.BookMarkups.CHAPTER_INDEX, ci);
+        values.put(BooksDBContract.BookMarkups.PAGE_POSITION_IN_CHAPTER, ppc);
+        values.put(BooksDBContract.BookMarkups.PAGE_POSITION_IN_BOOK, ppb);
+        values.put(BooksDBContract.BookMarkups.CREATED_DATE, dateInString);
+        mSqLiteDatabase.insert("Bookmark", null, values);
+
+    }
+
+    protected void deleteBookmarkByCode(int code) {
+        String sql = String.format(Locale.US, "DELETE FROM Bookmark where Code = %d", code);
+        mSqLiteDatabase.execSQL(sql);
+    }
+
+    protected void deleteBookmarksByBookCode(int bookCode) {
+        String sql = String.format(Locale.US, "DELETE FROM Bookmark where BookCode = %d", bookCode);
+        mSqLiteDatabase.execSQL(sql);
+    }
+
+
+    protected void deleteHighlightsByBookCode(int bookCode) {
+        String sql = String.format(Locale.US, "DELETE FROM Highlight where BookCode = %d", bookCode);
+        mSqLiteDatabase.execSQL(sql);
+    }
+
+    protected void deletePagingByBookCode(int bookCode) {
+        String sql = String.format(Locale.US, "DELETE FROM Paging where BookCode = %d", bookCode);
+        mSqLiteDatabase.execSQL(sql);
+    }
+
+    protected int getBookmarkCode(PageInformation pi) {
+        int bookCode = pi.bookCode;
+        BookInformation bi = this.fetchBookInformation(bookCode);
+        if (bi == null) return -1;
+        boolean isFixedLayout = bi.isFixedLayout;
+
+        if (!isFixedLayout) {
+            double pageDelta = 1.0f / pi.numberOfPagesInChapter;
+            double target = pi.pagePositionInChapter;
+            String selectSql = String.format(Locale.US, "SELECT Code,PagePositionInChapter from Bookmark where BookCode=%d and ChapterIndex=%d", bookCode, pi.chapterIndex);
+            Cursor cursor = mSqLiteDatabase.rawQuery(selectSql, null);
+            while (cursor.moveToNext()) {
+                double ppc = cursor.getDouble(1);
+                int code = cursor.getInt(0);
+                if (target >= (ppc - pageDelta / 2) && target <= (ppc + pageDelta / 2.0f)) {
+                    cursor.close();
+                    return code;
+                }
+            }
+            cursor.close();
+        } else {
+            String selectSql = String.format(Locale.US, "SELECT Code from Bookmark where BookCode=%d and ChapterIndex=%d", bookCode, pi.chapterIndex);
+            Cursor cursor = mSqLiteDatabase.rawQuery(selectSql, null);
+            while (cursor.moveToNext()) {
+                int code = cursor.getInt(0);
+                return code;
+            }
+            cursor.close();
+        }
+        return -1;
+    }
+
+    protected BookInformation fetchBookInformation(int bookCode) {
+        BookInformation bi = null;
+        String condition = String.format(Locale.US, " WHERE BookCode=%d", bookCode);
+        String selectSql = "SELECT* from " + Tables.BOOK_DETAILS + condition;
+        Cursor cursor = mSqLiteDatabase.rawQuery(selectSql, null);
+        if (cursor != null) {
+            while (cursor.moveToNext()) {
+                bi = new BookInformation();
+                bi.bookCode = cursor.getInt(0);
+                bi.title = cursor.getString(1);
+                bi.creator = cursor.getString(2);
+                bi.publisher = cursor.getString(3);
+                bi.subject = cursor.getString(4);
+                bi.type = cursor.getString(5);
+                bi.date = cursor.getString(6);
+                bi.language = cursor.getString(7);
+                bi.fileName = cursor.getString(8);
+                bi.position = cursor.getDouble(9);
+                bi.isFixedLayout = cursor.getInt(10) != 0;
+                bi.isGlobalPagination = cursor.getInt(11) != 0;
+                bi.isDownloaded = cursor.getInt(12) != 0;
+                bi.fileSize = cursor.getInt(13);
+                bi.customOrder = cursor.getInt(14);
+                bi.url = cursor.getString(15);
+                bi.coverUrl = cursor.getString(16);
+                bi.downSize = cursor.getInt(17);
+                bi.isRead = cursor.getInt(18) != 0;
+                bi.lastRead = cursor.getString(19);
+                bi.isRTL = cursor.getInt(20) != 0;
+                bi.isVerticalWriting = cursor.getInt(21) != 0;
+                bi.res0 = cursor.getInt(22);
+                bi.res1 = cursor.getInt(23);
+                bi.res2 = cursor.getInt(24);
+                bi.etc = cursor.getString(25);
+                bi.spread = cursor.getInt(26);
+                bi.orientation = cursor.getInt(27);
+            }
+        }
+        cursor.close();
+        return bi;
+    }
+
+    protected ArrayList<PageInformation> fetchBookmarks(int bookCode) {
+        ArrayList<PageInformation> pis = new ArrayList<PageInformation>();
+        String selectSql = String.format(Locale.US, "SELECT * from Bookmark where bookCode=%d ORDER BY ChapterIndex", bookCode);
+        Cursor cursor = mSqLiteDatabase.rawQuery(selectSql, null);
+        if (cursor != null) {
+            while (cursor.moveToNext()) {
+                PageInformation pi = new PageInformation();
+                pi.bookCode = cursor.getInt(cursor.getColumnIndex(BooksDBContract.BookMarkups.BOOK_CODE));
+                pi.code = cursor.getInt(cursor.getColumnIndex(BooksDBContract.BookMarkups.CODE));
+                pi.chapterIndex = cursor.getInt(cursor.getColumnIndex(BooksDBContract.BookMarkups.CHAPTER_INDEX));
+                pi.pagePositionInChapter = cursor.getDouble(cursor.getColumnIndex(BooksDBContract.BookMarkups.PAGE_POSITION_IN_CHAPTER));
+                pi.pagePositionInBook = cursor.getDouble(cursor.getColumnIndex(BooksDBContract.BookMarkups.PAGE_POSITION_IN_BOOK));
+                pi.datetime = cursor.getString(cursor.getColumnIndex(BooksDBContract.BookMarkups.DATE_TIME));
+                pis.add(pi);
+            }
+        }
+        cursor.close();
+        return pis;
+    }
+
+    protected PagingInformation fetchPagingInformation(PagingInformation pgi) {
+        String sql = String.format(Locale.US, "SELECT * FROM Paging WHERE BookCode=%d AND ChapterIndex=%d AND FontName='%s' AND FontSize=%d AND LineSpacing=%d AND ABS(Width-%d)<=2 AND ABS(Height-%d)<=2 AND IsPortrait=%d AND IsDoublePagedForLandscape=%d",
+                pgi.bookCode, pgi.chapterIndex, pgi.fontName, pgi.fontSize, pgi.lineSpacing, pgi.width, pgi.height, pgi.isPortrait ? 1 : 0, pgi.isDoublePagedForLandscape ? 1 : 0);
+
+
+        Cursor result = mSqLiteDatabase.rawQuery(sql, null);
+        if (result.moveToFirst()) {
+            PagingInformation pg = new PagingInformation();
+            pg.bookCode = result.getInt(result.getColumnIndex(BooksDBContract.BookPaging.BOOK_CODE));
+            pg.code = result.getInt(result.getColumnIndex(BooksDBContract.BookPaging.CODE));
+            pg.chapterIndex = result.getInt(result.getColumnIndex(BooksDBContract.BookPaging.CHAPTER_INDEX));
+            pg.numberOfPagesInChapter = result.getInt(result.getColumnIndex(BooksDBContract.BookPaging.NUMBER_OF_PAGES_IN_CHAPTER));
+            pg.fontName = result.getString(result.getColumnIndex(BooksDBContract.BookPaging.FONT_NAME));
+            pg.fontSize = result.getInt(result.getColumnIndex(BooksDBContract.BookPaging.FONT_SIZE));
+            pg.lineSpacing = result.getInt(result.getColumnIndex(BooksDBContract.BookPaging.LINE_SPACING));
+            pg.width = result.getInt(result.getColumnIndex(BooksDBContract.BookPaging.WIDTH));
+            pg.height = result.getInt(result.getColumnIndex(BooksDBContract.BookPaging.HEIGHT));
+            pg.verticalGapRatio = result.getDouble(result.getColumnIndex(BooksDBContract.BookPaging.VERTICAL_GAP_RATIO));
+            pg.horizontalGapRatio = result.getDouble(result.getColumnIndex(BooksDBContract.BookPaging.HORIZONTAL_GAP_RATIO));
+            pg.isPortrait = result.getInt(result.getColumnIndex(BooksDBContract.BookPaging.IS_PORTRAIT)) != 0;
+            pg.isDoublePagedForLandscape = result.getInt(result.getColumnIndex(BooksDBContract.BookPaging.IS_DOUBLE_PAGED_FOR_LANDSCAPE)) != 0;
+            return pg;
+        }
+        result.close();
+        return null;
+    }
+
+    public void toggleBookmark(PageInformation pi) {
+        int code = this.getBookmarkCode(pi);
+        if (code == -1) { // if not exist
+            this.insertBookmark(pi);
+        }else {
+            this.deleteBookmarkByCode(code); // if exist, delete it
+        }
+    }
+
+    public boolean isBookmarked(PageInformation pi) {
+        int code = this.getBookmarkCode(pi);
+        if (code==-1) {
+            return false;
+        }else {
+            return true;
+        }
+    }
 }

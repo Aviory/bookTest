@@ -10,6 +10,7 @@ import java.util.List;
 
 import com.getbooks.android.GetbooksApplication;
 import com.getbooks.android.R;
+import com.getbooks.android.db.BookDataBaseLoader;
 import com.getbooks.android.events.Events;
 import com.getbooks.android.model.BookMarkItemModel;
 import com.getbooks.android.ui.adapter.RecyclerBookContentAdapter;
@@ -17,6 +18,7 @@ import com.getbooks.android.ui.fragments.BookContentFragment;
 import com.getbooks.android.ui.fragments.BookSettingMenuFragment;
 import com.getbooks.android.ui.widget.CustomSeekBar;
 import com.getbooks.android.util.FileUtil;
+import com.getbooks.android.util.LogUtil;
 import com.skytree.epub.Book;
 import com.skytree.epub.BookmarkListener;
 import com.skytree.epub.Caret;
@@ -221,6 +223,7 @@ public class BookViewActivity extends Activity implements BookSettingMenuFragmen
 
     SkySetting setting;
     SkyDatabase sd;
+    private BookDataBaseLoader mBookDataBaseLoader;
 
     Button outsideButton;
 
@@ -594,8 +597,8 @@ public class BookViewActivity extends Activity implements BookSettingMenuFragmen
         // Be sure that the file exists before setting.
 //        rv.setBookPath(SkySetting.getStorageDirectory() + "/books/" + fileName);
         Log.d("ssssssssss", SkySetting.getStorageDirectory() + "/books/" + fileName);
-        directoryPath = bundle.getString("DERECTORYPATH") +"/";
-        bookPath = bundle.getString("DERECTORYPATH") +"/"+ fileName;
+        directoryPath = bundle.getString("DERECTORYPATH") + "/";
+        bookPath = bundle.getString("DERECTORYPATH") + "/" + fileName;
         rv.setBookPath(bookPath);
 
         // if true, double pages will be displayed on landscape mode.
@@ -2892,7 +2895,11 @@ public class BookViewActivity extends Activity implements BookSettingMenuFragmen
         setContentView(R.layout.activity_reader);
         app = (GetbooksApplication) getApplication();
         sd = new SkyDatabase(this);
+        mBookDataBaseLoader = BookDataBaseLoader.getInstanceDb(this);
+        setting = mBookDataBaseLoader.fetchSettingDB();
+        Log.d("database new", setting.toString());
         setting = sd.fetchSetting();
+        Log.d("database old", setting.toString());
         ButterKnife.bind(this);
         registerSkyReceiver(); // New in SkyEpub SDK 7.x
         mPercentPagesSeekBar.setVisibility(View.INVISIBLE);
