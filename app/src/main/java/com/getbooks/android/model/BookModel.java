@@ -41,6 +41,7 @@ public class BookModel implements Parcelable {
     private String mPagesPerArticleList;
     private int mBookPhysicalPage;
     private int mLastReadingParagraph;
+    private String filePath;
 
     private boolean mIsBookSelected;
 
@@ -144,6 +145,8 @@ public class BookModel implements Parcelable {
             this.mBookState = BookState.PURCHASED_BOOK;
         } else if (BookState.RENTED_BOOK.getState().equals(bookState)) {
             this.mBookState = BookState.RENTED_BOOK;
+        } else if (BookState.INTERNAL_BOOK.getState().equals(bookState)) {
+            this.mBookState = BookState.INTERNAL_BOOK;
         }
     }
 
@@ -330,6 +333,8 @@ public class BookModel implements Parcelable {
     public void setLastReadingParagraph(int lastReadingParagraph) {
         this.mLastReadingParagraph = lastReadingParagraph;
     }
+
+
 
     @Override
     public boolean equals(Object o) {

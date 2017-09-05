@@ -203,26 +203,6 @@ public class LibraryActivity extends BaseActivity implements Queries.CallBack,
         imgReadDate.setOnClickListener(this);
         txtAddDate.setOnClickListener(this);
         imgAddDate.setOnClickListener(this);
-
-        GetbooksInternalStorage fileManager = new GetbooksInternalStorage();
-        fileManager.execute();
-        try {
-            List<File> mInternalLibrary = fileManager.get(3, TimeUnit.SECONDS);
-            Log.d("Files in ui size: ", String.valueOf(mInternalLibrary.size()));
-//            if(mInternalLibrary!=null){
-//                for (File file:mInternalLibrary) {
-//                    BookModel tmp = new BookModel();
-//                    tmp.setBookName(file.getName());
-//                    mLibrary.add(tmp);
-//                }
-            //}
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        } catch (TimeoutException e) {
-            e.printStackTrace();
-        }
     }
 
     @Override
@@ -518,6 +498,30 @@ public class LibraryActivity extends BaseActivity implements Queries.CallBack,
         this.mLibrary = library;
         mDirectoryPath = FileUtil.isCreatedDirectory(getAct(), Prefs.getUserSession(getAct(), Const.USER_SESSION_ID));
         LogUtil.log("FileUtil", mDirectoryPath);
+
+
+        GetbooksInternalStorage fileManager = new GetbooksInternalStorage();
+        fileManager.execute();
+        try {
+            List<File> mInternalLibrary = fileManager.get(2, TimeUnit.SECONDS);
+            Log.d("Files in ui size: ", String.valueOf(mInternalLibrary.size()));
+            if(mInternalLibrary!=null){
+                for (File file:mInternalLibrary) {
+                    BookModel tmp = new BookModel();
+                    tmp.setBookName(file.getName());
+                    tmp.setFilePath(file.getAbsolutePath());
+                    file.getAbsolutePath();
+                    tmp.setBookState(BookState.INTERNAL_BOOK.getState());
+                    mLibrary.add(tmp);
+                }
+            }
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (TimeoutException e) {
+            e.printStackTrace();
+        }
         initShelvesRecycler(mLibrary);
     }
 
@@ -540,6 +544,7 @@ public class LibraryActivity extends BaseActivity implements Queries.CallBack,
                 getAct().getApplicationContext(), mRecyclerBookShelves, new RecyclerItemClickListener.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
+                LogUtil.log(this, "pathFile "+mDirectoryPath);
                 switch (mLibrary.get(position).getBookState()) {
                     case CLOUD_BOOK:
                         if (mDownloadInfo.getDownloadState().equals(DownloadInfo.DownloadState.SELECTED_DELETING_BOOKS)) {
@@ -567,6 +572,15 @@ public class LibraryActivity extends BaseActivity implements Queries.CallBack,
                         } else {
                             UiUtil.openActivity(getAct(), ReaderActivity.class, false,
                                     Const.BOOK_PATH, mDirectoryPath, Const.BOOK_NAME, mLibrary.get(position).getBookName());
+                        }
+                        break;
+                    case INTERNAL_BOOK:
+                        if (mDownloadInfo.getDownloadState().equals(DownloadInfo.DownloadState.SELECTED_DELETING_BOOKS)) {
+                            currentDownloadingBookModel = mLibrary.get(position);
+                            mShelvesAdapter.setSelectedDeletingBook(position, mDownloadInfo);
+                        } else {
+                            UiUtil.openActivity(getAct(), ReaderActivity.class, false,
+                                    Const.BOOK_PATH, mLibrary.get(position).getFilePath(), Const.BOOK_NAME, mLibrary.get(position).getBookName());
                         }
                         break;
                 }
@@ -608,6 +622,10 @@ public class LibraryActivity extends BaseActivity implements Queries.CallBack,
                 case PURCHASED_BOOK:
                     mBookDataBaseLoader.deleteBookFromDb(currentDownloadingBookModel);
                     currentDownloadingBookModel.setBookState(BookState.CLOUD_BOOK.getState());
+                    currentDownloadingBookModel.setIsBookFirstOpen(false);
+                    mShelvesAdapter.notifyItemChanged(currentDownloadingBookModel.getViewPosition());
+                    break;
+                case INTERNAL_BOOK:
                     currentDownloadingBookModel.setIsBookFirstOpen(false);
                     mShelvesAdapter.notifyItemChanged(currentDownloadingBookModel.getViewPosition());
                     break;

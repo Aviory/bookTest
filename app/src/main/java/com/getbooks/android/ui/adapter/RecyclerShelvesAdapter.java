@@ -97,6 +97,9 @@ public class RecyclerShelvesAdapter extends RecyclerView.Adapter<RecyclerShelves
                                 holder.mImageCover.setImageResource(R.drawable.book_1);
                             }
                         });
+                if(mLibrary.get(position).getUserId()==0){
+                    holder.mImageCover.setImageResource(R.drawable.book_3);
+                }
                 BookModel bookModel = mLibrary.get(position);
                 switch (bookModel.getBookState()) {
                     case CLOUD_BOOK:
@@ -113,6 +116,12 @@ public class RecyclerShelvesAdapter extends RecyclerView.Adapter<RecyclerShelves
                             holder.mImageNewBook.setVisibility(View.VISIBLE);
                         }
                         holder.mImageBookState.setImageResource(R.drawable.clock_black);
+                        break;
+                    case INTERNAL_BOOK:
+                        if (bookModel.isIsBookFirstOpen()) {
+                            holder.mImageNewBook.setVisibility(View.VISIBLE);
+                        }
+                        holder.mImageBookState.setImageResource(R.drawable.check_black);
                         break;
                 }
                 break;
