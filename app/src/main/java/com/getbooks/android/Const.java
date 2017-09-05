@@ -14,6 +14,7 @@ public final class Const {
 
     //Authorization constant
     public static final String AUTH_URL = "https://pelephone.getbooks.co.il/dev/customer/account/login/";
+//    public static final String AUTH_URL = "http://pelelogin.getbooks.co.il/";
     public static final String REDIRECT_URL = "https://pelephone.getbooks.co.il/dev/customer/account/";
 
 
@@ -36,6 +37,7 @@ public final class Const {
     public static final String BOOK_NAME = "book_name";
     public static final int PORT_NUMBER = 8080;
     public static final String LOCALHOST = "http://127.0.0.1:" + PORT_NUMBER + "/";
+    public static final String DECRYPTED = "dec.epub";
 
     //right menu const
     public static final String SERVISE_PRIVASY_RIGHT_BTN_TEXT_ID = "4808";

@@ -49,13 +49,7 @@
             android:name=".ui.activities.CatalogActivity"
             android:theme="@style/CatalogTheme" />
 
-        <activity android:name=".ui.activities.LibraryActivity" >
-            <!--<intent-filter>-->
-                <!--<action android:name="android.intent.action.MAIN" />-->
-
-                <!--<category android:name="android.intent.category.LAUNCHER" />-->
-            <!--</intent-filter>-->
-            </activity>
+        <activity android:name=".ui.activities.LibraryActivity" />
 
         <activity android:name=".ui.activities.ReaderActivity" />
 

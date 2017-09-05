@@ -65,9 +65,12 @@ public class Queries {
                         for (RentedBook rentedBook : rentedBooks) {
                             BookModel bookModel = new BookModel();
                             bookModel.setUserId(userId);
-                            bookModel.setBookName(rentedBook.getRentBookName().replaceAll("\\P{L}", ""));
-                            bookModel.setImageDownloadLink(rentedBook.getRentBookImage());
-                            bookModel.setBookDownloadLink(rentedBook.getRentBookDownloadLink());
+                            bookModel.url = rentedBook.getRentBookDownloadLink();
+                            bookModel.coverUrl = rentedBook.getRentBookImage();
+                            bookModel.fileName = rentedBook.getRentBookName().replaceAll("\\P{L}", "");
+//                            bookModel.setBookName(rentedBook.getRentBookName().replaceAll("\\P{L}", ""));
+//                            bookModel.setImageDownloadLink(rentedBook.getRentBookImage());
+//                            bookModel.setBookDownloadLink(rentedBook.getRentBookDownloadLink());
                             bookModel.setBookSku(rentedBook.getRentBookSku());
                             bookModel.setBookState(BookState.CLOUD_BOOK.getState());
                             bookModel.setIsBookRented(true);
@@ -84,9 +87,12 @@ public class Queries {
                         for (PurchasedBook purchasedBook : purchasedBooks) {
                             BookModel bookModel = new BookModel();
                             bookModel.setUserId(userId);
-                            bookModel.setBookName(purchasedBook.getPurchasedBookName().replaceAll("\\P{L}", ""));
-                            bookModel.setImageDownloadLink(purchasedBook.getPurchasedBookImage());
-                            bookModel.setBookDownloadLink(purchasedBook.getPurchasedBookDownloadLink());
+                            bookModel.fileName = purchasedBook.getPurchasedBookName().replaceAll("\\P{L}", "");
+//                            bookModel.setBookName(purchasedBook.getPurchasedBookName().replaceAll("\\P{L}", ""));
+//                            bookModel.setImageDownloadLink(purchasedBook.getPurchasedBookImage());
+                            bookModel.url = purchasedBook.getPurchasedBookDownloadLink();
+                            bookModel.coverUrl = purchasedBook.getPurchasedBookImage();
+//                            bookModel.setBookDownloadLink(purchasedBook.getPurchasedBookDownloadLink());
                             bookModel.setBookSku(purchasedBook.getPurchasedBookSku());
                             bookModel.setBookState(BookState.CLOUD_BOOK.getState());
                             bookModel.setIsBookRented(false);
@@ -189,7 +195,7 @@ public class Queries {
                                  List<BookModel> library, RecyclerShelvesAdapter shelvesAdapter) {
         ApiService apiService = ApiManager.getClientApiAry().create(ApiService.class);
 
-        apiService.returnBookRented(Const.WEBSITECODE, deviceToken, bookModel.getBookSku())
+        apiService.returnBookRented(Const.WEBSITECODE, deviceToken, String.valueOf(bookModel.bookCode))
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .doOnNext(responseBodyResponse -> {

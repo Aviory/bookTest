@@ -44,7 +44,7 @@ public class SkyPieView extends View {
 		int width = this.getWidth();
 		int height = this.getHeight();
 		Paint paint = new Paint();		
-		String message = String.format("%d%%",(int)(this.value*100));
+		String message = String.format("%context%%",(int)(this.value*100));
 		paint.setColor(Color.LTGRAY);
 		paint.setTextAlign(Paint.Align.CENTER);
 		int textSize = 11;

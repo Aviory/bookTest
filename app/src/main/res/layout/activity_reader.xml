@@ -27,9 +27,9 @@
         android:id="@+id/img_mark_add"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:visibility="gone"
         android:layout_marginLeft="@dimen/margin_book_mark"
-        android:src="@drawable/add_bookmark" />
+        android:src="@drawable/add_bookmark"
+        android:visibility="gone" />
 
     <include
         android:id="@+id/menu_book"
@@ -55,35 +55,33 @@
         android:layout_centerInParent="true"
         android:visibility="invisible" />
 
+    <com.getbooks.android.ui.widget.ArialNormalTextView
+        android:id="@+id/txt_current_page"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="15dp"
+        android:textColor="@color/color_black" />
+
+    <com.getbooks.android.ui.widget.ArialNormalTextView
+        android:id="@+id/txt_all_pages"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="15dp"
+        android:layout_toRightOf="@id/txt_current_page"
+        android:textColor="@color/color_black" />
+
     <com.getbooks.android.ui.widget.CustomSeekBar
         android:id="@+id/custom_seek_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true" />
 
-    <com.getbooks.android.ui.widget.ArialNormalTextView
-        android:id="@+id/txt_current_page"
-        android:layout_width="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:textColor="@color/color_black"
-        android:layout_marginBottom="15dp"
-        android:text="13"
-        android:layout_height="wrap_content" />
-
-    <com.getbooks.android.ui.widget.ArialNormalTextView
-        android:id="@+id/txt_all_pages"
-        android:layout_centerHorizontal="true"
-        android:layout_width="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="15dp"
-        android:layout_toRightOf="@id/txt_current_page"
-        android:text="/322"
-        android:textColor="@color/color_black"
-        android:layout_height="wrap_content" />
-
     <include
-        android:id="@+id/markup_menu"
+        android:id="@+id/highlight_menu"
         layout="@layout/menu_book_setting_small"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

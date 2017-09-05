@@ -17,7 +17,7 @@ import java.util.ArrayList;
  * Created by marinaracu on 03.09.17.
  */
 
-public class FontsBookListAdapter extends ArrayAdapter<CustomFont> implements View.OnClickListener {
+public class FontsBookListAdapter extends ArrayAdapter<CustomFont> {
 
     ArrayList<CustomFont> fonts;
     Context mContext;
@@ -29,16 +29,16 @@ public class FontsBookListAdapter extends ArrayAdapter<CustomFont> implements Vi
     }
 
     public interface BookFontUpdateChangeListener {
-        void appleFont(int fontIndex);
+        void applyFont(int fontIndex);
     }
 
-    @Override
-    public void onClick(View view) {
-        if (view.getId() >= 5100 && view.getId() < 5500) {
-            // one of fontButtons is clicked.
-            mBookFontUpdateChangeListener.appleFont(view.getId() - 5100);
-        }
-    }
+//    @Override
+//    public void onClick(View view) {
+//        if (view.getId() >= 5100 && view.getId() < 5500) {
+//            // one of fontButtons is clicked.
+//            mBookFontUpdateChangeListener.applyFont(view.getId() - 5100);
+//        }
+//    }
 
     // View lookup cache
     private static class ViewHolder {
@@ -93,7 +93,13 @@ public class FontsBookListAdapter extends ArrayAdapter<CustomFont> implements Vi
         }
         if (tf != null) viewHolder.mFontName.setTypeface(tf);
         viewHolder.mFontName.setId(5100 + position);
-        viewHolder.mFontName.setOnClickListener(this);
+        viewHolder.mFontName.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // one of fontButtons is clicked.
+                mBookFontUpdateChangeListener.applyFont(view.getId() - 5100);
+            }
+        });
 
         viewHolder.mFontName.setText(customFont.fontFaceName);
 

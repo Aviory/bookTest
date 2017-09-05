@@ -293,7 +293,7 @@ public class LocalService extends Service {
 				bmp.recycle();
 			}catch (Exception e) {
 				e.printStackTrace();
-//				Log.e("donwloadCover error: ", e.getMessage().toString());
+//				Log.ifKeyTest("donwloadCover error: ", ifKeyTest.getMessage().toString());
 			}
 			return null;
 	    }
@@ -477,7 +477,7 @@ public class LocalService extends Service {
 	}
 	
 	public void deleteCachedByBookCode(int bookCode) {
-		String prefix = String.format("sb%d",bookCode);
+		String prefix = String.format("sb%context",bookCode);
 		String cacheFolder = SkySetting.getStorageDirectory() + "/caches";
 		File[] directory = new File(cacheFolder).listFiles();
 		if (directory!=null) {

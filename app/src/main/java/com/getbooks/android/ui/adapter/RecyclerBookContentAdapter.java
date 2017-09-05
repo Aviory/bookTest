@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.getbooks.android.R;
 import com.getbooks.android.model.BookMarkItemModel;
+import com.getbooks.android.model.Highlight;
 
 import java.util.List;
 
@@ -21,17 +22,18 @@ import butterknife.ButterKnife;
  * Created by marinaracu on 17.08.17.
  */
 
-public class RecyclerBookContentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
-        implements View.OnClickListener {
+public class RecyclerBookContentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     public interface BookContentListener {
         void openChapter(int id);
 
         void openMarkupPage(Object pageInformation);
 
+        void removeMarkup(int id);
+
         void openHighlight(Object highlightItem);
 
-        void removeHighlight(int id);
+        void removeHighlight(Object highlight);
     }
 
     List<BookMarkItemModel> mChapterArray;
@@ -67,7 +69,12 @@ public class RecyclerBookContentAdapter extends RecyclerView.Adapter<RecyclerVie
                 viewHolderBookContent.mTextChapterName.setText(mChapterArray.get(position).getBookChapter());
                 Log.d("eeeeee", String.valueOf(mChapterArray.get(position).getViewId()));
                 viewHolderBookContent.mLayoutChapterItem.setId(mChapterArray.get(position).getViewId());
-                viewHolderBookContent.mLayoutChapterItem.setOnClickListener(this);
+                viewHolderBookContent.mLayoutChapterItem.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        mBookContentListener.openChapter(view.getId());
+                    }
+                });
                 break;
 
             case 1:
@@ -75,7 +82,19 @@ public class RecyclerBookContentAdapter extends RecyclerView.Adapter<RecyclerVie
                 holderBookMark.mTextBookMark.setText(mChapterArray.get(position).getBookChapter());
                 holderBookMark.mTextBookMarkDate.setText(mChapterArray.get(position).getDate());
                 holderBookMark.mLayoutMarkupItem.setId(mChapterArray.get(position).getViewId());
-                holderBookMark.mLayoutMarkupItem.setOnClickListener(this);
+                holderBookMark.mLayoutMarkupItem.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        mBookContentListener.openMarkupPage(mChapterArray.get(position).getPageInformation());
+                    }
+                });
+                holderBookMark.mImageRemoveMarkup.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        mBookContentListener.removeMarkup(mChapterArray.get(position).getViewId());
+                        mChapterArray.remove(position);
+                    }
+                });
                 break;
             case 2:
                 ViewHolderHighlight holderHighlight = (ViewHolderHighlight) holder;
@@ -83,41 +102,22 @@ public class RecyclerBookContentAdapter extends RecyclerView.Adapter<RecyclerVie
                 holderHighlight.mTextHighlightChapter.setText(mChapterArray.get(position).getBookChapter());
                 holderHighlight.mTextHighlightContent.setText(mChapterArray.get(position).getHighlightContent());
                 holderHighlight.mLayoutHighlightItem.setId(mChapterArray.get(position).getViewId());
-                holderHighlight.mLayoutHighlightItem.setOnClickListener(this);
+                holderHighlight.mLayoutHighlightItem.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        mBookContentListener.openHighlight(mChapterArray.get(position).getPageInformation());
+                    }
+                });
                 holderHighlight.mImageRemoveHighlight.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        mBookContentListener.removeHighlight(holderHighlight.mLayoutHighlightItem.getId());
+                        mBookContentListener.removeHighlight(mChapterArray.get(position).getPageInformation());
                         mChapterArray.remove(position);
                     }
                 });
                 break;
         }
     }
-
-    @Override
-    public void onClick(View view) {
-        switch (viewType) {
-            case 0:
-                mBookContentListener.openChapter(view.getId());
-                break;
-            case 1:
-                for (int i = 0; i < mChapterArray.size(); i++) {
-                    if (view.getId() == mChapterArray.get(i).getViewId()) {
-                        mBookContentListener.openMarkupPage(mChapterArray.get(i).getPageInformation());
-                    }
-                }
-                break;
-            case 2:
-                for (int i = 0; i < mChapterArray.size(); i++) {
-                    if (view.getId() == mChapterArray.get(i).getViewId()) {
-                        mBookContentListener.openHighlight(mChapterArray.get(i).getPageInformation());
-                    }
-                }
-                break;
-        }
-    }
-
 
     @Override
     public int getItemViewType(int position) {
@@ -167,6 +167,8 @@ public class RecyclerBookContentAdapter extends RecyclerView.Adapter<RecyclerVie
         protected TextView mTextBookMarkDate;
         @BindView(R.id.layout_markup_item)
         protected LinearLayout mLayoutMarkupItem;
+        @BindView(R.id.img_remove_markup)
+        protected ImageView mImageRemoveMarkup;
 
         public ViewHolderBookMark(View itemView) {
             super(itemView);

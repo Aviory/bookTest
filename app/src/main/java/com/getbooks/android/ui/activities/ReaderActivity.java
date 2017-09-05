@@ -96,7 +96,7 @@ public class ReaderActivity extends BaseActivity implements HtmlTaskCallback {
     protected TextView mTextPage;
     @BindView(R.id.progress_reader)
     protected ProgressBar mReaderProgressBar;
-    @BindView(R.id.markup_menu)
+    @BindView(R.id.highlight_menu)
     protected LinearLayout mMarkupMenuLayout;
     @BindView(R.id.content_book_settings)
     protected FrameLayout mBookSettingsLayoutContent;

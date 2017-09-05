@@ -29,6 +29,7 @@ import com.getbooks.android.R;
 import com.getbooks.android.api.Queries;
 import com.getbooks.android.api.QueriesTexts;
 import com.getbooks.android.db.BookDataBaseLoader;
+import com.getbooks.android.encryption.Decryption;
 import com.getbooks.android.events.Events;
 import com.getbooks.android.model.BookModel;
 import com.getbooks.android.model.DeletingBookQueue;
@@ -42,6 +43,7 @@ import com.getbooks.android.prefs.Prefs;
 import com.getbooks.android.receivers.DownloadResultReceiver;
 import com.getbooks.android.receivers.NetworkStateReceiver;
 import com.getbooks.android.servises.DownloadService;
+import com.getbooks.android.skyepubreader.*;
 import com.getbooks.android.ui.BaseActivity;
 import com.getbooks.android.ui.adapter.RecyclerShelvesAdapter;
 import com.getbooks.android.ui.dialog.AlertDialogAboutUs;
@@ -60,7 +62,6 @@ import com.getbooks.android.util.DateUtil;
 import com.getbooks.android.util.FileUtil;
 import com.getbooks.android.util.LogUtil;
 import com.getbooks.android.util.UiUtil;
-import com.getbooks.android.skyepubreader.HomeActivity;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -69,13 +70,19 @@ import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
+
+import javax.crypto.NoSuchPaddingException;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -154,16 +161,6 @@ public class LibraryActivity extends BaseActivity implements Queries.CallBack,
     private static final String SAVE_DIRECTORY_PATH = "com.getbooks.android.ui.fragments.save_directory_path";
     private static final String SAVE_NETWORK_INFO = "com.getbooks.android.ui.fragments.save_network_info";
     private List<Text> txt_list;
-
-    @BindView(R.id.opentSryTest)
-    protected Button mOpenSkyTest;
-
-    @OnClick(R.id.opentSryTest)
-    protected void openSkeTest(){
-        Intent intent = new Intent(this, HomeActivity.class);
-        this.startActivity(intent);
-
-    }
 
 
     @Override
@@ -562,7 +559,7 @@ public class LibraryActivity extends BaseActivity implements Queries.CallBack,
                             mShelvesAdapter.setSelectedDeletingBook(position, mDownloadInfo);
                         } else {
                             UiUtil.openActivity(getAct(), ReaderActivity.class, false,
-                                    Const.BOOK_PATH, mDirectoryPath, Const.BOOK_NAME, mLibrary.get(position).getBookName());
+                                    Const.BOOK_PATH, mDirectoryPath, Const.BOOK_NAME, mLibrary.get(position).fileName);
                         }
                         break;
                     case RENTED_BOOK:
@@ -570,8 +567,32 @@ public class LibraryActivity extends BaseActivity implements Queries.CallBack,
                             currentDownloadingBookModel = mLibrary.get(position);
                             mShelvesAdapter.setSelectedDeletingBook(position, mDownloadInfo);
                         } else {
-                            UiUtil.openActivity(getAct(), ReaderActivity.class, false,
-                                    Const.BOOK_PATH, mDirectoryPath, Const.BOOK_NAME, mLibrary.get(position).getBookName());
+                            try {
+                                FileUtil.decryptedBook(mDirectoryPath,
+                                        mLibrary.get(position).fileName,
+                                        mLibrary.get(position).fileName + Const.DECRYPTED);
+                                Intent intent = new Intent(LibraryActivity.this, BookViewActivity.class);
+                                intent.putExtra("BOOKCODE", Integer.parseInt(mLibrary.get(position).getBookSku().replaceAll("-", "")));
+                                intent.putExtra("TITLE", "Title");
+                                intent.putExtra("AUTHOR", "Author");
+                                intent.putExtra("BOOKNAME", mLibrary.get(position).fileName + Const.DECRYPTED);
+                                intent.putExtra("POSITION", (double) -1.0f);
+                                intent.putExtra("DOUBLEPAGED", false);
+                                intent.putExtra("transitionType", 1);
+                                intent.putExtra("GLOBALPAGINATION", false);
+                                intent.putExtra("RTL", true);
+                                intent.putExtra("VERTICALWRITING", true);
+                                intent.putExtra("DERECTORYPATH", mDirectoryPath);
+                                startActivity(intent);
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            } catch (NoSuchPaddingException e) {
+                                e.printStackTrace();
+                            } catch (NoSuchAlgorithmException e) {
+                                e.printStackTrace();
+                            } catch (InvalidKeyException e) {
+                                e.printStackTrace();
+                            }
                         }
                         break;
                     case INTERNAL_BOOK:
@@ -652,9 +673,9 @@ public class LibraryActivity extends BaseActivity implements Queries.CallBack,
         // Starting Download Service
         Intent intent = new Intent(Intent.ACTION_SYNC, null, getAct(), DownloadService.class);
         // Send optional extras to Download IntentService
-        intent.putExtra("url", bookModel.getBookDownloadLink());
+        intent.putExtra("url", bookModel.url);
         intent.putExtra("receiver", mDownlodReceiver);
-        intent.putExtra("bookName", bookModel.getBookName());
+        intent.putExtra("bookName", bookModel.fileName);
         intent.putExtra("directoryPath", mDirectoryPath);
 
         getAct().startService(intent);
@@ -745,7 +766,7 @@ public class LibraryActivity extends BaseActivity implements Queries.CallBack,
 
     private void getByteBookInstance() {
         String bookPath = mDirectoryPath
-                + "/" + currentDownloadingBookModel.getBookName() + ".epub";
+                + "/" + currentDownloadingBookModel.fileName + ".epub";
 
         File bookFile = new File(bookPath);
         int bookSize = (int) bookFile.length();
@@ -763,7 +784,7 @@ public class LibraryActivity extends BaseActivity implements Queries.CallBack,
         }
 
         FileUtil.deleteDir(new File(mDirectoryPath
-                + "/" + currentDownloadingBookModel.getBookName() + ".epub"));
+                + "/" + currentDownloadingBookModel.fileName + ".epub"));
     }
 
     @Subscribe
@@ -784,7 +805,7 @@ public class LibraryActivity extends BaseActivity implements Queries.CallBack,
     @Subscribe
     public void onMessageEvent(Events.UpDateLibrary upDateLibrary) {
         for (BookModel bookModel : mLibrary) {
-            if (bookModel.getBookName().equals(upDateLibrary.getBookName())) {
+            if (bookModel.fileName.equals(upDateLibrary.getBookName())) {
                 bookModel.setIsBookFirstOpen(false);
                 bookModel.setReadDateTime(upDateLibrary.getDateLastReading());
                 mShelvesAdapter.notifyDataSetChanged();

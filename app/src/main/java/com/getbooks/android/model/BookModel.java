@@ -4,6 +4,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.getbooks.android.model.enums.BookState;
+import com.skytree.epub.BookInformation;
 
 import java.util.Arrays;
 import java.util.Calendar;
@@ -12,10 +13,10 @@ import java.util.Calendar;
  * Created by marina on 11.08.17.
  */
 
-public class BookModel implements Parcelable {
+public class BookModel extends BookInformation implements Parcelable {
     private String mBookAuthors;
     private int mUserId;
-    private String mBookName;
+//    private String mBookName;
     private String mBookImage;
     private String mBookSku;
     private String mBookContentID;
@@ -30,8 +31,8 @@ public class BookModel implements Parcelable {
     private Calendar mCreatedDate;//
     private boolean mIsBookAtTheEnd;
     private int mLastPage;
-    private String mImageDownloadLink;
-    private String mBookDownloadLink;
+//    private String mImageDownloadLink;
+//    private String mBookDownloadLink;
     private BookState mBookState;
     private int mProgress = 0;
     private int mViewPosition = 0;
@@ -55,7 +56,7 @@ public class BookModel implements Parcelable {
     protected BookModel(Parcel in) {
         mBookAuthors = in.readString();
         mUserId = in.readInt();
-        mBookName = in.readString();
+//        mBookName = in.readString();
         mBookImage = in.readString();
         mBookSku = in.readString();
         mBookContentID = in.readString();
@@ -68,8 +69,8 @@ public class BookModel implements Parcelable {
         mUpdateDate = in.readInt();
         mIsBookAtTheEnd = in.readByte() != 0;
         mLastPage = in.readInt();
-        mImageDownloadLink = in.readString();
-        mBookDownloadLink = in.readString();
+//        mImageDownloadLink = in.readString();
+//        mBookDownloadLink = in.readString();
         mProgress = in.readInt();
         mViewPosition = in.readInt();
         mIsBookFirstOpen = in.readByte() != 0;
@@ -94,13 +95,13 @@ public class BookModel implements Parcelable {
         }
     };
 
-    public String getBookName() {
-        return mBookName;
-    }
-
-    public void setBookName(String bookName) {
-        this.mBookName = bookName;
-    }
+//    public String getBookName() {
+//        return mBookName;
+//    }
+//
+//    public void setBookName(String bookName) {
+//        this.mBookName = bookName;
+//    }
 
     public boolean isIsBookFirstOpen() {
         return mIsBookFirstOpen;
@@ -117,22 +118,22 @@ public class BookModel implements Parcelable {
     public void setBookSku(String bookSku) {
         this.mBookSku = bookSku;
     }
-
-    public String getImageDownloadLink() {
-        return mImageDownloadLink;
-    }
-
-    public void setImageDownloadLink(String imageDownloadLink) {
-        this.mImageDownloadLink = imageDownloadLink;
-    }
-
-    public String getBookDownloadLink() {
-        return mBookDownloadLink;
-    }
-
-    public void setBookDownloadLink(String bookDownloadLink) {
-        this.mBookDownloadLink = bookDownloadLink;
-    }
+//
+//    public String getImageDownloadLink() {
+//        return mImageDownloadLink;
+//    }
+//
+//    public void setImageDownloadLink(String imageDownloadLink) {
+//        this.mImageDownloadLink = imageDownloadLink;
+//    }
+//
+//    public String getBookDownloadLink() {
+//        return mBookDownloadLink;
+//    }
+//
+//    public void setBookDownloadLink(String bookDownloadLink) {
+//        this.mBookDownloadLink = bookDownloadLink;
+//    }
 
     public BookState getBookState() {
         return mBookState;
@@ -336,26 +337,27 @@ public class BookModel implements Parcelable {
 
 
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (!(o instanceof BookModel)) return false;
-
-        BookModel that = (BookModel) o;
-
-        if (mUserId != that.mUserId) return false;
-        if (!mBookName.equals(that.mBookName)) return false;
-        return mBookSku.equals(that.mBookSku);
-
-    }
-
-    @Override
-    public int hashCode() {
-        int result = mUserId;
-        result = 31 * result + mBookName.hashCode();
-        result = 31 * result + mBookSku.hashCode();
-        return result;
-    }
+//
+//    @Override
+//    public boolean equals(Object o) {
+//        if (this == o) return true;
+//        if (!(o instanceof BookModel)) return false;
+//
+//        BookModel that = (BookModel) o;
+//
+//        if (mUserId != that.mUserId) return false;
+//        if (!mBookName.equals(that.mBookName)) return false;
+//        return mBookSku.equals(that.mBookSku);
+//
+//    }
+//
+//    @Override
+//    public int hashCode() {
+//        int result = mUserId;
+//        result = 31 * result + mBookName.hashCode();
+//        result = 31 * result + mBookSku.hashCode();
+//        return result;
+//    }
 
     public boolean isIsBookRented() {
         return mIsBookRented;
@@ -382,7 +384,7 @@ public class BookModel implements Parcelable {
     public void writeToParcel(Parcel parcel, int i) {
         parcel.writeString(mBookAuthors);
         parcel.writeInt(mUserId);
-        parcel.writeString(mBookName);
+//        parcel.writeString(mBookName);
         parcel.writeString(mBookImage);
         parcel.writeString(mBookSku);
         parcel.writeString(mBookContentID);
@@ -395,8 +397,8 @@ public class BookModel implements Parcelable {
         parcel.writeInt(mUpdateDate);
         parcel.writeByte((byte) (mIsBookAtTheEnd ? 1 : 0));
         parcel.writeInt(mLastPage);
-        parcel.writeString(mImageDownloadLink);
-        parcel.writeString(mBookDownloadLink);
+//        parcel.writeString(mImageDownloadLink);
+//        parcel.writeString(mBookDownloadLink);
         parcel.writeInt(mProgress);
         parcel.writeInt(mViewPosition);
         parcel.writeByte((byte) (mIsBookFirstOpen ? 1 : 0));
@@ -414,7 +416,7 @@ public class BookModel implements Parcelable {
         return "BookModel{" +
                 "mBookAuthors='" + mBookAuthors + '\'' +
                 ", mUserId=" + mUserId +
-                ", mBookName='" + mBookName + '\'' +
+//                ", mBookName='" + mBookName + '\'' +
                 ", mBookImage='" + mBookImage + '\'' +
                 ", mBookSku='" + mBookSku + '\'' +
                 ", mBookContentID='" + mBookContentID + '\'' +
@@ -429,8 +431,8 @@ public class BookModel implements Parcelable {
                 ", mCreatedDate=" + mCreatedDate +
                 ", mIsBookAtTheEnd=" + mIsBookAtTheEnd +
                 ", mLastPage=" + mLastPage +
-                ", mImageDownloadLink='" + mImageDownloadLink + '\'' +
-                ", mBookDownloadLink='" + mBookDownloadLink + '\'' +
+//                ", mImageDownloadLink='" + mImageDownloadLink + '\'' +
+//                ", mBookDownloadLink='" + mBookDownloadLink + '\'' +
                 ", mBookState=" + mBookState +
                 ", mProgress=" + mProgress +
                 ", mViewPosition=" + mViewPosition +
@@ -452,5 +454,4 @@ public class BookModel implements Parcelable {
     public void setmIsBookSelected(boolean mIsBookSelected) {
         this.mIsBookSelected = mIsBookSelected;
     }
-
 }

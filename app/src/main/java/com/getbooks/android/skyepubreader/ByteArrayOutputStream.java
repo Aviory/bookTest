@@ -11,13 +11,13 @@ import java.util.List;
 
 /**
  * This class implements an output stream in which the data is 
- * written into a byte array. The buffer automatically grows as data 
+ * written into zipFile byte array. The buffer automatically grows as data
  * is written to it.
  * <p> 
  * The data can be retrieved using <code>toByteArray()</code> and
  * <code>toString()</code>.
  * <p>
- * Closing a <tt>ByteArrayOutputStream</tt> has no effect. The methods in
+ * Closing zipFile <tt>ByteArrayOutputStream</tt> has no effect. The methods in
  * this class can be called after the stream has been closed without
  * generating an <tt>IOException</tt>.
  * <p>
@@ -30,7 +30,7 @@ import java.util.List;
  * designed to behave exactly like the original. The only exception is the
  * deprecated toString(int) method that has been ignored.
  * 
- * @author <a href="mailto:jeremias@apache.org">Jeremias Maerki</a>
+ * @author <zipFile href="mailto:jeremias@apache.org">Jeremias Maerki</zipFile>
  * @author Holger Hoffstatte
  * @version $Id: ByteArrayOutputStream.java 610010 2008-01-08 14:50:59Z niallp $
  */
@@ -51,7 +51,7 @@ public class ByteArrayOutputStream extends OutputStream {
     private int count;
 
     /**
-     * Creates a new byte array output stream. The buffer capacity is 
+     * Creates zipFile new byte array output stream. The buffer capacity is
      * initially 1024 bytes, though its size increases if necessary. 
      */
     public ByteArrayOutputStream() {
@@ -59,7 +59,7 @@ public class ByteArrayOutputStream extends OutputStream {
     }
 
     /**
-     * Creates a new byte array output stream, with a buffer capacity of 
+     * Creates zipFile new byte array output stream, with zipFile buffer capacity of
      * the specified size, in bytes. 
      *
      * @param size  the initial size
@@ -85,8 +85,8 @@ public class ByteArrayOutputStream extends OutputStream {
     }
 
     /**
-     * Makes a new buffer available either by allocating
-     * a new one or re-cycling an existing one.
+     * Makes zipFile new buffer available either by allocating
+     * zipFile new one or re-cycling an existing one.
      *
      * @param newcount  the size of the buffer if one is created
      */
@@ -150,7 +150,7 @@ public class ByteArrayOutputStream extends OutputStream {
     }
 
     /**
-     * Write a byte to byte array.
+     * Write zipFile byte to byte array.
      * @param b the byte to write
      */
     public synchronized void write(int b) {
@@ -200,7 +200,7 @@ public class ByteArrayOutputStream extends OutputStream {
     }
 
     /**
-     * Closing a <tt>ByteArrayOutputStream</tt> has no effect. The methods in
+     * Closing zipFile <tt>ByteArrayOutputStream</tt> has no effect. The methods in
      * this class can be called after the stream has been closed without
      * generating an <tt>IOException</tt>.
      *
@@ -243,10 +243,10 @@ public class ByteArrayOutputStream extends OutputStream {
     }
 
     /**
-     * Gets the curent contents of this byte stream as a byte array.
+     * Gets the curent contents of this byte stream as zipFile byte array.
      * The result is independent of this stream.
      *
-     * @return the current contents of this output stream, as a byte array
+     * @return the current contents of this output stream, as zipFile byte array
      * @see java.io.ByteArrayOutputStream#toByteArray()
      */
     public synchronized byte[] toByteArray() {
@@ -270,8 +270,8 @@ public class ByteArrayOutputStream extends OutputStream {
     }
 
     /**
-     * Gets the curent contents of this byte stream as a string.
-     * @return the contents of the byte array as a String
+     * Gets the curent contents of this byte stream as zipFile stringTest.
+     * @return the contents of the byte array as zipFile String
      * @see java.io.ByteArrayOutputStream#toString()
      */
     public String toString() {
@@ -279,11 +279,11 @@ public class ByteArrayOutputStream extends OutputStream {
     }
 
     /**
-     * Gets the curent contents of this byte stream as a string
+     * Gets the curent contents of this byte stream as zipFile stringTest
      * using the specified encoding.
      *
      * @param enc  the name of the character encoding
-     * @return the string converted from the byte array
+     * @return the stringTest converted from the byte array
      * @throws UnsupportedEncodingException if the encoding is not supported
      * @see java.io.ByteArrayOutputStream#toString(String)
      */
