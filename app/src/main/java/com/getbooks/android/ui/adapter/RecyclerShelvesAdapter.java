@@ -83,7 +83,7 @@ public class RecyclerShelvesAdapter extends RecyclerView.Adapter<RecyclerShelves
                 holder.mTextProgress.setVisibility(View.INVISIBLE);
                 mProgress = 0;
                 PicassoCache.getPicassoInstance(mContext).load(mLibrary.get(position)
-                        .getImageDownloadLink())
+                        .coverUrl)
 //                .networkPolicy(NetworkPolicy.OFFLINE)
 //                .memoryPolicy(MemoryPolicy.NO_CACHE)
 //                .error(R.drawable.book_1)
@@ -123,7 +123,7 @@ public class RecyclerShelvesAdapter extends RecyclerView.Adapter<RecyclerShelves
                 holder.mImageBookState.setVisibility(View.INVISIBLE);
                 holder.mProgressBar.setVisibility(View.INVISIBLE);
                 holder.mTextProgress.setVisibility(View.INVISIBLE);
-                PicassoCache.getPicassoInstance(mContext).load(mLibrary.get(position).getImageDownloadLink())
+                PicassoCache.getPicassoInstance(mContext).load(mLibrary.get(position).coverUrl)
                         .into(holder.mImageCover, new Callback() {
                             @Override
                             public void onSuccess() {

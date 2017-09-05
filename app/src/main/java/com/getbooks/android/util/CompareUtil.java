@@ -49,8 +49,8 @@ public class CompareUtil {
 
         @Override
         public int compare(BookModel a, BookModel b) {
-            if(a.getBookName()!=null && b.getBookName()!=null)
-                return b.getBookName().compareTo(a.getBookName());
+            if(a.fileName!=null && b.fileName!=null)
+                return b.fileName.compareTo(a.fileName);
             return 0;
         }
     }

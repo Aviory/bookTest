@@ -159,9 +159,9 @@ public class BooksDataBase {
                 BookModel bookModel = new BookModel();
                 bookModel.setUserId(cursor.getInt(cursor.getColumnIndex(BooksDBContract.BookDetail.USER_ID)));
                 bookModel.setBookSku(cursor.getString(cursor.getColumnIndex(BooksDBContract.BookDetail.BOOK_SKU)));
-                bookModel.setBookName(cursor.getString(cursor.getColumnIndex(BooksDBContract.BookDetail.BOOK_NAME)));
-                bookModel.setImageDownloadLink(cursor.getString(cursor.getColumnIndex(BooksDBContract.BookDetail.BOOK_IMAGE_DOWNLOAD_URL)));
-                bookModel.setBookDownloadLink(cursor.getString(cursor.getColumnIndex(BooksDBContract.BookDetail.BOOK_DOWNLOAD_LINK)));
+                bookModel.fileName = (cursor.getString(cursor.getColumnIndex(BooksDBContract.BookDetail.BOOK_NAME)));
+                bookModel.coverUrl = (cursor.getString(cursor.getColumnIndex(BooksDBContract.BookDetail.BOOK_IMAGE_DOWNLOAD_URL)));
+                bookModel.url = (cursor.getString(cursor.getColumnIndex(BooksDBContract.BookDetail.BOOK_DOWNLOAD_LINK)));
                 bookModel.setBookState(cursor.getString(cursor.getColumnIndex(BooksDBContract.BookDetail.BOOK_STATE)));
                 bookModel.setBookInstance(cursor.getBlob(cursor.getColumnIndex(BooksDBContract.BookDetail.BOOK_INSTANCE)));
                 bookModel.setBookImage(cursor.getString(cursor.getColumnIndex(BooksDBContract.BookDetail.BOOK_IMAGE)));
@@ -204,10 +204,10 @@ public class BooksDataBase {
             while (cursor.moveToNext()) {
                 Calendar calendar = null;
                 bookModel.setUserId(cursor.getInt(cursor.getColumnIndex(BooksDBContract.BookDetail.USER_ID)));
-                bookModel.setBookSku(cursor.getString(cursor.getColumnIndex(BooksDBContract.BookDetail.BOOK_SKU)));
-                bookModel.setBookName(cursor.getString(cursor.getColumnIndex(BooksDBContract.BookDetail.BOOK_NAME)));
-                bookModel.setImageDownloadLink(cursor.getString(cursor.getColumnIndex(BooksDBContract.BookDetail.BOOK_IMAGE_DOWNLOAD_URL)));
-                bookModel.setBookDownloadLink(cursor.getString(cursor.getColumnIndex(BooksDBContract.BookDetail.BOOK_DOWNLOAD_LINK)));
+                bookModel.bookCode = Integer.parseInt((cursor.getString(cursor.getColumnIndex(BooksDBContract.BookDetail.BOOK_SKU))));
+                bookModel.fileName = (cursor.getString(cursor.getColumnIndex(BooksDBContract.BookDetail.BOOK_NAME)));
+                bookModel.coverUrl = (cursor.getString(cursor.getColumnIndex(BooksDBContract.BookDetail.BOOK_IMAGE_DOWNLOAD_URL)));
+                bookModel.url = (cursor.getString(cursor.getColumnIndex(BooksDBContract.BookDetail.BOOK_DOWNLOAD_LINK)));
                 bookModel.setBookState(cursor.getString(cursor.getColumnIndex(BooksDBContract.BookDetail.BOOK_STATE)));
                 bookModel.setBookInstance(cursor.getBlob(cursor.getColumnIndex(BooksDBContract.BookDetail.BOOK_INSTANCE)));
                 bookModel.setBookImage(cursor.getString(cursor.getColumnIndex(BooksDBContract.BookDetail.BOOK_IMAGE)));
@@ -241,10 +241,10 @@ public class BooksDataBase {
     protected void saveBook(BookModel bookModel) {
         ContentValues contentValues = new ContentValues();
         contentValues.put(BooksDBContract.BookDetail.USER_ID, bookModel.getUserId());
-        contentValues.put(BooksDBContract.BookDetail.BOOK_SKU, bookModel.getBookSku());
-        contentValues.put(BooksDBContract.BookDetail.BOOK_NAME, bookModel.getBookName());
-        contentValues.put(BooksDBContract.BookDetail.BOOK_IMAGE_DOWNLOAD_URL, bookModel.getImageDownloadLink());
-        contentValues.put(BooksDBContract.BookDetail.BOOK_DOWNLOAD_LINK, bookModel.getBookDownloadLink());
+        contentValues.put(BooksDBContract.BookDetail.BOOK_SKU, bookModel.bookCode);
+        contentValues.put(BooksDBContract.BookDetail.BOOK_NAME, bookModel.fileName);
+        contentValues.put(BooksDBContract.BookDetail.BOOK_IMAGE_DOWNLOAD_URL, bookModel.coverUrl);
+        contentValues.put(BooksDBContract.BookDetail.BOOK_DOWNLOAD_LINK, bookModel.url);
         contentValues.put(BooksDBContract.BookDetail.BOOK_STATE, bookModel.getBookState().getState());
         contentValues.put(BooksDBContract.BookDetail.BOOK_INSTANCE, bookModel.getBookInstance());
         contentValues.put(BooksDBContract.BookDetail.BOOK_IMAGE, bookModel.getBookImage());
@@ -272,7 +272,7 @@ public class BooksDataBase {
     protected void deleteBook(BookModel bookModel) {
         mSqLiteDatabase = mBookDBHelper.getReadableDatabase();
         String query = BooksDBContract.BookDetail.BOOK_SKU + " =?";
-        mSqLiteDatabase.delete(Tables.BOOK_DETAILS, query, new String[]{String.valueOf(bookModel.getBookSku())});
+        mSqLiteDatabase.delete(Tables.BOOK_DETAILS, query, new String[]{String.valueOf(bookModel.bookCode)});
     }
 
 
@@ -284,9 +284,9 @@ public class BooksDataBase {
         ContentValues contentValues = new ContentValues();
         contentValues.put(BooksDBContract.BookDetail.USER_ID, bookModel.getUserId());
         contentValues.put(BooksDBContract.BookDetail.BOOK_SKU, bookModel.getBookSku());
-        contentValues.put(BooksDBContract.BookDetail.BOOK_NAME, bookModel.getBookName());
-        contentValues.put(BooksDBContract.BookDetail.BOOK_IMAGE_DOWNLOAD_URL, bookModel.getImageDownloadLink());
-        contentValues.put(BooksDBContract.BookDetail.BOOK_DOWNLOAD_LINK, bookModel.getBookDownloadLink());
+        contentValues.put(BooksDBContract.BookDetail.BOOK_NAME, bookModel.fileName);
+        contentValues.put(BooksDBContract.BookDetail.BOOK_IMAGE_DOWNLOAD_URL, bookModel.coverUrl);
+        contentValues.put(BooksDBContract.BookDetail.BOOK_DOWNLOAD_LINK, bookModel.url);
         contentValues.put(BooksDBContract.BookDetail.BOOK_STATE, bookModel.getBookState().getState());
         contentValues.put(BooksDBContract.BookDetail.BOOK_INSTANCE, bookModel.getBookInstance());
         contentValues.put(BooksDBContract.BookDetail.BOOK_IMAGE, bookModel.getBookImage());
@@ -309,7 +309,7 @@ public class BooksDataBase {
         contentValues.put(BooksDBContract.BookDetail.LAST_READING_PARAGRAPH, bookModel.getLastReadingParagraph());
         contentValues.put(BooksDBContract.BookDetail.BOOK_IS_FIRST_OPEN, bookModel.isIsBookFirstOpen() ? 1 : 0);
         mSqLiteDatabase.update(Tables.BOOK_DETAILS, contentValues, query,
-                new String[]{Integer.toString(bookModel.getUserId()), bookModel.getBookName()});
+                new String[]{Integer.toString(bookModel.getUserId()), bookModel.fileName});
     }
 
 }

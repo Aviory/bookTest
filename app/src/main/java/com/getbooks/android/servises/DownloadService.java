@@ -15,6 +15,7 @@ import org.greenrobot.eventbus.Subscribe;
 
 import java.io.BufferedInputStream;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
@@ -97,6 +98,9 @@ public class DownloadService extends IntentService {
             // Output stream encoded
             CipherOutputStream output = Encryption.encryptStream(mDirectoryPath
                     + "/" + bookName + ".epub");
+
+//            FileOutputStream output =   new FileOutputStream(mDirectoryPath
+//                    + "/" + bookName + ".epub");
 
             byte data[] = new byte[1024];
 

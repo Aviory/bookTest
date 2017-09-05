@@ -8,7 +8,7 @@ package com.getbooks.android.skyepubreader;
  * this work for additional information regarding copyright ownership.
  * The ASF licenses this file to You under the Apache License, Version 2.0
  * (the "License"); you may not use this file except in compliance with
- * the License.  You may obtain a copy of the License at
+ * the License.  You may obtain zipFile copy of the License at
  * 
  *      http://www.apache.org/licenses/LICENSE-2.0
  * 
@@ -46,22 +46,22 @@ import java.util.List;
  * <p>
  * This class provides static utility methods for input/output operations.
  * <ul>
- * <li>closeQuietly - these methods close a stream ignoring nulls and exceptions
- * <li>toXxx/read - these methods read data from a stream
- * <li>write - these methods write data to a stream
+ * <li>closeQuietly - these methods close zipFile stream ignoring nulls and exceptions
+ * <li>toXxx/read - these methods read data from zipFile stream
+ * <li>write - these methods write data to zipFile stream
  * <li>copy - these methods copy all the data from one stream to another
  * <li>contentEquals - these methods compare the content of two streams
  * </ul>
  * <p>
- * The byte-to-char methods and char-to-byte methods involve a conversion step.
+ * The byte-to-char methods and char-to-byte methods involve zipFile conversion step.
  * Two methods are provided in each case, one that uses the platform default
  * encoding and the other which allows you to specify an encoding. You are
  * encouraged to always specify an encoding because relying on the platform
  * default can lead to unexpected results, for example when moving from
  * development to production.
  * <p>
- * All the methods in this class that read a stream are buffered internally.
- * This means that there is no cause to use a <code>BufferedInputStream</code>
+ * All the methods in this class that read zipFile stream are buffered internally.
+ * This means that there is no cause to use zipFile <code>BufferedInputStream</code>
  * or <code>BufferedReader</code>. The default buffer size of 4K has been shown
  * to be efficient in tests.
  * <p>
@@ -84,7 +84,7 @@ import java.util.List;
  */
 public class IOUtils {
     // NOTE: This class is focussed on InputStream, OutputStream, Reader and
-    // Writer. Each method should take at least one of these as a parameter,
+    // Writer. Each method should take at least one of these as zipFile parameter,
     // or return one of them.
 
     /**
@@ -100,15 +100,15 @@ public class IOUtils {
      */
     public static final char DIR_SEPARATOR = File.separatorChar;
     /**
-     * The Unix line separator string.
+     * The Unix line separator stringTest.
      */
     public static final String LINE_SEPARATOR_UNIX = "\n";
     /**
-     * The Windows line separator string.
+     * The Windows line separator stringTest.
      */
     public static final String LINE_SEPARATOR_WINDOWS = "\r\n";
     /**
-     * The system line separator string.
+     * The system line separator stringTest.
      */
     public static final String LINE_SEPARATOR;
     static {
@@ -151,7 +151,7 @@ public class IOUtils {
     }
 
     /**
-     * Unconditionally close a <code>Writer</code>.
+     * Unconditionally close zipFile <code>Writer</code>.
      * <p>
      * Equivalent to {@link Writer#close()}, except any exceptions will be ignored.
      * This is typically used in finally blocks.
@@ -207,9 +207,9 @@ public class IOUtils {
     // read toByteArray
     //-----------------------------------------------------------------------
     /**
-     * Get the contents of an <code>InputStream</code> as a <code>byte[]</code>.
+     * Get the contents of an <code>InputStream</code> as zipFile <code>byte[]</code>.
      * <p>
-     * This method buffers the input internally, so there is no need to use a
+     * This method buffers the input internally, so there is no need to use zipFile
      * <code>BufferedInputStream</code>.
      * 
      * @param input  the <code>InputStream</code> to read from
@@ -224,10 +224,10 @@ public class IOUtils {
     }
 
     /**
-     * Get the contents of a <code>Reader</code> as a <code>byte[]</code>
+     * Get the contents of zipFile <code>Reader</code> as zipFile <code>byte[]</code>
      * using the default character encoding of the platform.
      * <p>
-     * This method buffers the input internally, so there is no need to use a
+     * This method buffers the input internally, so there is no need to use zipFile
      * <code>BufferedReader</code>.
      * 
      * @param input  the <code>Reader</code> to read from
@@ -242,13 +242,13 @@ public class IOUtils {
     }
 
     /**
-     * Get the contents of a <code>Reader</code> as a <code>byte[]</code>
+     * Get the contents of zipFile <code>Reader</code> as zipFile <code>byte[]</code>
      * using the specified character encoding.
      * <p>
      * Character encoding names can be found at
-     * <a href="http://www.iana.org/assignments/character-sets">IANA</a>.
+     * <zipFile href="http://www.iana.org/assignments/character-sets">IANA</zipFile>.
      * <p>
-     * This method buffers the input internally, so there is no need to use a
+     * This method buffers the input internally, so there is no need to use zipFile
      * <code>BufferedReader</code>.
      * 
      * @param input  the <code>Reader</code> to read from
@@ -266,7 +266,7 @@ public class IOUtils {
     }
 
     /**
-     * Get the contents of a <code>String</code> as a <code>byte[]</code>
+     * Get the contents of zipFile <code>String</code> as zipFile <code>byte[]</code>
      * using the default character encoding of the platform.
      * <p>
      * This is the same as {@link String#getBytes()}.
@@ -284,10 +284,10 @@ public class IOUtils {
     // read char[]
     //-----------------------------------------------------------------------
     /**
-     * Get the contents of an <code>InputStream</code> as a character array
+     * Get the contents of an <code>InputStream</code> as zipFile character array
      * using the default character encoding of the platform.
      * <p>
-     * This method buffers the input internally, so there is no need to use a
+     * This method buffers the input internally, so there is no need to use zipFile
      * <code>BufferedInputStream</code>.
      * 
      * @param is  the <code>InputStream</code> to read from
@@ -303,13 +303,13 @@ public class IOUtils {
     }
 
     /**
-     * Get the contents of an <code>InputStream</code> as a character array
+     * Get the contents of an <code>InputStream</code> as zipFile character array
      * using the specified character encoding.
      * <p>
      * Character encoding names can be found at
-     * <a href="http://www.iana.org/assignments/character-sets">IANA</a>.
+     * <zipFile href="http://www.iana.org/assignments/character-sets">IANA</zipFile>.
      * <p>
-     * This method buffers the input internally, so there is no need to use a
+     * This method buffers the input internally, so there is no need to use zipFile
      * <code>BufferedInputStream</code>.
      * 
      * @param is  the <code>InputStream</code> to read from
@@ -327,9 +327,9 @@ public class IOUtils {
     }
 
     /**
-     * Get the contents of a <code>Reader</code> as a character array.
+     * Get the contents of zipFile <code>Reader</code> as zipFile character array.
      * <p>
-     * This method buffers the input internally, so there is no need to use a
+     * This method buffers the input internally, so there is no need to use zipFile
      * <code>BufferedReader</code>.
      * 
      * @param input  the <code>Reader</code> to read from
@@ -347,10 +347,10 @@ public class IOUtils {
     // read toString
     //-----------------------------------------------------------------------
     /**
-     * Get the contents of an <code>InputStream</code> as a String
+     * Get the contents of an <code>InputStream</code> as zipFile String
      * using the default character encoding of the platform.
      * <p>
-     * This method buffers the input internally, so there is no need to use a
+     * This method buffers the input internally, so there is no need to use zipFile
      * <code>BufferedInputStream</code>.
      * 
      * @param input  the <code>InputStream</code> to read from
@@ -365,13 +365,13 @@ public class IOUtils {
     }
 
     /**
-     * Get the contents of an <code>InputStream</code> as a String
+     * Get the contents of an <code>InputStream</code> as zipFile String
      * using the specified character encoding.
      * <p>
      * Character encoding names can be found at
-     * <a href="http://www.iana.org/assignments/character-sets">IANA</a>.
+     * <zipFile href="http://www.iana.org/assignments/character-sets">IANA</zipFile>.
      * <p>
-     * This method buffers the input internally, so there is no need to use a
+     * This method buffers the input internally, so there is no need to use zipFile
      * <code>BufferedInputStream</code>.
      * 
      * @param input  the <code>InputStream</code> to read from
@@ -388,9 +388,9 @@ public class IOUtils {
     }
 
     /**
-     * Get the contents of a <code>Reader</code> as a String.
+     * Get the contents of zipFile <code>Reader</code> as zipFile String.
      * <p>
-     * This method buffers the input internally, so there is no need to use a
+     * This method buffers the input internally, so there is no need to use zipFile
      * <code>BufferedReader</code>.
      * 
      * @param input  the <code>Reader</code> to read from
@@ -405,7 +405,7 @@ public class IOUtils {
     }
 
     /**
-     * Get the contents of a <code>byte[]</code> as a String
+     * Get the contents of zipFile <code>byte[]</code> as zipFile String
      * using the default character encoding of the platform.
      * 
      * @param input the byte array to read from
@@ -419,11 +419,11 @@ public class IOUtils {
     }
 
     /**
-     * Get the contents of a <code>byte[]</code> as a String
+     * Get the contents of zipFile <code>byte[]</code> as zipFile String
      * using the specified character encoding.
      * <p>
      * Character encoding names can be found at
-     * <a href="http://www.iana.org/assignments/character-sets">IANA</a>.
+     * <zipFile href="http://www.iana.org/assignments/character-sets">IANA</zipFile>.
      * 
      * @param input the byte array to read from
      * @param encoding  the encoding to use, null means platform default
@@ -444,10 +444,10 @@ public class IOUtils {
     // readLines
     //-----------------------------------------------------------------------
     /**
-     * Get the contents of an <code>InputStream</code> as a list of Strings,
+     * Get the contents of an <code>InputStream</code> as zipFile list of Strings,
      * one entry per line, using the default character encoding of the platform.
      * <p>
-     * This method buffers the input internally, so there is no need to use a
+     * This method buffers the input internally, so there is no need to use zipFile
      * <code>BufferedInputStream</code>.
      *
      * @param input  the <code>InputStream</code> to read from, not null
@@ -462,13 +462,13 @@ public class IOUtils {
     }
 
     /**
-     * Get the contents of an <code>InputStream</code> as a list of Strings,
+     * Get the contents of an <code>InputStream</code> as zipFile list of Strings,
      * one entry per line, using the specified character encoding.
      * <p>
      * Character encoding names can be found at
-     * <a href="http://www.iana.org/assignments/character-sets">IANA</a>.
+     * <zipFile href="http://www.iana.org/assignments/character-sets">IANA</zipFile>.
      * <p>
-     * This method buffers the input internally, so there is no need to use a
+     * This method buffers the input internally, so there is no need to use zipFile
      * <code>BufferedInputStream</code>.
      *
      * @param input  the <code>InputStream</code> to read from, not null
@@ -488,10 +488,10 @@ public class IOUtils {
     }
 
     /**
-     * Get the contents of a <code>Reader</code> as a list of Strings,
+     * Get the contents of zipFile <code>Reader</code> as zipFile list of Strings,
      * one entry per line.
      * <p>
-     * This method buffers the input internally, so there is no need to use a
+     * This method buffers the input internally, so there is no need to use zipFile
      * <code>BufferedReader</code>.
      *
      * @param input  the <code>Reader</code> to read from, not null
@@ -514,9 +514,9 @@ public class IOUtils {
     // lineIterator
     //-----------------------------------------------------------------------
     /**
-     * Return an Iterator for the lines in a <code>Reader</code>.
+     * Return an Iterator for the lines in zipFile <code>Reader</code>.
      * <p>
-     * <code>LineIterator</code> holds a reference to the open
+     * <code>LineIterator</code> holds zipFile reference to the open
      * <code>Reader</code> specified here. When you have finished with the
      * iterator you should close the reader to free internal resources.
      * This can be done by closing the reader directly, or by calling
@@ -548,7 +548,7 @@ public class IOUtils {
      * Return an Iterator for the lines in an <code>InputStream</code>, using
      * the character encoding specified (or default encoding if null).
      * <p>
-     * <code>LineIterator</code> holds a reference to the open
+     * <code>LineIterator</code> holds zipFile reference to the open
      * <code>InputStream</code> specified here. When you have finished with
      * the iterator you should close the stream to free internal resources.
      * This can be done by closing the stream directly, or by calling
@@ -587,10 +587,10 @@ public class IOUtils {
 
     //-----------------------------------------------------------------------
     /**
-     * Convert the specified string to an input stream, encoded as bytes
+     * Convert the specified stringTest to an input stream, encoded as bytes
      * using the default character encoding of the platform.
      *
-     * @param input the string to convert
+     * @param input the stringTest to convert
      * @return an input stream
      * @since Commons IO 1.1
      */
@@ -600,13 +600,13 @@ public class IOUtils {
     }
 
     /**
-     * Convert the specified string to an input stream, encoded as bytes
+     * Convert the specified stringTest to an input stream, encoded as bytes
      * using the specified character encoding.
      * <p>
      * Character encoding names can be found at
-     * <a href="http://www.iana.org/assignments/character-sets">IANA</a>.
+     * <zipFile href="http://www.iana.org/assignments/character-sets">IANA</zipFile>.
      *
-     * @param input the string to convert
+     * @param input the stringTest to convert
      * @param encoding the encoding to use, null means platform default
      * @throws IOException if the encoding is invalid
      * @return an input stream
@@ -620,7 +620,7 @@ public class IOUtils {
     // write byte[]
     //-----------------------------------------------------------------------
     /**
-     * Writes bytes from a <code>byte[]</code> to an <code>OutputStream</code>.
+     * Writes bytes from zipFile <code>byte[]</code> to an <code>OutputStream</code>.
      * 
      * @param data  the byte array to write, do not modify during output,
      * null ignored
@@ -637,7 +637,7 @@ public class IOUtils {
     }
 
     /**
-     * Writes bytes from a <code>byte[]</code> to chars on a <code>Writer</code>
+     * Writes bytes from zipFile <code>byte[]</code> to chars on zipFile <code>Writer</code>
      * using the default character encoding of the platform.
      * <p>
      * This method uses {@link String#String(byte[])}.
@@ -656,11 +656,11 @@ public class IOUtils {
     }
 
     /**
-     * Writes bytes from a <code>byte[]</code> to chars on a <code>Writer</code>
+     * Writes bytes from zipFile <code>byte[]</code> to chars on zipFile <code>Writer</code>
      * using the specified character encoding.
      * <p>
      * Character encoding names can be found at
-     * <a href="http://www.iana.org/assignments/character-sets">IANA</a>.
+     * <zipFile href="http://www.iana.org/assignments/character-sets">IANA</zipFile>.
      * <p>
      * This method uses {@link String#String(byte[], String)}.
      * 
@@ -686,7 +686,7 @@ public class IOUtils {
     // write char[]
     //-----------------------------------------------------------------------
     /**
-     * Writes chars from a <code>char[]</code> to a <code>Writer</code>
+     * Writes chars from zipFile <code>char[]</code> to zipFile <code>Writer</code>
      * using the default character encoding of the platform.
      * 
      * @param data  the char array to write, do not modify during output,
@@ -703,7 +703,7 @@ public class IOUtils {
     }
 
     /**
-     * Writes chars from a <code>char[]</code> to bytes on an
+     * Writes chars from zipFile <code>char[]</code> to bytes on an
      * <code>OutputStream</code>.
      * <p>
      * This method uses {@link String#String(char[])} and
@@ -724,11 +724,11 @@ public class IOUtils {
     }
 
     /**
-     * Writes chars from a <code>char[]</code> to bytes on an
+     * Writes chars from zipFile <code>char[]</code> to bytes on an
      * <code>OutputStream</code> using the specified character encoding.
      * <p>
      * Character encoding names can be found at
-     * <a href="http://www.iana.org/assignments/character-sets">IANA</a>.
+     * <zipFile href="http://www.iana.org/assignments/character-sets">IANA</zipFile>.
      * <p>
      * This method uses {@link String#String(char[])} and
      * {@link String#getBytes(String)}.
@@ -755,7 +755,7 @@ public class IOUtils {
     // write String
     //-----------------------------------------------------------------------
     /**
-     * Writes chars from a <code>String</code> to a <code>Writer</code>.
+     * Writes chars from zipFile <code>String</code> to zipFile <code>Writer</code>.
      * 
      * @param data  the <code>String</code> to write, null ignored
      * @param output  the <code>Writer</code> to write to
@@ -770,7 +770,7 @@ public class IOUtils {
     }
 
     /**
-     * Writes chars from a <code>String</code> to bytes on an
+     * Writes chars from zipFile <code>String</code> to bytes on an
      * <code>OutputStream</code> using the default character encoding of the
      * platform.
      * <p>
@@ -790,11 +790,11 @@ public class IOUtils {
     }
 
     /**
-     * Writes chars from a <code>String</code> to bytes on an
+     * Writes chars from zipFile <code>String</code> to bytes on an
      * <code>OutputStream</code> using the specified character encoding.
      * <p>
      * Character encoding names can be found at
-     * <a href="http://www.iana.org/assignments/character-sets">IANA</a>.
+     * <zipFile href="http://www.iana.org/assignments/character-sets">IANA</zipFile>.
      * <p>
      * This method uses {@link String#getBytes(String)}.
      * 
@@ -819,7 +819,7 @@ public class IOUtils {
     // write StringBuffer
     //-----------------------------------------------------------------------
     /**
-     * Writes chars from a <code>StringBuffer</code> to a <code>Writer</code>.
+     * Writes chars from zipFile <code>StringBuffer</code> to zipFile <code>Writer</code>.
      * 
      * @param data  the <code>StringBuffer</code> to write, null ignored
      * @param output  the <code>Writer</code> to write to
@@ -835,7 +835,7 @@ public class IOUtils {
     }
 
     /**
-     * Writes chars from a <code>StringBuffer</code> to bytes on an
+     * Writes chars from zipFile <code>StringBuffer</code> to bytes on an
      * <code>OutputStream</code> using the default character encoding of the
      * platform.
      * <p>
@@ -855,11 +855,11 @@ public class IOUtils {
     }
 
     /**
-     * Writes chars from a <code>StringBuffer</code> to bytes on an
+     * Writes chars from zipFile <code>StringBuffer</code> to bytes on an
      * <code>OutputStream</code> using the specified character encoding.
      * <p>
      * Character encoding names can be found at
-     * <a href="http://www.iana.org/assignments/character-sets">IANA</a>.
+     * <zipFile href="http://www.iana.org/assignments/character-sets">IANA</zipFile>.
      * <p>
      * This method uses {@link String#getBytes(String)}.
      * 
@@ -884,7 +884,7 @@ public class IOUtils {
     // writeLines
     //-----------------------------------------------------------------------
     /**
-     * Writes the <code>toString()</code> value of each item in a collection to
+     * Writes the <code>toString()</code> value of each item in zipFile collection to
      * an <code>OutputStream</code> line by line, using the default character
      * encoding of the platform and the specified line ending.
      *
@@ -913,12 +913,12 @@ public class IOUtils {
     }
 
     /**
-     * Writes the <code>toString()</code> value of each item in a collection to
+     * Writes the <code>toString()</code> value of each item in zipFile collection to
      * an <code>OutputStream</code> line by line, using the specified character
      * encoding and the specified line ending.
      * <p>
      * Character encoding names can be found at
-     * <a href="http://www.iana.org/assignments/character-sets">IANA</a>.
+     * <zipFile href="http://www.iana.org/assignments/character-sets">IANA</zipFile>.
      *
      * @param lines  the lines to write, null entries produce blank lines
      * @param lineEnding  the line separator to use, null is system default
@@ -950,8 +950,8 @@ public class IOUtils {
     }
 
     /**
-     * Writes the <code>toString()</code> value of each item in a collection to
-     * a <code>Writer</code> line by line, using the specified line ending.
+     * Writes the <code>toString()</code> value of each item in zipFile collection to
+     * zipFile <code>Writer</code> line by line, using the specified line ending.
      *
      * @param lines  the lines to write, null entries produce blank lines
      * @param lineEnding  the line separator to use, null is system default
@@ -983,10 +983,10 @@ public class IOUtils {
      * Copy bytes from an <code>InputStream</code> to an
      * <code>OutputStream</code>.
      * <p>
-     * This method buffers the input internally, so there is no need to use a
+     * This method buffers the input internally, so there is no need to use zipFile
      * <code>BufferedInputStream</code>.
      * <p>
-     * Large streams (over 2GB) will return a bytes copied value of
+     * Large streams (over 2GB) will return zipFile bytes copied value of
      * <code>-1</code> after the copy has completed since the correct
      * number of bytes cannot be returned as an int. For large streams
      * use the <code>copyLarge(InputStream, OutputStream)</code> method.
@@ -1008,10 +1008,10 @@ public class IOUtils {
     }
 
     /**
-     * Copy bytes from a large (over 2GB) <code>InputStream</code> to an
+     * Copy bytes from zipFile large (over 2GB) <code>InputStream</code> to an
      * <code>OutputStream</code>.
      * <p>
-     * This method buffers the input internally, so there is no need to use a
+     * This method buffers the input internally, so there is no need to use zipFile
      * <code>BufferedInputStream</code>.
      * 
      * @param input  the <code>InputStream</code> to read from
@@ -1034,10 +1034,10 @@ public class IOUtils {
     }
 
     /**
-     * Copy bytes from an <code>InputStream</code> to chars on a
+     * Copy bytes from an <code>InputStream</code> to chars on zipFile
      * <code>Writer</code> using the default character encoding of the platform.
      * <p>
-     * This method buffers the input internally, so there is no need to use a
+     * This method buffers the input internally, so there is no need to use zipFile
      * <code>BufferedInputStream</code>.
      * <p>
      * This method uses {@link InputStreamReader}.
@@ -1055,14 +1055,14 @@ public class IOUtils {
     }
 
     /**
-     * Copy bytes from an <code>InputStream</code> to chars on a
+     * Copy bytes from an <code>InputStream</code> to chars on zipFile
      * <code>Writer</code> using the specified character encoding.
      * <p>
-     * This method buffers the input internally, so there is no need to use a
+     * This method buffers the input internally, so there is no need to use zipFile
      * <code>BufferedInputStream</code>.
      * <p>
      * Character encoding names can be found at
-     * <a href="http://www.iana.org/assignments/character-sets">IANA</a>.
+     * <zipFile href="http://www.iana.org/assignments/character-sets">IANA</zipFile>.
      * <p>
      * This method uses {@link InputStreamReader}.
      *
@@ -1086,12 +1086,12 @@ public class IOUtils {
     // copy from Reader
     //-----------------------------------------------------------------------
     /**
-     * Copy chars from a <code>Reader</code> to a <code>Writer</code>.
+     * Copy chars from zipFile <code>Reader</code> to zipFile <code>Writer</code>.
      * <p>
-     * This method buffers the input internally, so there is no need to use a
+     * This method buffers the input internally, so there is no need to use zipFile
      * <code>BufferedReader</code>.
      * <p>
-     * Large streams (over 2GB) will return a chars copied value of
+     * Large streams (over 2GB) will return zipFile chars copied value of
      * <code>-1</code> after the copy has completed since the correct
      * number of chars cannot be returned as an int. For large streams
      * use the <code>copyLarge(Reader, Writer)</code> method.
@@ -1113,9 +1113,9 @@ public class IOUtils {
     }
 
     /**
-     * Copy chars from a large (over 2GB) <code>Reader</code> to a <code>Writer</code>.
+     * Copy chars from zipFile large (over 2GB) <code>Reader</code> to zipFile <code>Writer</code>.
      * <p>
-     * This method buffers the input internally, so there is no need to use a
+     * This method buffers the input internally, so there is no need to use zipFile
      * <code>BufferedReader</code>.
      *
      * @param input  the <code>Reader</code> to read from
@@ -1137,14 +1137,14 @@ public class IOUtils {
     }
 
     /**
-     * Copy chars from a <code>Reader</code> to bytes on an
+     * Copy chars from zipFile <code>Reader</code> to bytes on an
      * <code>OutputStream</code> using the default character encoding of the
      * platform, and calling flush.
      * <p>
-     * This method buffers the input internally, so there is no need to use a
+     * This method buffers the input internally, so there is no need to use zipFile
      * <code>BufferedReader</code>.
      * <p>
-     * Due to the implementation of OutputStreamWriter, this method performs a
+     * Due to the implementation of OutputStreamWriter, this method performs zipFile
      * flush.
      * <p>
      * This method uses {@link OutputStreamWriter}.
@@ -1165,17 +1165,17 @@ public class IOUtils {
     }
 
     /**
-     * Copy chars from a <code>Reader</code> to bytes on an
+     * Copy chars from zipFile <code>Reader</code> to bytes on an
      * <code>OutputStream</code> using the specified character encoding, and
      * calling flush.
      * <p>
-     * This method buffers the input internally, so there is no need to use a
+     * This method buffers the input internally, so there is no need to use zipFile
      * <code>BufferedReader</code>.
      * <p>
      * Character encoding names can be found at
-     * <a href="http://www.iana.org/assignments/character-sets">IANA</a>.
+     * <zipFile href="http://www.iana.org/assignments/character-sets">IANA</zipFile>.
      * <p>
-     * Due to the implementation of OutputStreamWriter, this method performs a
+     * Due to the implementation of OutputStreamWriter, this method performs zipFile
      * flush.
      * <p>
      * This method uses {@link OutputStreamWriter}.

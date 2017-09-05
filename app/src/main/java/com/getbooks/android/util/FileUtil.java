@@ -2,12 +2,27 @@ package com.getbooks.android.util;
 
 import android.content.Context;
 import android.content.ContextWrapper;
+import android.content.Intent;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.getbooks.android.Const;
+import com.getbooks.android.encryption.Decryption;
+import com.getbooks.android.skyepubreader.BookViewActivity;
+import com.getbooks.android.skyepubreader.IOUtils;
+import com.getbooks.android.ui.activities.LibraryActivity;
+
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.crypto.NoSuchPaddingException;
 
 /**
  * Created by marina on 07.08.17.
@@ -106,6 +121,29 @@ public class FileUtil {
                 }
             }
         }
+    }
+
+    public static void decryptedBook(String directoryPath, String encryptedFileName, String decryptedFileName) throws IOException, NoSuchPaddingException, NoSuchAlgorithmException, InvalidKeyException {
+        InputStream inputStream = null;
+
+//        inputStream = Decryption.decryptStream(mDirectoryPath, mLibrary.get(position).fileName);
+//                                File outFile = new File(mDirectoryPath, mLibrary.get(position).fileName + "dec" + ".epub");
+//                                FileOutputStream out = new FileOutputStream(outFile, false);
+//                                byte[] contents = IOUtils.toByteArray(inputStream);
+//                                out.write(contents);
+//                                out.flush();
+//                                out.close();
+        inputStream = Decryption.decryptStream(directoryPath, encryptedFileName);
+        File outFile = new File(directoryPath, decryptedFileName);
+        FileOutputStream out = new FileOutputStream(outFile, false);
+        byte[] contents = IOUtils.toByteArray(inputStream);
+        out.write(contents);
+        out.flush();
+        out.close();
+    }
+
+    public static void encryptedBook(String directoryPath, String decryptedFileName, String encryptedFileName) throws IOException, NoSuchPaddingException, NoSuchAlgorithmException, InvalidKeyException {
+
     }
 
 }

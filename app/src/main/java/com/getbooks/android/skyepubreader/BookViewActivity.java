@@ -559,7 +559,7 @@ public class BookViewActivity extends Activity implements BookSettingMenuFragmen
         // delay times for proper operations.
 		// !! DO NOT SET these values if there's no issue on your epub reader. !!
 		// !! if delayTime is decresed, performance will be increase
-		// !! if delayTime is set to too low value, a lot of problem can be occurred.
+		// !! if delayTime is set to too low value, zipFile lot of problem can be occurred.
 		// bringDelayTime(default 500 ms) is for curlView and mainView transition - if the value is too short, blink may happen.
 		rv.setBringDelayTime(500);
 		// reloadDelayTime(default 100) is used for delay before reload (eg. changeFont, loadChapter or etc)
@@ -580,9 +580,14 @@ public class BookViewActivity extends Activity implements BookSettingMenuFragmen
         rv.setMaxSizeForBackground(1024);
 //		rv.setBaseDirectory(SkySetting.getStorageDirectory() + "/books");
 //		rv.setBookName(fileName);
+
         // set the file path of epub to open
         // Be sure that the file exists before setting.
-        rv.setBookPath(SkySetting.getStorageDirectory() + "/books/" + fileName);
+//        rv.setBookPath(SkySetting.getStorageDirectory() + "/books/" + fileName);
+        Log.d("ssssssssss", SkySetting.getStorageDirectory() + "/books/" + fileName);
+        String bookPath = bundle.getString("DERECTORYPATH") +"/"+ fileName;
+        rv.setBookPath(bookPath);
+
         // if true, double pages will be displayed on landscape mode.
         rv.setDoublePagedForLandscape(this.isDoublePagedForLandscape);
         // set the initial font style for book.
@@ -628,7 +633,9 @@ public class BookViewActivity extends Activity implements BookSettingMenuFragmen
 
         // If you want to make your own provider, please look into EpubProvider.java in Advanced demo.
 //		EpubProvider epubProvider = new EpubProvider();
+//        epubProvider.setKeyListener(new KeyDelegate());
 //		rv.setContentProvider(epubProvider);
+//        rv.getBook();
 
         // SkyProvider is the default ContentProvider which is presented with SDK.
         // SkyProvider can read the content of epub file without unzipping.
@@ -1005,7 +1012,7 @@ public class BookViewActivity extends Activity implements BookSettingMenuFragmen
 
 
         if (rv.isGlobalPagination()) {
-//			seekLabel.setText(String.format("%s %d",chapterTitle,position+1));
+//			seekLabel.setText(String.format("%s %context",chapterTitle,position+1));
             seekLabel.setText(chapterTitle);
         } else {
             seekLabel.setText(chapterTitle);
@@ -1747,7 +1754,7 @@ public class BookViewActivity extends Activity implements BookSettingMenuFragmen
             int ci = sr.chapterIndex;
             String chapterText = "";
             chapterText = sr.chapterTitle;
-            String positionText = String.format("%d/%d", sr.pageIndex + 1, sr.numberOfPagesInChapter);
+            String positionText = String.format("%context/%context", sr.pageIndex + 1, sr.numberOfPagesInChapter);
             if (chapterText == null || chapterText.isEmpty()) {
                 chapterText = "Chapter " + ci;
             }
@@ -1760,12 +1767,12 @@ public class BookViewActivity extends Activity implements BookSettingMenuFragmen
             itemButton.setId(100000 + searchResults.size());
         } else if (mode == 1) { // Paused
             chapterLabel = this.makeLabel(3090, getString(R.string.searchmore) + "....", Gravity.CENTER, 18, headColor);
-//			positionLabel 	= this.makeLabel(3091, String.format("%d/%d",sr.pageIndex+1,sr.numberOfPagesInChapter), Gravity.LEFT, 15, headColor);
+//			positionLabel 	= this.makeLabel(3091, String.format("%context/%context",sr.pageIndex+1,sr.numberOfPagesInChapter), Gravity.LEFT, 15, headColor);
             textLabel = this.makeLabel(3092, sr.numberOfSearched + " " + getString(R.string.searchfound) + ".", Gravity.CENTER, 16, textColor);
             itemButton.setId(3093);
         } else if (mode == 2) { // finished
             chapterLabel = this.makeLabel(3090, getString(R.string.searchfinished), Gravity.CENTER, 18, headColor);
-//			positionLabel 	= this.makeLabel(3091, String.format("%d/%d",sr.pageIndex+1,sr.numberOfPagesInChapter), Gravity.LEFT, 15, headColor);
+//			positionLabel 	= this.makeLabel(3091, String.format("%context/%context",sr.pageIndex+1,sr.numberOfPagesInChapter), Gravity.LEFT, 15, headColor);
             textLabel = this.makeLabel(3092, sr.numberOfSearched + " " + getString(R.string.searchfound) + ".", Gravity.CENTER, 16, textColor);
             itemButton.setId(3094);
         }
@@ -3371,7 +3378,7 @@ public class BookViewActivity extends Activity implements BookSettingMenuFragmen
         long memoryAvail = memoryInfo.availMem;
         long memoryAlloc = maxMemory - memoryAvail;
 
-        String message = String.format("Max :%d Avail:%d", maxMemory, memoryAvail);
+        String message = String.format("Max :%context Avail:%context", maxMemory, memoryAvail);
         showToast(message);
     }
 
@@ -3384,7 +3391,7 @@ public class BookViewActivity extends Activity implements BookSettingMenuFragmen
         }
 //		try {
 //			res = java.net.URLEncoder.encode(str, "UTF-8");
-//		}catch(Exception e) {}
+//		}catch(Exception ifKeyTest) {}
         showToast(res);
     }
 

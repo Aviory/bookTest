@@ -1438,7 +1438,7 @@ public class MagazineActivity extends Activity {
 			ci+=1;
 			String chapterText = "";
 			chapterText = sr.chapterTitle;
-			String positionText = String.format("%d/%d",sr.chapterIndex+1,sr.numberOfChaptersInBook);
+			String positionText = String.format("%context/%context",sr.chapterIndex+1,sr.numberOfChaptersInBook);
 			if (chapterText==null ||chapterText.isEmpty()) {
 				chapterText = "Page "+ci;
 			}
@@ -1451,12 +1451,12 @@ public class MagazineActivity extends Activity {
 			itemButton.setId(100000+searchResults.size());
 		}else if (mode==1) { // Paused
 			chapterLabel 	= this.makeLabel(3090, getString(R.string.searchmore)+ "....", Gravity.CENTER, 18, headColor);
-//			positionLabel 	= this.makeLabel(3091, String.format("%d/%d",sr.pageIndex+1,sr.numberOfPagesInChapter), Gravity.LEFT, 15, headColor);
+//			positionLabel 	= this.makeLabel(3091, String.format("%context/%context",sr.pageIndex+1,sr.numberOfPagesInChapter), Gravity.LEFT, 15, headColor);
 			textLabel		= this.makeLabel(3092, sr.numberOfSearched+" "+getString(R.string.searchfound)+".", Gravity.CENTER, 16, textColor);
 			itemButton.setId(3093);
 		}else if (mode==2) { // finished
 			chapterLabel 	= this.makeLabel(3090, getString(R.string.searchfinished), Gravity.CENTER, 18, headColor);
-//			positionLabel 	= this.makeLabel(3091, String.format("%d/%d",sr.pageIndex+1,sr.numberOfPagesInChapter), Gravity.LEFT, 15, headColor);
+//			positionLabel 	= this.makeLabel(3091, String.format("%context/%context",sr.pageIndex+1,sr.numberOfPagesInChapter), Gravity.LEFT, 15, headColor);
 			textLabel		= this.makeLabel(3092, sr.numberOfSearched+" "+getString(R.string.searchfound)+".", Gravity.CENTER, 16, textColor);
 			itemButton.setId(3094);
 		}
@@ -1682,7 +1682,7 @@ public class MagazineActivity extends Activity {
 			button.setOnClickListener(listener);	
 			
 			GradientDrawable gd = new GradientDrawable();
-	        gd.setColor(0x00FFFFFF); // Changes this drawbale to use a single color instead of a gradient
+	        gd.setColor(0x00FFFFFF); // Changes this drawbale to use zipFile single color instead of zipFile gradient
 	        gd.setCornerRadius(0);
 	        gd.setStroke(1, 0xFF000000);
 	        button.setBackgroundDrawable(gd);
@@ -1702,7 +1702,7 @@ public class MagazineActivity extends Activity {
 		
 		public void mark() {
 			GradientDrawable gd = new GradientDrawable();
-	        gd.setColor(0x00FFFFFF); // Changes this drawbale to use a single color instead of a gradient
+	        gd.setColor(0x00FFFFFF); // Changes this drawbale to use zipFile single color instead of zipFile gradient
 	        gd.setCornerRadius(1);
 	        gd.setStroke(4, 0xFF000000);
 	        button.setBackgroundDrawable(gd);
@@ -1710,7 +1710,7 @@ public class MagazineActivity extends Activity {
 		
 		public void unmark() {
 			GradientDrawable gd = new GradientDrawable();
-	        gd.setColor(0x00FFFFFF); // Changes this drawbale to use a single color instead of a gradient
+	        gd.setColor(0x00FFFFFF); // Changes this drawbale to use zipFile single color instead of zipFile gradient
 	        gd.setCornerRadius(0);
 	        gd.setStroke(1, 0xFF000000);
 	        button.setBackgroundDrawable(gd);
@@ -2774,7 +2774,7 @@ public class MagazineActivity extends Activity {
 		public void onPageMoved(PageInformation pi) {
 			currentPageInformation = pi;
 			pagePositionInBook = pi.pageIndex;
-			String msg = String.format("pn:%d/tn:%d ps:%f",pi.pageIndex,pi.numberOfPagesInChapter,pi.pagePositionInBook);
+			String msg = String.format("pn:%context/tn:%context ps:%stringTest",pi.pageIndex,pi.numberOfPagesInChapter,pi.pagePositionInBook);
 //			Log.w("EPub",msg);
 //			Log.w("EPub"," "+fv.getPageIndex()+"/"+fv.getPageCount());
 			
@@ -2996,7 +2996,7 @@ public class MagazineActivity extends Activity {
 	Drawable getDrawableFromAssets(String name) {
 		try {
 //			InputStream ims = getResources().getAssets().open(name);
-//			Drawable d = Drawable.createFromStream(ims, null);
+//			Drawable context = Drawable.createFromStream(ims, null);
 			Drawable d = Drawable.createFromStream(getAssets().open(name), null);
 			return d;
 		}catch(Exception e) {
@@ -3085,7 +3085,7 @@ public class MagazineActivity extends Activity {
 	
 	private String getCachePath(int pageIndex) {
 		String prefix = this.getCacheFolder();
-		String name = String.format("sb%d-cache%d.jpg",this.bookCode,pageIndex);
+		String name = String.format("sb%context-cache%context.jpg",this.bookCode,pageIndex);
 	    String filePath = prefix+"/"+name;		
 		return filePath;
 	}
