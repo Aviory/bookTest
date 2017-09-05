@@ -209,13 +209,13 @@ public class LibraryActivity extends BaseActivity implements Queries.CallBack,
         try {
             List<File> mInternalLibrary = fileManager.get(3, TimeUnit.SECONDS);
             Log.d("Files in ui size: ", String.valueOf(mInternalLibrary.size()));
-            if(mInternalLibrary!=null){
-                for (File file:mInternalLibrary) {
-                    BookModel tmp = new BookModel();
-                    tmp.setBookName(file.getName());
-                    mLibrary.add(tmp);
-                }
-            }
+//            if(mInternalLibrary!=null){
+//                for (File file:mInternalLibrary) {
+//                    BookModel tmp = new BookModel();
+//                    tmp.setBookName(file.getName());
+//                    mLibrary.add(tmp);
+//                }
+            //}
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {

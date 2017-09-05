@@ -48,6 +48,10 @@ public class DialogSettings extends AlertDialog implements View.OnClickListener{
         mRadioButtonYes = (RadioButton) findViewById(R.id.setting_dialog_yes);
         mRadioButtonNo = (RadioButton) findViewById(R.id.setting_dialog_no);
         mImageCancelBookDelete.setOnClickListener(this);
+        boolean cheked = Prefs.getBooleanProperty(getContext(), Const.PUSH_NOTIFY_BY_UPDATE);
+        if(cheked){
+            mRadioButtonYes.setChecked(cheked);
+        }
     }
 
     @Override

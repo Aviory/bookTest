@@ -38,7 +38,7 @@ public class GetbooksInternalStorage extends AsyncTask<Void, Void, List<File>>{
             Log.d("StorageDirectory ", "Size: "+ files.length);
         }
 
-        path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).getAbsolutePath();
+        path = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath();
         Log.d("Files", "Path: " + path);
         directory = new File(path);
         files = directory.listFiles(filter);
@@ -46,10 +46,31 @@ public class GetbooksInternalStorage extends AsyncTask<Void, Void, List<File>>{
             for (int i = 0; i < files.length; i++) {
                 fileList.add(files[i]);
             }
-            Log.d("PublicDirectory size: ", String.valueOf(files.length));
+            Log.d("PublicDawnloads size: ", String.valueOf(files.length));
         }
 
         return fileList;
     }
-}
+}//Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
 //file type epub
+
+//    GetbooksInternalStorage fileManager = new GetbooksInternalStorage();
+//        fileManager.execute();
+//        try {
+//            List<File> mInternalLibrary = fileManager.get(3, TimeUnit.SECONDS);
+//            Log.d("Files in ui size: ", String.valueOf(mInternalLibrary.size()));
+//            if(mLibrary!=null){
+//                for (File file:mInternalLibrary) {
+//                    BookModel tmp = new BookModel();
+//                    tmp.setBookName(file.getName());
+//                    tmp.setBookState(BookState.INTERNAL_BOOK.getState());
+//                    mLibrary.add(tmp);
+//                }
+//            }
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        } catch (ExecutionException e) {
+//            e.printStackTrace();
+//        } catch (TimeoutException e) {
+//            e.printStackTrace();
+//        }
