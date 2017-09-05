@@ -1,6 +1,7 @@
 package com.getbooks.android.skyepubreader;
 
 public class SkySetting {
+    public int userId;
 	public int bookCode;
 	public String fontName;
 	public int fontSize;

@@ -126,14 +126,6 @@ public class FileUtil {
 
     public static void decryptedBook(String directoryPath, String encryptedFileName, String decryptedFileName) throws IOException, NoSuchPaddingException, NoSuchAlgorithmException, InvalidKeyException {
         InputStream inputStream = null;
-
-//        inputStream = Decryption.decryptStream(mDirectoryPath, mLibrary.get(position).fileName);
-//                                File outFile = new File(mDirectoryPath, mLibrary.get(position).fileName + "dec" + ".epub");
-//                                FileOutputStream out = new FileOutputStream(outFile, false);
-//                                byte[] contents = IOUtils.toByteArray(inputStream);
-//                                out.write(contents);
-//                                out.flush();
-//                                out.close();
         inputStream = Decryption.decryptStream(directoryPath, encryptedFileName);
         File outFile = new File(directoryPath, decryptedFileName);
         FileOutputStream out = new FileOutputStream(outFile, false);
@@ -143,8 +135,13 @@ public class FileUtil {
         out.close();
     }
 
-    public static void encryptedBook(String directoryPath, String decryptedFileName, String encryptedFileName) throws IOException, NoSuchPaddingException, NoSuchAlgorithmException, InvalidKeyException {
-
+    public static void deleteDecryptedBook(String directoryPath, String decryptedFileName) throws IOException {
+        File deleteFile = new File(directoryPath, decryptedFileName);
+        if (deleteFile.exists()) {
+            deleteFile.delete();
+        } else {
+            LogUtil.log("FileUtil", "Not delete file");
+        }
     }
 
     public static String getGnerationID(String name){

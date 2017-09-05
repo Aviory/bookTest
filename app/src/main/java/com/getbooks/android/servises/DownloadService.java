@@ -99,9 +99,6 @@ public class DownloadService extends IntentService {
             CipherOutputStream output = Encryption.encryptStream(mDirectoryPath
                     + "/" + bookName + ".epub");
 
-//            FileOutputStream output =   new FileOutputStream(mDirectoryPath
-//                    + "/" + bookName + ".epub");
-
             byte data[] = new byte[1024];
 
             long total = 0;
