@@ -501,16 +501,17 @@ public class LibraryActivity extends BaseActivity implements Queries.CallBack,
         fileManager.execute();
         try {
             List<File> mInternalLibrary = fileManager.get(2, TimeUnit.SECONDS);
-            Log.d("Files in ui size: ", String.valueOf(mInternalLibrary.size()));
-            if(mInternalLibrary!=null){
-                for (File file:mInternalLibrary) {
-                    BookModel tmp = new BookModel();
-                    tmp.setBookName(file.getName());
-                    tmp.setFilePath(file.getAbsolutePath());
-                    file.getAbsolutePath();
-                    tmp.setBookState(BookState.INTERNAL_BOOK.getState());
-                    mLibrary.add(tmp);
-                }
+            LogUtil.log(this,"Files in ui size: "+ String.valueOf(mInternalLibrary.size()));
+
+            for (File file:mInternalLibrary) {
+                LogUtil.log(this, "fileName: "+file.getName());
+                LogUtil.log(this, "filedirectory: "+file.getAbsolutePath());
+                BookModel tmp = new BookModel();
+                tmp.fileName = file.getName();
+                tmp.setBookContentID(FileUtil.getGnerationID(tmp.fileName));
+                tmp.setFilePath(file.getAbsolutePath());
+                tmp.setBookState(BookState.INTERNAL_BOOK.getState());
+                mLibrary.add(tmp);
             }
         } catch (InterruptedException e) {
             e.printStackTrace();
@@ -521,6 +522,7 @@ public class LibraryActivity extends BaseActivity implements Queries.CallBack,
         }
         initShelvesRecycler(mLibrary);
     }
+
 
     @Override
     public void onFinish() {
@@ -600,8 +602,8 @@ public class LibraryActivity extends BaseActivity implements Queries.CallBack,
                             currentDownloadingBookModel = mLibrary.get(position);
                             mShelvesAdapter.setSelectedDeletingBook(position, mDownloadInfo);
                         } else {
-                            UiUtil.openActivity(getAct(), ReaderActivity.class, false,
-                                    Const.BOOK_PATH, mLibrary.get(position).getFilePath(), Const.BOOK_NAME, mLibrary.get(position).getBookName());
+//                            UiUtil.openActivity(getAct(), BookViewActivity.class, false,
+//                                    Const.BOOK_PATH, mLibrary.get(position).getFilePath(), Const.BOOK_NAME, mLibrary.get(position).fileName);
                         }
                         break;
                 }

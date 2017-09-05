@@ -82,21 +82,23 @@ public class RecyclerShelvesAdapter extends RecyclerView.Adapter<RecyclerShelves
                 holder.mProgressBar.setVisibility(View.INVISIBLE);
                 holder.mTextProgress.setVisibility(View.INVISIBLE);
                 mProgress = 0;
-                PicassoCache.getPicassoInstance(mContext).load(mLibrary.get(position)
-                        .coverUrl)
+                if(mLibrary.get(position).coverUrl!=null && !mLibrary.get(position).coverUrl.equals("") ) {
+                    PicassoCache.getPicassoInstance(mContext).load(mLibrary.get(position)
+                            .coverUrl)
 //                .networkPolicy(NetworkPolicy.OFFLINE)
 //                .memoryPolicy(MemoryPolicy.NO_CACHE)
 //                .error(R.drawable.book_1)
-                        .into(holder.mImageCover, new Callback() {
-                            @Override
-                            public void onSuccess() {
-                            }
+                            .into(holder.mImageCover, new Callback() {
+                                @Override
+                                public void onSuccess() {
+                                }
 
-                            @Override
-                            public void onError() {
-                                holder.mImageCover.setImageResource(R.drawable.book_1);
-                            }
-                        });
+                                @Override
+                                public void onError() {
+                                    holder.mImageCover.setImageResource(R.drawable.book_1);
+                                }
+                            });
+                }
                 if(mLibrary.get(position).getUserId()==0){
                     holder.mImageCover.setImageResource(R.drawable.book_3);
                 }

@@ -20,6 +20,7 @@ import java.io.InputStream;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.crypto.NoSuchPaddingException;
@@ -144,6 +145,17 @@ public class FileUtil {
 
     public static void encryptedBook(String directoryPath, String decryptedFileName, String encryptedFileName) throws IOException, NoSuchPaddingException, NoSuchAlgorithmException, InvalidKeyException {
 
+    }
+
+    public static String getGnerationID(String name){
+        char[] arr = name.toCharArray();
+        long nameByChar=0;
+        Date date = new Date();
+        long time = date.getTime();
+        for (int i=0; i<arr.length;i++){
+            nameByChar+=arr[i];
+        }
+        return String.valueOf(nameByChar+time);
     }
 
 }
