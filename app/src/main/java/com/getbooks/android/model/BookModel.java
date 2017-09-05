@@ -365,6 +365,14 @@ public class BookModel implements Parcelable {
         this.mIsBookRented = isBookRented;
     }
 
+    public String getFilePath() {
+        return filePath;
+    }
+
+    public void setFilePath(String filePath) {
+        this.filePath = filePath;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -444,4 +452,5 @@ public class BookModel implements Parcelable {
     public void setmIsBookSelected(boolean mIsBookSelected) {
         this.mIsBookSelected = mIsBookSelected;
     }
+
 }
