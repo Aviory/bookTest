@@ -36,7 +36,8 @@ import butterknife.ButterKnife;
  * Created by marinaracu on 15.08.17.
  */
 
-public class BookSettingMenuFragment extends Fragment implements View.OnTouchListener, View.OnClickListener, FontsBookListAdapter.BookFontUpdateChangeListener {
+public class BookSettingMenuFragment extends Fragment implements View.OnTouchListener,
+        View.OnClickListener, FontsBookListAdapter.BookFontUpdateChangeListener {
 
     public interface ChangeBookSettingListener {
         void changeScreenBrightness(int progress);

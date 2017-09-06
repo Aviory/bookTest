@@ -13,12 +13,13 @@ import com.getbooks.android.R;
 import com.getbooks.android.db.BookDataBaseLoader;
 import com.getbooks.android.events.Events;
 import com.getbooks.android.model.BookMarkItemModel;
+import com.getbooks.android.model.SearchModelBook;
 import com.getbooks.android.ui.adapter.RecyclerBookContentAdapter;
 import com.getbooks.android.ui.fragments.BookContentFragment;
+import com.getbooks.android.ui.fragments.BookSearchFragment;
 import com.getbooks.android.ui.fragments.BookSettingMenuFragment;
 import com.getbooks.android.ui.widget.CustomSeekBar;
 import com.getbooks.android.util.FileUtil;
-import com.getbooks.android.util.LogUtil;
 import com.skytree.epub.Book;
 import com.skytree.epub.BookmarkListener;
 import com.skytree.epub.Caret;
@@ -126,7 +127,8 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class BookViewActivity extends Activity implements BookSettingMenuFragment.ChangeBookSettingListener,
-        BookContentFragment.FillBookContentListener, RecyclerBookContentAdapter.BookContentListener {
+        BookContentFragment.FillBookContentListener, RecyclerBookContentAdapter.BookContentListener,
+        BookSearchFragment.BookSearchListener {
     @BindView(R.id.custom_seek_bar)
     protected CustomSeekBar mCustomSeekBarLayout;
     ReflowableControl rv;
@@ -166,6 +168,14 @@ public class BookViewActivity extends Activity implements BookSettingMenuFragmen
     protected ImageView mImageShareFacebook;
     @BindView(R.id.highlight_menu)
     protected LinearLayout mLayoutHighlightMenu;
+    @BindView(R.id.layout_search)
+    protected LinearLayout mLinearLayoutSearch;
+    @BindView(R.id.edit_search)
+    protected EditText mSearchEditText;
+    @BindView(R.id.search_btn)
+    protected ImageView mSearchImage;
+
+    List<SearchModelBook> mSearchModelBooks = new ArrayList<>();
 
     Rect bookmarkRect;
     Rect bookmarkedRect;
@@ -1174,6 +1184,58 @@ public class BookViewActivity extends Activity implements BookSettingMenuFragmen
         closeSettingsMenu();
     }
 
+    @Override
+    public void clearSearch() {
+        hideSearch();
+    }
+
+    @Override
+    public void onItemSearchResultClick(int index) {
+        makeFullScreen();
+        hideSearchBox();
+        SearchModelBook searchModelBook = mSearchModelBooks.get(index);
+        SearchResult searchResult = new SearchResult();
+        searchResult.text = searchModelBook.text;
+        searchResult.nodeName = searchModelBook.nodeName;
+        searchResult.uniqueIndex = searchModelBook.uniqueIndex;
+        searchResult.startOffset = searchModelBook.startOffset;
+        searchResult.endOffset = searchModelBook.endOffset;
+        searchResult.chapterIndex = searchModelBook.chapterIndex;
+        searchResult.chapterTitle = searchModelBook.chapterTitle;
+        searchResult.pageIndex = searchModelBook.pageIndex;
+        searchResult.pagePositionInChapter = searchModelBook.pagePositionInChapter;
+        searchResult.pagePositionInBook = searchModelBook.pagePositionInBook;
+        searchResult.numberOfSearched = searchModelBook.numberOfSearched;
+        searchResult.numberOfSearchedInChapter = searchModelBook.numberOfSearchedInChapter;
+        searchResult.numberOfPagesInChapter = searchModelBook.numberOfPagesInChapter;
+        searchResult.numberOfChaptersInBook = searchModelBook.numberOfChaptersInBook;
+//        SearchResult sr = searchResults.get(index);
+        gotoPageBySearchResult(searchResult, Color.GREEN);
+        hideSearch();
+    }
+
+    @Override
+    public void onItemSearchMoreClick() {
+        // search More
+        removeLastResultSearch();
+//				showToast("Search More...");
+        rv.searchMore();
+    }
+
+    @Override
+    public void onNotFoundItemClick() {
+        removeLastResultSearch();
+        isBoxesShown = false;
+        this.hideOutsideButton();
+        rv.stopSearch();
+        hideSearch();
+        // stopSearch
+    }
+
+    private void removeLastResultSearch() {
+        mSearchModelBooks.remove(mSearchModelBooks.size() - 1);
+    }
+
 
     class ButtonHighlighterOnTouchListener implements OnTouchListener {
         final Button button;
@@ -1580,6 +1642,21 @@ public class BookViewActivity extends Activity implements BookSettingMenuFragmen
         rv.changeHighlightNote(currentHighlight, note);
     }
 
+    private void searchBook() {
+        mSearchEditText.setOnEditorActionListener((v, actionId, event) -> {
+            if (actionId == EditorInfo.IME_ACTION_DONE || actionId == EditorInfo.IME_ACTION_GO ||
+                    actionId == EditorInfo.IME_ACTION_SEARCH || actionId == EditorInfo.IME_ACTION_NEXT) {
+                String key = mSearchEditText.getText().toString();
+                if (key != null && key.length() > 1) {
+                    showIndicator();
+                    clearSearchBox(1);
+                    makeFullScreen();
+                    rv.searchKey(key);
+                }
+            }
+            return false;
+        });
+    }
 
     public void makeSearchBox() {
         int boxColor = Color.rgb(241, 238, 229);
@@ -1730,6 +1807,19 @@ public class BookViewActivity extends Activity implements BookSettingMenuFragmen
     }
 
     public void addSearchResult(SearchResult sr, int mode) {
+        EventBus.getDefault().post(new Events.CloseContentMenuSetting(true));
+        SearchModelBook searchModelBook = new SearchModelBook(sr.text, sr.nodeName, sr.uniqueIndex,
+                sr.startOffset, sr.endOffset, sr.chapterIndex, sr.chapterTitle, sr.pageIndex,
+                sr.pagePositionInChapter, sr.pagePositionInBook, sr.numberOfSearched, sr.numberOfSearchedInChapter,
+                sr.numberOfPagesInChapter, sr.numberOfChaptersInBook, mode);
+        mSearchModelBooks.add(searchModelBook);
+        Log.d("search", String.valueOf(mSearchModelBooks.size()));
+
+        BookSearchFragment bookSearchFragment = BookSearchFragment.newInstance(mSearchModelBooks);
+        FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+        fragmentTransaction.replace(R.id.content_book_settings, bookSearchFragment).commit();
+        bookSearchFragment.setmBookSearchListener(this);
+
         View view = this.makeResultItem(sr, mode);
         this.searchResultView.addView(view);
         if (mode == 0) {
@@ -2148,15 +2238,15 @@ public class BookViewActivity extends Activity implements BookSettingMenuFragmen
 
     public void hideMediaBox() {
         if (mediaBox != null) {
-            titleLabel.setVisibility(View.VISIBLE);
+//            titleLabel.setVisibility(View.VISIBLE);
             mediaBox.setVisibility(View.INVISIBLE);
             mediaBox.setVisibility(View.GONE);
         }
     }
 
     public void showMediaBox() {
-        titleLabel.setVisibility(View.INVISIBLE);
-        titleLabel.setVisibility(View.GONE);
+//        titleLabel.setVisibility(View.INVISIBLE);
+//        titleLabel.setVisibility(View.GONE);
         mediaBox.setVisibility(View.VISIBLE);
         this.changePlayAndPauseButton();
     }
@@ -2896,8 +2986,8 @@ public class BookViewActivity extends Activity implements BookSettingMenuFragmen
         app = (GetbooksApplication) getApplication();
         sd = new SkyDatabase(this);
         mBookDataBaseLoader = BookDataBaseLoader.getInstanceDb(this);
-        setting = mBookDataBaseLoader.fetchSettingDB();
-        Log.d("database new", setting.toString());
+//        setting = mBookDataBaseLoader.fetchSettingDB();
+//        Log.d("database new", setting.toString());
         setting = sd.fetchSetting();
         Log.d("database old", setting.toString());
         ButterKnife.bind(this);
@@ -2906,6 +2996,8 @@ public class BookViewActivity extends Activity implements BookSettingMenuFragmen
         mCurrentTextPageSeekBar.setVisibility(View.INVISIBLE);
         this.makeFullScreen();
         this.makeLayout();
+
+        searchBook();
     }
 
     private BroadcastReceiver skyReceiver = null;
@@ -3088,7 +3180,7 @@ public class BookViewActivity extends Activity implements BookSettingMenuFragmen
 
     private void searchPressed() {
         this.stopPlaying();
-        this.showSearchBox();
+//        this.showSearchBox();
     }
 
     public void clearHighlightsForSearchResults() {
@@ -3098,13 +3190,25 @@ public class BookViewActivity extends Activity implements BookSettingMenuFragmen
     }
 
     public void gotoPageBySearchResult(SearchResult sr, int color) {
-//		showToast(sr.text);
         rv.gotoPageBySearchResult(sr, color);
     }
 
     public void gotoPageBySearchResult(SearchResult sr, ArrayList<SearchResult> srs, int color) {
-//		showToast(sr.text);
         rv.gotoPageBySearchResult(sr, srs, color);
+    }
+
+    private void hideSearch() {
+        mSearchModelBooks.clear();
+        mSearchEditText.setText("");
+        mLinearLayoutSearch.setVisibility(View.INVISIBLE);
+        mBookSettingsLayoutContent.setVisibility(View.GONE);
+        dismissKeyboard();
+    }
+
+    private void showSearch() {
+        mSearchModelBooks.clear();
+        mSearchEditText.setText("");
+        mLinearLayoutSearch.setVisibility(View.VISIBLE);
     }
 
 
@@ -3145,6 +3249,7 @@ public class BookViewActivity extends Activity implements BookSettingMenuFragmen
                 openBookSetting();
             } else if (arg.getId() == 9003) {    // searchPressed
                 searchPressed();
+                showSearch();
             }
 
             if (arg.getId() == 6000) {
@@ -3190,6 +3295,7 @@ public class BookViewActivity extends Activity implements BookSettingMenuFragmen
             if (arg.getId() == 9999) {
                 hideOutsideButton();
                 hideBoxes();
+                hideSearch();
             }
 
             // click on the search result
@@ -3374,6 +3480,7 @@ public class BookViewActivity extends Activity implements BookSettingMenuFragmen
         this.hideNoteBox();
         this.hideSearchBox();
         this.hideFontBox();
+        hideSearch();
         if (isPagesHidden) this.showPages();
     }
 
@@ -3423,6 +3530,7 @@ public class BookViewActivity extends Activity implements BookSettingMenuFragmen
 
         public void onClick(int x, int y) {
             Log.w("EPub", "click detected");
+            hideSearch();
             if (isBoxesShown) {
                 hideBoxes();
             } else {
@@ -4002,6 +4110,7 @@ public class BookViewActivity extends Activity implements BookSettingMenuFragmen
     class SearchDelegate implements SearchListener {
         public void onKeySearched(SearchResult searchResult) {
             addSearchResult(searchResult, 0);
+            Log.d("search", "onKeySearched");
             debug("chapterIndex" + searchResult.chapterIndex + " pageIndex:" + searchResult.pageIndex + " startOffset:"
                     + searchResult.startOffset + " tag:" + searchResult.nodeName
                     + " pagePositionInChapter " + searchResult.pagePositionInChapter + " pagePositionInBook " + searchResult.pagePositionInBook + " text:" + searchResult.text);
@@ -4014,7 +4123,9 @@ public class BookViewActivity extends Activity implements BookSettingMenuFragmen
                 debug("Searching for Chapter:" + searchResult.chapterIndex + " is finished. ");
                 rv.pauseSearch();
                 numberOfSearched = searchResult.numberOfSearched;
+                Log.d("search", "onSearchFinishedForChapter0");
             } else {
+                Log.d("search", "onSearchFinishedForChapter1");
                 rv.searchMore();
                 numberOfSearched = searchResult.numberOfSearched;
             }
@@ -4022,6 +4133,7 @@ public class BookViewActivity extends Activity implements BookSettingMenuFragmen
 
         public void onSearchFinished(SearchResult searchResult) {
             debug("Searching is finished. ");
+            Log.d("search", "onSearchFinished");
             addSearchResult(searchResult, 2);
             hideIndicator();
         }

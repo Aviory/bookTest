@@ -213,4 +213,5 @@
 It may take long time to finish the calculation of pages for whole book.\n
 Whenever font name or font size are changed, Global Pagination tries to calculate the total page number again.\n
 while the Global Pagination is going on, some user interfaces will be restricted to use.</string>
+    <string name="search_result">Search Result</string>
 </resources>

@@ -61,5 +61,6 @@
     <string name="txt_sign_out">לצאת</string>
     <string name="txt_delete">למחוק</string>
     <string name="txt_delete_book_question">הספרים שנבחרו ימחקו ממכשירכם אך ימשיכו להיות נגישים בענן. האם ברצונכם להמשיך במחיקה?</string>
+    <string name="search_result">Search Result</string>
 
 </resources>

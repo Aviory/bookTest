@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.getbooks.android.model.BookModel;
 import com.getbooks.android.skyepubreader.SkySetting;
+import com.skytree.epub.BookInformation;
 import com.skytree.epub.PageInformation;
 import com.skytree.epub.PagingInformation;
 
@@ -54,7 +55,7 @@ public class BookDataBaseLoader {
         mBooksDataBase.saveBook(bookModel);
     }
 
-    public void deleteBookFromDb(BookModel bookModel){
+    public void deleteBookFromDb(BookModel bookModel) {
         mBooksDataBase.deleteBook(bookModel);
     }
 
@@ -70,43 +71,51 @@ public class BookDataBaseLoader {
         return mBooksDataBase.getCurrentBookDetail(userId, bookName);
     }
 
-    public SkySetting fetchSettingDB(){
+    public SkySetting fetchSettingDB() {
         return mBooksDataBase.fetchSettingFromDB();
     }
 
-    public void upaDateSettingFromDb(SkySetting skySetting){
+    public void upaDateSettingFromDb(SkySetting skySetting) {
         mBooksDataBase.updateSettingFromDB(skySetting);
     }
 
-    public void insertBookMarkToDb(PageInformation pageInformation){
+    public void insertBookMarkToDb(PageInformation pageInformation) {
         mBooksDataBase.insertBookmark(pageInformation);
     }
 
-    public void deleteBookmarkByCodeDb(int code){
+    public void deleteBookmarkByCodeDb(int code) {
         mBooksDataBase.deleteBookmarkByCode(code);
     }
 
-    private void deleteBookMarksByBookCodeDb(int bookCode){
+    private void deleteBookMarksByBookCodeDb(int bookCode) {
         mBooksDataBase.deleteBookmarksByBookCode(bookCode);
     }
 
-    public void deleteHighlightByBookCodeDb(int bookCode){
+    public void deleteHighlightByBookCodeDb(int bookCode) {
         mBooksDataBase.deleteHighlightsByBookCode(bookCode);
     }
 
-    public void deletePagingByBookCodeDb(int bookCode){
+    public void deletePagingByBookCodeDb(int bookCode) {
         mBooksDataBase.deletePagingByBookCode(bookCode);
     }
 
-    public int getBookMarkCodeDb(PageInformation pageInformation){
+    public int getBookMarkCodeDb(PageInformation pageInformation) {
         return mBooksDataBase.getBookmarkCode(pageInformation);
     }
 
-    public List<PageInformation> fetchBookmarksDb(int bookCode){
+    public List<PageInformation> fetchBookmarksDb(int bookCode) {
         return mBooksDataBase.fetchBookmarks(bookCode);
     }
 
-    public PagingInformation fetchPagingInformationDb(PagingInformation pagingInformation){
+    public PagingInformation fetchPagingInformationDb(PagingInformation pagingInformation) {
         return mBooksDataBase.fetchPagingInformation(pagingInformation);
+    }
+
+    public void updatePositionDB(int bookPosition, double position) {
+        mBooksDataBase.updatePosition(bookPosition, position);
+    }
+
+    public void insertBookDb(BookInformation bookInformation){
+        mBooksDataBase.insertBook(bookInformation);
     }
 }

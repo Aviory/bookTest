@@ -36,7 +36,7 @@ public class BooksDBContract {
         String BOOK_LAST_PAGE = "BookLastPage";
         String BOOK_CHAPTER_LIST = "ChaptersList";
         String READ_DATE_TIME = "ReadDateTime";
-        String IS_BOOK_AT_THE_END = "IsBookAtTheEnd";
+        String IS_READ = "IsBookAtTheEnd";
         String BOOK_PHYSICAL_PAGE = "BookPhysicalPage";
         String LAST_READING_PARAGRAPH = "LastReadingParagraph";
         String BOOK_CREATED_DATE = "BookCreatedDate";
@@ -48,6 +48,10 @@ public class BooksDBContract {
         String ETC = "etc";
         String SPREAD = "spread";
         String ORIENTATION = "orientation";
+        String IS_FIXED_LAYOUT = "IsFixedLayout";
+        String IS_RTL = "isRTL";
+        String LAST_READ = "lastRead";
+        String DATE = "Date";
     }
 
     interface BookSettingsColumns {
@@ -87,6 +91,7 @@ public class BooksDBContract {
         String IS_NOTE = "isNote";
         String DATA_TIME = "datetime";
         String STYLE = "style";
+        String CREATED_DATE = "CreatedDate";
     }
 
     interface PagingColumn {
@@ -125,7 +130,7 @@ public class BooksDBContract {
         String PAGE_POSITION_IN_CHAPTER = "pagePositionInChapter";
         String PAGE_POSITION_IN_BOOK = "pagePositionInBook";
         String DATE_TIME = "datetime";
-        String CREATED_DATE = "PagePositionInBook";
+        String CREATED_DATE = "createdDate";
     }
 
     private BooksDBContract() {

@@ -126,6 +126,9 @@
     <!-- Item shelves sizes -->
     <dimen name="book_width">137dp</dimen>
     <dimen name="book_height">226dp</dimen>
+    <dimen name="search_txt_size">24sp</dimen>
+    <dimen name="search_height">35dp</dimen>
+    <dimen name="margin_edit_search">25dp</dimen>
 
 
 </resources>
