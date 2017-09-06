@@ -416,7 +416,7 @@ public class BookModel extends BookInformation implements Parcelable {
         return "BookModel{" +
                 "mBookAuthors='" + mBookAuthors + '\'' +
                 ", mUserId=" + mUserId +
-//                ", mBookName='" + mBookName + '\'' +
+                ", mBookName='" + fileName + '\'' +
                 ", mBookImage='" + mBookImage + '\'' +
                 ", mBookSku='" + mBookSku + '\'' +
                 ", mBookContentID='" + mBookContentID + '\'' +
@@ -431,8 +431,8 @@ public class BookModel extends BookInformation implements Parcelable {
                 ", mCreatedDate=" + mCreatedDate +
                 ", mIsBookAtTheEnd=" + mIsBookAtTheEnd +
                 ", mLastPage=" + mLastPage +
-//                ", mImageDownloadLink='" + mImageDownloadLink + '\'' +
-//                ", mBookDownloadLink='" + mBookDownloadLink + '\'' +
+                ", mImageDownloadLink='" + coverUrl + '\'' +
+                ", mBookDownloadLink='" + url + '\'' +
                 ", mBookState=" + mBookState +
                 ", mProgress=" + mProgress +
                 ", mViewPosition=" + mViewPosition +
@@ -443,6 +443,7 @@ public class BookModel extends BookInformation implements Parcelable {
                 ", mBookPhysicalPage=" + mBookPhysicalPage +
                 ", mLastReadingParagraph=" + mLastReadingParagraph +
                 ", mIsBookRented=" + mIsBookRented +
+                ", BookCode=" + bookCode +
                 ", mBookInstance=" + Arrays.toString(mBookInstance) +
                 '}';
     }

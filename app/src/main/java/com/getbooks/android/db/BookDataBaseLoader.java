@@ -79,8 +79,8 @@ public class BookDataBaseLoader {
         mBooksDataBase.updateSettingFromDB(skySetting);
     }
 
-    public void insertBookMarkToDb(PageInformation pageInformation) {
-        mBooksDataBase.insertBookmark(pageInformation);
+    public void insertBookMarkToDb(PageInformation pageInformation, int bookCode, String  bookSku) {
+        mBooksDataBase.insertBookmark(pageInformation, bookCode, bookSku);
     }
 
     public void deleteBookmarkByCodeDb(int code) {

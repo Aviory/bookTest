@@ -16,8 +16,4 @@ public class CommonUtils {
         }
         return object;
     }
-    public static List<BookModel> authorSort(List<BookModel> list){
-
-        return list;
-    }
 }

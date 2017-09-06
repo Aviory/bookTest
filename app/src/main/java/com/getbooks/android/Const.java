@@ -8,13 +8,13 @@ public final class Const {
 
     // Api constants
     public static final String BASE_URL_PELEPHONE_API = "https://pelephone.getbooks.co.il/dev/?";
-    public static final String  BASE_URL_API_ARY = "https://pelephone.getbooks.co.il/dev/api/rest/";
-    public static final String WEBSITECODE= "aff_pelephone";
+    public static final String BASE_URL_API_ARY = "https://pelephone.getbooks.co.il/dev/api/rest/";
+    public static final String WEBSITECODE = "aff_pelephone";
 
 
     //Authorization constant
     public static final String AUTH_URL = "https://pelephone.getbooks.co.il/dev/customer/account/login/";
-//    public static final String AUTH_URL = "http://pelelogin.getbooks.co.il/";
+    //    public static final String AUTH_URL = "http://pelelogin.getbooks.co.il/";
     public static final String REDIRECT_URL = "https://pelephone.getbooks.co.il/dev/customer/account/";
 
 
@@ -29,22 +29,33 @@ public final class Const {
     public static final int SPLASH_TIME_OUT = 1500;
 
     //Catalog constant
-    public static final  String CATALOG_URL = "https://pelephone.getbooks.co.il/dev/on-sale";
+    public static final String CATALOG_URL = "https://pelephone.getbooks.co.il/dev/on-sale";
 
     // Reader constant
     public static final String BOOKS_DIRECTORY = "GetBooks";
     public static final String BOOK_PATH = "book_path";
-    public static final String BOOK_NAME = "book_name";
     public static final int PORT_NUMBER = 8080;
     public static final String LOCALHOST = "http://127.0.0.1:" + PORT_NUMBER + "/";
     public static final String DECRYPTED = "dec.epub";
+    public static final String BOOK_CODE = "bookCode";
+    public static final String TITLE = "title";
+    public static final String AUTHOR = "author";
+    public static final String BOOK_NAME = "book_name";
+    public static final String POSITION = "position";
+    public static final String DOUBLE_PAGED = "doubledPaged";
+    public static final String TRANSITION_TYPE = "transitionType";
+    public static final String GLOBAL_PAGINATION = "globalPagination";
+    public static final String RTL = "rtl";
+    public static final String VERTICAL_WRITING = "verticalWriting";
+    public static final String DIRECTORY_PATH = "directoryPath";
+    public static final String BOOK_SKU = "bookSku";
+    public static final String USER_ID = "userId";
+
 
     //right menu const
     public static final String SERVISE_PRIVASY_RIGHT_BTN_TEXT_ID = "4808";
     public static final String SERVISE_PRIVASY_LEFT_BTN_TEXT_ID = "4984";
     public static final String ABOUT_US_TEXT_ID = "4972";
-
-
 
 
 }

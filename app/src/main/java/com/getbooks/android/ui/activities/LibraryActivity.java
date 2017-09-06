@@ -310,7 +310,7 @@ public class LibraryActivity extends BaseActivity implements Queries.CallBack,
         if (fragment == null)
             menuTranzaction(FragmentServicePrivacy.getInstance(), PRIVACY);
         else
-            getSupportFragmentManager().beginTransaction().show( FragmentServicePrivacy.getInstance()).commit();
+            getSupportFragmentManager().beginTransaction().show(FragmentServicePrivacy.getInstance()).commit();
         FragmentServicePrivacy.getInstance().setText(txt_list);
         UiUtil.hideView(mLeftMenuLayout);
     }
@@ -501,11 +501,11 @@ public class LibraryActivity extends BaseActivity implements Queries.CallBack,
         fileManager.execute();
         try {
             List<File> mInternalLibrary = fileManager.get(2, TimeUnit.SECONDS);
-            LogUtil.log(this,"Files in ui size: "+ String.valueOf(mInternalLibrary.size()));
+            LogUtil.log(this, "Files in ui size: " + String.valueOf(mInternalLibrary.size()));
 
-            for (File file:mInternalLibrary) {
-                LogUtil.log(this, "fileName: "+file.getName());
-                LogUtil.log(this, "filedirectory: "+file.getAbsolutePath());
+            for (File file : mInternalLibrary) {
+                LogUtil.log(this, "fileName: " + file.getName());
+                LogUtil.log(this, "filedirectory: " + file.getAbsolutePath());
                 BookModel tmp = new BookModel();
                 tmp.fileName = file.getName();
                 tmp.setBookContentID(FileUtil.getGnerationID(tmp.fileName));
@@ -543,7 +543,7 @@ public class LibraryActivity extends BaseActivity implements Queries.CallBack,
                 getAct().getApplicationContext(), mRecyclerBookShelves, new RecyclerItemClickListener.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                LogUtil.log(this, "pathFile "+mDirectoryPath);
+                LogUtil.log(this, "pathFile " + mDirectoryPath);
                 switch (mLibrary.get(position).getBookState()) {
                     case CLOUD_BOOK:
                         if (mDownloadInfo.getDownloadState().equals(DownloadInfo.DownloadState.SELECTED_DELETING_BOOKS)) {
@@ -560,8 +560,38 @@ public class LibraryActivity extends BaseActivity implements Queries.CallBack,
                             currentDownloadingBookModel = mLibrary.get(position);
                             mShelvesAdapter.setSelectedDeletingBook(position, mDownloadInfo);
                         } else {
-                            UiUtil.openActivity(getAct(), ReaderActivity.class, false,
-                                    Const.BOOK_PATH, mDirectoryPath, Const.BOOK_NAME, mLibrary.get(position).fileName);
+                            try {
+                                FileUtil.decryptedBook(mDirectoryPath,
+                                        mLibrary.get(position).fileName,
+                                        mLibrary.get(position).fileName + Const.DECRYPTED);
+                                UiUtil.openViewReaderActivity(getAct(), BookViewActivity.class, mLibrary.get(position).bookCode,
+                                        mLibrary.get(position).fileName, "Author", mLibrary.get(position).fileName + Const.DECRYPTED,
+                                        (double) -1.0f, false, 1, false, true, true, mDirectoryPath, mLibrary.get(position).getBookSku(),
+                                        mLibrary.get(position).getUserId());
+//                                Intent intent = new Intent(LibraryActivity.this, BookViewActivity.class);
+//                                intent.putExtra("BOOKCODE", Integer.parseInt(mLibrary.get(position).getBookSku().replaceAll("-", "")));
+//                                intent.putExtra("TITLE", mLibrary.get(position).fileName);
+//                                intent.putExtra("AUTHOR", "Author");
+//                                intent.putExtra("BOOKNAME", mLibrary.get(position).fileName + Const.DECRYPTED);
+//                                intent.putExtra("POSITION", (double) -1.0f);
+//                                intent.putExtra("DOUBLEPAGED", false);
+//                                intent.putExtra("transitionType", 1);
+//                                intent.putExtra("GLOBALPAGINATION", false);
+//                                intent.putExtra("RTL", true);
+//                                intent.putExtra("VERTICALWRITING", true);
+//                                intent.putExtra("DERECTORYPATH", mDirectoryPath);
+//                                intent.putExtra("BOOK_SKU", mLibrary.get(position).getBookSku());
+//                                intent.putExtra("USER_ID", mLibrary.get(position).getUserId());
+//                                startActivity(intent);
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            } catch (NoSuchPaddingException e) {
+                                e.printStackTrace();
+                            } catch (NoSuchAlgorithmException e) {
+                                e.printStackTrace();
+                            } catch (InvalidKeyException e) {
+                                e.printStackTrace();
+                            }
                         }
                         break;
                     case RENTED_BOOK:
@@ -573,19 +603,25 @@ public class LibraryActivity extends BaseActivity implements Queries.CallBack,
                                 FileUtil.decryptedBook(mDirectoryPath,
                                         mLibrary.get(position).fileName,
                                         mLibrary.get(position).fileName + Const.DECRYPTED);
-                                Intent intent = new Intent(LibraryActivity.this, BookViewActivity.class);
-                                intent.putExtra("BOOKCODE", Integer.parseInt(mLibrary.get(position).getBookSku().replaceAll("-", "")));
-                                intent.putExtra("TITLE", "Title");
-                                intent.putExtra("AUTHOR", "Author");
-                                intent.putExtra("BOOKNAME", mLibrary.get(position).fileName + Const.DECRYPTED);
-                                intent.putExtra("POSITION", (double) -1.0f);
-                                intent.putExtra("DOUBLEPAGED", false);
-                                intent.putExtra("transitionType", 1);
-                                intent.putExtra("GLOBALPAGINATION", false);
-                                intent.putExtra("RTL", true);
-                                intent.putExtra("VERTICALWRITING", true);
-                                intent.putExtra("DERECTORYPATH", mDirectoryPath);
-                                startActivity(intent);
+                                UiUtil.openViewReaderActivity(getAct(), BookViewActivity.class, mLibrary.get(position).bookCode,
+                                        mLibrary.get(position).fileName, "Author", mLibrary.get(position).fileName + Const.DECRYPTED,
+                                        (double) -1.0f, false, 1, false, true, true, mDirectoryPath, mLibrary.get(position).getBookSku(),
+                                        mLibrary.get(position).getUserId());
+//                                Intent intent = new Intent(LibraryActivity.this, BookViewActivity.class);
+//                                intent.putExtra("BOOKCODE", Integer.parseInt(mLibrary.get(position).getBookSku().replaceAll("-", "")));
+//                                intent.putExtra("TITLE", mLibrary.get(position).fileName);
+//                                intent.putExtra("AUTHOR", "Author");
+//                                intent.putExtra("BOOKNAME", mLibrary.get(position).fileName + Const.DECRYPTED);
+//                                intent.putExtra("POSITION", (double) -1.0f);
+//                                intent.putExtra("DOUBLEPAGED", false);
+//                                intent.putExtra("transitionType", 1);
+//                                intent.putExtra("GLOBALPAGINATION", false);
+//                                intent.putExtra("RTL", true);
+//                                intent.putExtra("VERTICALWRITING", true);
+//                                intent.putExtra("DERECTORYPATH", mDirectoryPath);
+//                                intent.putExtra("BOOK_SKU", mLibrary.get(position).getBookSku());
+//                                intent.putExtra("USER_ID", mLibrary.get(position).getUserId());
+//                                startActivity(intent);
                             } catch (IOException e) {
                                 e.printStackTrace();
                             } catch (NoSuchPaddingException e) {
@@ -602,8 +638,8 @@ public class LibraryActivity extends BaseActivity implements Queries.CallBack,
                             currentDownloadingBookModel = mLibrary.get(position);
                             mShelvesAdapter.setSelectedDeletingBook(position, mDownloadInfo);
                         } else {
-//                            UiUtil.openActivity(getAct(), BookViewActivity.class, false,
-//                                    Const.BOOK_PATH, mLibrary.get(position).getFilePath(), Const.BOOK_NAME, mLibrary.get(position).fileName);
+                            UiUtil.openActivity(getAct(), BookViewActivity.class, false,
+                                    Const.BOOK_PATH, mLibrary.get(position).getFilePath(), Const.BOOK_NAME, mLibrary.get(position).fileName);
                         }
                         break;
                 }

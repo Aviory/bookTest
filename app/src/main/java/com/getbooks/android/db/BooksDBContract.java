@@ -17,6 +17,7 @@ public class BooksDBContract {
     interface BooksDetailsColumns {
         String USER_ID = "user_id";
         String BOOK_SKU = "BookSku";
+        String BOOK_CODE = "BookCode";
         String BOOK_IMAGE_DOWNLOAD_URL = "ImagDownloadUrl";
         String BOOK_DOWNLOAD_LINK = "BookDownloadLink";
         String BOOK_STATE = "BookState";
@@ -78,6 +79,7 @@ public class BooksDBContract {
 
     interface HighlightsColumn {
         String USER_ID = "user_id";
+        String BOOK_SKU = "bookSku";
         String BOOK_CODE = "bookCode";
         String CODE = "code";
         String CHAPTER_INDEX = "chapterIndex";
@@ -96,6 +98,7 @@ public class BooksDBContract {
 
     interface PagingColumn {
         String USER_ID = "user_id";
+        String BOOK_SKU = "bookSku";
         String BOOK_CODE = "bookCode";
         String CODE = "code";
         String CHAPTER_INDEX = "chapterIndex";
@@ -113,7 +116,7 @@ public class BooksDBContract {
 
     interface BookMarkupsColumns {
         String USER_ID = "user_id";
-        String BOOK_SKU = "bookID";
+        String BOOK_SKU = "bookSku";
         String MARK_TYPE = "markType";
         String CHAPTER_NUMBER = "chapterNumber";
         String PAGE_NUMBER = "pageNumber";

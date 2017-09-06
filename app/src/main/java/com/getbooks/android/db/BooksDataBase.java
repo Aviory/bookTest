@@ -59,6 +59,7 @@ public class BooksDataBase {
             .append(BooksDBContract.BookDetail._ID).append(" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,")
             .append(BooksDBContract.BookDetail.USER_ID).append(" INTEGER, ")
             .append(BooksDBContract.BookDetail.BOOK_SKU).append(" TEXT, ")
+            .append(BooksDBContract.BookDetail.BOOK_CODE).append(" INTEGER, ")
             .append(BooksDBContract.BookDetail.BOOK_IMAGE_DOWNLOAD_URL).append(" TEXT, ")
             .append(BooksDBContract.BookDetail.BOOK_DOWNLOAD_LINK).append(" TEXT, ")
             .append(BooksDBContract.BookDetail.BOOK_INSTANCE).append(" BLOB, ")
@@ -98,10 +99,10 @@ public class BooksDataBase {
 
     private static final String CREATE_TABLE_BOOK_MARKUPS = new StringBuilder().append("CREATE TABLE IF NOT EXISTS  ")
             .append(Tables.BOOK_MARKUPS).append("(")
-//            .append(BooksDBContract.BookMarkups._ID).append(" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,")
-            .append(BooksDBContract.BookMarkups.CODE).append(" INTEGER UNIQUE PRIMARY KEY AUTOINCREMENT NOT NULL, ")
+            .append(BooksDBContract.BookMarkups._ID).append(" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,")
+            .append(BooksDBContract.BookMarkups.CODE).append(" INTEGER, ")
             .append(BooksDBContract.BookMarkups.USER_ID).append(" INTEGER, ")
-            .append(BooksDBContract.BookMarkups.BOOK_SKU).append(" INTEGER, ")
+            .append(BooksDBContract.BookMarkups.BOOK_SKU).append(" TEXT, ")
             .append(BooksDBContract.BookMarkups.MARK_TYPE).append(" INTEGER , ")
             .append(BooksDBContract.BookMarkups.CHAPTER_NUMBER).append(" TEXT, ")
             .append(BooksDBContract.BookMarkups.PAGE_NUMBER).append(" INTEGER, ")
@@ -122,9 +123,9 @@ public class BooksDataBase {
 
     private static final String CREATE_TABLE_BOOK_SETTING = new StringBuilder().append("CREATE TABLE IF NOT EXISTS  ")
             .append(Tables.BOOK_SETTING).append("(")
-            .append(BooksDBContract.BookSetting._ID).append(" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,")
-            .append(BooksDBContract.BookSetting.USER_ID).append(" INTEGER, ")
-            .append(BooksDBContract.BookSetting.BOOK_CODE).append(" INTEGER NOT NULL, ")
+//            .append(BooksDBContract.BookSetting._ID).append(" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,")
+            .append(BooksDBContract.BookSetting.BOOK_CODE).append(" INTEGER DEFAULT 0, ")
+            .append(BooksDBContract.BookSetting.USER_ID).append(" INTEGER DEFAULT 0, ")
             .append(BooksDBContract.BookSetting.FONT_NAME).append(" TEXT DEFAULT '', ")
             .append(BooksDBContract.BookSetting.FONT_SIZE).append(" INTEGER DEFAULT 2, ")
             .append(BooksDBContract.BookSetting.LINE_SPACING).append(" INTEGER DEFAULT -1, ")
@@ -146,9 +147,10 @@ public class BooksDataBase {
 
     private static final String CREATE_TABLE_HIGHLIGHT = new StringBuilder().append("CREATE TABLE IF NOT EXISTS  ")
             .append(Tables.BOOK_HIGHLIGHT).append("(")
-//            .append(BooksDBContract.BookHighlights._ID).append(" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,")
-            .append(BooksDBContract.BookHighlights.CODE).append(" INTEGER UNIQUE PRIMARY KEY AUTOINCREMENT NOT NULL, ")
+            .append(BooksDBContract.BookHighlights._ID).append(" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,")
+            .append(BooksDBContract.BookHighlights.CODE).append(" INTEGER, ")
             .append(BooksDBContract.BookHighlights.USER_ID).append(" INTEGER, ")
+            .append(BooksDBContract.BookHighlights.BOOK_SKU).append(" TEXT, ")
             .append(BooksDBContract.BookHighlights.BOOK_CODE).append(" INTEGER NOT NULL, ")
             .append(BooksDBContract.BookHighlights.CHAPTER_INDEX).append(" INTEGER, ")
             .append(BooksDBContract.BookHighlights.START_INDEX).append(" INTEGER, ")
@@ -166,9 +168,10 @@ public class BooksDataBase {
 
     private static final String CREATE_TABLE_PAGING = new StringBuilder().append("CREATE TABLE IF NOT EXISTS  ")
             .append(Tables.BOOK_PAGING).append("(")
-//            .append(BooksDBContract.BookPaging._ID).append(" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,")
-            .append(BooksDBContract.BookPaging.CODE).append(" INTEGER UNIQUE PRIMARY KEY AUTOINCREMENT NOT NULL, ")
+            .append(BooksDBContract.BookPaging._ID).append(" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,")
+            .append(BooksDBContract.BookPaging.CODE).append(" INTEGER, ")
             .append(BooksDBContract.BookPaging.USER_ID).append(" INTEGER, ")
+            .append(BooksDBContract.BookPaging.BOOK_SKU).append(" TEXT, ")
             .append(BooksDBContract.BookPaging.BOOK_CODE).append(" INTEGER NOT NULL, ")
             .append(BooksDBContract.BookPaging.CHAPTER_INDEX).append(" INTEGER, ")
             .append(BooksDBContract.BookPaging.NUMBER_OF_PAGES_IN_CHAPTER).append(" INTEGER, ")
@@ -217,6 +220,7 @@ public class BooksDataBase {
             sqLiteDatabase.execSQL(CREATE_TABLE_BOOK_SETTING);
             sqLiteDatabase.execSQL(CREATE_TABLE_HIGHLIGHT);
             sqLiteDatabase.execSQL(CREATE_TABLE_PAGING);
+            createSettingBook(sqLiteDatabase);
         }
 
         @Override
@@ -232,6 +236,31 @@ public class BooksDataBase {
 
     public boolean isSqlOpen() {
         return mSqLiteDatabase != null && mSqLiteDatabase.isOpen();
+    }
+
+    private void createSettingBook(SQLiteDatabase sqLiteDatabase){
+//        String sql = "INSERT INTO Setting(BookCode,FontName,FontSize,LineSpacing," +
+//                "Foreground,Background,Theme,Brightness,TransitionType,LockRotation,MediaOverlay,TTS" +
+//                ",AutoStartPlaying,AutoLoadNewChapter,HighlightTextToVoice) VALUES(0,'',2,-1,-1,-1,0,1,2,1,1,0,1,1,1)";
+//        mSqLiteDatabase.execSQL(sql);
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(BooksDBContract.BookSetting.USER_ID, 0);
+        contentValues.put(BooksDBContract.BookSetting.BOOK_CODE, 0);
+        contentValues.put(BooksDBContract.BookSetting.FONT_NAME, "");
+        contentValues.put(BooksDBContract.BookSetting.FONT_SIZE, 2);
+        contentValues.put(BooksDBContract.BookSetting.LINE_SPACING, -1);
+        contentValues.put(BooksDBContract.BookSetting.FOREGROUND, -1);
+        contentValues.put(BooksDBContract.BookSetting.BACKGROUND, -1);
+        contentValues.put(BooksDBContract.BookSetting.THEME, 0);
+        contentValues.put(BooksDBContract.BookSetting.BRIGHTNESS, 1);
+        contentValues.put(BooksDBContract.BookSetting.TRANSITION_TYPE, 2);
+        contentValues.put(BooksDBContract.BookSetting.LOCK_ROTATION, 1);
+        contentValues.put(BooksDBContract.BookSetting.MEDIA_OVERLAY, 1);
+        contentValues.put(BooksDBContract.BookSetting.TTS, 0);
+        contentValues.put(BooksDBContract.BookSetting.AUTO_START_PLAYING, 1);
+        contentValues.put(BooksDBContract.BookSetting.AUTO_LOAD_NEW_CHAPTER, 1);
+        contentValues.put(BooksDBContract.BookSetting.HIGHLIGHT_TEXT_TO_VOICE, 1);
+        sqLiteDatabase.insert(Tables.BOOK_SETTING, null, contentValues);
     }
 
     public void setUserIdSession(int userIdSession) {
@@ -274,6 +303,7 @@ public class BooksDataBase {
                 BookModel bookModel = new BookModel();
                 bookModel.setUserId(cursor.getInt(cursor.getColumnIndex(BooksDBContract.BookDetail.USER_ID)));
                 bookModel.setBookSku(cursor.getString(cursor.getColumnIndex(BooksDBContract.BookDetail.BOOK_SKU)));
+                bookModel.bookCode = cursor.getInt(cursor.getColumnIndex(BooksDBContract.BookDetail.BOOK_CODE));
                 bookModel.fileName = (cursor.getString(cursor.getColumnIndex(BooksDBContract.BookDetail.BOOK_NAME)));
                 bookModel.coverUrl = (cursor.getString(cursor.getColumnIndex(BooksDBContract.BookDetail.BOOK_IMAGE_DOWNLOAD_URL)));
                 bookModel.url = (cursor.getString(cursor.getColumnIndex(BooksDBContract.BookDetail.BOOK_DOWNLOAD_LINK)));
@@ -319,7 +349,8 @@ public class BooksDataBase {
             while (cursor.moveToNext()) {
                 Calendar calendar = null;
                 bookModel.setUserId(cursor.getInt(cursor.getColumnIndex(BooksDBContract.BookDetail.USER_ID)));
-                bookModel.bookCode = Integer.parseInt((cursor.getString(cursor.getColumnIndex(BooksDBContract.BookDetail.BOOK_SKU))));
+                bookModel.setBookSku(cursor.getString(cursor.getColumnIndex(BooksDBContract.BookDetail.BOOK_SKU)));
+                bookModel.bookCode = (cursor.getInt(cursor.getColumnIndex(BooksDBContract.BookDetail.BOOK_CODE)));
                 bookModel.fileName = (cursor.getString(cursor.getColumnIndex(BooksDBContract.BookDetail.BOOK_NAME)));
                 bookModel.coverUrl = (cursor.getString(cursor.getColumnIndex(BooksDBContract.BookDetail.BOOK_IMAGE_DOWNLOAD_URL)));
                 bookModel.url = (cursor.getString(cursor.getColumnIndex(BooksDBContract.BookDetail.BOOK_DOWNLOAD_LINK)));
@@ -356,7 +387,8 @@ public class BooksDataBase {
     protected void saveBook(BookModel bookModel) {
         ContentValues contentValues = new ContentValues();
         contentValues.put(BooksDBContract.BookDetail.USER_ID, bookModel.getUserId());
-        contentValues.put(BooksDBContract.BookDetail.BOOK_SKU, bookModel.bookCode);
+        contentValues.put(BooksDBContract.BookDetail.BOOK_SKU, bookModel.getBookSku());
+        contentValues.put(BooksDBContract.BookDetail.BOOK_CODE, bookModel.bookCode);
         contentValues.put(BooksDBContract.BookDetail.BOOK_NAME, bookModel.fileName);
         contentValues.put(BooksDBContract.BookDetail.BOOK_IMAGE_DOWNLOAD_URL, bookModel.coverUrl);
         contentValues.put(BooksDBContract.BookDetail.BOOK_DOWNLOAD_LINK, bookModel.url);
@@ -387,7 +419,7 @@ public class BooksDataBase {
     protected void deleteBook(BookModel bookModel) {
         mSqLiteDatabase = mBookDBHelper.getReadableDatabase();
         String query = BooksDBContract.BookDetail.BOOK_SKU + " =?";
-        mSqLiteDatabase.delete(Tables.BOOK_DETAILS, query, new String[]{String.valueOf(bookModel.bookCode)});
+        mSqLiteDatabase.delete(Tables.BOOK_DETAILS, query, new String[]{String.valueOf(bookModel.getBookSku())});
     }
 
 
@@ -399,6 +431,7 @@ public class BooksDataBase {
         ContentValues contentValues = new ContentValues();
         contentValues.put(BooksDBContract.BookDetail.USER_ID, bookModel.getUserId());
         contentValues.put(BooksDBContract.BookDetail.BOOK_SKU, bookModel.getBookSku());
+        contentValues.put(BooksDBContract.BookDetail.BOOK_CODE, bookModel.bookCode);
         contentValues.put(BooksDBContract.BookDetail.BOOK_NAME, bookModel.fileName);
         contentValues.put(BooksDBContract.BookDetail.BOOK_IMAGE_DOWNLOAD_URL, bookModel.coverUrl);
         contentValues.put(BooksDBContract.BookDetail.BOOK_DOWNLOAD_LINK, bookModel.url);
@@ -430,7 +463,7 @@ public class BooksDataBase {
     protected SkySetting fetchSettingFromDB() {
         SkySetting setting = new SkySetting();
         mSqLiteDatabase = mBookDBHelper.getReadableDatabase();
-        String sql = "SELECT * FROM Setting where BookCode=0";
+        String sql = "SELECT * FROM " + Tables.BOOK_SETTING;
         Cursor result = mSqLiteDatabase.rawQuery(sql, null);
         if (result != null) {
             while (result.moveToNext()) {
@@ -459,6 +492,7 @@ public class BooksDataBase {
                 return setting;
             }
         }
+        Log.d("database", "result = null");
         result.close();
         return null;
     }
@@ -499,7 +533,7 @@ public class BooksDataBase {
     }
 
     // Using db method
-    protected void insertBookmark(PageInformation pi) {
+    protected void insertBookmark(PageInformation pi, int userId, String bookSku) {
         mSqLiteDatabase = mBookDBHelper.getReadableDatabase();
         double ppb = pi.pagePositionInBook;
         double ppc = pi.pagePositionInChapter;
@@ -508,12 +542,14 @@ public class BooksDataBase {
         String dateInString = this.getDateString();
 
         ContentValues values = new ContentValues();
+        values.put(BooksDBContract.BookMarkups.USER_ID, userId);
+        values.put(BooksDBContract.BookMarkups.BOOK_SKU, bookSku);
         values.put(BooksDBContract.BookMarkups.BOOK_CODE, pi.bookCode);
         values.put(BooksDBContract.BookMarkups.CHAPTER_INDEX, ci);
         values.put(BooksDBContract.BookMarkups.PAGE_POSITION_IN_CHAPTER, ppc);
         values.put(BooksDBContract.BookMarkups.PAGE_POSITION_IN_BOOK, ppb);
         values.put(BooksDBContract.BookMarkups.CREATED_DATE, dateInString);
-        mSqLiteDatabase.insert("Bookmark", null, values);
+        mSqLiteDatabase.insert(Tables.BOOK_MARKUPS, null, values);
 
     }
 
@@ -578,7 +614,7 @@ public class BooksDataBase {
         if (cursor != null) {
             while (cursor.moveToNext()) {
                 bi = new BookInformation();
-                bi.bookCode = cursor.getInt(cursor.getColumnIndex(BooksDBContract.BookDetail.BOOK_SKU));
+                bi.bookCode = cursor.getInt(cursor.getColumnIndex(BooksDBContract.BookDetail.BOOK_CODE));
                 bi.title = cursor.getString(cursor.getColumnIndex(BooksDBContract.BookDetail.BOOK_NAME));
                 bi.creator = cursor.getString(cursor.getColumnIndex(BooksDBContract.BookDetail.BOOK_AUTHORS));
                 bi.publisher = cursor.getString(cursor.getColumnIndex(BooksDBContract.BookDetail.BOOK_PUBLISHERS));
@@ -659,10 +695,10 @@ public class BooksDataBase {
         return null;
     }
 
-    public void toggleBookmark(PageInformation pi) {
+    public void toggleBookmark(PageInformation pi, int userId, String bookSku) {
         int code = this.getBookmarkCode(pi);
         if (code == -1) { // if not exist
-            this.insertBookmark(pi);
+            this.insertBookmark(pi, userId, bookSku);
         } else {
             this.deleteBookmarkByCode(code); // if exist, delete it
         }
