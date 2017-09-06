@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">Getbooks</string>
     <string name="txt_load">Loading...</string>
+    <string name="facebook_app_id">1592801194123639</string>
 
     <!-- Menu main text -->
     <string name="txt_library"> Library</string>

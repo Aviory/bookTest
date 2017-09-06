@@ -19,7 +19,8 @@
         <com.getbooks.android.ui.widget.ArialNormalTextView
             android:id="@+id/right_txt_screen_settings"
             style="@style/RightMenuTextStyle"
-            android:text="@string/rigth_txt_screen_sett" />
+            android:text="@string/rigth_txt_screen_sett"
+            android:visibility="invisible"/>
 
         <com.getbooks.android.ui.widget.ArialNormalTextView
             android:id="@+id/right_txt_order"
@@ -67,7 +68,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_weight="1"
-            android:src="@drawable/list" />
+            android:src="@drawable/list"
+            android:visibility="invisible"/>
 
         <ImageView
             android:layout_width="wrap_content"
