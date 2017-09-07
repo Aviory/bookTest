@@ -1087,7 +1087,8 @@ public class BookViewActivity extends Activity implements BookSettingMenuFragmen
     private void fillBookHighlightsList(List<BookMarkItemModel> contentList, RecyclerBookContentAdapter bookContentAdapter) {
         contentList.clear();
         BookMarkItemModel bookMarkItemModel;
-        Highlights highlights = sd.fetchAllHighlights(this.bookCode);
+//        Highlights highlights = sd.fetchAllHighlights(this.bookCode);
+        Highlights highlights = mBookDataBaseLoader.fetchAllHighlightsFromDb(this.bookCode, mUserId, mBookSku);
         for (int i = 0; i < highlights.getSize(); i++) {
             Highlight highlight = highlights.getHighlight(i);
 
@@ -2777,7 +2778,7 @@ public class BookViewActivity extends Activity implements BookSettingMenuFragmen
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reader);
         app = (GetbooksApplication) getApplication();
-        sd = new SkyDatabase(this);
+//        sd = new SkyDatabase(this);
         mBookDataBaseLoader = BookDataBaseLoader.getInstanceDb(this);
         setting = mBookDataBaseLoader.fetchSettingDB();
         Log.d("database new", setting.toString());
@@ -2792,7 +2793,6 @@ public class BookViewActivity extends Activity implements BookSettingMenuFragmen
 
         searchBook();
     }
-
 
 
     private BroadcastReceiver skyReceiver = null;
@@ -2954,7 +2954,8 @@ public class BookViewActivity extends Activity implements BookSettingMenuFragmen
 
     private int getNumberOfPagesForChapter(int chapterIndex) {
         PagingInformation pga = rv.makePagingInformation(chapterIndex);
-        PagingInformation pgi = sd.fetchPagingInformation(pga);
+//        PagingInformation pgi = sd.fetchPagingInformation(pga);
+        PagingInformation pgi = mBookDataBaseLoader.fetchPagingInformationDb(pga, mUserId, mBookSku);
         if (pgi != null) return pgi.numberOfPagesInChapter;
         else return -1;
     }
@@ -3538,7 +3539,8 @@ public class BookViewActivity extends Activity implements BookSettingMenuFragmen
     class HighlightDelegate implements HighlightListener {
         public void onHighlightDeleted(Highlight highlight) {
             dumpHighlight("onHighlightDeleted", highlight);
-            sd.deleteHighlight(highlight);
+//            sd.deleteHighlight(highlight);
+            mBookDataBaseLoader.deleteHighlightFromDb(highlight, mUserId, mBookSku);
         }
 
         public void onHighlightInserted(Highlight highlight) {
@@ -3556,7 +3558,8 @@ public class BookViewActivity extends Activity implements BookSettingMenuFragmen
 //			modified.bookCode = highlight.bookCode;
 //			sd.insertHighlight(modified);
 
-            sd.insertHighlight(highlight);
+//            sd.insertHighlight(highlight);
+            mBookDataBaseLoader.insertHighlightToDb(highlight, mUserId, mBookSku);
             showToast("startIndex " + highlight.startIndex + " startOffset " + highlight.startOffset + " endIndex " + highlight.endIndex + " endOffset " + highlight.endOffset + " text " + highlight.text);
         }
 
@@ -3570,13 +3573,15 @@ public class BookViewActivity extends Activity implements BookSettingMenuFragmen
 
         public Highlights getHighlightsForChapter(int chapterIndex) {
 //			Log.w("EPub","getHighlightsForChapter");
-            return sd.fetchHighlights(bookCode, chapterIndex);
+//            return sd.fetchHighlights(bookCode, chapterIndex);
+            return mBookDataBaseLoader.fetchHighlightsDb(bookCode, chapterIndex, mUserId, mBookSku);
         }
 
         @Override
         public void onHighlightUpdated(Highlight highlight) {
             dumpHighlight("onHighlightUpdated", highlight);
-            sd.updateHighlight(highlight);
+//            sd.updateHighlight(highlight);
+            mBookDataBaseLoader.updateHighlightDb(highlight, mUserId, mBookSku);
         }
 
         @Override
@@ -3726,7 +3731,6 @@ public class BookViewActivity extends Activity implements BookSettingMenuFragmen
     class BookmarkDelegate implements BookmarkListener {
         @Override
         public void onBookmarkHit(PageInformation pi, boolean isBookmarked) {
-//            sd.toggleBookmark(pi);
             mBookDataBaseLoader.toggleBookmarkDb(pi, mUserId, mBookSku);
             rv.repaintAll();
         }
@@ -3812,7 +3816,8 @@ public class BookViewActivity extends Activity implements BookSettingMenuFragmen
             int cn = rv.getNumberOfChapters();
             int value = (int) ((float) ci * 100 / (float) cn);
             changePagingView(value);
-            sd.insertPagingInformation(pagingInformation);
+//            sd.insertPagingInformation(pagingInformation);
+            mBookDataBaseLoader.insertPagingInformationDb(pagingInformation, mUserId, mBookSku);
         }
 
         @Override
@@ -3822,7 +3827,8 @@ public class BookViewActivity extends Activity implements BookSettingMenuFragmen
 
         @Override
         public int getNumberOfPagesForPagingInformation(PagingInformation pagingInformation) {
-            PagingInformation pgi = sd.fetchPagingInformation(pagingInformation);
+//            PagingInformation pgi = sd.fetchPagingInformation(pagingInformation);
+            PagingInformation pgi = mBookDataBaseLoader.fetchPagingInformationDb(pagingInformation, mUserId, mBookSku);
             if (pgi == null) return 0;
             else return pgi.numberOfPagesInChapter;
         }
@@ -4088,9 +4094,10 @@ public class BookViewActivity extends Activity implements BookSettingMenuFragmen
     protected void onPause() {
         super.onPause();
         Log.d("eee", "onPause() in BookViewActivity");
-        sd.updatePosition(bookCode, pagePositionInBook);
-        sd.updateSetting(setting);
+//        sd.updatePosition(bookCode, pagePositionInBook);
+//        sd.updateSetting(setting);
         Log.d("database update", setting.toString());
+        mBookDataBaseLoader.updatePositionDB(bookCode, pagePositionInBook, mUserId, mBookSku);
         mBookDataBaseLoader.upaDateSettingFromDb(setting);
 
         rv.stopPlayingMedia();

@@ -5,6 +5,8 @@ import android.content.Context;
 import com.getbooks.android.model.BookModel;
 import com.getbooks.android.skyepubreader.SkySetting;
 import com.skytree.epub.BookInformation;
+import com.skytree.epub.Highlight;
+import com.skytree.epub.Highlights;
 import com.skytree.epub.PageInformation;
 import com.skytree.epub.PagingInformation;
 
@@ -87,32 +89,16 @@ public class BookDataBaseLoader {
         mBooksDataBase.deleteBookmarkByCode(code, userId, bookSku);
     }
 
-    private void deleteBookMarksByBookCodeDb(int bookCode, int userId, String bookSku) {
-        mBooksDataBase.deleteBookmarksByBookCode(bookCode, userId, bookSku);
-    }
-
-    public void deleteHighlightByBookCodeDb(int bookCode) {
-        mBooksDataBase.deleteHighlightsByBookCode(bookCode);
-    }
-
-    public void deletePagingByBookCodeDb(int bookCode) {
-        mBooksDataBase.deletePagingByBookCode(bookCode);
-    }
-
-    public int getBookMarkCodeDb(PageInformation pageInformation, int userId, String bookSku) {
-        return mBooksDataBase.getBookmarkCode(pageInformation, userId, bookSku);
-    }
-
     public List<PageInformation> fetchBookmarksDb(int bookCode, int userId, String bookSku) {
         return mBooksDataBase.fetchBookmarks(bookCode, userId, bookSku);
     }
 
-    public PagingInformation fetchPagingInformationDb(PagingInformation pagingInformation) {
-        return mBooksDataBase.fetchPagingInformation(pagingInformation);
+    public PagingInformation fetchPagingInformationDb(PagingInformation pagingInformation, int userId, String bookSku) {
+        return mBooksDataBase.fetchPagingInformation(pagingInformation, userId, bookSku);
     }
 
-    public void updatePositionDB(int bookPosition, double position) {
-        mBooksDataBase.updatePosition(bookPosition, position);
+    public void updatePositionDB(int bookPosition, double position, int userId, String bookSku) {
+        mBooksDataBase.updatePosition(bookPosition, position, userId, bookSku);
     }
 
     public void insertBookDb(BookInformation bookInformation){
@@ -121,5 +107,29 @@ public class BookDataBaseLoader {
 
     public boolean isBookmarkedDB(PageInformation pi, int userId, String bookSku) {
         return mBooksDataBase.isBookmarked(pi, userId, bookSku);
+    }
+
+    public void insertHighlightToDb(Highlight highlight, int userId, String bookSku){
+        mBooksDataBase.insertHighlight(highlight, userId, bookSku);
+    }
+
+    public Highlights fetchAllHighlightsFromDb(int bookCode, int userId, String bookSku){
+        return mBooksDataBase.fetchAllHighlights(bookCode, userId,bookSku);
+    }
+
+    public void deleteHighlightFromDb(Highlight highlight, int userId, String bookSku){
+        mBooksDataBase.deleteHighlight(highlight, userId, bookSku);
+    }
+
+    public void updateHighlightDb(Highlight highlight, int userId, String bookSku){
+        mBooksDataBase.updateHighlight(highlight, userId, bookSku);
+    }
+
+    public Highlights fetchHighlightsDb(int bookCode, int chapterIndex, int userId, String bookSku){
+        return mBooksDataBase.fetchHighlights(bookCode, chapterIndex, userId, bookSku);
+    }
+
+    public void insertPagingInformationDb(PagingInformation pgi, int userId, String bookSku){
+        mBooksDataBase.insertPagingInformation(pgi, userId, bookSku);
     }
 }
