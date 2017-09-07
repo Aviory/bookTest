@@ -48,6 +48,35 @@
         android:textColor="@color/color_black"
         android:textSize="@dimen/page_txt_size" />
 
+    <LinearLayout
+        android:id="@+id/layout_search"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/menu_book"
+        android:background="@color/gray_light"
+        android:visibility="invisible"
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/edit_search"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/search_height"
+            android:layout_marginRight="@dimen/margin_edit_search"
+            android:layout_weight="1"
+            android:background="@android:color/transparent"
+            android:imeOptions="actionSearch"
+            android:inputType="text"
+            android:lines="1"
+            android:maxLines="1" />
+
+        <ImageView
+            android:id="@+id/search_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:src="@drawable/search_btn" />
+    </LinearLayout>
+
     <ProgressBar
         android:id="@+id/progress_reader"
         android:layout_width="wrap_content"

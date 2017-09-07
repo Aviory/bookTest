@@ -68,16 +68,13 @@ public class Queries {
                             bookModel.url = rentedBook.getRentBookDownloadLink();
                             bookModel.coverUrl = rentedBook.getRentBookImage();
                             bookModel.fileName = rentedBook.getRentBookName().replaceAll("\\P{L}", "");
-//                            bookModel.setBookName(rentedBook.getRentBookName().replaceAll("\\P{L}", ""));
-//                            bookModel.setImageDownloadLink(rentedBook.getRentBookImage());
-//                            bookModel.setBookDownloadLink(rentedBook.getRentBookDownloadLink());
+                            bookModel.bookCode = UiUtil.getRandomGeneratedBookCode();
                             bookModel.setBookSku(rentedBook.getRentBookSku());
                             bookModel.setBookState(BookState.CLOUD_BOOK.getState());
                             bookModel.setIsBookRented(true);
                             allLibraryBookModels.add(bookModel);
 
                         }
-                        Log.d("PPPPPPPPPPP-Rented", String.valueOf(rentedBooks.size()));
                     } else if (listRentedResponse.code() == 404) {
 //                        UiUtil.showToast(context, R.string.emty_rented_list);
                     }
@@ -88,17 +85,14 @@ public class Queries {
                             BookModel bookModel = new BookModel();
                             bookModel.setUserId(userId);
                             bookModel.fileName = purchasedBook.getPurchasedBookName().replaceAll("\\P{L}", "");
-//                            bookModel.setBookName(purchasedBook.getPurchasedBookName().replaceAll("\\P{L}", ""));
-//                            bookModel.setImageDownloadLink(purchasedBook.getPurchasedBookImage());
                             bookModel.url = purchasedBook.getPurchasedBookDownloadLink();
                             bookModel.coverUrl = purchasedBook.getPurchasedBookImage();
-//                            bookModel.setBookDownloadLink(purchasedBook.getPurchasedBookDownloadLink());
+                            bookModel.bookCode = UiUtil.getRandomGeneratedBookCode();
                             bookModel.setBookSku(purchasedBook.getPurchasedBookSku());
                             bookModel.setBookState(BookState.CLOUD_BOOK.getState());
                             bookModel.setIsBookRented(false);
                             allLibraryBookModels.add(bookModel);
                         }
-                        Log.d("PPPPPPPPPPP-Purchased", String.valueOf(purchasedBooks.size()));
                     } else if (listPurchasedResponse.code() == 404) {
 //                        UiUtil.showToast(context, R.string.empty_purchased_list);
                     }

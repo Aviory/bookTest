@@ -16,13 +16,18 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
+import com.getbooks.android.Const;
 import com.getbooks.android.R;
 import com.getbooks.android.reader.UnderlinedTextView;
+import com.getbooks.android.skyepubreader.BookViewActivity;
+import com.getbooks.android.ui.activities.LibraryActivity;
 import com.getbooks.android.ui.dialog.MaterialDialog;
 
 import java.io.UnsupportedEncodingException;
+import java.net.CookieHandler;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
+import java.util.Random;
 
 /**
  * Created by marina on 11.07.17.
@@ -136,32 +141,41 @@ public class UiUtil {
         if (isCloseCurrentActivity) context.finish();
     }
 
+    public static void openViewReaderActivity(Activity context, Class<?> tClass, int bookCode,
+                                              String bookTitle, String author, String bookName,
+                                              double position, boolean doubledPaged, int transitionType,
+                                              boolean globalPagination, boolean rtl, boolean  verticalWriting,
+                                              String directoryPath, String bookSku, int userId) {
+
+        Intent intent = new Intent(context, tClass);
+        intent.putExtra(Const.BOOK_CODE, bookCode);
+        intent.putExtra(Const.TITLE, bookTitle);
+        intent.putExtra(Const.AUTHOR, author);
+        intent.putExtra(Const.BOOK_NAME, bookName);
+        intent.putExtra(Const.POSITION, position);
+        intent.putExtra(Const.DOUBLE_PAGED, doubledPaged);
+        intent.putExtra(Const.TRANSITION_TYPE, transitionType);
+        intent.putExtra(Const.GLOBAL_PAGINATION, globalPagination);
+        intent.putExtra(Const.RTL, rtl);
+        intent.putExtra(Const.VERTICAL_WRITING, verticalWriting);
+        intent.putExtra(Const.DIRECTORY_PATH, directoryPath);
+        intent.putExtra(Const.BOOK_SKU, bookSku);
+        intent.putExtra(Const.USER_ID, userId);
+        context.startActivity(intent);
+    }
+
+    public static int parseIntTiString(String bookCode) {
+        String number = bookCode.replaceAll("[^\\d.]", "");
+        return Integer.parseInt(number);
+    }
+
+    public static int getRandomGeneratedBookCode() {
+        return new Random().nextInt(Integer.MAX_VALUE);
+    }
+
 
     ///////////////////////////
-    public static void setBackColorToTextView(UnderlinedTextView textView, String type) {
-        Context context = textView.getContext();
-        if (type.equals("highlight-yellow")) {
-            textView.setBackgroundColor(ContextCompat.getColor(context,
-                    R.color.yellow));
-            textView.setUnderlineWidth(0.0f);
-        } else if (type.equals("highlight-green")) {
-            textView.setBackgroundColor(ContextCompat.getColor(context,
-                    R.color.green));
-            textView.setUnderlineWidth(0.0f);
-        } else if (type.equals("highlight-blue")) {
-            textView.setBackgroundColor(ContextCompat.getColor(context,
-                    R.color.blue));
-            textView.setUnderlineWidth(0.0f);
-        } else if (type.equals("highlight-pink")) {
-            textView.setBackgroundColor(ContextCompat.getColor(context,
-                    R.color.pink));
-            textView.setUnderlineWidth(0.0f);
-        } else if (type.equals("highlight-underline")) {
-            textView.setUnderLineColor(ContextCompat.getColor(context,
-                    android.R.color.holo_red_dark));
-            textView.setUnderlineWidth(2.0f);
-        }
-    }
+
 
     public static float convertDpToPixel(float dp, Context context) {
         Resources resources = context.getResources();

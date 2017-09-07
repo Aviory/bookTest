@@ -36,7 +36,8 @@ import butterknife.ButterKnife;
  * Created by marinaracu on 15.08.17.
  */
 
-public class BookSettingMenuFragment extends Fragment implements View.OnTouchListener, View.OnClickListener, FontsBookListAdapter.BookFontUpdateChangeListener {
+public class BookSettingMenuFragment extends Fragment implements View.OnTouchListener,
+        View.OnClickListener, FontsBookListAdapter.BookFontUpdateChangeListener {
 
     public interface ChangeBookSettingListener {
         void changeScreenBrightness(int progress);
@@ -143,16 +144,10 @@ public class BookSettingMenuFragment extends Fragment implements View.OnTouchLis
         });
     }
 
-    //    @Override
+
     public int getLayout() {
         return R.layout.fragment_menu_book_settings;
     }
-
-
-//    @Override
-//    public ReaderActivity getAct() {
-//        return (ReaderActivity) getActivity();
-//    }
 
     @Override
     public void onClick(View view) {
