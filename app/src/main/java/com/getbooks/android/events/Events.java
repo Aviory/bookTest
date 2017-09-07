@@ -80,8 +80,17 @@ public class Events {
     }
 
     public static class UpDateLibrary {
-        String bookName;
+        String bookSku;
         Calendar dateLastReading;
+        double position;
+
+        public double getPosition() {
+            return position;
+        }
+
+        public void setPosition(double position) {
+            this.position = position;
+        }
 
         public Calendar getDateLastReading() {
             return dateLastReading;
@@ -91,12 +100,12 @@ public class Events {
             this.dateLastReading = dateLastReading;
         }
 
-        public String getBookName() {
-            return bookName;
+        public String getBookSku() {
+            return bookSku;
         }
 
-        public void setBookName(String bookName) {
-            this.bookName = bookName;
+        public void setBookSku(String bookSku) {
+            this.bookSku = bookSku;
         }
     }
 

@@ -1,13 +1,11 @@
 package com.getbooks.android.ui.activities;
 
-import android.content.Intent;
 import android.content.res.AssetManager;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,9 +30,7 @@ import com.getbooks.android.encryption.Decryption;
 import com.getbooks.android.events.Events;
 import com.getbooks.android.model.BookModel;
 import com.getbooks.android.model.Highlight;
-import com.getbooks.android.prefs.Prefs;
 import com.getbooks.android.reader.ActionItem;
-import com.getbooks.android.reader.HtmlTask;
 import com.getbooks.android.reader.HtmlTaskCallback;
 import com.getbooks.android.reader.QuickAction;
 import com.getbooks.android.ui.BaseActivity;
@@ -52,18 +48,15 @@ import com.webviewmarker.bossturban.webviewmarker.TextSelectionSupport;
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.Reader;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.nio.charset.Charset;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -581,7 +574,7 @@ public class ReaderActivity extends BaseActivity implements HtmlTaskCallback {
 
             if (isFirstOpenBookDetailFromDb()) {
                 Events.UpDateLibrary upDateLibrary = new Events.UpDateLibrary();
-                upDateLibrary.setBookName(mBookName);
+                upDateLibrary.setBookSku(mBookName);
                 EventBus.getDefault().post(upDateLibrary);
                 mTocReferenceList = mCurrentOpenBook.getTableOfContents().getTocReferences();
                 openFirstCurrentBook();
@@ -740,7 +733,7 @@ public class ReaderActivity extends BaseActivity implements HtmlTaskCallback {
     private void updateLastReadTime() {
         Calendar lastReadingDate = DateUtil.getDate(new Date().getTime());
         Events.UpDateLibrary upDateLibrary = new Events.UpDateLibrary();
-        upDateLibrary.setBookName(mBookName);
+        upDateLibrary.setBookSku(mBookName);
         upDateLibrary.setDateLastReading(lastReadingDate);
         EventBus.getDefault().post(upDateLibrary);
         mCurrentBookModel.setReadDateTime(lastReadingDate);

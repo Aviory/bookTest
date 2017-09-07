@@ -6,6 +6,8 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.URLDecoder;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import com.getbooks.android.Const;
@@ -20,6 +22,7 @@ import com.getbooks.android.ui.fragments.BookContentFragment;
 import com.getbooks.android.ui.fragments.BookSearchFragment;
 import com.getbooks.android.ui.fragments.BookSettingMenuFragment;
 import com.getbooks.android.ui.widget.CustomSeekBar;
+import com.getbooks.android.util.DateUtil;
 import com.getbooks.android.util.FileUtil;
 import com.skytree.epub.Book;
 import com.skytree.epub.BookmarkListener;
@@ -594,7 +597,7 @@ public class BookViewActivity extends Activity implements BookSettingMenuFragmen
         // set the max width or height for background.
         rv.setMaxSizeForBackground(1024);
 //		rv.setBaseDirectory(SkySetting.getStorageDirectory() + "/books");
-//		rv.setBookName(fileName);
+//		rv.setBookSku(fileName);
 
         // set the file path of epub to open
         // Be sure that the file exists before setting.
@@ -927,6 +930,7 @@ public class BookViewActivity extends Activity implements BookSettingMenuFragmen
     @Override
     public void onStop() {
         super.onStop();
+        updateLastReadTime();
         EventBus.getDefault().unregister(this);
     }
 
@@ -4094,9 +4098,6 @@ public class BookViewActivity extends Activity implements BookSettingMenuFragmen
     protected void onPause() {
         super.onPause();
         Log.d("eee", "onPause() in BookViewActivity");
-//        sd.updatePosition(bookCode, pagePositionInBook);
-//        sd.updateSetting(setting);
-        Log.d("database update", setting.toString());
         mBookDataBaseLoader.updatePositionDB(bookCode, pagePositionInBook, mUserId, mBookSku);
         mBookDataBaseLoader.upaDateSettingFromDb(setting);
 
@@ -4105,6 +4106,16 @@ public class BookViewActivity extends Activity implements BookSettingMenuFragmen
         rv.restoreElementColor();
 
         this.enableHaptic();
+    }
+
+    private void updateLastReadTime() {
+        Log.d("updateLibrary", "here");
+        Calendar lastReadingDate = DateUtil.getDate(new Date().getTime());
+        Events.UpDateLibrary upDateLibrary = new Events.UpDateLibrary();
+        upDateLibrary.setBookSku(mBookSku);
+        upDateLibrary.setDateLastReading(lastReadingDate);
+        upDateLibrary.setPosition(pagePositionInBook);
+        EventBus.getDefault().post(upDateLibrary);
     }
 
 
