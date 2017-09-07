@@ -178,10 +178,10 @@ public class BookViewActivity extends Activity implements BookSettingMenuFragmen
     protected EditText mSearchEditText;
     @BindView(R.id.search_btn)
     protected ImageView mSearchImage;
-
     List<SearchModelBook> mSearchModelBooks = new ArrayList<>();
     private int mUserId;
     private String mBookSku;
+    private BookDataBaseLoader mBookDataBaseLoader;
 
     Rect bookmarkRect;
     Rect bookmarkedRect;
@@ -190,8 +190,6 @@ public class BookViewActivity extends Activity implements BookSettingMenuFragmen
 
     int listSelectedIndex = 0;
     NavPoint targetNavPoint = null;
-    View tempView;
-    Drawable tempDrawable;
     @BindView(R.id.sky_seek_bar)
     SkySeekBar seekBar;
     SkyBox seekBox;
@@ -213,9 +211,6 @@ public class BookViewActivity extends Activity implements BookSettingMenuFragmen
     int noteBoxHeight;
 
     SkyBox searchBox;
-    EditText searchEditor;
-    ScrollView searchScrollView;
-    LinearLayout searchResultView;
     String bookPath;
     String directoryPath;
 
@@ -234,7 +229,6 @@ public class BookViewActivity extends Activity implements BookSettingMenuFragmen
 
     SkySetting setting;
     SkyDatabase sd;
-    private BookDataBaseLoader mBookDataBaseLoader;
 
     Button outsideButton;
 
@@ -266,11 +260,8 @@ public class BookViewActivity extends Activity implements BookSettingMenuFragmen
 
     final private String TAG = "EPub";
     Highlights highlights;
-    ArrayList<PagingInformation> pagings = new ArrayList<PagingInformation>();
     int temp = 20;
 
-    Bitmap pagesStack, pagesCenter;
-    BitmapDrawable pgsDrawable, pgcDrawable;
 
     boolean isFullScreenForNexus = true;
 
@@ -279,8 +270,6 @@ public class BookViewActivity extends Activity implements BookSettingMenuFragmen
 
     GetbooksApplication app;
     View videoView = null;
-
-    LinearLayout themesView;
 
     ArrayList<CustomFont> fonts = new ArrayList<CustomFont>();
 
@@ -602,7 +591,7 @@ public class BookViewActivity extends Activity implements BookSettingMenuFragmen
         // set the file path of epub to open
         // Be sure that the file exists before setting.
 //        rv.setBookPath(SkySetting.getStorageDirectory() + "/books/" + fileName);
-        Log.d("ssssssssss", SkySetting.getStorageDirectory() + "/books/" + fileName);
+        Log.d("ssssssssss", bundle.getString(Const.DIRECTORY_PATH));
         directoryPath = bundle.getString(Const.DIRECTORY_PATH) + "/";
         bookPath = bundle.getString(Const.DIRECTORY_PATH) + "/" + fileName;
         rv.setBookPath(bookPath);
@@ -951,7 +940,6 @@ public class BookViewActivity extends Activity implements BookSettingMenuFragmen
         this.makeHighlightBox();
         this.makeColorBox();
         this.makeNoteBox();
-        this.makeSearchBox();
         this.makeMediaBox();
         this.makePagingView();
     }
@@ -1219,6 +1207,12 @@ public class BookViewActivity extends Activity implements BookSettingMenuFragmen
         rv.stopSearch();
         hideSearch();
         // stopSearch
+    }
+
+    @Override
+    public void stopBookSearch() {
+        this.hideOutsideButton();
+        rv.stopSearch();
     }
 
     private void removeLastResultSearch() {
@@ -1600,7 +1594,7 @@ public class BookViewActivity extends Activity implements BookSettingMenuFragmen
                 String key = mSearchEditText.getText().toString();
                 if (key != null && key.length() > 1) {
                     showIndicator();
-                    clearSearchBox(1);
+                    this.dismissKeyboard();
                     makeFullScreen();
                     rv.searchKey(key);
                 }
@@ -1609,88 +1603,6 @@ public class BookViewActivity extends Activity implements BookSettingMenuFragmen
         });
     }
 
-    public void makeSearchBox() {
-        int boxColor = Color.rgb(241, 238, 229);
-        int innerBoxColor = Color.rgb(246, 244, 239);
-        int inlineColor = Color.rgb(133, 105, 75);
-
-        RelativeLayout.LayoutParams param = new RelativeLayout.LayoutParams(
-                RelativeLayout.LayoutParams.WRAP_CONTENT,
-                RelativeLayout.LayoutParams.WRAP_CONTENT); // width,height
-        searchBox = new SkyBox(this);
-        searchBox.setBoxColor(boxColor);
-        searchBox.setArrowHeight(ps(25));
-        searchBox.setArrowDirection(false);
-        param.leftMargin = ps(50);
-        param.topMargin = ps(400);
-        param.width = ps(400);
-        param.height = ps(300);
-        searchBox.setLayoutParams(param);
-        searchBox.setArrowDirection(false);
-
-        searchEditor = new EditText(this);
-        this.setFrame(searchEditor, ps(20), ps(20), ps(400 - 140), ps(50));
-        searchEditor.setTextSize(15f);
-        searchEditor.setEllipsize(TruncateAt.END);
-        searchEditor.setBackgroundColor(innerBoxColor);
-        Drawable icon = getResources().getDrawable(R.drawable.search2x);
-
-        Bitmap bitmap = ((BitmapDrawable) icon).getBitmap();
-        Drawable fd = new BitmapDrawable(getResources(), Bitmap.createScaledBitmap(bitmap, ps(28), ps(28), true));
-        searchEditor.setCompoundDrawablesWithIntrinsicBounds(fd, null, null, null);
-        RoundRectShape rrs = new RoundRectShape(new float[]{ps(15), ps(15), ps(15), ps(15), ps(15), ps(15), ps(15), ps(15)}, null, null);
-        SkyDrawable sd = new SkyDrawable(rrs, innerBoxColor, inlineColor, 2);
-        searchEditor.setBackgroundDrawable(sd);
-        searchEditor.setHint(getString(R.string.searchhint));
-        searchEditor.setPadding(ps(20), ps(5), ps(10), ps(5));
-        searchEditor.setLines(1);
-        searchEditor.setImeOptions(EditorInfo.IME_ACTION_SEARCH);
-        searchEditor.setSingleLine();
-        searchEditor.setOnEditorActionListener(new OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (actionId == EditorInfo.IME_ACTION_DONE || actionId == EditorInfo.IME_ACTION_GO || actionId == EditorInfo.IME_ACTION_SEARCH || actionId == EditorInfo.IME_ACTION_NEXT) {
-                    String key = searchEditor.getText().toString();
-                    if (key != null && key.length() > 1) {
-                        showIndicator();
-                        clearSearchBox(1);
-                        makeFullScreen();
-                        rv.searchKey(key);
-                    }
-                }
-                return false;
-            }
-        });
-        searchBox.contentView.addView(searchEditor);
-
-        Button cancelButton = new Button(this);
-        this.setFrame(cancelButton, ps(290), ps(20), ps(90), ps(50));
-        cancelButton.setText(getString(R.string.cancel));
-        cancelButton.setId(3001);
-        RoundRectShape crs = new RoundRectShape(new float[]{ps(5), ps(5), ps(5), ps(5), ps(5), ps(5), ps(5), ps(5)}, null, null);
-        SkyDrawable cd = new SkyDrawable(crs, innerBoxColor, inlineColor, 2);
-        cancelButton.setBackgroundDrawable(cd);
-        cancelButton.setTextSize(12);
-        cancelButton.setOnClickListener(listener);
-        cancelButton.setOnTouchListener(new ButtonHighlighterOnTouchListener(cancelButton));
-
-        searchBox.contentView.addView(cancelButton);
-
-        searchScrollView = new ScrollView(this);
-        RoundRectShape rvs = new RoundRectShape(new float[]{ps(5), ps(5), ps(5), ps(5), ps(5), ps(5), ps(5), ps(5)}, null, null);
-        SkyDrawable rd = new SkyDrawable(rvs, innerBoxColor, inlineColor, 2);
-        searchScrollView.setBackgroundDrawable(rd);
-        this.setFrame(searchScrollView, ps(20), ps(100), ps(360), ps(200));
-        this.searchBox.contentView.addView(searchScrollView);
-
-        searchResultView = new LinearLayout(this);
-        searchResultView.setOrientation(LinearLayout.VERTICAL);
-        searchScrollView.addView(searchResultView, new LayoutParams(LayoutParams.FILL_PARENT, LayoutParams.FILL_PARENT));
-
-
-        this.ePubView.addView(searchBox);
-        this.hideSearchBox();
-    }
 
     public void hideSearchBox() {
         searchBox.setVisibility(View.INVISIBLE);
@@ -1700,55 +1612,11 @@ public class BookViewActivity extends Activity implements BookSettingMenuFragmen
         rv.stopSearch();
     }
 
-    public void showSearchBox() {
-        isBoxesShown = true;
-        this.showOutsideButton();
-        int width = 400;
-        int left, top;
-        top = ps(65);
-        if (!this.isTablet()) {  // in case of phone
-            if (this.isHighDensityPhone()) {
-                left = pxr(width + 40);
-                if (!isPortrait()) top = ps(40);
-            } else {
-                left = pxr(width + 60);
-            }
-        } else { // in case of tablet
-            left = pxr(width + 140);
-            top = ps(120);
-        }
-
-        searchBox.setVisibility(View.VISIBLE);
-        int sh;
-        if (this.isPortrait()) {
-            if (this.isTablet()) {
-                sh = this.getHeight() - ps(400);
-            } else {
-                sh = this.getHeight() - ps(240);
-            }
-        } else {
-            if (this.isTablet()) {
-                sh = this.getHeight() - ps(350);
-            } else {
-                sh = this.getHeight() - ps(140);
-            }
-        }
-        int rh = sh - ps(150);
-        this.setFrame(searchBox, left, top, ps(width), sh);
-        this.setFrame(searchScrollView, ps(20), ps(100), ps(360), rh);
-        searchBox.setArrowHeight(ps(25));
-        searchBox.setArrowPosition(pxr(100), left, ps(width));
-    }
-
     public void clearSearchBox(int mode) {
         if (mode == 0) {
             this.dismissKeyboard();
-            searchEditor.setText("");
-            searchResultView.removeAllViews();
-            searchResults.clear();
         } else {
-            searchResultView.removeAllViews();
-            searchResults.clear();
+            ;
         }
     }
 
@@ -1770,122 +1638,6 @@ public class BookViewActivity extends Activity implements BookSettingMenuFragmen
         FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.content_book_settings, bookSearchFragment).commit();
         bookSearchFragment.setmBookSearchListener(this);
-
-        View view = this.makeResultItem(sr, mode);
-        this.searchResultView.addView(view);
-        if (mode == 0) {
-            this.searchResults.add(sr);
-        } else {
-            this.moveSearchScrollViewToEnd();
-        }
-    }
-
-    public void removeLastResult() {
-        this.searchResultView.removeViewAt(searchResultView.getChildCount() - 1);
-    }
-
-    public View makeResultItem(SearchResult sr, int mode) {
-        int inlineColor = Color.rgb(133, 105, 75);
-        int headColor = Color.rgb(94, 61, 34);
-        int textColor = Color.rgb(50, 40, 40);
-
-        SkyLayout view = new SkyLayout(this);
-        int itemWidth = ps(370);
-        int itemHeight = ps(190);
-
-        this.setFrame(view, 0, 0, itemWidth, itemHeight);
-
-        TextView chapterLabel = null;
-        TextView positionLabel = null;
-        TextView textLabel = null;
-        Button itemButton = null;
-        itemButton = new Button(this);
-        itemButton.setBackgroundColor(Color.TRANSPARENT);
-        itemButton.setOnClickListener(listener);
-        this.setFrame(itemButton, 0, 0, itemWidth, itemHeight);
-
-        if (mode == 0) {        // Normal case
-            int ci = sr.chapterIndex;
-            String chapterText = "";
-            chapterText = sr.chapterTitle;
-            String positionText = String.format("%context/%context", sr.pageIndex + 1, sr.numberOfPagesInChapter);
-            if (chapterText == null || chapterText.isEmpty()) {
-                chapterText = "Chapter " + ci;
-            }
-            if (sr.pageIndex < 0 || sr.numberOfPagesInChapter < 0) {
-                positionText = "";
-            }
-            chapterLabel = this.makeLabel(3090, chapterText, Gravity.LEFT, 15, headColor);
-            positionLabel = this.makeLabel(3091, positionText, Gravity.LEFT, 15, headColor);
-            textLabel = this.makeLabel(3092, sr.text, Gravity.LEFT, 15, textColor);
-            itemButton.setId(100000 + searchResults.size());
-        } else if (mode == 1) { // Paused
-            chapterLabel = this.makeLabel(3090, getString(R.string.searchmore) + "....", Gravity.CENTER, 18, headColor);
-//			positionLabel 	= this.makeLabel(3091, String.format("%context/%context",sr.pageIndex+1,sr.numberOfPagesInChapter), Gravity.LEFT, 15, headColor);
-            textLabel = this.makeLabel(3092, sr.numberOfSearched + " " + getString(R.string.searchfound) + ".", Gravity.CENTER, 16, textColor);
-            itemButton.setId(3093);
-        } else if (mode == 2) { // finished
-            chapterLabel = this.makeLabel(3090, getString(R.string.searchfinished), Gravity.CENTER, 18, headColor);
-//			positionLabel 	= this.makeLabel(3091, String.format("%context/%context",sr.pageIndex+1,sr.numberOfPagesInChapter), Gravity.LEFT, 15, headColor);
-            textLabel = this.makeLabel(3092, sr.numberOfSearched + " " + getString(R.string.searchfound) + ".", Gravity.CENTER, 16, textColor);
-            itemButton.setId(3094);
-        }
-
-        textLabel.setMaxLines(3);
-
-        if (mode == 0) {
-            this.setFrame(chapterLabel, ps(20), ps(20), ps(270), ps(30));
-            this.setFrame(positionLabel, itemWidth - ps(80), ps(20), ps(70), ps(30));
-            this.setFrame(textLabel, ps(20), ps(80), itemWidth - ps(40), itemHeight - ps(80 + 20));
-        } else {
-            this.setFrame(chapterLabel, ps(20), ps(20), ps(350), ps(40));
-//			this.setFrame(positionLabel, itemWidth-ps(80), ps(20),ps(70),ps(30));
-            this.setFrame(textLabel, ps(20), ps(80), itemWidth - ps(40), itemHeight - ps(80 + 20));
-        }
-
-        view.addView(chapterLabel);
-        if (mode == 0) view.addView(positionLabel);
-        view.addView(textLabel);
-        view.addView(itemButton);
-
-        RectShape crs = new RectShape();
-        SkyDrawable cd = new SkyDrawable(crs, Color.TRANSPARENT, inlineColor, 1);
-        view.setBackgroundDrawable(cd);
-
-        return view;
-    }
-
-    public void moveSearchScrollViewToEnd() {
-        searchScrollView.post(new Runnable() {
-            @Override
-            public void run() {
-                searchScrollView.fullScroll(View.FOCUS_DOWN);
-            }
-
-        });
-    }
-
-    public Typeface getTypeface(String fontName, int fontStyle) {
-        Typeface tf = null;
-        if (fontName.toLowerCase().contains("book")) {
-            tf = Typeface.create(Typeface.DEFAULT, fontStyle);
-        } else if (fontName.toLowerCase().contains("default")) {
-            tf = Typeface.create(Typeface.DEFAULT, fontStyle);
-        } else if (fontName.toLowerCase().contains("mono")) {
-            tf = Typeface.create(Typeface.MONOSPACE, fontStyle);
-        } else if ((fontName.toLowerCase().contains("sans"))) {
-            tf = Typeface.create(Typeface.SANS_SERIF, fontStyle);
-        } else if ((fontName.toLowerCase().contains("serif"))) {
-            tf = Typeface.create(Typeface.SERIF, fontStyle);
-        }
-        return tf;
-    }
-
-    public String getFontName(int fontIndex) {
-        if (fontIndex < 0) fontIndex = 0;
-        if (fontIndex > (fontNames.length - 1)) fontIndex = fontNames.length - 1;
-        String name = fontNames[fontIndex];
-        return name;
     }
 
     // CustomFont
@@ -1895,34 +1647,10 @@ public class BookViewActivity extends Activity implements BookSettingMenuFragmen
         return fonts.get(fontIndex);
     }
 
-    // CustomFont
-    public int getFontIndex(String fontName) {
-        for (int i = 0; i < fonts.size(); i++) {
-            CustomFont customFont = fonts.get(i);
-            String name = customFont.getFullName();
-            if (name.equalsIgnoreCase(fontName)) return i;
-        }
-        return 0;
-    }
 
     public void hideFontBox() {
         isBoxesShown = false;
         this.hideOutsideButton();
-    }
-
-    public void showFontBox() {
-    }
-
-    private void blinkBackground(View view, Drawable startDrawable, Drawable endDrawable) {
-        tempView = view;
-        tempDrawable = endDrawable;
-        view.setBackgroundDrawable(startDrawable);
-        new Handler().postDelayed(new Runnable() {
-            public void run() {
-                tempView.setBackgroundDrawable(tempDrawable);
-                tempView = null;
-            }
-        }, 100);
     }
 
 
@@ -1930,69 +1658,6 @@ public class BookViewActivity extends Activity implements BookSettingMenuFragmen
         Vibrator vibe = (Vibrator) this.getSystemService(Context.VIBRATOR_SERVICE);
         vibe.vibrate(ms);
     }
-
-
-    private SkyLayoutListener highlightListDelegate = new SkyLayoutListener() {
-        @Override
-        public void onShortPress(SkyLayout view, MotionEvent e) {
-        }
-
-        @Override
-        public void onLongPress(SkyLayout view, MotionEvent e) {
-            beep(100);
-            Button deleteButton = (Button) view.deleteControl;
-            int vt = deleteButton.getVisibility();
-            if (vt != View.VISIBLE) {
-                deleteButton.setVisibility(View.VISIBLE);
-            } else {
-                deleteButton.setVisibility(View.INVISIBLE);
-                deleteButton.setVisibility(View.GONE);
-            }
-        }
-
-        void toggleDeleteButton(SkyLayout view) {
-            beep(50);
-            Button deleteButton = (Button) view.deleteControl;
-            if (deleteButton.getVisibility() == View.VISIBLE) {
-                deleteButton.setVisibility(View.INVISIBLE);
-                deleteButton.setVisibility(View.GONE);
-            } else {
-                deleteButton.setVisibility(View.VISIBLE);
-            }
-        }
-
-        @Override
-        public void onSwipeToLeft(SkyLayout view) {
-            toggleDeleteButton(view);
-        }
-
-        @Override
-        public void onSwipeToRight(SkyLayout view) {
-            toggleDeleteButton(view);
-        }
-
-        Highlight targetHighlight = null;
-
-        @Override
-        public void onSingleTapUp(SkyLayout view, MotionEvent e) {
-            Button deleteButton = (Button) view.deleteControl;
-            int vt = deleteButton.getVisibility();
-            if (vt == View.VISIBLE) return;
-            Highlight highlight = (Highlight) view.data;
-            RectShape rs = new RectShape();
-            GradientDrawable sd = new GradientDrawable(Orientation.TOP_BOTTOM, new int[]{0xff407ee6, 0xff6ca2f9});
-            SkyDrawable ed = new SkyDrawable(rs, Color.TRANSPARENT, Color.TRANSPARENT, ps(1));
-            blinkBackground(view, sd, ed);
-            targetHighlight = highlight;
-            new Handler().postDelayed(new Runnable() {
-                public void run() {
-                    isPagesHidden = false;
-                    showPages();
-                    rv.gotoPageByHighlight(targetHighlight);
-                }
-            }, 200);
-        }
-    };
 
     public void makeFullScreen() {
 //		if (SkyUtility.isNexus() && isFullScreenForNexus) {
@@ -2035,15 +1700,12 @@ public class BookViewActivity extends Activity implements BookSettingMenuFragmen
 
     public void hideMediaBox() {
         if (mediaBox != null) {
-//            titleLabel.setVisibility(View.VISIBLE);
             mediaBox.setVisibility(View.INVISIBLE);
             mediaBox.setVisibility(View.GONE);
         }
     }
 
     public void showMediaBox() {
-//        titleLabel.setVisibility(View.INVISIBLE);
-//        titleLabel.setVisibility(View.GONE);
         mediaBox.setVisibility(View.VISIBLE);
         this.changePlayAndPauseButton();
     }
@@ -2202,53 +1864,23 @@ public class BookViewActivity extends Activity implements BookSettingMenuFragmen
         } else {
             hideControls();
         }
-//		clearHighlightsForSearchResults();
         timeRepainted = System.currentTimeMillis();
     }
 
     public void showControls() {
-//        if (!rv.isPaging()) this.seekBar.setVisibility(View.VISIBLE);
         if (!rv.isPaging()) mCustomSeekBarLayout.setVisibility(View.VISIBLE);
         if (!rv.isPaging()) mMenuBookLayout.setVisibility(View.VISIBLE);
         if (!rv.isPaging()) titleLabel.setVisibility(View.VISIBLE);
-        if (!rv.isPaging()) {
-            Log.d("qqqqqqqqqq", "animatio");
-//            AnimUtil.showAnim(mMenuBookLayout, titleLabel, mCustomSeekBarLayout, this);
-        }
     }
 
     public void hideControls() {
         mCustomSeekBarLayout.setVisibility(View.INVISIBLE);
-//        mCustomSeekBarLayout.setVisibility(View.GONE);
-//        this.seekBar.setVisibility(View.INVISIBLE);
-//        this.seekBar.setVisibility(View.GONE);
-//        AnimUtil.hideAnim(mMenuBookLayout, titleLabel, mCustomSeekBarLayout, this);
         mMenuBookLayout.setVisibility(View.INVISIBLE);
         titleLabel.setVisibility(View.INVISIBLE);
     }
 
-    public boolean isAboveIcecream() {
-        if (android.os.Build.VERSION.SDK_INT >= 14) { //  api >= icecream
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    public boolean isHoneycomb() {
-        return false;
-        //		int API = android.os.Build.VERSION.SDK_INT;
-//		if (API == 11 || API == 12 || API == 13 ) { 	// Honeycomb
-//			return true;
-//		}else {
-//			return false;
-//		}
-    }
-
     public void removeControls() {
         rv.customView.removeView(titleLabel);
-//        rv.customView.removeView(authorLabel);
-
         ePubView.removeView(seekBar);
     }
 
@@ -2293,7 +1925,7 @@ public class BookViewActivity extends Activity implements BookSettingMenuFragmen
         String authorText = this.author;
         if (authorText.length() > 12) authorText = authorText.substring(0, 12);
 
-        titleLabel.setText(title + " • " + authorText);
+        titleLabel.setText("");
 
         mImageAddHighlight.setId(6000);
         mImageAddHighlight.setOnClickListener(listener);
@@ -2370,7 +2002,6 @@ public class BookViewActivity extends Activity implements BookSettingMenuFragmen
             }
         }
 
-//        this.recalcLabelsLayout();
         this.enableControlAfterPagination();
     }
 
@@ -2381,97 +2012,6 @@ public class BookViewActivity extends Activity implements BookSettingMenuFragmen
             text = text + "..";
         }
         label.setText(text);
-    }
-
-    public void recalcLabelsLayout() {
-        int sd = this.getWidth() / 40;
-        this.titleLabel.setText(this.title);
-        String authorText = this.author;
-        if (authorText.length() > 12) authorText = authorText.substring(0, 12);
-//        this.authorLabel.setText(authorText);
-
-        if (!this.isTablet()) {                                                            // phone
-            if (this.isPortrait()) {
-                this.setLabelLength(titleLabel, 10);
-                this.setLocation(titleLabel, (this.getWidth() / 2 - this.getLabelWidth(titleLabel) / 2) - sd, pyt(28));
-                this.setLocation(mediaBox, this.getWidth() / 2 - ps(270) / 2 - ps(20), pyt(16));
-//                this.authorLabel.setVisibility(View.INVISIBLE);
-//                this.authorLabel.setVisibility(View.GONE);
-                this.secondaryIndexLabel.setVisibility(View.INVISIBLE);
-                this.secondaryIndexLabel.setVisibility(View.GONE);
-                this.setLocation(pageIndexLabel, (this.getWidth() / 2 - this.getLabelWidth(pageIndexLabel) / 2) - sd, pyb(90));
-            } else {
-                if (this.isDoublePagedForLandscape) {
-                    this.setLabelLength(titleLabel, 10);
-                    if (this.isHighDensityPhone()) {
-//                        this.authorLabel.setVisibility(View.INVISIBLE);
-//                        this.authorLabel.setVisibility(View.GONE);
-                    } else {
-//                        this.authorLabel.setVisibility(View.VISIBLE);
-                    }
-                    this.secondaryIndexLabel.setVisibility(View.VISIBLE);
-                    this.setLocation(titleLabel, this.getWidth() / 4 - this.getLabelWidth(titleLabel) / 2, pyt(17));
-                    this.setLocation(mediaBox, this.getWidth() / 4 - ps(270) / 2 + sd, pyt(4));
-//                    this.setLocation(authorLabel, this.getWidth() / 2 + this.getWidth() / 4 - this.getLabelWidth(authorLabel) / 2 - sd * 4, pyt(17));
-                    if (!this.isRTL) {
-                        this.setLocation(pageIndexLabel, this.getWidth() / 4 - this.getLabelWidth(pageIndexLabel) / 2, pyb(85));
-                        this.setLocation(secondaryIndexLabel, this.getWidth() / 2 + this.getWidth() / 4 - this.getLabelWidth(secondaryIndexLabel) / 2, pyb(85));
-                    } else {
-                        this.setLocation(secondaryIndexLabel, this.getWidth() / 4 - this.getLabelWidth(pageIndexLabel) / 2, pyb(85));
-                        this.setLocation(pageIndexLabel, this.getWidth() / 2 + this.getWidth() / 4 - this.getLabelWidth(secondaryIndexLabel) / 2, pyb(85));
-                    }
-                } else {
-                    this.setLabelLength(titleLabel, 40);
-                    this.setLocation(titleLabel, (this.getWidth() / 2 - this.getLabelWidth(titleLabel) / 2) - sd, pyt(17));
-                    this.setLocation(mediaBox, this.getWidth() / 2 - ps(270) / 2 - sd * 2, pyt(4));
-//                    this.authorLabel.setVisibility(View.INVISIBLE);
-//                    this.authorLabel.setVisibility(View.GONE);
-                    this.secondaryIndexLabel.setVisibility(View.INVISIBLE);
-                    this.secondaryIndexLabel.setVisibility(View.GONE);
-                    this.setLocation(pageIndexLabel, (this.getWidth() / 2 - this.getLabelWidth(pageIndexLabel) / 2) - sd, pyb(85));
-                }
-            }
-        } else {
-            if (this.isPortrait()) {                                                    // tablet
-                this.setLabelLength(titleLabel, 20);
-                this.setLocation(titleLabel, (this.getWidth() / 2 - this.getLabelWidth(titleLabel) / 2) - sd, pyt(28 + 20));
-                this.setLocation(mediaBox, this.getWidth() / 2 - ps(270) / 2 - sd * 2, pyt(28 + 14));
-//                this.authorLabel.setVisibility(View.INVISIBLE);
-//                this.authorLabel.setVisibility(View.GONE);
-                this.secondaryIndexLabel.setVisibility(View.INVISIBLE);
-                this.secondaryIndexLabel.setVisibility(View.GONE);
-                if (this.isHoneycomb()) {
-                    this.setLocation(pageIndexLabel, (this.getWidth() / 2 - this.getLabelWidth(pageIndexLabel) / 2) - sd, pyb(100 + 80));
-                } else {
-                    this.setLocation(pageIndexLabel, (this.getWidth() / 2 - this.getLabelWidth(pageIndexLabel) / 2) - sd, pyb(100));
-                }
-            } else {
-                if (this.isDoublePagedForLandscape) {
-                    this.setLabelLength(titleLabel, 20);
-                    this.setLocation(titleLabel, this.getWidth() / 4 - this.getLabelWidth(titleLabel) / 2, pyt(30));
-                    this.setLocation(mediaBox, this.getWidth() / 4 - ps(270) / 2, pyt(25));
-//                    this.setLocation(authorLabel, this.getWidth() / 2 + this.getWidth() / 4 - this.getLabelWidth(authorLabel) / 2 - sd * 4, pyt(30));
-
-                    this.setLocation(pageIndexLabel, this.getWidth() / 4 - this.getLabelWidth(pageIndexLabel) / 2, pyb(88));
-                    this.setLocation(secondaryIndexLabel, this.getWidth() / 2 + this.getWidth() / 4 - this.getLabelWidth(secondaryIndexLabel) / 2, pyb(88));
-                } else {
-                    this.setLabelLength(titleLabel, 50);
-                    this.setLocation(titleLabel, (this.getWidth() / 2 - this.getLabelWidth(titleLabel) / 2) - sd, pyt(27));
-                    this.setLocation(mediaBox, this.getWidth() / 2 - ps(270) / 2 - sd * 2, pyt(27));
-//                    this.authorLabel.setVisibility(View.INVISIBLE);
-//                    this.authorLabel.setVisibility(View.GONE);
-                    this.secondaryIndexLabel.setVisibility(View.INVISIBLE);
-                    this.secondaryIndexLabel.setVisibility(View.GONE);
-
-                    this.setLocation(pageIndexLabel, (this.getWidth() / 2 - this.getLabelWidth(pageIndexLabel) / 2) - sd, pyb(73));
-                }
-            }
-        }
-    }
-
-    public void setLabelsText(String title, String author) {
-        titleLabel.setText(title);
-//        authorLabel.setText(author);
     }
 
     public void setIndexLabelsText(int pageIndex, int pageCount) {
@@ -2496,9 +2036,10 @@ public class BookViewActivity extends Activity implements BookSettingMenuFragmen
         String pt = String.format("%3d/%3d", pi, pc);
         String st = String.format("%3d/%3d", si, pc);
         String per = String.valueOf((pi * 100) / pc) + " %";
-        Log.d("ttttttttt", pt + " " + st);
+        title = rv.getBook().title;
+        author = rv.getBook().creator;
+        titleLabel.setText(title + " • " + author);
         pageIndexLabel.setText(pt);
-//        secondaryIndexLabel.setText(st);
         mPercentPagesSeekBar.setText(per);
         mCurrentTextPageSeekBar.setText(pt);
         mPercentPagesSeekBar.setVisibility(View.VISIBLE);
@@ -2782,12 +2323,8 @@ public class BookViewActivity extends Activity implements BookSettingMenuFragmen
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reader);
         app = (GetbooksApplication) getApplication();
-//        sd = new SkyDatabase(this);
         mBookDataBaseLoader = BookDataBaseLoader.getInstanceDb(this);
         setting = mBookDataBaseLoader.fetchSettingDB();
-        Log.d("database new", setting.toString());
-//        setting = sd.fetchSetting();
-//        Log.d("database old", setting.toString());
         ButterKnife.bind(this);
         registerSkyReceiver(); // New in SkyEpub SDK 7.x
         mPercentPagesSeekBar.setVisibility(View.INVISIBLE);
@@ -2918,60 +2455,12 @@ public class BookViewActivity extends Activity implements BookSettingMenuFragmen
         rv.setVisibility(View.VISIBLE);
     }
 
-    boolean isFirst = true;
-
-    private void listPressed() {
-        this.playAndPause();
-        if (!isPagesHidden) {
-            this.isRotationLocked = false;
-            this.rotationPressed();
-            this.hidePages();
-        } else {
-            this.showPages();
-            new Handler().postDelayed(new Runnable() {
-                public void run() {
-                    rv.repaint();
-                }
-            }, 200);
-        }
-        isPagesHidden = !isPagesHidden;
-    }
-
-
-    private String getPageText() {
-        String text = "";
-        int si = rv.getStartIndexInPage();
-        int ei = rv.getEndIndexInPage();
-
-        int max = Math.max(si, ei);
-        int min = Math.min(si, ei);
-
-        for (int i = min; i <= max; i++) {
-            String name = rv.getNodeNameByUniqueIndex(i);
-            if (name.equalsIgnoreCase("sky")) {
-                String nt = rv.getNodeTextByUniqueIndex(i);
-                text = nt + "\r\n";
-            }
-        }
-        return text;
-    }
-
     private int getNumberOfPagesForChapter(int chapterIndex) {
         PagingInformation pga = rv.makePagingInformation(chapterIndex);
-//        PagingInformation pgi = sd.fetchPagingInformation(pga);
         PagingInformation pgi = mBookDataBaseLoader.fetchPagingInformationDb(pga, mUserId, mBookSku);
         if (pgi != null) return pgi.numberOfPagesInChapter;
         else return -1;
     }
-
-    private void displayNumberOfPagesForChapters() {
-        for (int i = 0; i < rv.getNumberOfChapters(); i++) {
-            int count = this.getNumberOfPagesForChapter(i);
-            Log.w("EPub", "chapterIndex:" + i + " numberOfPages:" + count);
-        }
-    }
-
-    boolean isPaging = false;
 
     private void fontPressed() {
         this.stopPlaying();
@@ -2979,7 +2468,6 @@ public class BookViewActivity extends Activity implements BookSettingMenuFragmen
 
     private void searchPressed() {
         this.stopPlaying();
-//        this.showSearchBox();
     }
 
     public void clearHighlightsForSearchResults() {
@@ -3025,23 +2513,9 @@ public class BookViewActivity extends Activity implements BookSettingMenuFragmen
                 finish();
             }
 
-            if (arg.getId() == 3001) {
-                cancelPressed();
-            } else if (arg.getId() == 3093) {
-                // search More
-                removeLastResult();
-//				showToast("Search More...");
-                rv.searchMore();
-            } else if (arg.getId() == 3094) {
-                removeLastResult();
-                hideSearchBox();
-                // stopSearch
-            }
-
             if (arg.getId() == 9000) {        // homePressed
                 rotationPressed();
             } else if (arg.getId() == 9001 || arg.getId() == 9009) {    // listPressed
-                listPressed();
                 openBookContent();
             } else if (arg.getId() == 9002) {    // fontPressed
                 fontPressed();
@@ -3097,56 +2571,6 @@ public class BookViewActivity extends Activity implements BookSettingMenuFragmen
                 hideSearch();
             }
 
-            // click on the search result
-            if (arg.getId() >= 100000 && arg.getId() < 200000) {
-                int index = arg.getId() - 100000;
-                makeFullScreen();
-                hideSearchBox();
-                SearchResult sr = searchResults.get(index);
-                gotoPageBySearchResult(sr, Color.GREEN);
-//				gotoPageBySearchResult(sr,searchResults,Color.GREEN);
-            }
-
-            // fonts related
-            if (arg.getId() == 5000) {
-                // decrease button
-                decreaseFont();
-            } else if (arg.getId() == 5001) {
-                // increase button
-                increaseFont();
-            } else if (arg.getId() >= 5100 && arg.getId() < 5500) {
-                // one of fontButtons is clicked.
-                fontSelected(arg.getId() - 5100);
-            }
-
-            // line space
-            if (arg.getId() == 4000) {
-                // decrease button
-                decreaseLineSpace();
-            } else if (arg.getId() == 4001) {
-                // increase button
-                increaseLineSpace();
-            }
-
-            // theme related
-            if (arg.getId() >= 7000 && arg.getId() < 7100) {
-                themeIndex = arg.getId() - 7000;
-                setting.theme = themeIndex;
-                checkSettings();
-//				changeTheme2(themeIndex);
-                changeTheme(themeIndex);
-            }
-
-            // list processing
-            if (arg.getId() == 2700) {
-//                checkListButton(0);
-            } else if (arg.getId() == 2701) {
-//                checkListButton(1);
-            } else if (arg.getId() == 2702) {
-//                checkListButton(2);
-            }
-
-            // list processing
             if (arg.getId() >= 200000 && arg.getId() < 300000) {  // click on the one of contents
 
             } else if (arg.getId() >= 300000 && arg.getId() < 400000) { // click on the bookmark of bookmark list
@@ -3820,7 +3244,6 @@ public class BookViewActivity extends Activity implements BookSettingMenuFragmen
             int cn = rv.getNumberOfChapters();
             int value = (int) ((float) ci * 100 / (float) cn);
             changePagingView(value);
-//            sd.insertPagingInformation(pagingInformation);
             mBookDataBaseLoader.insertPagingInformationDb(pagingInformation, mUserId, mBookSku);
         }
 
@@ -3831,7 +3254,6 @@ public class BookViewActivity extends Activity implements BookSettingMenuFragmen
 
         @Override
         public int getNumberOfPagesForPagingInformation(PagingInformation pagingInformation) {
-//            PagingInformation pgi = sd.fetchPagingInformation(pagingInformation);
             PagingInformation pgi = mBookDataBaseLoader.fetchPagingInformationDb(pagingInformation, mUserId, mBookSku);
             if (pgi == null) return 0;
             else return pgi.numberOfPagesInChapter;
@@ -3856,7 +3278,6 @@ public class BookViewActivity extends Activity implements BookSettingMenuFragmen
                 setIndexLabelsText(-1, -1); // do not display
             }
         } else {
-            Log.d("ttttttttt---", pi.pageIndex + " " + pi.numberOfPagesInChapter);
             seekBar.setProgress(progress);
             setIndexLabelsText(pi.pageIndex, pi.numberOfPagesInChapter);
         }
@@ -3876,9 +3297,6 @@ public class BookViewActivity extends Activity implements BookSettingMenuFragmen
             }
         }
         isPageTurnedByMediaOverlay = false;
-//		debug(pi.pageDescription);
-//		debug("firstCharacterOffsetInPage "+pi.firstCharacterOffsetInPage+" textLengthInPage "+pi.textLengthInPage);
-//		debug("coverURL "+rv.getCoverURL());
     }
 
     class PageMovedDelegate implements PageMovedListener {
@@ -4095,10 +3513,16 @@ public class BookViewActivity extends Activity implements BookSettingMenuFragmen
     }
 
     @Override
+    public void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        Log.d("onPause", "onDetachedFromWindow");
+    }
+
+    @Override
     protected void onPause() {
         super.onPause();
-        Log.d("eee", "onPause() in BookViewActivity");
-        mBookDataBaseLoader.updatePositionDB(bookCode, pagePositionInBook, mUserId, mBookSku);
+        Log.d("onPause", "onPause() in BookViewActivity");
+        mBookDataBaseLoader.updatePositionDB(bookCode, pagePositionInBook, mUserId, mBookSku, rv.getBook().creator);
         mBookDataBaseLoader.upaDateSettingFromDb(setting);
 
         rv.stopPlayingMedia();
@@ -4109,12 +3533,12 @@ public class BookViewActivity extends Activity implements BookSettingMenuFragmen
     }
 
     private void updateLastReadTime() {
-        Log.d("updateLibrary", "here");
         Calendar lastReadingDate = DateUtil.getDate(new Date().getTime());
         Events.UpDateLibrary upDateLibrary = new Events.UpDateLibrary();
         upDateLibrary.setBookSku(mBookSku);
         upDateLibrary.setDateLastReading(lastReadingDate);
         upDateLibrary.setPosition(pagePositionInBook);
+        upDateLibrary.setAuthor(rv.getBook().creator);
         EventBus.getDefault().post(upDateLibrary);
     }
 
@@ -4145,7 +3569,6 @@ public class BookViewActivity extends Activity implements BookSettingMenuFragmen
             finish();
             return;
         }
-        //	      log("onBackPressed() in BookViewActivity");
     }
 }
 

@@ -16,7 +16,6 @@ import java.util.Calendar;
 public class BookModel extends BookInformation implements Parcelable {
     private String mBookAuthors;
     private int mUserId;
-//    private String mBookName;
     private String mBookImage;
     private String mBookSku;
     private String mBookContentID;
@@ -31,8 +30,6 @@ public class BookModel extends BookInformation implements Parcelable {
     private Calendar mCreatedDate;//
     private boolean mIsBookAtTheEnd;
     private int mLastPage;
-//    private String mImageDownloadLink;
-//    private String mBookDownloadLink;
     private BookState mBookState;
     private int mProgress = 0;
     private int mViewPosition = 0;
@@ -343,84 +340,16 @@ public class BookModel extends BookInformation implements Parcelable {
         BookModel bookModel = (BookModel) o;
 
         if (mUserId != bookModel.mUserId) return false;
-        if (mBookIsDeleted != bookModel.mBookIsDeleted) return false;
-        if (mBookIsEncrypted != bookModel.mBookIsEncrypted) return false;
-        if (mUpdateDate != bookModel.mUpdateDate) return false;
-        if (mIsBookAtTheEnd != bookModel.mIsBookAtTheEnd) return false;
-        if (mLastPage != bookModel.mLastPage) return false;
-        if (mProgress != bookModel.mProgress) return false;
-        if (mViewPosition != bookModel.mViewPosition) return false;
-        if (mIsBookFirstOpen != bookModel.mIsBookFirstOpen) return false;
-        if (mLastChapter != bookModel.mLastChapter) return false;
-        if (mBookPhysicalPage != bookModel.mBookPhysicalPage) return false;
-        if (mLastReadingParagraph != bookModel.mLastReadingParagraph) return false;
-        if (mIsBookSelected != bookModel.mIsBookSelected) return false;
-        if (mIsBookRented != bookModel.mIsBookRented) return false;
-        if (mBookAuthors != null ? !mBookAuthors.equals(bookModel.mBookAuthors) : bookModel.mBookAuthors != null)
-            return false;
-        if (mBookImage != null ? !mBookImage.equals(bookModel.mBookImage) : bookModel.mBookImage != null)
-            return false;
-        if (mBookSku != null ? !mBookSku.equals(bookModel.mBookSku) : bookModel.mBookSku != null)
-            return false;
-        if (mBookContentID != null ? !mBookContentID.equals(bookModel.mBookContentID) : bookModel.mBookContentID != null)
-            return false;
-        if (mBookLanguage != null ? !mBookLanguage.equals(bookModel.mBookLanguage) : bookModel.mBookLanguage != null)
-            return false;
-        if (mBookLanguageDirection != null ? !mBookLanguageDirection.equals(bookModel.mBookLanguageDirection) : bookModel.mBookLanguageDirection != null)
-            return false;
-        if (mBookPublishedYear != null ? !mBookPublishedYear.equals(bookModel.mBookPublishedYear) : bookModel.mBookPublishedYear != null)
-            return false;
-        if (mBookPublishers != null ? !mBookPublishers.equals(bookModel.mBookPublishers) : bookModel.mBookPublishers != null)
-            return false;
-        if (mReadDateTime != null ? !mReadDateTime.equals(bookModel.mReadDateTime) : bookModel.mReadDateTime != null)
-            return false;
-        if (mCreatedDate != null ? !mCreatedDate.equals(bookModel.mCreatedDate) : bookModel.mCreatedDate != null)
-            return false;
-        if (mBookState != bookModel.mBookState) return false;
-        if (mChapterList != null ? !mChapterList.equals(bookModel.mChapterList) : bookModel.mChapterList != null)
-            return false;
-        if (mPagesPerArticleList != null ? !mPagesPerArticleList.equals(bookModel.mPagesPerArticleList) : bookModel.mPagesPerArticleList != null)
-            return false;
-        if (filePath != null ? !filePath.equals(bookModel.filePath) : bookModel.filePath != null)
-            return false;
-        return Arrays.equals(mBookInstance, bookModel.mBookInstance);
+        return mBookSku.equals(bookModel.mBookSku);
 
     }
 
     @Override
     public int hashCode() {
-        int result = mBookAuthors != null ? mBookAuthors.hashCode() : 0;
-        result = 31 * result + mUserId;
-        result = 31 * result + (mBookImage != null ? mBookImage.hashCode() : 0);
-        result = 31 * result + (mBookSku != null ? mBookSku.hashCode() : 0);
-        result = 31 * result + (mBookContentID != null ? mBookContentID.hashCode() : 0);
-        result = 31 * result + (mBookIsDeleted ? 1 : 0);
-        result = 31 * result + (mBookIsEncrypted ? 1 : 0);
-        result = 31 * result + (mBookLanguage != null ? mBookLanguage.hashCode() : 0);
-        result = 31 * result + (mBookLanguageDirection != null ? mBookLanguageDirection.hashCode() : 0);
-        result = 31 * result + (mBookPublishedYear != null ? mBookPublishedYear.hashCode() : 0);
-        result = 31 * result + (mBookPublishers != null ? mBookPublishers.hashCode() : 0);
-        result = 31 * result + (mReadDateTime != null ? mReadDateTime.hashCode() : 0);
-        result = 31 * result + mUpdateDate;
-        result = 31 * result + (mCreatedDate != null ? mCreatedDate.hashCode() : 0);
-        result = 31 * result + (mIsBookAtTheEnd ? 1 : 0);
-        result = 31 * result + mLastPage;
-        result = 31 * result + (mBookState != null ? mBookState.hashCode() : 0);
-        result = 31 * result + mProgress;
-        result = 31 * result + mViewPosition;
-        result = 31 * result + (mIsBookFirstOpen ? 1 : 0);
-        result = 31 * result + mLastChapter;
-        result = 31 * result + (mChapterList != null ? mChapterList.hashCode() : 0);
-        result = 31 * result + (mPagesPerArticleList != null ? mPagesPerArticleList.hashCode() : 0);
-        result = 31 * result + mBookPhysicalPage;
-        result = 31 * result + mLastReadingParagraph;
-        result = 31 * result + (filePath != null ? filePath.hashCode() : 0);
-        result = 31 * result + (mIsBookSelected ? 1 : 0);
-        result = 31 * result + (mIsBookRented ? 1 : 0);
-        result = 31 * result + Arrays.hashCode(mBookInstance);
+        int result = mUserId;
+        result = 31 * result + mBookSku.hashCode();
         return result;
     }
-
 
     //
 //    @Override

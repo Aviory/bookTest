@@ -39,6 +39,7 @@ public class BookSearchFragment extends Fragment implements RecyclerSearchAdapte
         void onItemSearchResultClick(int index);
         void onItemSearchMoreClick();
         void onNotFoundItemClick();
+        void stopBookSearch();
     }
 
     @BindView(R.id.recycler_search)
@@ -115,6 +116,7 @@ public class BookSearchFragment extends Fragment implements RecyclerSearchAdapte
     protected void closeContentBokList() {
         EventBus.getDefault().post(new Events.CloseContentMenuSetting(false));
         mBookSearchListener.clearSearch();
+        mBookSearchListener.stopBookSearch();
         getActivity().getFragmentManager().beginTransaction().remove(BookSearchFragment.this).commit();
     }
 

@@ -23,6 +23,7 @@ import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -415,8 +416,10 @@ public class BooksDataBase {
 
     protected void deleteBook(BookModel bookModel) {
         mSqLiteDatabase = mBookDBHelper.getReadableDatabase();
-        String query = BooksDBContract.BookDetail.BOOK_SKU + " =?";
-        mSqLiteDatabase.delete(Tables.BOOK_DETAILS, query, new String[]{String.valueOf(bookModel.getBookSku())});
+        String query = BooksDBContract.BookDetail.BOOK_SKU + " =?" + " AND " +
+                BooksDBContract.BookDetail.USER_ID + " =?";
+        mSqLiteDatabase.delete(Tables.BOOK_DETAILS, query,
+                new String[]{String.valueOf(bookModel.getBookSku()), String.valueOf(bookModel.getUserId())});
     }
 
 
@@ -620,7 +623,7 @@ public class BooksDataBase {
     protected BookInformation fetchBookInformation(int bookCode, int userId, String bookSku) {
         BookInformation bi = null;
         String condition = String.format(Locale.US, " WHERE " +
-                BooksDBContract.BookDetail.BOOK_CODE +"=%d" + " AND " +
+                BooksDBContract.BookDetail.BOOK_CODE + "=%d" + " AND " +
                 BooksDBContract.BookDetail.USER_ID + "=%d" + " AND " +
                 BooksDBContract.BookDetail.BOOK_SKU + "='%s'", bookCode, userId, bookSku);
         String selectSql = "SELECT * FROM " + Tables.BOOK_DETAILS + condition;
@@ -691,7 +694,7 @@ public class BooksDataBase {
         String sql = String.format(Locale.US, "SELECT * FROM " + Tables.BOOK_PAGING + " WHERE " +
                         BooksDBContract.BookPaging.BOOK_CODE + "=%d" + " AND " +
                         BooksDBContract.BookPaging.CHAPTER_INDEX + "=%d" + " AND " +
-                        BooksDBContract.BookPaging.FONT_NAME + "=%d" + " AND " +
+                        BooksDBContract.BookPaging.FONT_NAME + "='%s'" + " AND " +
                         BooksDBContract.BookPaging.FONT_SIZE + "=%d" + " AND " +
                         BooksDBContract.BookPaging.LINE_SPACING + "=%d" + " AND " +
                         " ABS(Width-%d)<=2 AND ABS(Height-%d)<=2 AND " +
@@ -753,11 +756,14 @@ public class BooksDataBase {
     }
 
     // Using db method
-    protected void updatePosition(int bookCode, double position, int userId, String bookSku) {
+    protected void updatePosition(int bookCode, double position, int userId, String bookSku, String author) {
         ContentValues values = new ContentValues();
         values.put(BooksDBContract.BookDetail.BOOK_IS_FIRST_OPEN, false);
         values.put(BooksDBContract.BookDetail.POSITION, position);
         values.put(BooksDBContract.BookDetail.LAST_READ, getDateString());
+        values.put(BooksDBContract.BookDetail.BOOK_AUTHORS, author);
+        Calendar calendar = DateUtil.getDate(new Date().getTime());
+        values.put(BooksDBContract.BookDetail.READ_DATE_TIME, calendar.getTimeInMillis());
         values.put(BooksDBContract.BookDetail.IS_READ, 1);
         String where = String.format(Locale.US, BooksDBContract.BookDetail.BOOK_CODE + "=%d" + " AND " +
                         BooksDBContract.BookDetail.USER_ID + "=%d" + " AND " +

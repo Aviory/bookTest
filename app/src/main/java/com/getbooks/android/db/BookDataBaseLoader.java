@@ -81,7 +81,7 @@ public class BookDataBaseLoader {
         mBooksDataBase.updateSettingFromDB(skySetting);
     }
 
-    public void toggleBookmarkDb(PageInformation pageInformation, int userId, String  bookSku) {
+    public void toggleBookmarkDb(PageInformation pageInformation, int userId, String bookSku) {
         mBooksDataBase.toggleBookmark(pageInformation, userId, bookSku);
     }
 
@@ -97,11 +97,11 @@ public class BookDataBaseLoader {
         return mBooksDataBase.fetchPagingInformation(pagingInformation, userId, bookSku);
     }
 
-    public void updatePositionDB(int bookPosition, double position, int userId, String bookSku) {
-        mBooksDataBase.updatePosition(bookPosition, position, userId, bookSku);
+    public void updatePositionDB(int bookPosition, double position, int userId, String bookSku, String author) {
+        mBooksDataBase.updatePosition(bookPosition, position, userId, bookSku, author);
     }
 
-    public void insertBookDb(BookInformation bookInformation){
+    public void insertBookDb(BookInformation bookInformation) {
         mBooksDataBase.insertBook(bookInformation);
     }
 
@@ -109,27 +109,27 @@ public class BookDataBaseLoader {
         return mBooksDataBase.isBookmarked(pi, userId, bookSku);
     }
 
-    public void insertHighlightToDb(Highlight highlight, int userId, String bookSku){
+    public void insertHighlightToDb(Highlight highlight, int userId, String bookSku) {
         mBooksDataBase.insertHighlight(highlight, userId, bookSku);
     }
 
-    public Highlights fetchAllHighlightsFromDb(int bookCode, int userId, String bookSku){
-        return mBooksDataBase.fetchAllHighlights(bookCode, userId,bookSku);
+    public Highlights fetchAllHighlightsFromDb(int bookCode, int userId, String bookSku) {
+        return mBooksDataBase.fetchAllHighlights(bookCode, userId, bookSku);
     }
 
-    public void deleteHighlightFromDb(Highlight highlight, int userId, String bookSku){
+    public void deleteHighlightFromDb(Highlight highlight, int userId, String bookSku) {
         mBooksDataBase.deleteHighlight(highlight, userId, bookSku);
     }
 
-    public void updateHighlightDb(Highlight highlight, int userId, String bookSku){
+    public void updateHighlightDb(Highlight highlight, int userId, String bookSku) {
         mBooksDataBase.updateHighlight(highlight, userId, bookSku);
     }
 
-    public Highlights fetchHighlightsDb(int bookCode, int chapterIndex, int userId, String bookSku){
+    public Highlights fetchHighlightsDb(int bookCode, int chapterIndex, int userId, String bookSku) {
         return mBooksDataBase.fetchHighlights(bookCode, chapterIndex, userId, bookSku);
     }
 
-    public void insertPagingInformationDb(PagingInformation pgi, int userId, String bookSku){
+    public void insertPagingInformationDb(PagingInformation pgi, int userId, String bookSku) {
         mBooksDataBase.insertPagingInformation(pgi, userId, bookSku);
     }
 }

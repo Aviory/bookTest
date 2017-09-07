@@ -637,11 +637,14 @@ public class LibraryActivity extends BaseActivity implements Queries.CallBack,
         if (!mDeletingBookQueue.isDeletingQueueEmpty()) {
             switch (currentDownloadingBookModel.getBookState()) {
                 case CLOUD_BOOK:
-                    if (currentDownloadingBookModel.isIsBookRented())
+                    if (currentDownloadingBookModel.isIsBookRented()) {
+                        Queries mQueries = new Queries();
                         mQueries.returnRentedBook(Prefs.getToken(this), this, currentDownloadingBookModel,
                                 mLibrary, mShelvesAdapter);
+                    }
                     break;
                 case RENTED_BOOK:
+                    Queries mQueries = new Queries();
                     mQueries.returnRentedBook(Prefs.getToken(this), this, currentDownloadingBookModel,
                             mLibrary, mShelvesAdapter);
                     break;
@@ -814,7 +817,8 @@ public class LibraryActivity extends BaseActivity implements Queries.CallBack,
                 bookModel.setIsBookFirstOpen(false);
                 bookModel.position = upDateLibrary.getPosition();
                 bookModel.setReadDateTime(upDateLibrary.getDateLastReading());
-                mShelvesAdapter.notifyDataSetChanged();
+                bookModel.setBookAuthors(upDateLibrary.getAuthor());
+                mShelvesAdapter.notifyItemChanged(bookModel.getViewPosition());
             }
         }
     }
