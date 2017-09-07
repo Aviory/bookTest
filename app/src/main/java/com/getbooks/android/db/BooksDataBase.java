@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Environment;
 import android.util.Log;
 
+import com.getbooks.android.Const;
 import com.getbooks.android.model.BookModel;
 import com.getbooks.android.skyepubreader.SkySetting;
 import com.getbooks.android.util.DateUtil;
@@ -99,8 +100,7 @@ public class BooksDataBase {
 
     private static final String CREATE_TABLE_BOOK_MARKUPS = new StringBuilder().append("CREATE TABLE IF NOT EXISTS  ")
             .append(Tables.BOOK_MARKUPS).append("(")
-            .append(BooksDBContract.BookMarkups._ID).append(" INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,")
-            .append(BooksDBContract.BookMarkups.CODE).append(" INTEGER, ")
+            .append(BooksDBContract.BookMarkups.CODE).append(" INTEGER PRIMARY KEY AUTOINCREMENT, ")
             .append(BooksDBContract.BookMarkups.USER_ID).append(" INTEGER, ")
             .append(BooksDBContract.BookMarkups.BOOK_SKU).append(" TEXT, ")
             .append(BooksDBContract.BookMarkups.MARK_TYPE).append(" INTEGER , ")
@@ -238,11 +238,7 @@ public class BooksDataBase {
         return mSqLiteDatabase != null && mSqLiteDatabase.isOpen();
     }
 
-    private void createSettingBook(SQLiteDatabase sqLiteDatabase){
-//        String sql = "INSERT INTO Setting(BookCode,FontName,FontSize,LineSpacing," +
-//                "Foreground,Background,Theme,Brightness,TransitionType,LockRotation,MediaOverlay,TTS" +
-//                ",AutoStartPlaying,AutoLoadNewChapter,HighlightTextToVoice) VALUES(0,'',2,-1,-1,-1,0,1,2,1,1,0,1,1,1)";
-//        mSqLiteDatabase.execSQL(sql);
+    private void createSettingBook(SQLiteDatabase sqLiteDatabase) {
         ContentValues contentValues = new ContentValues();
         contentValues.put(BooksDBContract.BookSetting.USER_ID, 0);
         contentValues.put(BooksDBContract.BookSetting.BOOK_CODE, 0);
@@ -522,7 +518,7 @@ public class BooksDataBase {
         values.put(BooksDBContract.BookSetting.HIGHLIGHT_TEXT_TO_VOICE, setting.highlightTextToVoice ? 1 : 0);
 
         String where = "BookCode=0";
-        mSqLiteDatabase.update("Setting", values, where, null);
+        mSqLiteDatabase.update(Tables.BOOK_SETTING, values, where, null);
     }
 
     protected String getDateString() {
@@ -544,7 +540,7 @@ public class BooksDataBase {
         ContentValues values = new ContentValues();
         values.put(BooksDBContract.BookMarkups.USER_ID, userId);
         values.put(BooksDBContract.BookMarkups.BOOK_SKU, bookSku);
-        values.put(BooksDBContract.BookMarkups.BOOK_CODE, pi.bookCode);
+        values.put(BooksDBContract.BookMarkups.BOOK_CODE, bc);
         values.put(BooksDBContract.BookMarkups.CHAPTER_INDEX, ci);
         values.put(BooksDBContract.BookMarkups.PAGE_POSITION_IN_CHAPTER, ppc);
         values.put(BooksDBContract.BookMarkups.PAGE_POSITION_IN_BOOK, ppb);
@@ -553,13 +549,19 @@ public class BooksDataBase {
 
     }
 
-    protected void deleteBookmarkByCode(int code) {
-        String sql = String.format(Locale.US, "DELETE FROM Bookmark where Code = %d", code);
+    protected void deleteBookmarkByCode(int code, int userId, String bookSku) {
+        String sql = String.format(Locale.US, "DELETE FROM " + Tables.BOOK_MARKUPS +
+                " WHERE " + BooksDBContract.BookMarkups.CODE + " = %d" + " AND " +
+                BooksDBContract.BookMarkups.USER_ID + " = %d " + " AND " +
+                BooksDBContract.BookMarkups.BOOK_SKU + " ='%s'", code, userId, bookSku);
         mSqLiteDatabase.execSQL(sql);
     }
 
-    protected void deleteBookmarksByBookCode(int bookCode) {
-        String sql = String.format(Locale.US, "DELETE FROM Bookmark where BookCode = %d", bookCode);
+    protected void deleteBookmarksByBookCode(int bookCode, int userId, String bookSku) {
+        String sql = String.format(Locale.US, "DELETE FROM " + Tables.BOOK_MARKUPS +
+                " WHERE " + BooksDBContract.BookMarkups.BOOK_CODE + " = %d " + " AND " +
+                BooksDBContract.BookMarkups.USER_ID + " = %d " + " AND " +
+                BooksDBContract.BookMarkups.BOOK_SKU + " ='%s'", bookCode, userId, bookSku);
         mSqLiteDatabase.execSQL(sql);
     }
 
@@ -574,20 +576,24 @@ public class BooksDataBase {
         mSqLiteDatabase.execSQL(sql);
     }
 
-    protected int getBookmarkCode(PageInformation pi) {
+    protected int getBookmarkCode(PageInformation pi, int userId, String bookSku) {
         int bookCode = pi.bookCode;
         BookInformation bi = this.fetchBookInformation(bookCode);
         if (bi == null) return -1;
         boolean isFixedLayout = bi.isFixedLayout;
-
         if (!isFixedLayout) {
             double pageDelta = 1.0f / pi.numberOfPagesInChapter;
             double target = pi.pagePositionInChapter;
-            String selectSql = String.format(Locale.US, "SELECT Code,PagePositionInChapter from Bookmark where BookCode=%d and ChapterIndex=%d", bookCode, pi.chapterIndex);
+            String selectSql = String.format(Locale.US, "SELECT " + BooksDBContract.BookMarkups.CODE + ", " +
+                    BooksDBContract.BookMarkups.PAGE_POSITION_IN_CHAPTER + " FROM " + Tables.BOOK_MARKUPS +
+                    " WHERE " + BooksDBContract.BookMarkups.BOOK_CODE + "=%d" + " AND " +
+                    BooksDBContract.BookMarkups.CHAPTER_INDEX + "=%d" + " AND " +
+                    BooksDBContract.BookMarkups.USER_ID + "=%d" + " AND " +
+                    BooksDBContract.BookMarkups.BOOK_SKU + "='%s'", bookCode, pi.chapterIndex, userId, bookSku);
             Cursor cursor = mSqLiteDatabase.rawQuery(selectSql, null);
             while (cursor.moveToNext()) {
-                double ppc = cursor.getDouble(1);
-                int code = cursor.getInt(0);
+                double ppc = cursor.getDouble(cursor.getColumnIndex(BooksDBContract.BookMarkups.PAGE_POSITION_IN_CHAPTER));
+                int code = cursor.getInt(cursor.getColumnIndex(BooksDBContract.BookMarkups.CODE));
                 if (target >= (ppc - pageDelta / 2) && target <= (ppc + pageDelta / 2.0f)) {
                     cursor.close();
                     return code;
@@ -595,10 +601,14 @@ public class BooksDataBase {
             }
             cursor.close();
         } else {
-            String selectSql = String.format(Locale.US, "SELECT Code from Bookmark where BookCode=%d and ChapterIndex=%d", bookCode, pi.chapterIndex);
+            String selectSql = String.format(Locale.US, "SELECT " + BooksDBContract.BookMarkups.CODE +
+                    " FROM " + Tables.BOOK_MARKUPS + " WHERE " + BooksDBContract.BookMarkups.BOOK_CODE + "=%d" + " AND " +
+                    BooksDBContract.BookMarkups.CHAPTER_INDEX + "=%d" + " AND " +
+                    BooksDBContract.BookMarkups.USER_ID + "=%d" + " AND " +
+                    BooksDBContract.BookMarkups.BOOK_SKU + "='%s'", bookCode, pi.chapterIndex, userId, bookSku);
             Cursor cursor = mSqLiteDatabase.rawQuery(selectSql, null);
             while (cursor.moveToNext()) {
-                int code = cursor.getInt(0);
+                int code = cursor.getInt(cursor.getColumnIndex(BooksDBContract.BookMarkups.CODE));
                 return code;
             }
             cursor.close();
@@ -648,9 +658,13 @@ public class BooksDataBase {
         return bi;
     }
 
-    protected ArrayList<PageInformation> fetchBookmarks(int bookCode) {
+    protected ArrayList<PageInformation> fetchBookmarks(int bookCode, int userId, String bookSku) {
         ArrayList<PageInformation> pis = new ArrayList<PageInformation>();
-        String selectSql = String.format(Locale.US, "SELECT * from Bookmark where bookCode=%d ORDER BY ChapterIndex", bookCode);
+        String selectSql = String.format(Locale.US, "SELECT * FROM " + Tables.BOOK_MARKUPS +
+                " WHERE " + BooksDBContract.BookMarkups.BOOK_CODE + "=%d" + " AND " +
+                BooksDBContract.BookMarkups.USER_ID + "=%d" + " AND " +
+                BooksDBContract.BookMarkups.BOOK_SKU + "='%s'" +
+                " ORDER BY " + BooksDBContract.BookMarkups.CHAPTER_INDEX, bookCode, userId, bookSku);
         Cursor cursor = mSqLiteDatabase.rawQuery(selectSql, null);
         if (cursor != null) {
             while (cursor.moveToNext()) {
@@ -695,17 +709,21 @@ public class BooksDataBase {
         return null;
     }
 
-    public void toggleBookmark(PageInformation pi, int userId, String bookSku) {
-        int code = this.getBookmarkCode(pi);
+    protected void toggleBookmark(PageInformation pi, int userId, String bookSku) {
+        int code = this.getBookmarkCode(pi, userId, bookSku);
+        Log.d("database", String.valueOf(code));
+        Log.d("database", String.valueOf(userId) + " " + bookSku);
         if (code == -1) { // if not exist
             this.insertBookmark(pi, userId, bookSku);
         } else {
-            this.deleteBookmarkByCode(code); // if exist, delete it
+            this.deleteBookmarkByCode(code, userId, bookSku); // if exist, delete it
         }
     }
 
-    public boolean isBookmarked(PageInformation pi) {
-        int code = this.getBookmarkCode(pi);
+    protected boolean isBookmarked(PageInformation pi, int userId, String bookSku) {
+        int code = this.getBookmarkCode(pi, userId, bookSku);
+        Log.d("database isBookMarkedC", String.valueOf(code));
+        Log.d("database", String.valueOf(userId) + " " + bookSku);
         if (code == -1) {
             return false;
         } else {
