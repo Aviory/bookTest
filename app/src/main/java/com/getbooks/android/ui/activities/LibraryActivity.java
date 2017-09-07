@@ -568,21 +568,6 @@ public class LibraryActivity extends BaseActivity implements Queries.CallBack,
                                         mLibrary.get(position).fileName, "Author", mLibrary.get(position).fileName + Const.DECRYPTED,
                                         (double) -1.0f, false, 1, false, true, true, mDirectoryPath, mLibrary.get(position).getBookSku(),
                                         mLibrary.get(position).getUserId());
-//                                Intent intent = new Intent(LibraryActivity.this, BookViewActivity.class);
-//                                intent.putExtra("BOOKCODE", Integer.parseInt(mLibrary.get(position).getBookSku().replaceAll("-", "")));
-//                                intent.putExtra("TITLE", mLibrary.get(position).fileName);
-//                                intent.putExtra("AUTHOR", "Author");
-//                                intent.putExtra("BOOKNAME", mLibrary.get(position).fileName + Const.DECRYPTED);
-//                                intent.putExtra("POSITION", (double) -1.0f);
-//                                intent.putExtra("DOUBLEPAGED", false);
-//                                intent.putExtra("transitionType", 1);
-//                                intent.putExtra("GLOBALPAGINATION", false);
-//                                intent.putExtra("RTL", true);
-//                                intent.putExtra("VERTICALWRITING", true);
-//                                intent.putExtra("DERECTORYPATH", mDirectoryPath);
-//                                intent.putExtra("BOOK_SKU", mLibrary.get(position).getBookSku());
-//                                intent.putExtra("USER_ID", mLibrary.get(position).getUserId());
-//                                startActivity(intent);
                             } catch (IOException e) {
                                 e.printStackTrace();
                             } catch (NoSuchPaddingException e) {
@@ -607,21 +592,6 @@ public class LibraryActivity extends BaseActivity implements Queries.CallBack,
                                         mLibrary.get(position).fileName, "Author", mLibrary.get(position).fileName + Const.DECRYPTED,
                                         (double) -1.0f, false, 1, false, true, true, mDirectoryPath, mLibrary.get(position).getBookSku(),
                                         mLibrary.get(position).getUserId());
-//                                Intent intent = new Intent(LibraryActivity.this, BookViewActivity.class);
-//                                intent.putExtra("BOOKCODE", Integer.parseInt(mLibrary.get(position).getBookSku().replaceAll("-", "")));
-//                                intent.putExtra("TITLE", mLibrary.get(position).fileName);
-//                                intent.putExtra("AUTHOR", "Author");
-//                                intent.putExtra("BOOKNAME", mLibrary.get(position).fileName + Const.DECRYPTED);
-//                                intent.putExtra("POSITION", (double) -1.0f);
-//                                intent.putExtra("DOUBLEPAGED", false);
-//                                intent.putExtra("transitionType", 1);
-//                                intent.putExtra("GLOBALPAGINATION", false);
-//                                intent.putExtra("RTL", true);
-//                                intent.putExtra("VERTICALWRITING", true);
-//                                intent.putExtra("DERECTORYPATH", mDirectoryPath);
-//                                intent.putExtra("BOOK_SKU", mLibrary.get(position).getBookSku());
-//                                intent.putExtra("USER_ID", mLibrary.get(position).getUserId());
-//                                startActivity(intent);
                             } catch (IOException e) {
                                 e.printStackTrace();
                             } catch (NoSuchPaddingException e) {

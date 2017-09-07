@@ -1066,7 +1066,7 @@ public class BookViewActivity extends Activity implements BookSettingMenuFragmen
 
     private void fillBookMarkBookList(List<BookMarkItemModel> contentList, RecyclerBookContentAdapter bookContentAdapter) {
         contentList.clear();
-        ArrayList<PageInformation> pis = sd.fetchBookmarks(this.bookCode);
+        List<PageInformation> pis = mBookDataBaseLoader.fetchBookmarksDb(this.bookCode, mUserId, mBookSku);
         BookMarkItemModel bookMarkItemModel;
         for (int i = 0; i < pis.size(); i++) {
             PageInformation pi = pis.get(i);
@@ -1141,7 +1141,7 @@ public class BookViewActivity extends Activity implements BookSettingMenuFragmen
     @Override
     public void removeMarkup(int id) {
         Toast.makeText(this, "removeMarkup", Toast.LENGTH_SHORT).show();
-        sd.deleteBookmarkByCode(id);
+        mBookDataBaseLoader.deleteBookmarkByCodeDb(id, mUserId, mBookSku);
         closeSettingsMenu();
     }
 
@@ -3726,7 +3726,8 @@ public class BookViewActivity extends Activity implements BookSettingMenuFragmen
     class BookmarkDelegate implements BookmarkListener {
         @Override
         public void onBookmarkHit(PageInformation pi, boolean isBookmarked) {
-            sd.toggleBookmark(pi);
+//            sd.toggleBookmark(pi);
+            mBookDataBaseLoader.toggleBookmarkDb(pi, mUserId, mBookSku);
             rv.repaintAll();
         }
 
@@ -3745,7 +3746,6 @@ public class BookViewActivity extends Activity implements BookSettingMenuFragmen
             Drawable markIcon = null;
             Bitmap iconBitmap = null;
             Theme theme = getCurrentTheme();
-            Log.d("database", "ffffff");
             try {
                 if (isBookmarked) {
                     markIcon = getResources().getDrawable(R.drawable.bookmark_blue);
@@ -3765,7 +3765,8 @@ public class BookViewActivity extends Activity implements BookSettingMenuFragmen
 
         @Override
         public boolean isBookmarked(PageInformation pi) {
-            return sd.isBookmarked(pi);
+//            return sd.isBookmarked(pi);
+            return mBookDataBaseLoader.isBookmarkedDB(pi, mUserId, mBookSku);
         }
     }
 

@@ -79,16 +79,16 @@ public class BookDataBaseLoader {
         mBooksDataBase.updateSettingFromDB(skySetting);
     }
 
-    public void insertBookMarkToDb(PageInformation pageInformation, int bookCode, String  bookSku) {
-        mBooksDataBase.insertBookmark(pageInformation, bookCode, bookSku);
+    public void toggleBookmarkDb(PageInformation pageInformation, int userId, String  bookSku) {
+        mBooksDataBase.toggleBookmark(pageInformation, userId, bookSku);
     }
 
-    public void deleteBookmarkByCodeDb(int code) {
-        mBooksDataBase.deleteBookmarkByCode(code);
+    public void deleteBookmarkByCodeDb(int code, int userId, String bookSku) {
+        mBooksDataBase.deleteBookmarkByCode(code, userId, bookSku);
     }
 
-    private void deleteBookMarksByBookCodeDb(int bookCode) {
-        mBooksDataBase.deleteBookmarksByBookCode(bookCode);
+    private void deleteBookMarksByBookCodeDb(int bookCode, int userId, String bookSku) {
+        mBooksDataBase.deleteBookmarksByBookCode(bookCode, userId, bookSku);
     }
 
     public void deleteHighlightByBookCodeDb(int bookCode) {
@@ -99,12 +99,12 @@ public class BookDataBaseLoader {
         mBooksDataBase.deletePagingByBookCode(bookCode);
     }
 
-    public int getBookMarkCodeDb(PageInformation pageInformation) {
-        return mBooksDataBase.getBookmarkCode(pageInformation);
+    public int getBookMarkCodeDb(PageInformation pageInformation, int userId, String bookSku) {
+        return mBooksDataBase.getBookmarkCode(pageInformation, userId, bookSku);
     }
 
-    public List<PageInformation> fetchBookmarksDb(int bookCode) {
-        return mBooksDataBase.fetchBookmarks(bookCode);
+    public List<PageInformation> fetchBookmarksDb(int bookCode, int userId, String bookSku) {
+        return mBooksDataBase.fetchBookmarks(bookCode, userId, bookSku);
     }
 
     public PagingInformation fetchPagingInformationDb(PagingInformation pagingInformation) {
@@ -117,5 +117,9 @@ public class BookDataBaseLoader {
 
     public void insertBookDb(BookInformation bookInformation){
         mBooksDataBase.insertBook(bookInformation);
+    }
+
+    public boolean isBookmarkedDB(PageInformation pi, int userId, String bookSku) {
+        return mBooksDataBase.isBookmarked(pi, userId, bookSku);
     }
 }
