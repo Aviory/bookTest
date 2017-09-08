@@ -2,6 +2,10 @@
     <string name="app_name">Getbooks</string>
     <string name="txt_load">Loading...</string>
 
+    <string name="facebook_app_id">1679090715497657</string>
+    <string name="fb_login_protocol_scheme">fb1679090715497657</string>
+
+
     <!-- Menu main text -->
     <string name="txt_library"> Library</string>
     <string name="txt_catalog">Catalog</string>
@@ -214,4 +218,5 @@ It may take long time to finish the calculation of pages for whole book.\n
 Whenever font name or font size are changed, Global Pagination tries to calculate the total page number again.\n
 while the Global Pagination is going on, some user interfaces will be restricted to use.</string>
     <string name="search_result">Search Result</string>
+    <string name="appname">avi-app</string>
 </resources>
