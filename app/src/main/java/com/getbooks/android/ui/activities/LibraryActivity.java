@@ -216,8 +216,8 @@ public class LibraryActivity extends BaseActivity implements Queries.CallBack,
         mGridLayoutManager.setOrientation(GridLayoutManager.VERTICAL);
         mRecyclerBookShelves.setLayoutManager(mGridLayoutManager);
 
-        if (mShelvesAdapter == null)
-            mShelvesAdapter = new RecyclerShelvesAdapter(library, this, this);
+//        if (mShelvesAdapter == null)
+        mShelvesAdapter = new RecyclerShelvesAdapter(library, this, this);
         mRecyclerBookShelves.setAdapter(mShelvesAdapter);
 
         mShelvesAdapter.setDownloadInfo(mDownloadInfo);
@@ -332,10 +332,10 @@ public class LibraryActivity extends BaseActivity implements Queries.CallBack,
         menuTranzaction();
     }
 
-    @OnClick(R.id.right_txt_screen_settings)
-    protected void screenSettings() {
-        DialogSettings.newInstance(this).show();
-    }
+//    @OnClick(R.id.right_txt_screen_settings)
+//    protected void screenSettings() {
+//        DialogSettings.newInstance(this).show();
+//    }
 
     @OnClick(R.id.right_txt_order)
     protected void order() {

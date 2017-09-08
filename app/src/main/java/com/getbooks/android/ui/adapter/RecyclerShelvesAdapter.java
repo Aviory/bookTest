@@ -16,6 +16,7 @@ import com.getbooks.android.chashe.PicassoCache;
 import com.getbooks.android.model.BookModel;
 import com.getbooks.android.model.DownloadInfo;
 import com.getbooks.android.model.enums.BookState;
+import com.getbooks.android.util.LogUtil;
 import com.squareup.picasso.Callback;
 
 import java.util.List;

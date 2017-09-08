@@ -50,8 +50,9 @@ public class CompareUtil {
         @Override
         public int compare(BookModel a, BookModel b) {
             if(a.fileName!=null && b.fileName!=null)
-                return b.fileName.compareTo(a.fileName);
-            return 0;
+                return a.fileName.compareTo(b.fileName);
+            else
+                return 1;
         }
     }
     private static class AuthorNameComparator implements Comparator<BookModel>{
@@ -59,8 +60,9 @@ public class CompareUtil {
         @Override
         public int compare(BookModel a, BookModel b) {
             if(a.getBookAuthors()!=null && b.getBookAuthors()!=null)
-                return b.getBookAuthors().compareTo(a.getBookAuthors());
-            return 0;
+                return a.getBookAuthors().compareTo(b.getBookAuthors());
+            else
+                return 1;
         }
     }
     private static class ReadDateComparator implements Comparator<BookModel>{
@@ -72,6 +74,8 @@ public class CompareUtil {
                     return -1;
                 else if(a.getReadDateTime().after(b.getReadDateTime()))
                     return 1;
+            }else {
+                return 1;
             }
             return 0;
         }
@@ -85,7 +89,8 @@ public class CompareUtil {
                     return -1;
                 else if(a.getCreatedDate().after(b.getCreatedDate()))
                     return 1;
-            }
+            }else
+                return 1;
             return 0;
         }
     }
