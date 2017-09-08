@@ -7,15 +7,17 @@ package com.getbooks.android;
 public final class Const {
 
     // Api constants
-    public static final String BASE_URL_PELEPHONE_API = "https://pelephone.getbooks.co.il/dev/?";
-    public static final String BASE_URL_API_ARY = "https://pelephone.getbooks.co.il/dev/api/rest/";
+//    public static final String BASE_URL_PELEPHONE_API = "https://pelephone.getbooks.co.il/dev/?";
+    public static final String BASE_URL_PELEPHONE_API = "https://www.malikro.co.il/dev/?";
+    //    public static final String BASE_URL_API_ARY = "https://pelephone.getbooks.co.il/dev/api/rest/";
+    public static final String BASE_URL_API_ARY = "https://www.malikro.co.il/dev/api/rest/";
     public static final String WEBSITECODE = "aff_pelephone";
 
 
     //Authorization constant
-    public static final String AUTH_URL = "https://pelephone.getbooks.co.il/dev/customer/account/login/";
-    //    public static final String AUTH_URL = "http://pelelogin.getbooks.co.il/";
-    public static final String REDIRECT_URL = "https://pelephone.getbooks.co.il/dev/customer/account/";
+//    public static final String AUTH_URL = "https://pelephone.getbooks.co.il/dev/customer/account/login/";
+    public static final String AUTH_URL = "http://login.malikro.co.il/";
+    public static final String REDIRECT_URL = "https://www.malikro.co.il/dev/customer/account/";
 
 
     //Shared preference constants

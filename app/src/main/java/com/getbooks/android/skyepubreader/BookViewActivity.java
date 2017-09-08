@@ -38,11 +38,8 @@ import com.getbooks.android.ui.widget.CustomSeekBar;
 import com.getbooks.android.util.DateUtil;
 import com.getbooks.android.util.FacebookUtil;
 import com.getbooks.android.util.FileUtil;
-<<<<<<< HEAD
 import com.getbooks.android.util.UiUtil;
-=======
 import com.getbooks.android.util.LogUtil;
->>>>>>> origin/right_menu-avi
 import com.skytree.epub.Book;
 import com.skytree.epub.BookmarkListener;
 import com.skytree.epub.Caret;
