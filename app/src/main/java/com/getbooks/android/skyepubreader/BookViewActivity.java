@@ -11,18 +11,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import com.facebook.AccessToken;
-import com.facebook.CallbackManager;
-import com.facebook.FacebookCallback;
-import com.facebook.FacebookException;
-import com.facebook.FacebookSdk;
-import com.facebook.appevents.AppEventsLogger;
-import com.facebook.login.LoginManager;
-import com.facebook.login.LoginResult;
-import com.facebook.login.widget.LoginButton;
-import com.facebook.share.ShareApi;
-import com.facebook.share.Sharer;
-import com.facebook.share.model.ShareLinkContent;
 import com.getbooks.android.Const;
 import com.getbooks.android.GetbooksApplication;
 import com.getbooks.android.R;
@@ -36,9 +24,8 @@ import com.getbooks.android.ui.fragments.BookSearchFragment;
 import com.getbooks.android.ui.fragments.BookSettingMenuFragment;
 import com.getbooks.android.ui.widget.CustomSeekBar;
 import com.getbooks.android.util.DateUtil;
-import com.getbooks.android.util.FacebookUtil;
 import com.getbooks.android.util.FileUtil;
-import com.getbooks.android.util.LogUtil;
+import com.getbooks.android.util.ShareUtil;
 import com.getbooks.android.util.UiUtil;
 import com.skytree.epub.Book;
 import com.skytree.epub.BookmarkListener;
@@ -93,20 +80,14 @@ import android.graphics.Path;
 import android.graphics.PixelFormat;
 import android.graphics.Rect;
 import android.graphics.RectF;
-import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
-import android.graphics.drawable.GradientDrawable;
-import android.graphics.drawable.GradientDrawable.Orientation;
-import android.graphics.drawable.shapes.RectShape;
-import android.graphics.drawable.shapes.RoundRectShape;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Vibrator;
 import android.support.v4.content.ContextCompat;
-import android.text.TextUtils.TruncateAt;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -114,7 +95,6 @@ import android.util.TypedValue;
 import android.view.Display;
 import android.view.GestureDetector;
 import android.view.Gravity;
-import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -131,11 +111,9 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
-import android.widget.ScrollView;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
-import android.widget.TextView.OnEditorActionListener;
 import android.widget.Toast;
 import android.widget.RelativeLayout.LayoutParams;
 
@@ -184,8 +162,6 @@ public class BookViewActivity extends Activity implements BookSettingMenuFragmen
     protected ImageView mImageAddNote;
     @BindView(R.id.img_remove_highlight_menu)
     protected ImageView mImageRemoveHighlight;
-//    @BindView(R.id.login_button)
-    protected LoginButton loginButton;
     @BindView(R.id.img_share_on_facebook)
     protected ImageView mImageShareFacebook;
     @BindView(R.id.highlight_menu)
@@ -200,6 +176,7 @@ public class BookViewActivity extends Activity implements BookSettingMenuFragmen
     private int mUserId;
     private String mBookSku;
     private BookDataBaseLoader mBookDataBaseLoader;
+    private boolean mIsInternalBook;
 
     Rect bookmarkRect;
     Rect bookmarkedRect;
@@ -497,6 +474,7 @@ public class BookViewActivity extends Activity implements BookSettingMenuFragmen
         // Stop loading the ad.
         this.unregisterSkyReceiver();// New in SkyEpub sdk 7.x
         try {
+            if (!mIsInternalBook)
             FileUtil.deleteDecryptedBook(directoryPath, fileName);
         } catch (IOException e) {
             e.printStackTrace();
@@ -548,6 +526,7 @@ public class BookViewActivity extends Activity implements BookSettingMenuFragmen
         this.isDoublePagedForLandscape = bundle.getBoolean(Const.DOUBLE_PAGED);
         mBookSku = bundle.getString(Const.BOOK_SKU);
         mUserId = bundle.getInt(Const.USER_ID);
+        mIsInternalBook = bundle.getBoolean(Const.IS_INTERNAL_BOOK);
 //		if (this.isRTL) this.isDoublePagedForLandscape = false; // In RTL mode, SDK does not support double paged.
 
         autoStartPlayingWhenNewPagesLoaded = this.setting.autoStartPlaying;
@@ -857,6 +836,12 @@ public class BookViewActivity extends Activity implements BookSettingMenuFragmen
 // android.provider.Settings.System.HAPTIC_FEEDBACK_ENABLED, 0);
     }
 
+    @OnClick(R.id.img_share_on_facebook)
+    protected void shareToFacebook(){
+        Toast.makeText(this, "Share on facebook", Toast.LENGTH_SHORT).show();
+        ShareUtil.shareToFacebook(this, "https://pelephone.getbooks.co.il/dev/on-sale");
+    }
+
 
     public int getColorWithAlpha(int color, int alpha) {
         int red, green, blue;
@@ -925,48 +910,6 @@ public class BookViewActivity extends Activity implements BookSettingMenuFragmen
     @OnClick(R.id.img_book_close)
     protected void closeBook() {
         super.onBackPressed();
-    }
-
-    @OnClick(R.id.img_share_on_facebook)
-    protected void shareButton() {
-        //FacebookUtil facebookUtil = new FacebookUtil();
-        LogUtil.log(this, "Facebook tocurrent tok: "+AccessToken.getCurrentAccessToken());
-        if(AccessToken.getCurrentAccessToken()!=null)
-        LogUtil.log(this, "Facebook tocurrent tok isExpired: "+AccessToken.getCurrentAccessToken().isExpired());
-
-        if(AccessToken.getCurrentAccessToken()==null){
-            loginButton.performClick();
-
-        } else if(!AccessToken.getCurrentAccessToken().isExpired()){
-            LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("public_profile"));
-        }
-        else {
-            share();
-        }
-    }
-
-    public void share()
-    {
-        ShareLinkContent content=new ShareLinkContent.Builder()
-                .setContentTitle("BookApp")
-                .setContentUrl(Uri.parse("https://developers.facebook.com"))
-//                .setImageUrl(Uri.parse("Image url"))
-                .build();
-
-        ShareApi.share(content, new FacebookCallback<Sharer.Result>(){
-            @Override
-            public void onSuccess(Sharer.Result result){
-                LogUtil.log(this, "Facebook Sharer onSuccess: "+result);
-            }
-            @Override
-            public void onCancel(){
-                LogUtil.log(this, "Facebook Sharer onCancel: ");
-            }
-            @Override
-            public void onError(FacebookException error){
-                LogUtil.log(this, "Facebook Sharer onError: ");
-            }
-        });
     }
 
     @Override
@@ -2375,9 +2318,6 @@ public class BookViewActivity extends Activity implements BookSettingMenuFragmen
         this.recalcFrames();
     }
 
-    CallbackManager callbackManager;
-    AccessToken accessToken;
-
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -2391,82 +2331,10 @@ public class BookViewActivity extends Activity implements BookSettingMenuFragmen
         mCurrentTextPageSeekBar.setVisibility(View.INVISIBLE);
         this.makeFullScreen();
         this.makeLayout();
-        loginButton = new LoginButton(this);
-        callbackManager = CallbackManager.Factory.create();
-        loginButton.setReadPermissions(Arrays.asList("email", "public_profile"));
-        // If using in a fragment
-//        mImageShareFacebook.setFragment(this);
-        // Other app specific specialization
-
-        // Callback registration
-        loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
-            @Override
-            public void onSuccess(LoginResult loginResult) {
-                LogUtil.log(this, "Facebook login onSuccess "+loginResult.getAccessToken());
-                AccessToken.setCurrentAccessToken(loginResult.getAccessToken());
-            }
-
-            @Override
-            public void onCancel() {
-                LogUtil.log(this, "Facebook login onCancel");
-            }
-
-            @Override
-            public void onError(FacebookException exception) {
-                LogUtil.log(this, "Facebook login onError");
-            }
-        });
-
-        AccessToken.refreshCurrentAccessTokenAsync(new AccessToken.AccessTokenRefreshCallback() {
-            @Override
-            public void OnTokenRefreshed(AccessToken accessToken) {
-                System.out.println("Facebook Refresh succeed");
-                AccessToken.setCurrentAccessToken(accessToken);
-                if ( AccessToken.getCurrentAccessToken() != null) {
-                    System.out.println("Facebook User is logged in");
-                    share();
-
-                } else {
-                    System.out.println("Facebook User is not logged in");
-                }
-            }
-
-            @Override
-            public void OnTokenRefreshFailed(FacebookException exception) {
-                System.out.println("Facebook Refresh failed");
-            }
-        });
 
         searchBook();
 
         UiUtil.increaseTouchArea(ePubView, seekBar);
-    }
-
-
-//        LoginManager.getInstance().registerCallback(callbackManager,
-//                new FacebookCallback<LoginResult>() {
-//                    @Override
-//                    public void onSuccess(LoginResult loginResult) {
-//                        accessToken = loginResult.getAccessToken();
-//                        LogUtil.log(this, "Facebook login onSuccess");
-//                    }
-//
-//                    @Override
-//                    public void onCancel() {
-//                        LogUtil.log(this, "Facebook login onCancel");
-//                    }
-//
-//                    @Override
-//                    public void onError(FacebookException exception) {
-//                        LogUtil.log(this, "Facebook login onError");
-//                    }
-//                });
-
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        callbackManager.onActivityResult(requestCode, resultCode, data);
     }
 
 
@@ -2682,6 +2550,9 @@ public class BookViewActivity extends Activity implements BookSettingMenuFragmen
             } else if (arg.getId() == 6004) {
                 hideHighlightBox();
                 if (!rv.isPaging()) showNoteBox();
+            } else if (arg.getId() == 6005){
+                Toast.makeText(BookViewActivity.this, "Share on facebook", Toast.LENGTH_SHORT).show();
+                ShareUtil.shareToFacebook(BookViewActivity.this, "https://pelephone.getbooks.co.il/dev/on-sale");
             }
 
             int color;

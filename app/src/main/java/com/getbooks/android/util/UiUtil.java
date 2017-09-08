@@ -20,6 +20,7 @@ import android.widget.Toast;
 
 import com.getbooks.android.Const;
 import com.getbooks.android.R;
+import com.getbooks.android.model.enums.BookState;
 import com.getbooks.android.reader.UnderlinedTextView;
 import com.getbooks.android.skyepubreader.BookViewActivity;
 import com.getbooks.android.ui.activities.LibraryActivity;
@@ -147,7 +148,7 @@ public class UiUtil {
                                               String bookTitle, String author, String bookName,
                                               double position, boolean doubledPaged, int transitionType,
                                               boolean globalPagination, boolean rtl, boolean  verticalWriting,
-                                              String directoryPath, String bookSku, int userId) {
+                                              String directoryPath, String bookSku, int userId, boolean isInternalBook) {
 
         Intent intent = new Intent(context, tClass);
         intent.putExtra(Const.BOOK_CODE, bookCode);
@@ -163,6 +164,7 @@ public class UiUtil {
         intent.putExtra(Const.DIRECTORY_PATH, directoryPath);
         intent.putExtra(Const.BOOK_SKU, bookSku);
         intent.putExtra(Const.USER_ID, userId);
+        intent.putExtra(Const.IS_INTERNAL_BOOK, isInternalBook);
         context.startActivity(intent);
     }
 

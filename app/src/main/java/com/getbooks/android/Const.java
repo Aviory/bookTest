@@ -9,15 +9,16 @@ public final class Const {
     // Api constants
 //    public static final String BASE_URL_PELEPHONE_API = "https://pelephone.getbooks.co.il/dev/?";
     public static final String BASE_URL_PELEPHONE_API = "https://www.malikro.co.il/dev/?";
-    //    public static final String BASE_URL_API_ARY = "https://pelephone.getbooks.co.il/dev/api/rest/";
+//        public static final String BASE_URL_API_ARY = "https://pelephone.getbooks.co.il/dev/api/rest/";
     public static final String BASE_URL_API_ARY = "https://www.malikro.co.il/dev/api/rest/";
     public static final String WEBSITECODE = "aff_pelephone";
 
 
     //Authorization constant
-//    public static final String AUTH_URL = "https://pelephone.getbooks.co.il/dev/customer/account/login/";
-    public static final String AUTH_URL = "http://login.malikro.co.il/";
-    public static final String REDIRECT_URL = "https://www.malikro.co.il/dev/customer/account/";
+//    public static final String AUTH_URL = "https://pelephone.getbooks.co.il/";
+    public static final String AUTH_URL = "https://www.malikro.co.il/dev/customer/account/login/";
+//    public static final String AUTH_URL = "view-source:http://login.malikro.co.il/";
+    public static final String REDIRECT_URL = "https://www.malikro.co.il/dev/customer/account/login/";
 
 
     //Shared preference constants
@@ -52,6 +53,7 @@ public final class Const {
     public static final String DIRECTORY_PATH = "directoryPath";
     public static final String BOOK_SKU = "bookSku";
     public static final String USER_ID = "userId";
+    public static final String IS_INTERNAL_BOOK = "isInternal";
 
 
     //right menu const
