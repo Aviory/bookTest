@@ -39,6 +39,7 @@ import com.getbooks.android.util.DateUtil;
 import com.getbooks.android.util.FacebookUtil;
 import com.getbooks.android.util.FileUtil;
 import com.getbooks.android.util.LogUtil;
+import com.getbooks.android.util.UiUtil;
 import com.skytree.epub.Book;
 import com.skytree.epub.BookmarkListener;
 import com.skytree.epub.Caret;
@@ -1663,8 +1664,6 @@ public class BookViewActivity extends Activity implements BookSettingMenuFragmen
 
 
     public void hideSearchBox() {
-        searchBox.setVisibility(View.INVISIBLE);
-        searchBox.setVisibility(View.GONE);
         isBoxesShown = false;
         this.hideOutsideButton();
         rv.stopSearch();
@@ -2439,6 +2438,8 @@ public class BookViewActivity extends Activity implements BookSettingMenuFragmen
         });
 
         searchBook();
+
+        UiUtil.increaseTouchArea(ePubView, seekBar);
     }
 
 
