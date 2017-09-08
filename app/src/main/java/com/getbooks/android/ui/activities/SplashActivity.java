@@ -3,7 +3,9 @@ package com.getbooks.android.ui.activities;
 import android.os.Bundle;
 import android.os.Handler;
 
+import com.facebook.BuildConfig;
 import com.facebook.FacebookSdk;
+import com.facebook.LoggingBehavior;
 import com.facebook.appevents.AppEventsLogger;
 import com.getbooks.android.Const;
 import com.getbooks.android.R;
@@ -18,6 +20,11 @@ public class SplashActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         FacebookSdk.sdkInitialize(getApplicationContext());
         AppEventsLogger.activateApp(this);
+
+        if (BuildConfig.DEBUG) { // todo - this if only for debag
+            FacebookSdk.setIsDebugEnabled(true);
+            FacebookSdk.addLoggingBehavior(LoggingBehavior.INCLUDE_ACCESS_TOKENS);
+        }
         startTheActivity(AuthorizationActivity.class);
     }
 
