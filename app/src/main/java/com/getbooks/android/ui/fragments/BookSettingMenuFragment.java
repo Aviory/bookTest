@@ -24,6 +24,7 @@ import com.getbooks.android.R;
 import com.getbooks.android.events.Events;
 import com.getbooks.android.skyepubreader.CustomFont;
 import com.getbooks.android.ui.adapter.FontsBookListAdapter;
+import com.getbooks.android.util.UiUtil;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -111,6 +112,7 @@ public class BookSettingMenuFragment extends Fragment implements View.OnTouchLis
         mFontsBookListAdapter = new FontsBookListAdapter(fonts, getActivity());
         mFontsBookListAdapter.setBookFontUpdateChangeListener(this);
         mListBookFonts.setAdapter(mFontsBookListAdapter);
+        UiUtil.increaseTouchArea(mRootLayoutBookSettings, mSeemBarBrightness);
         return view;
     }
 

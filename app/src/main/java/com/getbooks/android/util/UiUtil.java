@@ -7,12 +7,14 @@ import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.graphics.Rect;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.TouchDelegate;
 import android.view.View;
 import android.widget.Toast;
 
@@ -171,6 +173,36 @@ public class UiUtil {
 
     public static int getRandomGeneratedBookCode() {
         return new Random().nextInt(Integer.MAX_VALUE);
+    }
+
+    public static void increaseTouchArea(View parent, View child){
+        // increase the click area with delegateArea, can be used in + create
+        // icon
+        final View chicld = child;
+        parent.post(new Runnable() {
+            public void run() {
+                // Post in the parent's message queue to make sure the
+                // parent
+                // lays out its children before we call getHitRect()
+                Rect delegateArea = new Rect();
+                View delegate = chicld;
+                delegate.getHitRect(delegateArea);
+                delegateArea.top -= 600;
+                delegateArea.bottom += 600;
+                delegateArea.left -= 600;
+                delegateArea.right += 600;
+                TouchDelegate expandedArea = new TouchDelegate(delegateArea,
+                        delegate);
+                // give the delegate to an ancestor of the view we're
+                // delegating the
+                // area to
+                if (View.class.isInstance(delegate.getParent())) {
+                    ((View) delegate.getParent())
+                            .setTouchDelegate(expandedArea);
+                }
+            };
+        });
+
     }
 
 

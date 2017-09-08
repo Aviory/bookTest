@@ -24,6 +24,7 @@ import com.getbooks.android.ui.fragments.BookSettingMenuFragment;
 import com.getbooks.android.ui.widget.CustomSeekBar;
 import com.getbooks.android.util.DateUtil;
 import com.getbooks.android.util.FileUtil;
+import com.getbooks.android.util.UiUtil;
 import com.skytree.epub.Book;
 import com.skytree.epub.BookmarkListener;
 import com.skytree.epub.Caret;
@@ -1605,8 +1606,6 @@ public class BookViewActivity extends Activity implements BookSettingMenuFragmen
 
 
     public void hideSearchBox() {
-        searchBox.setVisibility(View.INVISIBLE);
-        searchBox.setVisibility(View.GONE);
         isBoxesShown = false;
         this.hideOutsideButton();
         rv.stopSearch();
@@ -2333,6 +2332,8 @@ public class BookViewActivity extends Activity implements BookSettingMenuFragmen
         this.makeLayout();
 
         searchBook();
+
+        UiUtil.increaseTouchArea(ePubView, seekBar);
     }
 
 
