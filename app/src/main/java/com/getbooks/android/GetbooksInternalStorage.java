@@ -62,7 +62,7 @@ public class GetbooksInternalStorage extends AsyncTask<Void, Void, List<File>>{
 //            if(mLibrary!=null){
 //                for (File file:mInternalLibrary) {
 //                    BookModel tmp = new BookModel();
-//                    tmp.setBookName(file.getName());
+//                    tmp.setBookSku(file.getName());
 //                    tmp.setBookState(BookState.INTERNAL_BOOK.getState());
 //                    mLibrary.add(tmp);
 //                }

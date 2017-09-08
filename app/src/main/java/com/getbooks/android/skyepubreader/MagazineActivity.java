@@ -332,7 +332,7 @@ public class MagazineActivity extends Activity {
         
 		
 //		fv.setBaseDirectory(SkySetting.getStorageDirectory() + "/books");
-//      fv.setBookName(fileName);
+//      fv.setBookSku(fileName);
 		// Set the path of book to open.  since 6.0
 		fv.setBookPath(SkySetting.getStorageDirectory() + "/books/"+fileName);
 		// Set the bookCode to identifiy book file. 

@@ -23,6 +23,7 @@ import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -299,6 +300,7 @@ public class BooksDataBase {
                 BookModel bookModel = new BookModel();
                 bookModel.setUserId(cursor.getInt(cursor.getColumnIndex(BooksDBContract.BookDetail.USER_ID)));
                 bookModel.setBookSku(cursor.getString(cursor.getColumnIndex(BooksDBContract.BookDetail.BOOK_SKU)));
+                bookModel.position = cursor.getDouble(cursor.getColumnIndex(BooksDBContract.BookDetail.POSITION));
                 bookModel.bookCode = cursor.getInt(cursor.getColumnIndex(BooksDBContract.BookDetail.BOOK_CODE));
                 bookModel.fileName = (cursor.getString(cursor.getColumnIndex(BooksDBContract.BookDetail.BOOK_NAME)));
                 bookModel.coverUrl = (cursor.getString(cursor.getColumnIndex(BooksDBContract.BookDetail.BOOK_IMAGE_DOWNLOAD_URL)));
@@ -414,8 +416,10 @@ public class BooksDataBase {
 
     protected void deleteBook(BookModel bookModel) {
         mSqLiteDatabase = mBookDBHelper.getReadableDatabase();
-        String query = BooksDBContract.BookDetail.BOOK_SKU + " =?";
-        mSqLiteDatabase.delete(Tables.BOOK_DETAILS, query, new String[]{String.valueOf(bookModel.getBookSku())});
+        String query = BooksDBContract.BookDetail.BOOK_SKU + " =?" + " AND " +
+                BooksDBContract.BookDetail.USER_ID + " =?";
+        mSqLiteDatabase.delete(Tables.BOOK_DETAILS, query,
+                new String[]{String.valueOf(bookModel.getBookSku()), String.valueOf(bookModel.getUserId())});
     }
 
 
@@ -578,7 +582,7 @@ public class BooksDataBase {
 
     protected int getBookmarkCode(PageInformation pi, int userId, String bookSku) {
         int bookCode = pi.bookCode;
-        BookInformation bi = this.fetchBookInformation(bookCode);
+        BookInformation bi = this.fetchBookInformation(bookCode, userId, bookSku);
         if (bi == null) return -1;
         boolean isFixedLayout = bi.isFixedLayout;
         if (!isFixedLayout) {
@@ -616,10 +620,13 @@ public class BooksDataBase {
         return -1;
     }
 
-    protected BookInformation fetchBookInformation(int bookCode) {
+    protected BookInformation fetchBookInformation(int bookCode, int userId, String bookSku) {
         BookInformation bi = null;
-        String condition = String.format(Locale.US, " WHERE BookCode=%d", bookCode);
-        String selectSql = "SELECT* from " + Tables.BOOK_DETAILS + condition;
+        String condition = String.format(Locale.US, " WHERE " +
+                BooksDBContract.BookDetail.BOOK_CODE + "=%d" + " AND " +
+                BooksDBContract.BookDetail.USER_ID + "=%d" + " AND " +
+                BooksDBContract.BookDetail.BOOK_SKU + "='%s'", bookCode, userId, bookSku);
+        String selectSql = "SELECT * FROM " + Tables.BOOK_DETAILS + condition;
         Cursor cursor = mSqLiteDatabase.rawQuery(selectSql, null);
         if (cursor != null) {
             while (cursor.moveToNext()) {
@@ -634,6 +641,7 @@ public class BooksDataBase {
                 bi.language = cursor.getString(cursor.getColumnIndex(BooksDBContract.BookDetail.BOOK_LANGUAGE));
                 bi.fileName = cursor.getString(cursor.getColumnIndex(BooksDBContract.BookDetail.BOOK_NAME));
                 bi.position = cursor.getDouble(cursor.getColumnIndex(BooksDBContract.BookDetail.POSITION));
+                Log.d("position", String.valueOf(bi.position));
                 bi.isFixedLayout = cursor.getInt(cursor.getColumnIndex(BooksDBContract.BookDetail.IS_FIXED_LAYOUT)) != 0;
                 bi.isGlobalPagination = cursor.getInt(cursor.getColumnIndex(BooksDBContract.BookDetail.IS_GLOBAL_PAGINATION)) != 0;
 //                bi.isDownloaded = cursor.getInt(cursor.getColumnIndex(BooksDBContract.BookDetail.BOOK_SKU)) != 0;
@@ -682,9 +690,29 @@ public class BooksDataBase {
         return pis;
     }
 
-    protected PagingInformation fetchPagingInformation(PagingInformation pgi) {
-        String sql = String.format(Locale.US, "SELECT * FROM Paging WHERE BookCode=%d AND ChapterIndex=%d AND FontName='%s' AND FontSize=%d AND LineSpacing=%d AND ABS(Width-%d)<=2 AND ABS(Height-%d)<=2 AND IsPortrait=%d AND IsDoublePagedForLandscape=%d",
-                pgi.bookCode, pgi.chapterIndex, pgi.fontName, pgi.fontSize, pgi.lineSpacing, pgi.width, pgi.height, pgi.isPortrait ? 1 : 0, pgi.isDoublePagedForLandscape ? 1 : 0);
+    protected PagingInformation fetchPagingInformation(PagingInformation pgi, int userId, String bookSku) {
+        String sql = String.format(Locale.US, "SELECT * FROM " + Tables.BOOK_PAGING + " WHERE " +
+                        BooksDBContract.BookPaging.BOOK_CODE + "=%d" + " AND " +
+                        BooksDBContract.BookPaging.CHAPTER_INDEX + "=%d" + " AND " +
+                        BooksDBContract.BookPaging.FONT_NAME + "='%s'" + " AND " +
+                        BooksDBContract.BookPaging.FONT_SIZE + "=%d" + " AND " +
+                        BooksDBContract.BookPaging.LINE_SPACING + "=%d" + " AND " +
+                        " ABS(Width-%d)<=2 AND ABS(Height-%d)<=2 AND " +
+                        BooksDBContract.BookPaging.IS_PORTRAIT + "=%d" + " AND " +
+                        BooksDBContract.BookPaging.IS_DOUBLE_PAGED_FOR_LANDSCAPE + "=%d" + " AND " +
+                        BooksDBContract.BookPaging.USER_ID + "=%d" + " AND " +
+                        BooksDBContract.BookPaging.BOOK_SKU + "='%s'"
+                , pgi.bookCode
+                , pgi.chapterIndex
+                , pgi.fontName
+                , pgi.fontSize
+                , pgi.lineSpacing
+                , pgi.width
+                , pgi.height
+                , pgi.isPortrait ? 1 : 0
+                , pgi.isDoublePagedForLandscape ? 1 : 0
+                , userId
+                , bookSku);
 
 
         Cursor result = mSqLiteDatabase.rawQuery(sql, null);
@@ -711,8 +739,6 @@ public class BooksDataBase {
 
     protected void toggleBookmark(PageInformation pi, int userId, String bookSku) {
         int code = this.getBookmarkCode(pi, userId, bookSku);
-        Log.d("database", String.valueOf(code));
-        Log.d("database", String.valueOf(userId) + " " + bookSku);
         if (code == -1) { // if not exist
             this.insertBookmark(pi, userId, bookSku);
         } else {
@@ -722,8 +748,6 @@ public class BooksDataBase {
 
     protected boolean isBookmarked(PageInformation pi, int userId, String bookSku) {
         int code = this.getBookmarkCode(pi, userId, bookSku);
-        Log.d("database isBookMarkedC", String.valueOf(code));
-        Log.d("database", String.valueOf(userId) + " " + bookSku);
         if (code == -1) {
             return false;
         } else {
@@ -732,12 +756,21 @@ public class BooksDataBase {
     }
 
     // Using db method
-    protected void updatePosition(int bookCode, double position) {
+    protected void updatePosition(int bookCode, double position, int userId, String bookSku, String author) {
         ContentValues values = new ContentValues();
+        values.put(BooksDBContract.BookDetail.BOOK_IS_FIRST_OPEN, false);
         values.put(BooksDBContract.BookDetail.POSITION, position);
         values.put(BooksDBContract.BookDetail.LAST_READ, getDateString());
+        values.put(BooksDBContract.BookDetail.BOOK_AUTHORS, author);
+        Calendar calendar = DateUtil.getDate(new Date().getTime());
+        values.put(BooksDBContract.BookDetail.READ_DATE_TIME, calendar.getTimeInMillis());
         values.put(BooksDBContract.BookDetail.IS_READ, 1);
-        String where = String.format(Locale.US, "BookCode=%d", bookCode);
+        String where = String.format(Locale.US, BooksDBContract.BookDetail.BOOK_CODE + "=%d" + " AND " +
+                        BooksDBContract.BookDetail.USER_ID + "=%d" + " AND " +
+                        BooksDBContract.BookDetail.BOOK_SKU + "='%s'",
+                bookCode,
+                userId,
+                bookSku);
         mSqLiteDatabase.update(Tables.BOOK_DETAILS, values, where, null);
     }
 
@@ -774,9 +807,14 @@ public class BooksDataBase {
         mSqLiteDatabase.insert(Tables.BOOK_DETAILS, null, values);
     }
 
-    public Highlights fetchHighlights(int bookCode, int chapterIndex) {
+    protected Highlights fetchHighlights(int bookCode, int chapterIndex, int userId, String bookSku) {
         Highlights results = new Highlights();
-        String selectSql = String.format(Locale.US, "SELECT * FROM Highlight where BookCode=%d and ChapterIndex=%d ORDER BY ChapterIndex", bookCode, chapterIndex);
+        String selectSql = String.format(Locale.US, "SELECT * FROM " + Tables.BOOK_HIGHLIGHT + " WHERE " +
+                BooksDBContract.BookHighlights.BOOK_CODE + "=%d" + " AND " +
+                BooksDBContract.BookHighlights.CHAPTER_INDEX + "=%d" + " AND " +
+                BooksDBContract.BookHighlights.USER_ID + "=%d" + " AND " +
+                BooksDBContract.BookHighlights.BOOK_SKU + "='%s'" + " ORDER BY " +
+                BooksDBContract.BookHighlights.CHAPTER_INDEX, bookCode, chapterIndex, userId, bookSku);
         Cursor cursor = mSqLiteDatabase.rawQuery(selectSql, null);
         while (cursor.moveToNext()) {
             Highlight highlight = new Highlight();
@@ -799,9 +837,13 @@ public class BooksDataBase {
         return results;
     }
 
-    public Highlights fetchAllHighlights(int bookCode) {
+    protected Highlights fetchAllHighlights(int bookCode, int userId, String bookSku) {
         Highlights results = new Highlights();
-        String selectSql = String.format(Locale.US, "SELECT * FROM Highlight where BookCode=%d ORDER BY ChapterIndex", bookCode);
+        String selectSql = String.format(Locale.US, "SELECT * FROM " + Tables.BOOK_HIGHLIGHT +
+                " WHERE " + BooksDBContract.BookHighlights.BOOK_CODE + "=%d" + " AND " +
+                BooksDBContract.BookHighlights.USER_ID + "=%d" + " AND " +
+                BooksDBContract.BookHighlights.BOOK_SKU + "='%s'" + " ORDER BY " +
+                BooksDBContract.BookHighlights.CHAPTER_INDEX, bookCode, userId, bookSku);
         Cursor cursor = mSqLiteDatabase.rawQuery(selectSql, null);
         while (cursor.moveToNext()) {
             Highlight highlight = new Highlight();
@@ -831,12 +873,14 @@ public class BooksDataBase {
     }
 
     // if existing pagingInformation found, update it.
-    public void insertPagingInformation(PagingInformation pgi) {
-        PagingInformation tgi = this.fetchPagingInformation(pgi);
+    protected void insertPagingInformation(PagingInformation pgi, int userId, String bookSku) {
+        PagingInformation tgi = this.fetchPagingInformation(pgi, userId, bookSku);
         if (tgi != null) {
             this.deletePagingInformation(tgi);
         }
         ContentValues values = new ContentValues();
+        values.put(BooksDBContract.BookPaging.USER_ID, userId);
+        values.put(BooksDBContract.BookPaging.BOOK_SKU, bookSku);
         values.put(BooksDBContract.BookPaging.BOOK_CODE, pgi.bookCode);
         values.put(BooksDBContract.BookPaging.CHAPTER_INDEX, pgi.chapterIndex);
         values.put(BooksDBContract.BookPaging.NUMBER_OF_PAGES_IN_CHAPTER, pgi.numberOfPagesInChapter);
@@ -849,31 +893,43 @@ public class BooksDataBase {
         values.put(BooksDBContract.BookPaging.HORIZONTAL_GAP_RATIO, pgi.horizontalGapRatio);
         values.put(BooksDBContract.BookPaging.IS_PORTRAIT, pgi.isPortrait ? 1 : 0);
         values.put(BooksDBContract.BookPaging.IS_DOUBLE_PAGED_FOR_LANDSCAPE, pgi.isDoublePagedForLandscape ? 1 : 0);
-        mSqLiteDatabase.insert("Paging", null, values);
+        mSqLiteDatabase.insert(Tables.BOOK_PAGING, null, values);
     }
 
-    public void deleteHighlight(Highlight highlight) {
-        String sql = String.format(Locale.US, "DELETE FROM Highlight where BookCode=%d and ChapterIndex=%d and StartIndex=%d and StartOffset=%d and EndIndex=%d and EndOffset=%d"
+    protected void deleteHighlight(Highlight highlight, int userId, String bookSku) {
+        String sql = String.format(Locale.US, "DELETE FROM " + Tables.BOOK_HIGHLIGHT + " WHERE " +
+                        BooksDBContract.BookHighlights.BOOK_CODE + "=%d" + " AND " +
+                        BooksDBContract.BookHighlights.CHAPTER_INDEX + "=%d" + " AND " +
+                        BooksDBContract.BookHighlights.START_INDEX + "=%d" + " AND " +
+                        BooksDBContract.BookHighlights.START_OFFSET + "=%d" + " AND " +
+                        BooksDBContract.BookHighlights.END_INDEX + "=%d" + " AND " +
+                        BooksDBContract.BookHighlights.END_OFFSET + "=%d" + " AND " +
+                        BooksDBContract.BookHighlights.USER_ID + "=%d" + " AND " +
+                        BooksDBContract.BookHighlights.BOOK_SKU + "='%s'"
                 , highlight.bookCode
                 , highlight.chapterIndex
                 , highlight.startIndex
                 , highlight.startOffset
                 , highlight.endIndex
-                , highlight.endOffset);
+                , highlight.endOffset
+                , userId
+                , bookSku);
         mSqLiteDatabase.execSQL(sql);
         Log.w("EPub", sql);
     }
 
-    public void deleteHighlightByCode(int code) {
+    protected void deleteHighlightByCode(int code) {
         String sql = String.format(Locale.US, "DELETE FROM Highlight where Code=%d", code);
         mSqLiteDatabase.execSQL(sql);
         Log.w("EPub", sql);
     }
 
     // Using db method
-    public void insertHighlight(Highlight highlight) {
+    protected void insertHighlight(Highlight highlight, int userId, String bookSku) {
         String dateString = this.getDateString();
         ContentValues values = new ContentValues();
+        values.put(BooksDBContract.BookHighlights.USER_ID, userId);
+        values.put(BooksDBContract.BookHighlights.BOOK_SKU, bookSku);
         values.put(BooksDBContract.BookHighlights.BOOK_CODE, highlight.bookCode);
         values.put(BooksDBContract.BookHighlights.CHAPTER_INDEX, highlight.chapterIndex);
         values.put(BooksDBContract.BookHighlights.START_INDEX, highlight.startIndex);
@@ -886,13 +942,15 @@ public class BooksDataBase {
         values.put(BooksDBContract.BookHighlights.IS_NOTE, highlight.isNote ? 1 : 0);
         values.put(BooksDBContract.BookHighlights.CREATED_DATE, dateString);
         values.put(BooksDBContract.BookHighlights.STYLE, highlight.style);
-        mSqLiteDatabase.insert("Highlight", null, values);
+        mSqLiteDatabase.insert(Tables.BOOK_HIGHLIGHT, null, values);
     }
 
     // Update is 1 Based
     // using db method
-    public void updateHighlight(Highlight highlight) {
+    public void updateHighlight(Highlight highlight, int userId, String bookSku) {
         ContentValues values = new ContentValues();
+        values.put(BooksDBContract.BookHighlights.USER_ID, userId);
+        values.put(BooksDBContract.BookHighlights.BOOK_SKU, bookSku);
         values.put(BooksDBContract.BookHighlights.START_INDEX, highlight.startIndex);
         values.put(BooksDBContract.BookHighlights.START_OFFSET, highlight.startOffset);
         values.put(BooksDBContract.BookHighlights.END_INDEX, highlight.endIndex);
@@ -902,14 +960,24 @@ public class BooksDataBase {
         values.put(BooksDBContract.BookHighlights.NOTE, highlight.note);
         values.put(BooksDBContract.BookHighlights.IS_NOTE, highlight.isNote ? 1 : 0);
         values.put(BooksDBContract.BookHighlights.STYLE, highlight.style);
-        String where = String.format(Locale.US, "BookCode=%d and ChapterIndex=%d and StartIndex=%d and StartOffset=%d and EndIndex=%d and EndOffset=%d"
+        String where = String.format(Locale.US,
+                BooksDBContract.BookHighlights.BOOK_CODE + "=%d" + " AND " +
+                        BooksDBContract.BookHighlights.CHAPTER_INDEX + "=%d" + " AND " +
+                        BooksDBContract.BookHighlights.START_INDEX + "=%d" + " AND " +
+                        BooksDBContract.BookHighlights.START_OFFSET + "=%d" + " AND " +
+                        BooksDBContract.BookHighlights.END_INDEX + "=%d" + " AND " +
+                        BooksDBContract.BookHighlights.END_OFFSET + "=%d" + " AND " +
+                        BooksDBContract.BookHighlights.USER_ID + "=%d" + " AND " +
+                        BooksDBContract.BookHighlights.BOOK_SKU + "='%s'"
                 , highlight.bookCode
                 , highlight.chapterIndex
                 , highlight.startIndex
                 , highlight.startOffset
                 , highlight.endIndex
-                , highlight.endOffset);
-        mSqLiteDatabase.update("Highlight", values, where, null);
+                , highlight.endOffset
+                , userId
+                , bookSku);
+        mSqLiteDatabase.update(Tables.BOOK_HIGHLIGHT, values, where, null);
     }
 
     public void deleteRecursive(File fileOrDirectory) {

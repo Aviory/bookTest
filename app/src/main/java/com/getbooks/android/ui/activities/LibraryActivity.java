@@ -16,7 +16,6 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -37,7 +36,6 @@ import com.getbooks.android.R;
 import com.getbooks.android.api.Queries;
 import com.getbooks.android.api.QueriesTexts;
 import com.getbooks.android.db.BookDataBaseLoader;
-import com.getbooks.android.encryption.Decryption;
 import com.getbooks.android.events.Events;
 import com.getbooks.android.model.BookModel;
 import com.getbooks.android.model.DeletingBookQueue;
@@ -78,9 +76,7 @@ import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
@@ -573,7 +569,8 @@ public class LibraryActivity extends BaseActivity implements Queries.CallBack,
                                         mLibrary.get(position).fileName + Const.DECRYPTED);
                                 UiUtil.openViewReaderActivity(getAct(), BookViewActivity.class, mLibrary.get(position).bookCode,
                                         mLibrary.get(position).fileName, "Author", mLibrary.get(position).fileName + Const.DECRYPTED,
-                                        (double) -1.0f, false, 1, false, true, true, mDirectoryPath, mLibrary.get(position).getBookSku(),
+                                        mLibrary.get(position).position, false, 1, false, true, true,
+                                        mDirectoryPath, mLibrary.get(position).getBookSku(),
                                         mLibrary.get(position).getUserId());
                             } catch (IOException e) {
                                 e.printStackTrace();
@@ -597,7 +594,7 @@ public class LibraryActivity extends BaseActivity implements Queries.CallBack,
                                         mLibrary.get(position).fileName + Const.DECRYPTED);
                                 UiUtil.openViewReaderActivity(getAct(), BookViewActivity.class, mLibrary.get(position).bookCode,
                                         mLibrary.get(position).fileName, "Author", mLibrary.get(position).fileName + Const.DECRYPTED,
-                                        (double) -1.0f, false, 1, false, true, true, mDirectoryPath, mLibrary.get(position).getBookSku(),
+                                        mLibrary.get(position).position, false, 1, false, true, true, mDirectoryPath, mLibrary.get(position).getBookSku(),
                                         mLibrary.get(position).getUserId());
                             } catch (IOException e) {
                                 e.printStackTrace();
@@ -647,11 +644,14 @@ public class LibraryActivity extends BaseActivity implements Queries.CallBack,
         if (!mDeletingBookQueue.isDeletingQueueEmpty()) {
             switch (currentDownloadingBookModel.getBookState()) {
                 case CLOUD_BOOK:
-                    if (currentDownloadingBookModel.isIsBookRented())
+                    if (currentDownloadingBookModel.isIsBookRented()) {
+                        Queries mQueries = new Queries();
                         mQueries.returnRentedBook(Prefs.getToken(this), this, currentDownloadingBookModel,
                                 mLibrary, mShelvesAdapter);
+                    }
                     break;
                 case RENTED_BOOK:
+                    Queries mQueries = new Queries();
                     mQueries.returnRentedBook(Prefs.getToken(this), this, currentDownloadingBookModel,
                             mLibrary, mShelvesAdapter);
                     break;
@@ -820,10 +820,12 @@ public class LibraryActivity extends BaseActivity implements Queries.CallBack,
     @Subscribe
     public void onMessageEvent(Events.UpDateLibrary upDateLibrary) {
         for (BookModel bookModel : mLibrary) {
-            if (bookModel.fileName.equals(upDateLibrary.getBookName())) {
+            if (bookModel.getBookSku().equals(upDateLibrary.getBookSku())) {
                 bookModel.setIsBookFirstOpen(false);
+                bookModel.position = upDateLibrary.getPosition();
                 bookModel.setReadDateTime(upDateLibrary.getDateLastReading());
-                mShelvesAdapter.notifyDataSetChanged();
+                bookModel.setBookAuthors(upDateLibrary.getAuthor());
+                mShelvesAdapter.notifyItemChanged(bookModel.getViewPosition());
             }
         }
     }

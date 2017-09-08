@@ -16,7 +16,6 @@ import java.util.Calendar;
 public class BookModel extends BookInformation implements Parcelable {
     private String mBookAuthors;
     private int mUserId;
-//    private String mBookName;
     private String mBookImage;
     private String mBookSku;
     private String mBookContentID;
@@ -31,8 +30,6 @@ public class BookModel extends BookInformation implements Parcelable {
     private Calendar mCreatedDate;//
     private boolean mIsBookAtTheEnd;
     private int mLastPage;
-//    private String mImageDownloadLink;
-//    private String mBookDownloadLink;
     private BookState mBookState;
     private int mProgress = 0;
     private int mViewPosition = 0;
@@ -95,11 +92,11 @@ public class BookModel extends BookInformation implements Parcelable {
         }
     };
 
-//    public String getBookName() {
+//    public String getBookSku() {
 //        return mBookName;
 //    }
 //
-//    public void setBookName(String bookName) {
+//    public void setBookSku(String bookName) {
 //        this.mBookName = bookName;
 //    }
 
@@ -335,9 +332,26 @@ public class BookModel extends BookInformation implements Parcelable {
         this.mLastReadingParagraph = lastReadingParagraph;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
 
+        BookModel bookModel = (BookModel) o;
 
-//
+        if (mUserId != bookModel.mUserId) return false;
+        return mBookSku.equals(bookModel.mBookSku);
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = mUserId;
+        result = 31 * result + mBookSku.hashCode();
+        return result;
+    }
+
+    //
 //    @Override
 //    public boolean equals(Object o) {
 //        if (this == o) return true;
