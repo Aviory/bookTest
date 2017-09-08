@@ -16,6 +16,7 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ImageView;
 
+import com.getbooks.android.Const;
 import com.getbooks.android.R;
 import com.getbooks.android.ui.widget.ArialNormalTextView;
 
@@ -41,7 +42,7 @@ public class AlertDialogInstructions extends DialogFragment {
         WebSettings webSettings = myBrowser.getSettings();
         webSettings.setJavaScriptEnabled(true);
         myBrowser.setWebViewClient(new WebViewClient());
-        myBrowser.loadUrl("https://pelephone.getbooks.co.il/dev/how-it-works");
+        myBrowser.loadUrl(Const.BOOK_INSTRUCTIONS_DIALOG_URL);
 
         close = (ImageView) v.findViewById(R.id.img_close_catalog);
         close.setVisibility(View.VISIBLE);

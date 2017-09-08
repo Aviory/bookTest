@@ -616,12 +616,17 @@ public class LibraryActivity extends BaseActivity implements Queries.CallBack,
                         }
                         break;
                     case INTERNAL_BOOK:
-                        UiUtil.openViewReaderActivity(getAct(), BookViewActivity.class, mLibrary.get(position).bookCode,
-                                mLibrary.get(position).fileName, "Author",
-                                mLibrary.get(position).fileName,
-                                mLibrary.get(position).position, false, 1, false, true, true,
-                                mLibrary.get(position).getFilePath().replace(mLibrary.get(position).fileName, ""), "",
-                                mLibrary.get(position).getUserId());
+                        if (mDownloadInfo.getDownloadState().equals(DownloadInfo.DownloadState.SELECTED_DELETING_BOOKS)) {
+                            currentDownloadingBookModel = mLibrary.get(position);
+                            mShelvesAdapter.setSelectedDeletingBook(position, mDownloadInfo);
+                        } else {
+                            UiUtil.openViewReaderActivity(getAct(), BookViewActivity.class, mLibrary.get(position).bookCode,
+                                    mLibrary.get(position).fileName, "Author",
+                                    mLibrary.get(position).fileName,
+                                    mLibrary.get(position).position, false, 1, false, true, true,
+                                    mLibrary.get(position).getFilePath().replace(mLibrary.get(position).fileName, ""), "",
+                                    mLibrary.get(position).getUserId());
+                        }
                         break;
                 }
             }
