@@ -64,7 +64,7 @@ public class AuthorizationFragment extends BaseFragment {
 
 
     private void setUpWebView() {
-//        clearHash();
+        clearHash();
         CookieManager.getInstance().removeAllCookie();
         mAuthorizationWebView.setHorizontalScrollBarEnabled(false);
         mAuthorizationWebView.setVerticalScrollBarEnabled(false);
@@ -147,8 +147,8 @@ public class AuthorizationFragment extends BaseFragment {
 
         @Override
         public void onPageFinished(WebView view, String url) {
-            super.onPageFinished(view, url);
-            LogUtil.log(this, url + "last");
+            super.onPageFinished(view, "onPageFinished" + url);
+            LogUtil.log(this, url);
             String cookies = CookieManager.getInstance().getCookie(url);
             if (null != getAct())
                 Prefs.saveCookieUserSession(getAct(), cookies);

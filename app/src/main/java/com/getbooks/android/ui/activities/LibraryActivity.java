@@ -22,14 +22,6 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
-import com.facebook.AccessToken;
-import com.facebook.CallbackManager;
-import com.facebook.FacebookCallback;
-import com.facebook.FacebookException;
-import com.facebook.FacebookSdk;
-import com.facebook.appevents.AppEventsLogger;
-import com.facebook.login.LoginManager;
-import com.facebook.login.LoginResult;
 import com.getbooks.android.Const;
 import com.getbooks.android.GetbooksInternalStorage;
 import com.getbooks.android.R;
@@ -67,6 +59,7 @@ import com.getbooks.android.util.CompareUtil;
 import com.getbooks.android.util.DateUtil;
 import com.getbooks.android.util.FileUtil;
 import com.getbooks.android.util.LogUtil;
+import com.getbooks.android.util.ShareUtil;
 import com.getbooks.android.util.UiUtil;
 
 import org.greenrobot.eventbus.EventBus;
@@ -578,7 +571,7 @@ public class LibraryActivity extends BaseActivity implements Queries.CallBack,
                                         mLibrary.get(position).fileName, "Author", mLibrary.get(position).fileName + Const.DECRYPTED,
                                         mLibrary.get(position).position, false, 1, false, true, true,
                                         mDirectoryPath, mLibrary.get(position).getBookSku(),
-                                        mLibrary.get(position).getUserId());
+                                        mLibrary.get(position).getUserId(), false);
                             } catch (IOException e) {
                                 e.printStackTrace();
                             } catch (NoSuchPaddingException e) {
@@ -603,7 +596,7 @@ public class LibraryActivity extends BaseActivity implements Queries.CallBack,
                                         mLibrary.get(position).fileName, "Author", mLibrary.get(position).fileName + Const.DECRYPTED,
                                         mLibrary.get(position).position, false, 1, false, true, true, mDirectoryPath,
                                         mLibrary.get(position).getBookSku(),
-                                        mLibrary.get(position).getUserId());
+                                        mLibrary.get(position).getUserId(), false);
                             } catch (IOException e) {
                                 e.printStackTrace();
                             } catch (NoSuchPaddingException e) {
@@ -625,7 +618,7 @@ public class LibraryActivity extends BaseActivity implements Queries.CallBack,
                                     mLibrary.get(position).fileName,
                                     mLibrary.get(position).position, false, 1, false, true, true,
                                     mLibrary.get(position).getFilePath().replace(mLibrary.get(position).fileName, ""), "",
-                                    mLibrary.get(position).getUserId());
+                                    mLibrary.get(position).getUserId(), true);
                         }
                         break;
                 }
