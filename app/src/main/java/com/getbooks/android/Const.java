@@ -57,5 +57,8 @@ public final class Const {
     public static final String SERVISE_PRIVASY_LEFT_BTN_TEXT_ID = "4984";
     public static final String ABOUT_US_TEXT_ID = "4972";
 
+    public static final String BOOK_STORY_DIALOG_URL = "https://pelephone.getbooks.co.il/dev/glibrary/bookrent/showrentbook";
+    public static final String BOOK_INSTRUCTIONS_DIALOG_URL = "https://pelephone.getbooks.co.il/dev/how-it-works";
+
 
 }

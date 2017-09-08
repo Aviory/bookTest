@@ -54,7 +54,7 @@ public class AlertDialogStory extends DialogFragment {
         String token = Prefs.getToken(getActivity());
         LogUtil.log(this, "token: "+token);
         map.put("deviceTok", token);
-        myBrowser.loadUrl("https://pelephone.getbooks.co.il/dev/glibrary/bookrent/showrentbook", map);
+        myBrowser.loadUrl(Const.BOOK_STORY_DIALOG_URL, map);
         close = (ImageView) v.findViewById(R.id.img_close_catalog);
         close.setOnClickListener(new View.OnClickListener(){
 
