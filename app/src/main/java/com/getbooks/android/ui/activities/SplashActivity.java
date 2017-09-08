@@ -3,6 +3,8 @@ package com.getbooks.android.ui.activities;
 import android.os.Bundle;
 import android.os.Handler;
 
+import com.facebook.FacebookSdk;
+import com.facebook.appevents.AppEventsLogger;
 import com.getbooks.android.Const;
 import com.getbooks.android.R;
 import com.getbooks.android.prefs.Prefs;
@@ -14,7 +16,8 @@ public class SplashActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        FacebookSdk.sdkInitialize(getApplicationContext());
+        AppEventsLogger.activateApp(this);
         startTheActivity(AuthorizationActivity.class);
     }
 

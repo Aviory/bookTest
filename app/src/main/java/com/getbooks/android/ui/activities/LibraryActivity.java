@@ -23,6 +23,14 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 import android.widget.ToggleButton;
 
+import com.facebook.AccessToken;
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.FacebookSdk;
+import com.facebook.appevents.AppEventsLogger;
+import com.facebook.login.LoginManager;
+import com.facebook.login.LoginResult;
 import com.getbooks.android.Const;
 import com.getbooks.android.GetbooksInternalStorage;
 import com.getbooks.android.R;
@@ -161,7 +169,6 @@ public class LibraryActivity extends BaseActivity implements Queries.CallBack,
     private static final String SAVE_DIRECTORY_PATH = "com.getbooks.android.ui.fragments.save_directory_path";
     private static final String SAVE_NETWORK_INFO = "com.getbooks.android.ui.fragments.save_network_info";
     private List<Text> txt_list;
-
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -356,7 +363,7 @@ public class LibraryActivity extends BaseActivity implements Queries.CallBack,
                     imgAuthorName.setChecked(false);
                     imgAddDate.setChecked(false);
                     imgReadDate.setChecked(false);
-                    initShelvesRecycler(CompareUtil.compareByAuthorName(mLibrary));
+                    initShelvesRecycler(CompareUtil.compareByBookName(mLibrary));
                 }
                 break;
             case R.id.toggle_author_name:
@@ -373,7 +380,7 @@ public class LibraryActivity extends BaseActivity implements Queries.CallBack,
                     imgBookName.setChecked(false);
                     imgAddDate.setChecked(false);
                     imgReadDate.setChecked(false);
-                    initShelvesRecycler(CompareUtil.compareByBookName(mLibrary));
+                    initShelvesRecycler(CompareUtil.compareByAuthorName(mLibrary));
                 }
                 break;
             case R.id.toggle_add_date:
@@ -497,29 +504,29 @@ public class LibraryActivity extends BaseActivity implements Queries.CallBack,
         LogUtil.log("FileUtil", mDirectoryPath);
 
 
-        GetbooksInternalStorage fileManager = new GetbooksInternalStorage();
-        fileManager.execute();
-        try {
-            List<File> mInternalLibrary = fileManager.get(2, TimeUnit.SECONDS);
-            LogUtil.log(this, "Files in ui size: " + String.valueOf(mInternalLibrary.size()));
-
-            for (File file : mInternalLibrary) {
-                LogUtil.log(this, "fileName: " + file.getName());
-                LogUtil.log(this, "filedirectory: " + file.getAbsolutePath());
-                BookModel tmp = new BookModel();
-                tmp.fileName = file.getName();
-                tmp.setBookContentID(FileUtil.getGnerationID(tmp.fileName));
-                tmp.setFilePath(file.getAbsolutePath());
-                tmp.setBookState(BookState.INTERNAL_BOOK.getState());
-                mLibrary.add(tmp);
-            }
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        } catch (TimeoutException e) {
-            e.printStackTrace();
-        }
+//        GetbooksInternalStorage fileManager = new GetbooksInternalStorage();
+//        fileManager.execute();
+//        try {
+//            List<File> mInternalLibrary = fileManager.get(2, TimeUnit.SECONDS);
+//            LogUtil.log(this, "Files in ui size: " + String.valueOf(mInternalLibrary.size()));
+//
+//            for (File file : mInternalLibrary) {
+//                LogUtil.log(this, "fileName: " + file.getName());
+//                LogUtil.log(this, "filedirectory: " + file.getAbsolutePath());
+//                BookModel tmp = new BookModel();
+//                tmp.fileName = file.getName();
+//                tmp.setBookContentID(FileUtil.getGnerationID(tmp.fileName));
+//                tmp.setFilePath(file.getAbsolutePath());
+//                tmp.setBookState(BookState.INTERNAL_BOOK.getState());
+//                mLibrary.add(tmp);
+//            }
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        } catch (ExecutionException e) {
+//            e.printStackTrace();
+//        } catch (TimeoutException e) {
+//            e.printStackTrace();
+//        }
         initShelvesRecycler(mLibrary);
     }
 
@@ -608,8 +615,8 @@ public class LibraryActivity extends BaseActivity implements Queries.CallBack,
                             currentDownloadingBookModel = mLibrary.get(position);
                             mShelvesAdapter.setSelectedDeletingBook(position, mDownloadInfo);
                         } else {
-                            UiUtil.openActivity(getAct(), BookViewActivity.class, false,
-                                    Const.BOOK_PATH, mLibrary.get(position).getFilePath(), Const.BOOK_NAME, mLibrary.get(position).fileName);
+//                            UiUtil.openActivity(getAct(), BookViewActivity.class, false,
+//                                    Const.BOOK_PATH, mLibrary.get(position).getFilePath(), Const.BOOK_NAME, mLibrary.get(position).fileName);
                         }
                         break;
                 }
