@@ -78,26 +78,7 @@ public class AuthorizationFragment extends BaseFragment {
         return (AuthorizationActivity) getActivity();
     }
 
-
-    private void setUpWebView() {
-        clearHash();
-        CookieManager.getInstance().removeAllCookie();
-        mAuthorizationWebView.setHorizontalScrollBarEnabled(false);
-        mAuthorizationWebView.setVerticalScrollBarEnabled(false);
-        mAuthorizationWebView.setWebViewClient(new LoginWebViewClient());
-        WebSettings webSettings = mAuthorizationWebView.getSettings();
-        webSettings.setJavaScriptEnabled(true);
-        webSettings.setSaveFormData(false);
-        webSettings.setSavePassword(false);
-        webSettings.setAppCacheEnabled(false);
-        webSettings.setCacheMode(WebSettings.LOAD_NO_CACHE);
-        webSettings.setUseWideViewPort(true);
-        webSettings.setDatabaseEnabled(true);
-        webSettings.setDomStorageEnabled(true);
-        mAuthorizationWebView.setWebChromeClient(new WebChromeClient());
-    }
-
-    public class RequestAsynTask extends AsyncTask<Void, Void, String> {
+    private class RequestAsynTask extends AsyncTask<Void, Void, String> {
 
 
         @Override
@@ -165,6 +146,25 @@ public class AuthorizationFragment extends BaseFragment {
             e.printStackTrace();
         }
         return userToken;
+    }
+
+
+    private void setUpWebView() {
+        clearHash();
+        CookieManager.getInstance().removeAllCookie();
+        mAuthorizationWebView.setHorizontalScrollBarEnabled(false);
+        mAuthorizationWebView.setVerticalScrollBarEnabled(false);
+        mAuthorizationWebView.setWebViewClient(new LoginWebViewClient());
+        WebSettings webSettings = mAuthorizationWebView.getSettings();
+        webSettings.setJavaScriptEnabled(true);
+        webSettings.setSaveFormData(false);
+        webSettings.setSavePassword(false);
+        webSettings.setAppCacheEnabled(false);
+        webSettings.setCacheMode(WebSettings.LOAD_NO_CACHE);
+        webSettings.setUseWideViewPort(true);
+        webSettings.setDatabaseEnabled(true);
+        webSettings.setDomStorageEnabled(true);
+        mAuthorizationWebView.setWebChromeClient(new WebChromeClient());
     }
 
     private void clearHash() {

@@ -98,7 +98,8 @@ public class BooksDataBase {
             .append(BooksDBContract.BookDetail.IS_FIXED_LAYOUT).append(" INTEGER, ")
             .append(BooksDBContract.BookDetail.IS_RTL).append(" INTEGER, ")
             .append(BooksDBContract.BookDetail.LAST_READ).append(" INTEGER, ")
-            .append(BooksDBContract.BookDetail.DATE).append(" TEXT ")
+            .append(BooksDBContract.BookDetail.DATE).append(" TEXT, ")
+            .append(BooksDBContract.BookDetail.FILE_PATH).append(" TEXT ")
             .append(")").toString();
 
     private static final String CREATE_TABLE_BOOK_MARKUPS = new StringBuilder().append("CREATE TABLE IF NOT EXISTS  ")
@@ -332,6 +333,7 @@ public class BooksDataBase {
                 bookModel.setBookPhysicalPage(cursor.getInt(cursor.getColumnIndex(BooksDBContract.BookDetail.BOOK_PHYSICAL_PAGE)));
                 bookModel.setLastReadingParagraph(cursor.getInt(cursor.getColumnIndex(BooksDBContract.BookDetail.LAST_READING_PARAGRAPH)));
                 bookModel.setIsBookFirstOpen(cursor.getInt(cursor.getColumnIndex(BooksDBContract.BookDetail.BOOK_IS_FIRST_OPEN)) != 0);
+                bookModel.setFilePath(cursor.getString(cursor.getColumnIndex(BooksDBContract.BookDetail.FILE_PATH)));
 
                 alUserBookModels.add(bookModel);
             }
@@ -379,6 +381,7 @@ public class BooksDataBase {
                 bookModel.setBookPhysicalPage(cursor.getInt(cursor.getColumnIndex(BooksDBContract.BookDetail.BOOK_PHYSICAL_PAGE)));
                 bookModel.setLastReadingParagraph(cursor.getInt(cursor.getColumnIndex(BooksDBContract.BookDetail.LAST_READING_PARAGRAPH)));
                 bookModel.setIsBookFirstOpen(cursor.getInt(cursor.getColumnIndex(BooksDBContract.BookDetail.BOOK_IS_FIRST_OPEN)) != 0);
+                bookModel.setFilePath(cursor.getString(cursor.getColumnIndex(BooksDBContract.BookDetail.FILE_PATH)));
             }
         }
         return bookModel;
@@ -414,6 +417,7 @@ public class BooksDataBase {
         contentValues.put(BooksDBContract.BookDetail.BOOK_PHYSICAL_PAGE, bookModel.getBookPhysicalPage());
         contentValues.put(BooksDBContract.BookDetail.LAST_READING_PARAGRAPH, bookModel.getLastReadingParagraph());
         contentValues.put(BooksDBContract.BookDetail.BOOK_IS_FIRST_OPEN, bookModel.isIsBookFirstOpen() ? 1 : 0);
+        contentValues.put(BooksDBContract.BookDetail.FILE_PATH, bookModel.getFilePath());
         mSqLiteDatabase.insert(Tables.BOOK_DETAILS, null, contentValues);
     }
 
@@ -459,6 +463,7 @@ public class BooksDataBase {
         contentValues.put(BooksDBContract.BookDetail.BOOK_PHYSICAL_PAGE, bookModel.getBookPhysicalPage());
         contentValues.put(BooksDBContract.BookDetail.LAST_READING_PARAGRAPH, bookModel.getLastReadingParagraph());
         contentValues.put(BooksDBContract.BookDetail.BOOK_IS_FIRST_OPEN, bookModel.isIsBookFirstOpen() ? 1 : 0);
+        contentValues.put(BooksDBContract.BookDetail.FILE_PATH, bookModel.getFilePath());
         mSqLiteDatabase.update(Tables.BOOK_DETAILS, contentValues, query,
                 new String[]{Integer.toString(bookModel.getUserId()), bookModel.fileName});
     }
@@ -586,13 +591,11 @@ public class BooksDataBase {
     protected int getBookmarkCode(PageInformation pi, int userId, String bookSku) {
         int bookCode = pi.bookCode;
         BookInformation bi = this.fetchBookInformation(bookCode, userId, bookSku);
-        Log.d("QQQ!!!", String.valueOf(bi));
         if (bi == null) return -1;
         boolean isFixedLayout = bi.isFixedLayout;
         if (!isFixedLayout) {
             double pageDelta = 1.0f / pi.numberOfPagesInChapter;
             double target = pi.pagePositionInChapter;
-            Log.d("QQQ!!!", bookCode + " " + pi.chapterIndex + " " + userId + " " + bookSku);
             String selectSql = String.format(Locale.US, "SELECT " + BooksDBContract.BookMarkups.CODE + ", " +
                     BooksDBContract.BookMarkups.PAGE_POSITION_IN_CHAPTER + " FROM " + Tables.BOOK_MARKUPS +
                     " WHERE " + BooksDBContract.BookMarkups.BOOK_CODE + "=%d" + " AND " +
@@ -748,16 +751,14 @@ public class BooksDataBase {
         if (code == -1) { // if not exist
             this.insertBookmark(pi, userId, bookSku);
             BookMarkApiModel bookMarkApiModel = new BookMarkApiModel();
-            bookMarkApiModel.setBookmarkId(code);
+            bookMarkApiModel.setBookmarkId(pi.bookCode);
             bookMarkApiModel.setBookmarkLabel(String.valueOf(pi.pagePositionInBook));
-            bookMarkApiModel.setBookmarkPage((int)pi.pagePositionInChapter);
+            bookMarkApiModel.setBookmarkPage((int) pi.pagePositionInChapter);
             bookMarkApiModel.setBookmarkText(String.valueOf(pi.chapterIndex));
             queries.createBookMark(bookSku, deviceToken, bookMarkApiModel);
-            Log.d("QQQ", "insertBookmark");
         } else {
             this.deleteBookmarkByCode(code, userId, bookSku); // if exist, delete it
             queries.deleteBookMark(deviceToken, String.valueOf(code));
-            Log.d("QQQ", "deleteBookmarkByCode");
         }
     }
 

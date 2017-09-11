@@ -479,7 +479,7 @@ public class BookViewActivity extends Activity implements BookSettingMenuFragmen
         this.unregisterSkyReceiver();// New in SkyEpub sdk 7.x
         try {
             if (!mIsInternalBook)
-            FileUtil.deleteDecryptedBook(directoryPath, fileName);
+                FileUtil.deleteDecryptedBook(directoryPath, fileName);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -533,6 +533,8 @@ public class BookViewActivity extends Activity implements BookSettingMenuFragmen
         mIsInternalBook = bundle.getBoolean(Const.IS_INTERNAL_BOOK);
 //		if (this.isRTL) this.isDoublePagedForLandscape = false; // In RTL mode, SDK does not support double paged.
         mDeviceToken = Prefs.getToken(this);
+
+        insertBookMarkFromServer(mUserId, mBookSku);
 
         autoStartPlayingWhenNewPagesLoaded = this.setting.autoStartPlaying;
         autoMoveChapterWhenParallesFinished = this.setting.autoLoadNewChapter;
@@ -842,7 +844,7 @@ public class BookViewActivity extends Activity implements BookSettingMenuFragmen
     }
 
     @OnClick(R.id.img_share_on_facebook)
-    protected void shareToFacebook(){
+    protected void shareToFacebook() {
         Toast.makeText(this, "Share on facebook", Toast.LENGTH_SHORT).show();
         ShareUtil.shareToFacebook(this, "https://pelephone.getbooks.co.il/dev/on-sale");
     }
@@ -2340,10 +2342,23 @@ public class BookViewActivity extends Activity implements BookSettingMenuFragmen
         searchBook();
 
         UiUtil.increaseTouchArea(ePubView, seekBar);
+    }
 
+    private void insertBookMarkFromServer(int userId, String bookSku) {
         Queries queries = new Queries();
 
         List<BookMarkApiModel> bookMarkServiceList = queries.getBookMarksBook(mBookSku, mDeviceToken);
+        for (int i = 0; i < bookMarkServiceList.size(); i++) {
+            PageInformation pi = new PageInformation();
+            pi.code = bookMarkServiceList.get(i).getBookmarkId();
+            pi.pagePositionInBook = Double.parseDouble(bookMarkServiceList.get(i).getBookmarkLabel());
+            pi.pagePositionInChapter = bookMarkServiceList.get(i).getBookmarkPage();
+            pi.chapterIndex = Integer.parseInt(bookMarkServiceList.get(i).getBookmarkText());
+            int code = mBookDataBaseLoader.getBookmarkCodeDB(pi, userId, bookSku);
+            if (code == -1) {
+                mBookDataBaseLoader.insertBookmarkToDb(pi, mUserId, bookSku);
+            }
+        }
         Log.d("QQQ", bookMarkServiceList.toString());
     }
 
@@ -2560,7 +2575,7 @@ public class BookViewActivity extends Activity implements BookSettingMenuFragmen
             } else if (arg.getId() == 6004) {
                 hideHighlightBox();
                 if (!rv.isPaging()) showNoteBox();
-            } else if (arg.getId() == 6005){
+            } else if (arg.getId() == 6005) {
                 Toast.makeText(BookViewActivity.this, "Share on facebook", Toast.LENGTH_SHORT).show();
                 ShareUtil.shareToFacebook(BookViewActivity.this, "https://pelephone.getbooks.co.il/dev/on-sale");
             }
@@ -3212,7 +3227,6 @@ public class BookViewActivity extends Activity implements BookSettingMenuFragmen
 
         @Override
         public boolean isBookmarked(PageInformation pi) {
-//            return sd.isBookmarked(pi);
             return mBookDataBaseLoader.isBookmarkedDB(pi, mUserId, mBookSku);
         }
     }

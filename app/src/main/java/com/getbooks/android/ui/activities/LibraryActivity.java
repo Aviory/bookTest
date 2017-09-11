@@ -512,12 +512,7 @@ public class LibraryActivity extends BaseActivity implements Queries.CallBack,
                 BookModel tmp = new BookModel();
                 tmp.fileName = file.getName();
                 tmp.setUserId(Prefs.getUserSession(getAct(), Const.USER_SESSION_ID));
-                tmp.setBookContentID(FileUtil.getGnerationID(tmp.fileName));
-                tmp.setFilePath(file.getAbsolutePath());
-                tmp.setBookState(BookState.INTERNAL_BOOK.getState());
-                tmp.bookCode = UiUtil.getRandomGeneratedBookCode();
-                tmp.setBookSku(FileUtil.getGnerationID(tmp.fileName));
-                mLibrary.add(tmp);
+                saveInternalBook(tmp, file);
             }
         } catch (InterruptedException e) {
             e.printStackTrace();
@@ -528,33 +523,28 @@ public class LibraryActivity extends BaseActivity implements Queries.CallBack,
         }
     }
 
-    private void saveInternalBook(BookModel bookModelInternal) {
-
-        bookModelInternal.setCreatedDate(DateUtil.getDate(new Date().getTime()));
-
-        Log.d("QQQQQ------", currentDownloadingBookModel.toString());
-
+    private void saveInternalBook(BookModel bookModelInternal, File file) {
         List<BookModel> dataBaseBookModels = new ArrayList<>();
         dataBaseBookModels.addAll(mBookDataBaseLoader.getAllUserBookOnDevise(Prefs.getUserSession(getAct(), Const.USER_SESSION_ID)));
         if (!dataBaseBookModels.isEmpty()) {
-            for (BookModel bookModel: dataBaseBookModels){
-                if (!bookModel.fileName.equals(bookModelInternal.fileName) &&
-                        bookModel.getUserId() ==(bookModelInternal.getUserId())){
-                    bookModelInternal.setUserId(Prefs.getUserSession(getAct(), Const.USER_SESSION_ID));
-                    bookModelInternal.setBookContentID(FileUtil.getGnerationID(bookModelInternal.fileName));
-//                    bookModelInternal.setFilePath(file.getAbsolutePath());
-                    bookModelInternal.setBookState(BookState.INTERNAL_BOOK.getState());
-                    bookModelInternal.bookCode = UiUtil.getRandomGeneratedBookCode();
-                    bookModelInternal.setBookSku(FileUtil.getGnerationID(bookModelInternal.fileName));
-                    mBookDataBaseLoader.saveBookToDB(bookModel);
-                    mLibrary.add(bookModel);
-                }
+            if (!dataBaseBookModels.contains(bookModelInternal)){
+                createInternalBook(bookModelInternal, file);
             }
         } else {
-            mBookDataBaseLoader.saveBookToDB(bookModelInternal);
-            mLibrary.add(bookModelInternal);
+            createInternalBook(bookModelInternal, file);
         }
 
+    }
+
+    private void createInternalBook(BookModel bookModelInternal, File file) {
+        bookModelInternal.setBookContentID(FileUtil.getGnerationID(bookModelInternal.fileName));
+        bookModelInternal.setFilePath(file.getAbsolutePath());
+        bookModelInternal.setBookState(BookState.INTERNAL_BOOK.getState());
+        bookModelInternal.bookCode = UiUtil.getRandomGeneratedBookCode();
+        bookModelInternal.setBookSku(FileUtil.getGnerationID(bookModelInternal.fileName));
+        bookModelInternal.setCreatedDate(DateUtil.getDate(new Date().getTime()));
+        mBookDataBaseLoader.saveBookToDB(bookModelInternal);
+        mLibrary.add(bookModelInternal);
     }
 
 
