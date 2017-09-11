@@ -372,16 +372,6 @@ public class LibraryActivity extends BaseActivity implements Queries.CallBack,
                     imgBookName.setChecked(false);
                     imgAddDate.setChecked(false);
                     imgReadDate.setChecked(false);
-
-                    LogUtil.log("compare: initShelvesRecycler size: ", String.valueOf(mLibrary.size()));
-                    for (int i = 0;i<mLibrary.size();i++ ) {
-                        if(mLibrary.get(i) ==null)
-                            LogUtil.log("compare1: ", "getBookAuthors book null");
-                        else if(mLibrary.get(i).getBookAuthors()!=null)
-                            LogUtil.log("compare1: ", String.valueOf(mLibrary.get(i).getBookAuthors()));
-                        else
-                            LogUtil.log("compare1: ", "getBookAuthors null");
-                    }
                     initShelvesRecycler(CompareUtil.compareByAuthorName(mLibrary));
                 }
                 break;

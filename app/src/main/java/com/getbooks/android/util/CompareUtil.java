@@ -17,13 +17,16 @@ public class CompareUtil {
 
     public static List<BookModel> compareByAuthorName(List<BookModel> list){
         LogUtil.log("compare: compareByAuthorName size: ", String.valueOf(list.size()));
+        int i =0;
         for (BookModel book: list ) {
-            if(book==null)
+            i++;
+            LogUtil.log("compare index: ", String.valueOf(book));
+            if(book==null )
                 LogUtil.log("compare: ", "getBookAuthors book null");
-            else if(book.getBookAuthors()!=null)
+            else if(book.getBookAuthors()!=null && !book.getBookAuthors().equals(""))
                 LogUtil.log("compare: ", String.valueOf(book.getBookAuthors()));
             else
-                LogUtil.log("compare: ", "getBookAuthors null");
+                LogUtil.log("compare: ", "getBookAuthors null or '' ");
         }
 
         Comparator<BookModel> comp = new AuthorNameComparator();
@@ -33,7 +36,7 @@ public class CompareUtil {
         LogUtil.log("compare: compareByAuthorName newList size: ", String.valueOf(list.size()));
         for (BookModel book: newList ) {
             if(book.getBookAuthors()!=null)
-                LogUtil.log("compare newList: ", String.valueOf(book.getBookAuthors()));
+                LogUtil.log("compare Author newList: ", String.valueOf(book.getBookAuthors()));
             else
                 LogUtil.log("compare newList: ", "getBookAuthors  null");
         }
@@ -41,19 +44,32 @@ public class CompareUtil {
     }
 
     public static List<BookModel> compareByBookName(List<BookModel> list){
+        for (BookModel book: list ) {
+            if(book.getBookAuthors()!=null)
+                LogUtil.log("compare book name : ", String.valueOf(book.fileName));
+            else
+                LogUtil.log("compare : ", "Name  null");
+        }
         Comparator<BookModel> comp = new BookNameComparator();
         TreeSet<BookModel> treeSetBookName = new TreeSet<BookModel>(comp);
         treeSetBookName.addAll(list);
         List<BookModel> newList = new LinkedList<BookModel>(treeSetBookName);
+
+        for (BookModel book: newList ) {
+            if(book.getBookAuthors()!=null)
+                LogUtil.log("compare book name newList: ", String.valueOf(book.fileName));
+            else
+                LogUtil.log("compare newList: ", "Name  null");
+        }
         return newList;
     }
 
     public static List<BookModel> compareByReadDate(List<BookModel> list){
         for (BookModel book: list ) {
             if(book.getCreatedDate()!=null)
-                LogUtil.log("compare: ", String.valueOf(book.getReadDateTime().getTime()));
+                LogUtil.log("compare Read: ", String.valueOf(book.getReadDateTime().getTime()));
             else
-                LogUtil.log("compare: ", "create date null");
+                LogUtil.log("compare: ", "Read date null");
         }
 
         Comparator<BookModel> comp = new ReadDateComparator();
@@ -63,9 +79,9 @@ public class CompareUtil {
 
         for (BookModel book: newList ) {
             if(book.getCreatedDate()!=null)
-                LogUtil.log("compare newList: ", String.valueOf(book.getReadDateTime().getTime()));
+                LogUtil.log("compare Read newList: ", String.valueOf(book.getReadDateTime().getTime()));
             else
-                LogUtil.log("compare newList: ", "create date null");
+                LogUtil.log("compare newList: ", "Read date null");
         }
         return newList;
     }
@@ -85,7 +101,7 @@ public class CompareUtil {
             if(a.fileName!=null && b.fileName!=null)
                 return a.fileName.compareTo(b.fileName);
 
-            else if(a.fileName==null && b.fileName!=null){
+            else if(a.fileName==null && b.fileName!=null ){
                 return 1;
             } else{
                 return -1;
@@ -96,11 +112,14 @@ public class CompareUtil {
 
         @Override
         public int compare(BookModel a, BookModel b) {
-            if(a.getBookAuthors()!=null && b.getBookAuthors()!=null)
+            if(a.getBookAuthors()!=null && b.getBookAuthors()!=null && !a.getBookAuthors().equals("") && !b.getBookAuthors().equals(""))
                 return a.getBookAuthors().compareTo(b.getBookAuthors());
 
             else if(a.getBookAuthors()==null && b.getBookAuthors()!=null){
-                return 1;
+                if(!b.getBookAuthors().equals("")){
+                    return 1;
+                }else
+                    return -1;
             } else{
                 return -1;
             }
