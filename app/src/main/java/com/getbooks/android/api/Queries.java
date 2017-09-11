@@ -7,6 +7,7 @@ import android.widget.Toast;
 
 import com.getbooks.android.Const;
 import com.getbooks.android.db.BookDataBaseLoader;
+import com.getbooks.android.model.BookMarkApiModel;
 import com.getbooks.android.model.BookModel;
 import com.getbooks.android.model.PurchasedBook;
 import com.getbooks.android.model.RentedBook;
@@ -22,7 +23,6 @@ import java.net.SocketException;
 import java.util.ArrayList;
 import java.util.List;
 
-import nl.siegmann.epublib.domain.Book;
 import retrofit2.Response;
 import rx.Observable;
 import rx.Subscriber;
@@ -197,6 +197,50 @@ public class Queries {
                         BookDataBaseLoader.getInstanceDb(context).deleteBookFromDb(bookModel);
                         library.remove(bookModel);
                         shelvesAdapter.upDateLibrary(library);
+                    }
+                }).subscribe();
+    }
+
+    public List<BookMarkApiModel> getBookMarksBook(String bookSku, String deviceToken) {
+        List<BookMarkApiModel> bookMarkApiModels = new ArrayList<>();
+        ApiService apiService = ApiManager.getClientApiAry().create(ApiService.class);
+
+        apiService.getBookMarkList(Const.WEBSITECODE, deviceToken, bookSku)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .doOnNext(responseBodyResponse -> {
+                    if (responseBodyResponse.code() == 200) {
+                        bookMarkApiModels.addAll(responseBodyResponse.body());
+                        Log.d("QQQQQ-", String.valueOf(responseBodyResponse.body()));
+                    }
+                })
+                .doOnError(Throwable::printStackTrace)
+                .subscribe();
+        return bookMarkApiModels;
+    }
+
+    public void createBookMark(String bookSku, String deviceToken, BookMarkApiModel bookMarkApiModel) {
+        ApiService apiService = ApiManager.getClientApiAry().create(ApiService.class);
+
+        apiService.createBookMark(Const.WEBSITECODE, deviceToken, bookSku, bookMarkApiModel)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .doOnNext(responseBodyResponse -> {
+                    if (responseBodyResponse.code() == 201) {
+                        Log.d("QQQQQ-", "create book mark");
+                    }
+                }).subscribe();
+    }
+
+    public void deleteBookMark(String deviceToke, String markupId) {
+        ApiService apiService = ApiManager.getClientApiAry().create(ApiService.class);
+
+        apiService.deleteBookMark(Const.WEBSITECODE, deviceToke, markupId)
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeOn(Schedulers.io())
+                .doOnNext(responseBody -> {
+                    if (responseBody.code() == 204) {
+                        Log.d("QQQQQ-", "delete book mark");
                     }
                 }).subscribe();
     }

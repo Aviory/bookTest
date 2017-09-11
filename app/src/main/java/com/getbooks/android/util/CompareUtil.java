@@ -1,5 +1,7 @@
 package com.getbooks.android.util;
 
+import android.util.Log;
+
 import com.getbooks.android.model.BookModel;
 
 import java.util.Comparator;

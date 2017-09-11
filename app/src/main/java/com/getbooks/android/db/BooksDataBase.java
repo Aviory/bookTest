@@ -9,6 +9,8 @@ import android.os.Environment;
 import android.util.Log;
 
 import com.getbooks.android.Const;
+import com.getbooks.android.api.Queries;
+import com.getbooks.android.model.BookMarkApiModel;
 import com.getbooks.android.model.BookModel;
 import com.getbooks.android.skyepubreader.SkySetting;
 import com.getbooks.android.util.DateUtil;
@@ -405,7 +407,8 @@ public class BooksDataBase {
         contentValues.put(BooksDBContract.BookDetail.IS_DELETED, 0);
         contentValues.put(BooksDBContract.BookDetail.LAST_UPDATED, bookModel.getUpdateDate());
         contentValues.put(BooksDBContract.BookDetail.BOOK_LAST_PAGE, bookModel.getLastPage());
-        contentValues.put(BooksDBContract.BookDetail.BOOK_CREATED_DATE, bookModel.getCreatedDate() == null ? 0 : bookModel.getCreatedDate().getTimeInMillis());
+        contentValues.put(BooksDBContract.BookDetail.BOOK_CREATED_DATE, bookModel.getCreatedDate().getTimeInMillis());
+//        contentValues.put(BooksDBContract.BookDetail.BOOK_CREATED_DATE, bookModel.getCreatedDate() == null ? 0 : bookModel.getCreatedDate().getTimeInMillis());
         contentValues.put(BooksDBContract.BookDetail.BOOK_LAST_CHAPTER, bookModel.getLastChapter());
         contentValues.put(BooksDBContract.BookDetail.BOOK_CHAPTER_LIST, bookModel.getChapterList());
         contentValues.put(BooksDBContract.BookDetail.BOOK_PHYSICAL_PAGE, bookModel.getBookPhysicalPage());
@@ -583,11 +586,13 @@ public class BooksDataBase {
     protected int getBookmarkCode(PageInformation pi, int userId, String bookSku) {
         int bookCode = pi.bookCode;
         BookInformation bi = this.fetchBookInformation(bookCode, userId, bookSku);
+        Log.d("QQQ!!!", String.valueOf(bi));
         if (bi == null) return -1;
         boolean isFixedLayout = bi.isFixedLayout;
         if (!isFixedLayout) {
             double pageDelta = 1.0f / pi.numberOfPagesInChapter;
             double target = pi.pagePositionInChapter;
+            Log.d("QQQ!!!", bookCode + " " + pi.chapterIndex + " " + userId + " " + bookSku);
             String selectSql = String.format(Locale.US, "SELECT " + BooksDBContract.BookMarkups.CODE + ", " +
                     BooksDBContract.BookMarkups.PAGE_POSITION_IN_CHAPTER + " FROM " + Tables.BOOK_MARKUPS +
                     " WHERE " + BooksDBContract.BookMarkups.BOOK_CODE + "=%d" + " AND " +
@@ -737,12 +742,22 @@ public class BooksDataBase {
         return null;
     }
 
-    protected void toggleBookmark(PageInformation pi, int userId, String bookSku) {
+    protected void toggleBookmark(PageInformation pi, int userId, String bookSku, String deviceToken) {
+        Queries queries = new Queries();
         int code = this.getBookmarkCode(pi, userId, bookSku);
         if (code == -1) { // if not exist
             this.insertBookmark(pi, userId, bookSku);
+            BookMarkApiModel bookMarkApiModel = new BookMarkApiModel();
+            bookMarkApiModel.setBookmarkId(code);
+            bookMarkApiModel.setBookmarkLabel(String.valueOf(pi.pagePositionInBook));
+            bookMarkApiModel.setBookmarkPage((int)pi.pagePositionInChapter);
+            bookMarkApiModel.setBookmarkText(String.valueOf(pi.chapterIndex));
+            queries.createBookMark(bookSku, deviceToken, bookMarkApiModel);
+            Log.d("QQQ", "insertBookmark");
         } else {
             this.deleteBookmarkByCode(code, userId, bookSku); // if exist, delete it
+            queries.deleteBookMark(deviceToken, String.valueOf(code));
+            Log.d("QQQ", "deleteBookmarkByCode");
         }
     }
 

@@ -81,8 +81,8 @@ public class BookDataBaseLoader {
         mBooksDataBase.updateSettingFromDB(skySetting);
     }
 
-    public void toggleBookmarkDb(PageInformation pageInformation, int userId, String bookSku) {
-        mBooksDataBase.toggleBookmark(pageInformation, userId, bookSku);
+    public void toggleBookmarkDb(PageInformation pageInformation, int userId, String bookSku, String deviceToken) {
+        mBooksDataBase.toggleBookmark(pageInformation, userId, bookSku, deviceToken);
     }
 
     public void deleteBookmarkByCodeDb(int code, int userId, String bookSku) {
