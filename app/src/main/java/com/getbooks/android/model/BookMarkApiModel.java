@@ -53,4 +53,16 @@ public class BookMarkApiModel {
         this.bookmarkText = bookmarkText;
     }
 
+
+    @Override
+    public String toString() {
+        return "BookMarkApiModel{" +
+                "bookmarkId=" + bookmarkId +
+                ", bookmarkLabel='" + bookmarkLabel + '\'' +
+                ", bookmarkPage=" + bookmarkPage +
+                ", bookmarkText='" + bookmarkText + '\'' +
+                '}';
+    }
+
+
 }

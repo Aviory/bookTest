@@ -14,10 +14,13 @@ import java.util.List;
 import com.getbooks.android.Const;
 import com.getbooks.android.GetbooksApplication;
 import com.getbooks.android.R;
+import com.getbooks.android.api.Queries;
 import com.getbooks.android.db.BookDataBaseLoader;
 import com.getbooks.android.events.Events;
+import com.getbooks.android.model.BookMarkApiModel;
 import com.getbooks.android.model.BookMarkItemModel;
 import com.getbooks.android.model.SearchModelBook;
+import com.getbooks.android.prefs.Prefs;
 import com.getbooks.android.ui.adapter.RecyclerBookContentAdapter;
 import com.getbooks.android.ui.fragments.BookContentFragment;
 import com.getbooks.android.ui.fragments.BookSearchFragment;
@@ -177,6 +180,7 @@ public class BookViewActivity extends Activity implements BookSettingMenuFragmen
     private String mBookSku;
     private BookDataBaseLoader mBookDataBaseLoader;
     private boolean mIsInternalBook;
+    private String mDeviceToken;
 
     Rect bookmarkRect;
     Rect bookmarkedRect;
@@ -528,6 +532,7 @@ public class BookViewActivity extends Activity implements BookSettingMenuFragmen
         mUserId = bundle.getInt(Const.USER_ID);
         mIsInternalBook = bundle.getBoolean(Const.IS_INTERNAL_BOOK);
 //		if (this.isRTL) this.isDoublePagedForLandscape = false; // In RTL mode, SDK does not support double paged.
+        mDeviceToken = Prefs.getToken(this);
 
         autoStartPlayingWhenNewPagesLoaded = this.setting.autoStartPlaying;
         autoMoveChapterWhenParallesFinished = this.setting.autoLoadNewChapter;
@@ -2335,6 +2340,11 @@ public class BookViewActivity extends Activity implements BookSettingMenuFragmen
         searchBook();
 
         UiUtil.increaseTouchArea(ePubView, seekBar);
+
+        Queries queries = new Queries();
+
+        List<BookMarkApiModel> bookMarkServiceList = queries.getBookMarksBook(mBookSku, mDeviceToken);
+        Log.d("QQQ", bookMarkServiceList.toString());
     }
 
 
@@ -3164,7 +3174,7 @@ public class BookViewActivity extends Activity implements BookSettingMenuFragmen
     class BookmarkDelegate implements BookmarkListener {
         @Override
         public void onBookmarkHit(PageInformation pi, boolean isBookmarked) {
-            mBookDataBaseLoader.toggleBookmarkDb(pi, mUserId, mBookSku);
+            mBookDataBaseLoader.toggleBookmarkDb(pi, mUserId, mBookSku, mDeviceToken);
             rv.repaintAll();
         }
 

@@ -18,7 +18,6 @@ public class SplashActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         FacebookSdk.sdkInitialize(getApplicationContext());
         AppEventsLogger.activateApp(this);
-        Prefs.clearPrefs(this);
         startTheActivity(AuthorizationActivity.class);
     }
 

@@ -9,17 +9,16 @@ public final class Const {
     // Api constants
 //    public static final String BASE_URL_PELEPHONE_API = "https://pelephone.getbooks.co.il/dev/?";
     public static final String BASE_URL_PELEPHONE_API = "https://www.malikro.co.il/dev/?";
-//        public static final String BASE_URL_API_ARY = "https://pelephone.getbooks.co.il/dev/api/rest/";
+    //        public static final String BASE_URL_API_ARY = "https://pelephone.getbooks.co.il/dev/api/rest/";
     public static final String BASE_URL_API_ARY = "https://www.malikro.co.il/dev/api/rest/";
     public static final String WEBSITECODE = "aff_pelephone";
 
 
     //Authorization constant
-//    public static final String AUTH_URL = "https://pelephone.getbooks.co.il/";
-    public static final String AUTH_URL = "https://www.malikro.co.il/dev/customer/account/login/";
-//    public static final String AUTH_URL = "view-source:http://login.malikro.co.il/";
-    public static final String REDIRECT_URL = "https://www.malikro.co.il/dev/customer/account/login/";
-
+    public static final String REDIRECT_URL = "https://www.malikro.co.il/dev/customer/account/";
+    public static final String APPLICATION_ID = "212";
+    public static final String PELE_API_GET_USER_TOKEN_BY_HI_ENDPOINT = "http://login.pelephone.co.il/api/GetUserTokenByHI";
+    public static final String PELEPHONE_MAGENTO_LOGIN_URI = "https://www.malikro.co.il/dev/customer/account/login/";
 
     //Shared preference constants
     public static final String IS_USER_AUTHORIZE = "is_user_authorize";
@@ -32,7 +31,7 @@ public final class Const {
     public static final int SPLASH_TIME_OUT = 1500;
 
     //Catalog constant
-    public static final String CATALOG_URL = "https://pelephone.getbooks.co.il/dev/on-sale";
+    public static final String CATALOG_URL = "https://www.malikro.co.il/dev/on-sale";
 
     // Reader constant
     public static final String BOOKS_DIRECTORY = "GetBooks";
@@ -61,8 +60,8 @@ public final class Const {
     public static final String SERVISE_PRIVASY_LEFT_BTN_TEXT_ID = "4984";
     public static final String ABOUT_US_TEXT_ID = "4972";
 
-    public static final String BOOK_STORY_DIALOG_URL = "https://pelephone.getbooks.co.il/dev/glibrary/bookrent/showrentbook";
-    public static final String BOOK_INSTRUCTIONS_DIALOG_URL = "https://pelephone.getbooks.co.il/dev/how-it-works";
+    public static final String BOOK_STORY_DIALOG_URL = "https://www.malikro.co.il/dev/glibrary/bookrent/showrentbook";
+    public static final String BOOK_INSTRUCTIONS_DIALOG_URL = "https://www.malikro.co.il/dev/how-it-works";
 
 
 }

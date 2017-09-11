@@ -46,6 +46,7 @@ public class ApiManager {
                 .cookieJar(new JavaNetCookieJar(cookieHandler))
                 .connectTimeout(10, TimeUnit.SECONDS)
                 .writeTimeout(30, TimeUnit.SECONDS)
+                .followRedirects(false)
                 .readTimeout(30, TimeUnit.SECONDS);
 
         return client;

@@ -2,12 +2,16 @@ package com.getbooks.android.ui.fragments;
 
 import android.annotation.TargetApi;
 import android.graphics.Bitmap;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.View;
 import android.webkit.CookieManager;
+import android.webkit.GeolocationPermissions;
+import android.webkit.WebChromeClient;
 import android.webkit.WebResourceError;
 import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
@@ -27,6 +31,18 @@ import com.getbooks.android.util.LogUtil;
 import com.getbooks.android.util.UiUtil;
 import com.google.firebase.iid.FirebaseInstanceId;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.io.UnsupportedEncodingException;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -48,7 +64,7 @@ public class AuthorizationFragment extends BaseFragment {
 
         mProgressBar = new MaterialDialog(getContext());
 
-        setUpWebView();
+        new RequestAsynTask().execute();
     }
 
 
@@ -76,7 +92,79 @@ public class AuthorizationFragment extends BaseFragment {
         webSettings.setAppCacheEnabled(false);
         webSettings.setCacheMode(WebSettings.LOAD_NO_CACHE);
         webSettings.setUseWideViewPort(true);
-        mAuthorizationWebView.loadUrl(Const.AUTH_URL);
+        webSettings.setDatabaseEnabled(true);
+        webSettings.setDomStorageEnabled(true);
+        mAuthorizationWebView.setWebChromeClient(new WebChromeClient());
+    }
+
+    public class RequestAsynTask extends AsyncTask<Void, Void, String> {
+
+
+        @Override
+        protected String doInBackground(Void... voids) {
+            return getUserToken();
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+            if (s.equals("null")) {
+                setUpWebView();
+                mAuthorizationWebView.loadUrl(Const.PELEPHONE_MAGENTO_LOGIN_URI);
+            } else {
+                setUpWebView();
+                mAuthorizationWebView.loadUrl(Const.PELEPHONE_MAGENTO_LOGIN_URI + "?UserToken=" + s);
+            }
+        }
+    }
+
+    private String getUserToken() {
+        HttpURLConnection httpcon;
+        String url = Const.PELE_API_GET_USER_TOKEN_BY_HI_ENDPOINT;
+        String data = "{ApplicationID:" + Const.APPLICATION_ID + "}";
+        String result = null;
+        String userToken = null;
+        try {
+            //Connect
+            httpcon = (HttpURLConnection) ((new URL(url).openConnection()));
+            httpcon.setDoOutput(true);
+            httpcon.setRequestProperty("Content-Type", "application/json");
+            httpcon.setRequestProperty("Accept", "application/json");
+            httpcon.setRequestMethod("POST");
+            httpcon.connect();
+
+            //Write
+            OutputStream os = httpcon.getOutputStream();
+            BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(os, "UTF-8"));
+            writer.write(data);
+            writer.close();
+            os.close();
+
+            //Read
+            BufferedReader br = new BufferedReader(new InputStreamReader(httpcon.getInputStream(), "UTF-8"));
+
+            String line = null;
+            StringBuilder sb = new StringBuilder();
+
+            while ((line = br.readLine()) != null) {
+                sb.append(line);
+            }
+
+            br.close();
+            result = sb.toString();
+
+            JSONObject jsonObject = new JSONObject(result);
+            jsonObject.get("UserToken");
+            userToken = jsonObject.get("UserToken").toString();
+
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return userToken;
     }
 
     private void clearHash() {

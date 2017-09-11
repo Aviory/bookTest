@@ -1,5 +1,6 @@
 package com.getbooks.android.api;
 
+import com.getbooks.android.model.BookMarkApiModel;
 import com.getbooks.android.model.PurchasedBook;
 import com.getbooks.android.model.RentedBook;
 import com.getbooks.android.model.UserSession;
@@ -9,9 +10,11 @@ import java.util.List;
 
 import okhttp3.ResponseBody;
 import retrofit2.Response;
+import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.Headers;
+import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
 import rx.Observable;
@@ -68,10 +71,22 @@ public interface ApiService {
             "Accept:application/json",
             "SecretKey:de@Dc0W4her0"
     })
-    @GET("glibrary/rentedbookmarks/{websiteCode}/{deviceToken}/bookmarkid/{bookmarkId}")
-    Observable<Response<ResponseBody>> getBookMark(@Path("websiteCode") String aff_pelephone,
-                                                   @Path("deviceToken") String tokenDevice,
-                                                   @Path("bookmarkId") String bookMarkId);
+    @GET("glibrary/rentedbookmarks/{websiteCode}/{deviceToken}/sku/{rentBookSku}")
+    Observable<Response<List<BookMarkApiModel>>> getBookMarkList(@Path("websiteCode") String aff_pelephone,
+                                                                 @Path("deviceToken") String tokenDevice,
+                                                                 @Path("rentBookSku") String bookMarkId);
+
+
+    @Headers({
+            "Accept:application/json",
+            "SecretKey:de@Dc0W4her0",
+            "Content-Type:application/json"
+    })
+    @POST("glibrary/rentedbookmarks/{websiteCode}/{deviceToken}/sku/{rentBookSku}")
+    Observable<Response<ResponseBody>> createBookMark(@Path("websiteCode") String aff_pelephone,
+                                                      @Path("deviceToken") String tokenDevice,
+                                                      @Path("rentBookSku") String rentBookSku,
+                                                      @Body BookMarkApiModel bookMarkApiModel);
 
     @Headers({
             "Accept:application/json",
@@ -86,8 +101,17 @@ public interface ApiService {
             "Accept:application/json",
             "SecretKey:de@Dc0W4her0"
     })
+    @PUT("glibrary/rentedbookmarks/{websiteCode}/{deviceToken}/bookmarkid/{bookmarkId}")
+    Observable<Response<ResponseBody>> getBookMark(@Path("websiteCode") String aff_pelephone,
+                                                   @Path("deviceToken") String tokenDevice,
+                                                   @Path("bookmarkId") String bookMarkId);
+
+    @Headers({
+            "Accept:application/json",
+            "SecretKey:de@Dc0W4her0"
+    })
     @DELETE("glibrary/rentedbookmarks/{websiteCode}/{deviceToken}/bookmarkid/{bookmarkId}")
-    Observable<ResponseBody> deleteBookMark(@Path("websiteCode") String aff_pelephone,
-                                            @Path("deviceToken") String tokenDevice,
-                                            @Path("bookmarkId") String bookMarkId);
+    Observable<Response<ResponseBody>> deleteBookMark(@Path("websiteCode") String aff_pelephone,
+                                                      @Path("deviceToken") String tokenDevice,
+                                                      @Path("bookmarkId") String bookMarkId);
 }
