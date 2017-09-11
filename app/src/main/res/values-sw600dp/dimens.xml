@@ -52,7 +52,7 @@
     <dimen name="left_menu_service_margin_bot">39dp</dimen>
     <dimen name="txt_size_body_servis_privacy">27sp</dimen>
     <dimen name="btn_service_width">214dp</dimen>
-    <dimen name="btn_service_heigth">30dp</dimen>
+    <dimen name="btn_service_heigth">33dp</dimen>
     <dimen name="txt_service_margin_top">33dp</dimen>
     <dimen name="btn_service_txt_size">25sp</dimen>
     <dimen name="txt_body_service_margin_left">26dp</dimen>

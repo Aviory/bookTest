@@ -87,6 +87,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static com.getbooks.android.R.drawable.book;
+
 /**
  * Created by marina on 26.07.17.
  */
@@ -369,6 +371,16 @@ public class LibraryActivity extends BaseActivity implements Queries.CallBack,
                     imgBookName.setChecked(false);
                     imgAddDate.setChecked(false);
                     imgReadDate.setChecked(false);
+
+                    LogUtil.log("compare: initShelvesRecycler size: ", String.valueOf(mLibrary.size()));
+                    for (int i = 0;i<mLibrary.size();i++ ) {
+                        if(mLibrary.get(i) ==null)
+                            LogUtil.log("compare1: ", "getBookAuthors book null");
+                        else if(mLibrary.get(i).getBookAuthors()!=null)
+                            LogUtil.log("compare1: ", String.valueOf(mLibrary.get(i).getBookAuthors()));
+                        else
+                            LogUtil.log("compare1: ", "getBookAuthors null");
+                    }
                     initShelvesRecycler(CompareUtil.compareByAuthorName(mLibrary));
                 }
                 break;
@@ -838,9 +850,12 @@ public class LibraryActivity extends BaseActivity implements Queries.CallBack,
     @Subscribe
     public void onMessageEvent(Events.UpDateMainScreen upDateMainScreen) {
         boolean isUpDate = Prefs.getBooleanProperty(this, Const.PUSH_NOTIFY_BY_UPDATE);
-        if (isUpDate)
-            restartDownloading();
-    }
+        if (isUpDate){
+            mQueries = new Queries();
+            mQueries.setCallBack(this);
+            mQueries.getUserSession(Prefs.getToken(getAct()), getAct());
+        }
+     }
 
     private void restartDownloading() {
         if (mDownloadQueue.getDownloadQueueSize() != 0) {
