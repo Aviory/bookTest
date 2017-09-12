@@ -82,6 +82,10 @@ public class BookSettingMenuFragment extends Fragment implements View.OnTouchLis
     protected ImageView mImageBlackBookBackground;
     @BindView(R.id.list_fonts)
     protected ListView mListBookFonts;
+    @BindView(R.id.menu_brightness)
+    protected LinearLayout mLayoutBrightness;
+    @BindView(R.id.layout_increase)
+    protected LinearLayout mLayoutFontIncrease;
     GetbooksApplication app;
     ArrayList<CustomFont> fonts = new ArrayList<CustomFont>();
     FontsBookListAdapter mFontsBookListAdapter;
@@ -108,11 +112,14 @@ public class BookSettingMenuFragment extends Fragment implements View.OnTouchLis
         mImageBlackBookBackground.setId(7002);
         mSeemBarBrightness.setId(997);
         mSeemBarBrightness.setMax(999);
+        mSeemBarBrightness.setProgress(999);
         makeFonts();
         mFontsBookListAdapter = new FontsBookListAdapter(fonts, getActivity());
         mFontsBookListAdapter.setBookFontUpdateChangeListener(this);
         mListBookFonts.setAdapter(mFontsBookListAdapter);
-        UiUtil.increaseTouchArea(mRootLayoutBookSettings, mSeemBarBrightness);
+        UiUtil.increaseTouchArea(mLayoutBrightness, mSeemBarBrightness);
+        UiUtil.increaseTouchButtonArea(mLayoutFontIncrease, mImageIncreaseFontSize);
+        UiUtil.increaseTouchButtonArea(mLayoutFontIncrease, mImageDicreaseFontSize);
         return view;
     }
 

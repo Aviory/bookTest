@@ -176,5 +176,6 @@
     <dimen name="search_txt_size">17sp</dimen>
     <dimen name="search_height">35dp</dimen>
     <dimen name="margin_edit_search">15dp</dimen>
+    <dimen name="thumb_height">6dp</dimen>
 
 </resources>

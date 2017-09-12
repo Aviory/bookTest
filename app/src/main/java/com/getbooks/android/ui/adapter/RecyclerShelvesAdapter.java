@@ -60,6 +60,7 @@ public class RecyclerShelvesAdapter extends RecyclerView.Adapter<RecyclerShelves
     public void onBindViewHolder(ViewHolder holder, int position) {
         switch (mDownloadInfo.getDownloadState()) {
             case DOWNLOADING:
+                Log.d("PPPPPPPPPPP", "downloading");
                 holder.mImageBookState.setVisibility(View.VISIBLE);
                 holder.mCheckBoxDeleteBook.setVisibility(View.INVISIBLE);
                 if (mProgress > 0 && mProgress <= 100) {
@@ -83,7 +84,7 @@ public class RecyclerShelvesAdapter extends RecyclerView.Adapter<RecyclerShelves
                 holder.mProgressBar.setVisibility(View.INVISIBLE);
                 holder.mTextProgress.setVisibility(View.INVISIBLE);
                 mProgress = 0;
-                if(mLibrary.get(position).coverUrl!=null && !mLibrary.get(position).coverUrl.equals("") ) {
+                if (mLibrary.get(position).coverUrl != null && !mLibrary.get(position).coverUrl.equals("")) {
                     PicassoCache.getPicassoInstance(mContext).load(mLibrary.get(position)
                             .coverUrl)
 //                .networkPolicy(NetworkPolicy.OFFLINE)
@@ -100,7 +101,7 @@ public class RecyclerShelvesAdapter extends RecyclerView.Adapter<RecyclerShelves
                                 }
                             });
                 }
-                if(mLibrary.get(position).getUserId()==0){
+                if (mLibrary.get(position).getUserId() == 0) {
                     holder.mImageCover.setImageResource(R.drawable.book_3);
                 }
                 BookModel bookModel = mLibrary.get(position);
@@ -209,6 +210,11 @@ public class RecyclerShelvesAdapter extends RecyclerView.Adapter<RecyclerShelves
     @Override
     public int getItemCount() {
         return mLibrary.size();
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        return super.getItemViewType(position);
     }
 
     class ViewHolder extends RecyclerView.ViewHolder {
