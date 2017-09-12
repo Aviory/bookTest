@@ -84,6 +84,15 @@ public class Events {
         Calendar dateLastReading;
         double position;
         String author;
+        int bookItemViewPosition;
+
+        public int getBookItemViewPosition() {
+            return bookItemViewPosition;
+        }
+
+        public void setBookItemViewPosition(int bookItemViewPosition) {
+            this.bookItemViewPosition = bookItemViewPosition;
+        }
 
         public String getAuthor() {
             return author;

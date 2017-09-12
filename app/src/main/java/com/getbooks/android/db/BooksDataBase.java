@@ -303,6 +303,7 @@ public class BooksDataBase {
                 BookModel bookModel = new BookModel();
                 bookModel.setUserId(cursor.getInt(cursor.getColumnIndex(BooksDBContract.BookDetail.USER_ID)));
                 bookModel.setBookSku(cursor.getString(cursor.getColumnIndex(BooksDBContract.BookDetail.BOOK_SKU)));
+                Log.d("rrrrrrr", bookModel.getBookSku());
                 bookModel.position = cursor.getDouble(cursor.getColumnIndex(BooksDBContract.BookDetail.POSITION));
                 bookModel.bookCode = cursor.getInt(cursor.getColumnIndex(BooksDBContract.BookDetail.BOOK_CODE));
                 bookModel.fileName = (cursor.getString(cursor.getColumnIndex(BooksDBContract.BookDetail.BOOK_NAME)));

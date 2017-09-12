@@ -51,6 +51,7 @@ public final class Const {
     public static final String BOOK_SKU = "bookSku";
     public static final String USER_ID = "userId";
     public static final String IS_INTERNAL_BOOK = "isInternal";
+    public static final String VIEW_ITEM_BOOK_POSITION = "getItemViewBookPosition";
 
 
     //right menu const

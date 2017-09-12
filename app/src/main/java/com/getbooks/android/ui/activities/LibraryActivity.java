@@ -1,11 +1,9 @@
 package com.getbooks.android.ui.activities;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Rect;
 import android.net.ConnectivityManager;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Parcelable;
@@ -51,7 +49,6 @@ import com.getbooks.android.ui.dialog.AlertDialogAboutUs;
 import com.getbooks.android.ui.dialog.AlertDialogInstructions;
 import com.getbooks.android.ui.dialog.AlertDialogStory;
 import com.getbooks.android.ui.dialog.DeleteBookDialog;
-import com.getbooks.android.ui.dialog.DialogSettings;
 import com.getbooks.android.ui.dialog.LogOutDialog;
 import com.getbooks.android.ui.dialog.RestartDownloadingDialog;
 import com.getbooks.android.ui.fragments.left_menu_items.FragmentServicePrivacy;
@@ -62,7 +59,6 @@ import com.getbooks.android.util.CompareUtil;
 import com.getbooks.android.util.DateUtil;
 import com.getbooks.android.util.FileUtil;
 import com.getbooks.android.util.LogUtil;
-import com.getbooks.android.util.ShareUtil;
 import com.getbooks.android.util.UiUtil;
 
 import org.greenrobot.eventbus.EventBus;
@@ -89,8 +85,6 @@ import butterknife.OnClick;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-
-import static com.getbooks.android.R.drawable.book;
 
 /**
  * Created by marina on 26.07.17.
@@ -340,8 +334,14 @@ public class LibraryActivity extends BaseActivity implements Queries.CallBack,
 
     }
 
+    List<BookModel> mInitialLibraryList = new ArrayList<>();
+
     @Override
     public void onClick(View view) {//right menu radio listener
+        if (mInitialLibraryList.size() != mLibrary.size()) {
+            mInitialLibraryList.clear();
+            mInitialLibraryList.addAll(mLibrary);
+        }
         switch (view.getId()) {
             case R.id.toggle_book_name:
                 if (imgBookName.isChecked())
@@ -351,13 +351,17 @@ public class LibraryActivity extends BaseActivity implements Queries.CallBack,
             case R.id.rigth_txt_book_name:
                 if (imgBookName.isChecked()) {
                     imgBookName.setChecked(false);
-                    initShelvesRecycler(mLibrary);
+                    mLibrary.clear();
+                    mLibrary.addAll(mInitialLibraryList);
+                    mShelvesAdapter.upDateLibrary(mLibrary);
                 } else {
                     imgBookName.setChecked(true);
                     imgAuthorName.setChecked(false);
                     imgAddDate.setChecked(false);
                     imgReadDate.setChecked(false);
-                    initShelvesRecycler(CompareUtil.compareByBookName(mLibrary));
+                    mLibrary.clear();
+                    mLibrary.addAll(CompareUtil.compareByBookName(mInitialLibraryList));
+                    mShelvesAdapter.upDateLibrary(mLibrary);
                 }
                 break;
             case R.id.toggle_author_name:
@@ -368,13 +372,17 @@ public class LibraryActivity extends BaseActivity implements Queries.CallBack,
             case R.id.rigth_txt_author_name:
                 if (imgAuthorName.isChecked()) {
                     imgAuthorName.setChecked(false);
-                    initShelvesRecycler(mLibrary);
+                    mLibrary.clear();
+                    mLibrary.addAll(mInitialLibraryList);
+                    mShelvesAdapter.upDateLibrary(mLibrary);
                 } else {
                     imgAuthorName.setChecked(true);
                     imgBookName.setChecked(false);
                     imgAddDate.setChecked(false);
                     imgReadDate.setChecked(false);
-                    initShelvesRecycler(CompareUtil.compareByAuthorName(mLibrary));
+                    mLibrary.clear();
+                    mLibrary.addAll(CompareUtil.compareByAuthorName(mInitialLibraryList));
+                    mShelvesAdapter.upDateLibrary(mLibrary);
                 }
                 break;
             case R.id.toggle_add_date:
@@ -385,13 +393,17 @@ public class LibraryActivity extends BaseActivity implements Queries.CallBack,
             case R.id.rigth_txt_date_add:
                 if (imgAddDate.isChecked()) {
                     imgAddDate.setChecked(false);
-                    initShelvesRecycler(mLibrary);
+                    mLibrary.clear();
+                    mLibrary.addAll(mInitialLibraryList);
+                    mShelvesAdapter.upDateLibrary(mLibrary);
                 } else {
                     imgAddDate.setChecked(true);
                     imgBookName.setChecked(false);
                     imgAuthorName.setChecked(false);
                     imgReadDate.setChecked(false);
-                    initShelvesRecycler(CompareUtil.compareByAddDate(mLibrary));
+                    mLibrary.clear();
+                    mLibrary.addAll(CompareUtil.compareByAddDate(mInitialLibraryList));
+                    mShelvesAdapter.upDateLibrary(mLibrary);
                 }
                 break;
             case R.id.toggle_read_date:
@@ -402,13 +414,17 @@ public class LibraryActivity extends BaseActivity implements Queries.CallBack,
             case R.id.rigth_txt_read_date:
                 if (imgReadDate.isChecked()) {
                     imgReadDate.setChecked(false);
-                    initShelvesRecycler(mLibrary);
+                    mLibrary.clear();
+                    mLibrary.addAll(mInitialLibraryList);
+                    mShelvesAdapter.upDateLibrary(mLibrary);
                 } else {
                     imgReadDate.setChecked(true);
                     imgBookName.setChecked(false);
                     imgAddDate.setChecked(false);
                     imgAuthorName.setChecked(false);
-                    initShelvesRecycler(CompareUtil.compareByReadDate(mLibrary));
+                    mLibrary.clear();
+                    mLibrary.addAll(CompareUtil.compareByReadDate(mInitialLibraryList));
+                    mShelvesAdapter.upDateLibrary(mLibrary);
                 }
                 break;
         }
@@ -578,8 +594,10 @@ public class LibraryActivity extends BaseActivity implements Queries.CallBack,
                             currentDownloadingBookModel = mLibrary.get(position);
                             mShelvesAdapter.setSelectedDeletingBook(position, mDownloadInfo);
                         } else {
+                            currentDownloadingBookModel = mLibrary.get(position);
                             BookModel bookModel = mLibrary.get(position);
                             bookModel.setViewPosition(position);
+                            Log.d("ggggggggWhenDownl", String.valueOf(bookModel.getViewPosition()));
                             addToDownloadQueue(bookModel);
                         }
                         break;
@@ -596,7 +614,8 @@ public class LibraryActivity extends BaseActivity implements Queries.CallBack,
                                         mLibrary.get(position).fileName, "Author", mLibrary.get(position).fileName + Const.DECRYPTED,
                                         mLibrary.get(position).position, false, 1, false, true, true,
                                         mDirectoryPath, mLibrary.get(position).getBookSku(),
-                                        mLibrary.get(position).getUserId(), false);
+                                        mLibrary.get(position).getUserId(), false,
+                                        position);
                             } catch (IOException e) {
                                 e.printStackTrace();
                             } catch (NoSuchPaddingException e) {
@@ -621,7 +640,8 @@ public class LibraryActivity extends BaseActivity implements Queries.CallBack,
                                         mLibrary.get(position).fileName, "Author", mLibrary.get(position).fileName + Const.DECRYPTED,
                                         mLibrary.get(position).position, false, 1, false, true, true, mDirectoryPath,
                                         mLibrary.get(position).getBookSku(),
-                                        mLibrary.get(position).getUserId(), false);
+                                        mLibrary.get(position).getUserId(), false,
+                                        position);
                             } catch (IOException e) {
                                 e.printStackTrace();
                             } catch (NoSuchPaddingException e) {
@@ -644,7 +664,8 @@ public class LibraryActivity extends BaseActivity implements Queries.CallBack,
                                     mLibrary.get(position).position, false, 1, false, true, true,
                                     mLibrary.get(position).getFilePath().replace(mLibrary.get(position).fileName, ""),
                                     mLibrary.get(position).getBookSku(),
-                                    mLibrary.get(position).getUserId(), true);
+                                    mLibrary.get(position).getUserId(), true,
+                                    position);
                         }
                         break;
                 }
@@ -654,6 +675,7 @@ public class LibraryActivity extends BaseActivity implements Queries.CallBack,
             public void onItemLongClick(View view, int position) {
                 if (!mDownloadInfo.getDownloadState().equals(DownloadInfo.DownloadState.SELECTED_DELETING_BOOKS)) {
                     currentDownloadingBookModel = mLibrary.get(position);
+                    Log.d("wwwww", String.valueOf(currentDownloadingBookModel));
                     mDeletingBookQueue.addToDeletingQueue(currentDownloadingBookModel);
                     mDeleteBookDialog = new DeleteBookDialog(LibraryActivity.this);
                     mDeleteBookDialog.setOnItemLogOutListener(LibraryActivity.this);
@@ -798,6 +820,7 @@ public class LibraryActivity extends BaseActivity implements Queries.CallBack,
         } else {
             currentDownloadingBookModel.setBookState(BookState.PURCHASED_BOOK.getState());
         }
+        mLibrary.get(currentDownloadingBookModel.getViewPosition()).setCreatedDate(DateUtil.getDate(new Date().getTime()));
         currentDownloadingBookModel.setCreatedDate(DateUtil.getDate(new Date().getTime()));
         mShelvesAdapter.notifyItemChanged(currentDownloadingBookModel.getViewPosition());
         mDownloadInfo.setDownloadState(DownloadInfo.DownloadState.COMPLETE);
@@ -866,7 +889,7 @@ public class LibraryActivity extends BaseActivity implements Queries.CallBack,
                 bookModel.position = upDateLibrary.getPosition();
                 bookModel.setReadDateTime(upDateLibrary.getDateLastReading());
                 bookModel.setBookAuthors(upDateLibrary.getAuthor());
-                mShelvesAdapter.notifyItemChanged(bookModel.getViewPosition());
+                mShelvesAdapter.notifyItemChanged(upDateLibrary.getBookItemViewPosition());
             }
         }
     }

@@ -149,7 +149,8 @@ public class UiUtil {
                                               String bookTitle, String author, String bookName,
                                               double position, boolean doubledPaged, int transitionType,
                                               boolean globalPagination, boolean rtl, boolean  verticalWriting,
-                                              String directoryPath, String bookSku, int userId, boolean isInternalBook) {
+                                              String directoryPath, String bookSku, int userId, boolean isInternalBook,
+                                              int bookItemViewPosition) {
 
         Intent intent = new Intent(context, tClass);
         intent.putExtra(Const.BOOK_CODE, bookCode);
@@ -166,6 +167,7 @@ public class UiUtil {
         intent.putExtra(Const.BOOK_SKU, bookSku);
         intent.putExtra(Const.USER_ID, userId);
         intent.putExtra(Const.IS_INTERNAL_BOOK, isInternalBook);
+        intent.putExtra(Const.VIEW_ITEM_BOOK_POSITION, bookItemViewPosition);
         context.startActivity(intent);
     }
 

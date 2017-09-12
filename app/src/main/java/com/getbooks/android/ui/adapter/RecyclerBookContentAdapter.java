@@ -67,7 +67,6 @@ public class RecyclerBookContentAdapter extends RecyclerView.Adapter<RecyclerVie
             case 0:
                 ViewHolderBookContent viewHolderBookContent = (ViewHolderBookContent) holder;
                 viewHolderBookContent.mTextChapterName.setText(mChapterArray.get(position).getBookChapter());
-                Log.d("eeeeee", String.valueOf(mChapterArray.get(position).getViewId()));
                 viewHolderBookContent.mLayoutChapterItem.setId(mChapterArray.get(position).getViewId());
                 viewHolderBookContent.mLayoutChapterItem.setOnClickListener(new View.OnClickListener() {
                     @Override

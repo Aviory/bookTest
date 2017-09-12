@@ -1,6 +1,8 @@
 package com.getbooks.android.ui.adapter;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -112,19 +114,26 @@ public class RecyclerShelvesAdapter extends RecyclerView.Adapter<RecyclerShelves
                     case PURCHASED_BOOK:
                         if (bookModel.isIsBookFirstOpen()) {
                             holder.mImageNewBook.setVisibility(View.VISIBLE);
+                        } else {
+                            holder.mImageNewBook.setVisibility(View.INVISIBLE);
                         }
                         holder.mImageBookState.setImageResource(R.drawable.check_black);
                         break;
                     case RENTED_BOOK:
                         if (bookModel.isIsBookFirstOpen()) {
                             holder.mImageNewBook.setVisibility(View.VISIBLE);
+                        } else {
+                            holder.mImageNewBook.setVisibility(View.INVISIBLE);
                         }
                         holder.mImageBookState.setImageResource(R.drawable.clock_black);
                         break;
                     case INTERNAL_BOOK:
                         if (bookModel.isIsBookFirstOpen()) {
                             holder.mImageNewBook.setVisibility(View.VISIBLE);
+                        } else {
+                            holder.mImageNewBook.setVisibility(View.INVISIBLE);
                         }
+                        holder.mImageCover.setImageResource(R.drawable.book_1);
                         holder.mImageBookState.setImageResource(R.drawable.check_black);
                         break;
                 }
@@ -149,12 +158,6 @@ public class RecyclerShelvesAdapter extends RecyclerView.Adapter<RecyclerShelves
                         });
                 holder.mCheckBoxDeleteBook.setVisibility(View.VISIBLE);
 
-                holder.mImageCover.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        Log.d("PPPPPPPPPPP", "holder click");
-                    }
-                });
                 Log.d("PPPPPPPPPPP", String.valueOf(mLibrary.get(position).isIsBookRented()) + " " +
                         mLibrary.get(position).getBookState());
                 if (mLibrary.get(position).ismIsBookSelected()) {

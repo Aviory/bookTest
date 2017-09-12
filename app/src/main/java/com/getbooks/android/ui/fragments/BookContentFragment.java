@@ -114,17 +114,17 @@ public class BookContentFragment extends Fragment implements SelectorOfBookConte
             case 0:
                 mBookContentAdapter.upDateViewType(0);
                 mFillBookContentListener.fillBookContentList(0, mBookContentList, mBookContentAdapter);
-                Toast.makeText(getActivity(), "BookModel content", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getActivity(), "BookModel content", Toast.LENGTH_SHORT).show();
                 break;
             case 1:
                 mBookContentAdapter.upDateViewType(1);
                 mFillBookContentListener.fillBookContentList(1, mBookContentList, mBookContentAdapter);
-                Toast.makeText(getActivity(), "BookMurks list", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getActivity(), "BookMurks list", Toast.LENGTH_SHORT).show();
                 break;
             case 2:
                 mBookContentAdapter.upDateViewType(2);
                 mFillBookContentListener.fillBookContentList(2, mBookContentList, mBookContentAdapter);
-                Toast.makeText(getActivity(), "Highlights list", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(getActivity(), "Highlights list", Toast.LENGTH_SHORT).show();
                 break;
         }
     }

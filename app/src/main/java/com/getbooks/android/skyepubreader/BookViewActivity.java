@@ -181,6 +181,7 @@ public class BookViewActivity extends Activity implements BookSettingMenuFragmen
     private BookDataBaseLoader mBookDataBaseLoader;
     private boolean mIsInternalBook;
     private String mDeviceToken;
+    private int mBookItemViewPosition;
 
     Rect bookmarkRect;
     Rect bookmarkedRect;
@@ -534,6 +535,7 @@ public class BookViewActivity extends Activity implements BookSettingMenuFragmen
         mIsInternalBook = bundle.getBoolean(Const.IS_INTERNAL_BOOK);
 //		if (this.isRTL) this.isDoublePagedForLandscape = false; // In RTL mode, SDK does not support double paged.
         mDeviceToken = Prefs.getToken(this);
+        mBookItemViewPosition = bundle.getInt(Const.VIEW_ITEM_BOOK_POSITION);
 
         insertBookMarkFromServer(mUserId, mBookSku);
 
@@ -3562,6 +3564,7 @@ public class BookViewActivity extends Activity implements BookSettingMenuFragmen
         upDateLibrary.setDateLastReading(lastReadingDate);
         upDateLibrary.setPosition(pagePositionInBook);
         upDateLibrary.setAuthor(rv.getBook().creator);
+        upDateLibrary.setBookItemViewPosition(mBookItemViewPosition);
         EventBus.getDefault().post(upDateLibrary);
     }
 

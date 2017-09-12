@@ -70,6 +70,7 @@ public class Queries {
                             bookModel.fileName = rentedBook.getRentBookName().replaceAll("\\P{L}", "");
                             bookModel.bookCode = UiUtil.getRandomGeneratedBookCode();
                             bookModel.setBookSku(rentedBook.getRentBookSku());
+                            Log.d("QQQ)))", rentedBook.getRentBookSku());
                             bookModel.setBookState(BookState.CLOUD_BOOK.getState());
                             bookModel.setIsBookRented(true);
                             allLibraryBookModels.add(bookModel);
@@ -189,7 +190,7 @@ public class Queries {
                                  List<BookModel> library, RecyclerShelvesAdapter shelvesAdapter) {
         ApiService apiService = ApiManager.getClientApiAry().create(ApiService.class);
 
-        apiService.returnBookRented(Const.WEBSITECODE, deviceToken, String.valueOf(bookModel.bookCode))
+        apiService.returnBookRented(Const.WEBSITECODE, deviceToken, String.valueOf(bookModel.getBookSku()))
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .doOnNext(responseBodyResponse -> {

@@ -87,14 +87,14 @@ public class AuthorizationFragment extends BaseFragment {
         }
 
         @Override
-        protected void onPostExecute(String s) {
-            super.onPostExecute(s);
-            if (s.equals("null")) {
+        protected void onPostExecute(String userToken) {
+            super.onPostExecute(userToken);
+            if (userToken.equals("null")) {
                 setUpWebView();
                 mAuthorizationWebView.loadUrl(Const.PELEPHONE_MAGENTO_LOGIN_URI);
             } else {
                 setUpWebView();
-                mAuthorizationWebView.loadUrl(Const.PELEPHONE_MAGENTO_LOGIN_URI + "?UserToken=" + s);
+                mAuthorizationWebView.loadUrl(Const.PELEPHONE_MAGENTO_LOGIN_URI + "?UserToken=" + userToken);
             }
         }
     }
