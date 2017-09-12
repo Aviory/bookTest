@@ -66,7 +66,7 @@ public class CompareUtil {
 
     public static List<BookModel> compareByReadDate(List<BookModel> list){
         for (BookModel book: list ) {
-            if(book.getCreatedDate()!=null)
+            if(book.getReadDateTime()!=null)
                 LogUtil.log("compare Read: ", String.valueOf(book.getReadDateTime().getTime()));
             else
                 LogUtil.log("compare: ", "Read date null");
@@ -100,12 +100,10 @@ public class CompareUtil {
         public int compare(BookModel a, BookModel b) {
             if(a.fileName!=null && b.fileName!=null)
                 return a.fileName.compareTo(b.fileName);
-
-            else if(a.fileName==null && b.fileName!=null ){
+            else if(a.fileName==null && b.fileName!=null)
                 return 1;
-            } else{
+            else
                 return -1;
-            }
         }
     }
     private static class AuthorNameComparator implements Comparator<BookModel>{
