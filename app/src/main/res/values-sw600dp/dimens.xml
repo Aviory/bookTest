@@ -130,5 +130,9 @@
     <dimen name="search_height">35dp</dimen>
     <dimen name="margin_edit_search">25dp</dimen>
 
+    <!-- Menu seek bar sizes -->
+    <dimen name="seek_bar_height">6dp</dimen>
+    <dimen name="thumb_height">8dp</dimen>
+
 
 </resources>

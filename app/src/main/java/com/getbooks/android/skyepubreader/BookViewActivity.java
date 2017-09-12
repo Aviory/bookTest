@@ -524,7 +524,8 @@ public class BookViewActivity extends Activity implements BookSettingMenuFragmen
         bookCode = bundle.getInt(Const.BOOK_CODE);
         if (pagePositionInBook == -1) pagePositionInBook = bundle.getDouble(Const.POSITION);
         themeIndex = setting.theme;
-        this.isGlobalPagination = bundle.getBoolean(Const.GLOBAL_PAGINATION);
+//        this.isGlobalPagination = bundle.getBoolean(Const.GLOBAL_PAGINATION);
+        this.isGlobalPagination = true;
         this.isRTL = bundle.getBoolean(Const.RTL);
         this.isVerticalWriting = bundle.getBoolean(Const.VERTICAL_WRITING);
         this.isDoublePagedForLandscape = bundle.getBoolean(Const.DOUBLE_PAGED);
@@ -845,7 +846,6 @@ public class BookViewActivity extends Activity implements BookSettingMenuFragmen
 
     @OnClick(R.id.img_share_on_facebook)
     protected void shareToFacebook() {
-        Toast.makeText(this, "Share on facebook", Toast.LENGTH_SHORT).show();
         ShareUtil.shareToFacebook(this, "https://pelephone.getbooks.co.il/dev/on-sale");
     }
 
@@ -1142,7 +1142,6 @@ public class BookViewActivity extends Activity implements BookSettingMenuFragmen
 
     @Override
     public void removeMarkup(int id) {
-        Toast.makeText(this, "removeMarkup", Toast.LENGTH_SHORT).show();
         mBookDataBaseLoader.deleteBookmarkByCodeDb(id, mUserId, mBookSku);
         closeSettingsMenu();
     }
@@ -1166,7 +1165,6 @@ public class BookViewActivity extends Activity implements BookSettingMenuFragmen
 
     @Override
     public void removeHighlight(Object object) {
-        Toast.makeText(this, "removeHighlight", Toast.LENGTH_SHORT).show();
         Highlight highlight = (Highlight) object;
         rv.deleteHighlight(highlight);
         closeSettingsMenu();
@@ -2341,7 +2339,7 @@ public class BookViewActivity extends Activity implements BookSettingMenuFragmen
 
         searchBook();
 
-        UiUtil.increaseTouchArea(ePubView, seekBar);
+        UiUtil.increaseTouchArea(mCustomSeekBarLayout, seekBar);
     }
 
     private void insertBookMarkFromServer(int userId, String bookSku) {
@@ -2554,7 +2552,6 @@ public class BookViewActivity extends Activity implements BookSettingMenuFragmen
 
             if (arg.getId() == 6000) {
                 // highlightMenuButton
-                Toast.makeText(BookViewActivity.this, "Highlight Click", Toast.LENGTH_SHORT).show();
                 mark();
                 hideMenuBox();
                 showHighlightBox();
@@ -2569,14 +2566,12 @@ public class BookViewActivity extends Activity implements BookSettingMenuFragmen
                 hideHighlightBox();
                 showColorBox();
             } else if (arg.getId() == 6003) {
-                Toast.makeText(BookViewActivity.this, "RemoveHighlight Click", Toast.LENGTH_SHORT).show();
                 hideHighlightBox();
                 rv.deleteHighlight(currentHighlight);
             } else if (arg.getId() == 6004) {
                 hideHighlightBox();
                 if (!rv.isPaging()) showNoteBox();
             } else if (arg.getId() == 6005) {
-                Toast.makeText(BookViewActivity.this, "Share on facebook", Toast.LENGTH_SHORT).show();
                 ShareUtil.shareToFacebook(BookViewActivity.this, "https://pelephone.getbooks.co.il/dev/on-sale");
             }
 
@@ -2769,7 +2764,6 @@ public class BookViewActivity extends Activity implements BookSettingMenuFragmen
 //		try {
 //			res = java.net.URLEncoder.encode(str, "UTF-8");
 //		}catch(Exception ifKeyTest) {}
-        showToast(res);
     }
 
     class ClickDelegate implements ClickListener {
@@ -3018,7 +3012,7 @@ public class BookViewActivity extends Activity implements BookSettingMenuFragmen
 
 //            sd.insertHighlight(highlight);
             mBookDataBaseLoader.insertHighlightToDb(highlight, mUserId, mBookSku);
-            showToast("startIndex " + highlight.startIndex + " startOffset " + highlight.startOffset + " endIndex " + highlight.endIndex + " endOffset " + highlight.endOffset + " text " + highlight.text);
+//            showToast("startIndex " + highlight.startIndex + " startOffset " + highlight.startOffset + " endIndex " + highlight.endIndex + " endOffset " + highlight.endOffset + " text " + highlight.text);
         }
 
         public void onHighlightHit(Highlight highlight, int x, int y, Rect startRect, Rect endRect) {
@@ -3862,8 +3856,10 @@ class DottedDrawable extends Drawable {
     public DottedDrawable(int activeColor, int inactiveColor, int value) {
         mPaint = new Paint();
         mPaint.setStrokeWidth(3);
-        this.color = activeColor;
-        this.inactiveColor = inactiveColor;
+//        this.color = activeColor;
+        this.color = Color.TRANSPARENT;
+//        this.inactiveColor = inactiveColor;
+        this.inactiveColor = Color.TRANSPARENT;
         this.value = value;
     }
 

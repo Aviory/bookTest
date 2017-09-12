@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Rect;
 import android.net.ConnectivityManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Parcelable;
@@ -14,6 +15,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SimpleItemAnimator;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -529,7 +531,7 @@ public class LibraryActivity extends BaseActivity implements Queries.CallBack,
         List<BookModel> dataBaseBookModels = new ArrayList<>();
         dataBaseBookModels.addAll(mBookDataBaseLoader.getAllUserBookOnDevise(Prefs.getUserSession(getAct(), Const.USER_SESSION_ID)));
         if (!dataBaseBookModels.isEmpty()) {
-            if (!dataBaseBookModels.contains(bookModelInternal)){
+            if (!dataBaseBookModels.contains(bookModelInternal)) {
                 createInternalBook(bookModelInternal, file);
             }
         } else {
@@ -730,6 +732,7 @@ public class LibraryActivity extends BaseActivity implements Queries.CallBack,
         switch (resultCode) {
             case DownloadService.STATUS_RUNNING:
                 mDownloadInfo.setDownloadState(DownloadInfo.DownloadState.DOWNLOADING);
+                disableAnimationRecyclerItemChange();
                 // Show progress bar
                 mShelvesAdapter.setStartProgress(currentDownloadingBookModel.getViewPosition(), mDownloadInfo);
                 break;
@@ -737,6 +740,7 @@ public class LibraryActivity extends BaseActivity implements Queries.CallBack,
             case DownloadService.STATUS_PROGRESS:
                 // Extract result from bundle and fill GridData
                 int progress = resultData.getInt("progress");
+                disableAnimationRecyclerItemChange();
                 mShelvesAdapter.setProgressRefresh(progress, currentDownloadingBookModel.getViewPosition(), mDownloadInfo);
                 break;
 
@@ -757,6 +761,14 @@ public class LibraryActivity extends BaseActivity implements Queries.CallBack,
                 downloadNextBookQueue(error);
                 Toast.makeText(getAct(), error, Toast.LENGTH_LONG).show();
                 break;
+        }
+    }
+
+    private void disableAnimationRecyclerItemChange() {
+        RecyclerView.ItemAnimator animator = mRecyclerBookShelves.getItemAnimator();
+
+        if (animator instanceof SimpleItemAnimator) {
+            ((SimpleItemAnimator) animator).setSupportsChangeAnimations(false);
         }
     }
 
@@ -862,12 +874,12 @@ public class LibraryActivity extends BaseActivity implements Queries.CallBack,
     @Subscribe
     public void onMessageEvent(Events.UpDateMainScreen upDateMainScreen) {
         boolean isUpDate = Prefs.getBooleanProperty(this, Const.PUSH_NOTIFY_BY_UPDATE);
-        if (isUpDate){
+        if (isUpDate) {
             mQueries = new Queries();
             mQueries.setCallBack(this);
             mQueries.getUserSession(Prefs.getToken(getAct()), getAct());
         }
-     }
+    }
 
     private void restartDownloading() {
         if (mDownloadQueue.getDownloadQueueSize() != 0) {

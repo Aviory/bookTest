@@ -6,7 +6,7 @@
 
     <solid android:color="@color/blue_light"/>
 
-    <size android:height="@dimen/seek_bar_height"
+    <size android:height="@dimen/thumb_height"
         android:width="@dimen/seek_bar_width"/>
 
 </shape>
