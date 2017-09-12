@@ -53,6 +53,7 @@ public class BooksDBContract {
         String IS_RTL = "isRTL";
         String LAST_READ = "lastRead";
         String DATE = "Date";
+        String FILE_PATH = "FilePath";
     }
 
     interface BookSettingsColumns {

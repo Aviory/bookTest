@@ -73,6 +73,7 @@ public class BookModel extends BookInformation implements Parcelable {
         mIsBookFirstOpen = in.readByte() != 0;
         mLastChapter = in.readInt();
         mChapterList = in.readString();
+        filePath = in.readString();
         mPagesPerArticleList = in.readString();
         mBookPhysicalPage = in.readInt();
         mLastReadingParagraph = in.readInt();
@@ -92,14 +93,6 @@ public class BookModel extends BookInformation implements Parcelable {
         }
     };
 
-//    public String getBookSku() {
-//        return mBookName;
-//    }
-//
-//    public void setBookSku(String bookName) {
-//        this.mBookName = bookName;
-//    }
-
     public boolean isIsBookFirstOpen() {
         return mIsBookFirstOpen;
     }
@@ -115,22 +108,6 @@ public class BookModel extends BookInformation implements Parcelable {
     public void setBookSku(String bookSku) {
         this.mBookSku = bookSku;
     }
-//
-//    public String getImageDownloadLink() {
-//        return mImageDownloadLink;
-//    }
-//
-//    public void setImageDownloadLink(String imageDownloadLink) {
-//        this.mImageDownloadLink = imageDownloadLink;
-//    }
-//
-//    public String getBookDownloadLink() {
-//        return mBookDownloadLink;
-//    }
-//
-//    public void setBookDownloadLink(String bookDownloadLink) {
-//        this.mBookDownloadLink = bookDownloadLink;
-//    }
 
     public BookState getBookState() {
         return mBookState;
@@ -332,6 +309,25 @@ public class BookModel extends BookInformation implements Parcelable {
         this.mLastReadingParagraph = lastReadingParagraph;
     }
 
+//    @Override
+//    public boolean equals(Object o) {
+//        if (this == o) return true;
+//        if (o == null || getClass() != o.getClass()) return false;
+//
+//        BookModel bookModel = (BookModel) o;
+//
+//        if (mUserId != bookModel.mUserId) return false;
+//        return mBookSku.equals(bookModel.mBookSku);
+//
+//    }
+//
+//    @Override
+//    public int hashCode() {
+//        int result = mUserId;
+//        result = 31 * result + mBookSku.hashCode();
+//        return result;
+//    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -340,38 +336,17 @@ public class BookModel extends BookInformation implements Parcelable {
         BookModel bookModel = (BookModel) o;
 
         if (mUserId != bookModel.mUserId) return false;
-        return mBookSku.equals(bookModel.mBookSku);
+        return fileName.equals(bookModel.fileName);
 
     }
 
     @Override
     public int hashCode() {
         int result = mUserId;
-        result = 31 * result + mBookSku.hashCode();
+        result = 31 * result + fileName.hashCode();
         return result;
     }
 
-    //
-//    @Override
-//    public boolean equals(Object o) {
-//        if (this == o) return true;
-//        if (!(o instanceof BookModel)) return false;
-//
-//        BookModel that = (BookModel) o;
-//
-//        if (mUserId != that.mUserId) return false;
-//        if (!mBookName.equals(that.mBookName)) return false;
-//        return mBookSku.equals(that.mBookSku);
-//
-//    }
-//
-//    @Override
-//    public int hashCode() {
-//        int result = mUserId;
-//        result = 31 * result + mBookName.hashCode();
-//        result = 31 * result + mBookSku.hashCode();
-//        return result;
-//    }
 
     public boolean isIsBookRented() {
         return mIsBookRented;
@@ -418,6 +393,7 @@ public class BookModel extends BookInformation implements Parcelable {
         parcel.writeByte((byte) (mIsBookFirstOpen ? 1 : 0));
         parcel.writeInt(mLastChapter);
         parcel.writeString(mChapterList);
+        parcel.writeString(filePath);
         parcel.writeString(mPagesPerArticleList);
         parcel.writeInt(mBookPhysicalPage);
         parcel.writeInt(mLastReadingParagraph);
@@ -458,6 +434,7 @@ public class BookModel extends BookInformation implements Parcelable {
                 ", mLastReadingParagraph=" + mLastReadingParagraph +
                 ", mIsBookRented=" + mIsBookRented +
                 ", BookCode=" + bookCode +
+                ", FilePath=" + filePath +
                 ", mBookInstance=" + Arrays.toString(mBookInstance) +
                 '}';
     }

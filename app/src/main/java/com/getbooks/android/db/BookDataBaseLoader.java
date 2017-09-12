@@ -132,4 +132,12 @@ public class BookDataBaseLoader {
     public void insertPagingInformationDb(PagingInformation pgi, int userId, String bookSku) {
         mBooksDataBase.insertPagingInformation(pgi, userId, bookSku);
     }
+
+    public int getBookmarkCodeDB(PageInformation pi, int userId, String bookSku){
+        return mBooksDataBase.getBookmarkCode(pi, userId, bookSku);
+    }
+
+    public void insertBookmarkToDb(PageInformation pi, int userId, String bookSku){
+        mBooksDataBase.insertBookmark(pi, userId, bookSku);
+    }
 }
