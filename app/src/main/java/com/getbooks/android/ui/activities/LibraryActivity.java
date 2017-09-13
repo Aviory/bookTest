@@ -467,6 +467,7 @@ public class LibraryActivity extends BaseActivity implements Queries.CallBack,
             }
         }
         mLibrary.removeAll(mNotDeletingBooksQueue.getAllBooksQueue());
+        Log.d("deletingQueue", String.valueOf(mNotDeletingBooksQueue.getQueueSize()));
         mDownloadInfo.setDownloadState(DownloadInfo.DownloadState.SELECTED_DELETING_BOOKS);
         mShelvesAdapter.setSelectedAllDeletingBooks(mDownloadInfo);
     }
@@ -697,6 +698,7 @@ public class LibraryActivity extends BaseActivity implements Queries.CallBack,
         if (!mDeletingBookQueue.isDeletingQueueEmpty()) {
             switch (currentDownloadingBookModel.getBookState()) {
                 case CLOUD_BOOK:
+                    clearSelectedDeletingBookState();
                     if (currentDownloadingBookModel.isIsBookRented()) {
                         Queries mQueries = new Queries();
                         mQueries.returnRentedBook(Prefs.getToken(this), this, currentDownloadingBookModel,
@@ -704,17 +706,20 @@ public class LibraryActivity extends BaseActivity implements Queries.CallBack,
                     }
                     break;
                 case RENTED_BOOK:
+                    clearSelectedDeletingBookState();
                     Queries mQueries = new Queries();
                     mQueries.returnRentedBook(Prefs.getToken(this), this, currentDownloadingBookModel,
                             mLibrary, mShelvesAdapter);
                     break;
                 case PURCHASED_BOOK:
+                    clearSelectedDeletingBookState();
                     mBookDataBaseLoader.deleteBookFromDb(currentDownloadingBookModel);
                     currentDownloadingBookModel.setBookState(BookState.CLOUD_BOOK.getState());
                     currentDownloadingBookModel.setIsBookFirstOpen(false);
                     mShelvesAdapter.notifyItemChanged(currentDownloadingBookModel.getViewPosition());
                     break;
                 case INTERNAL_BOOK:
+                    clearSelectedDeletingBookState();
                     currentDownloadingBookModel.setIsBookFirstOpen(false);
                     mShelvesAdapter.notifyItemChanged(currentDownloadingBookModel.getViewPosition());
                     break;
@@ -977,6 +982,7 @@ public class LibraryActivity extends BaseActivity implements Queries.CallBack,
     public void selectedBookState() {
         if (mDeletingBookQueue.queueContainsBook(currentDownloadingBookModel)) return;
         mDeletingBookQueue.addToDeletingQueue(currentDownloadingBookModel);
+        Log.d("deletingQueue111", String.valueOf(mDeletingBookQueue.getDeletingQueueSize()));
         if (!mDeletingBookQueue.isDeletingQueueEmpty())
             mImageDeleteBook.setVisibility(View.VISIBLE);
     }
@@ -984,6 +990,7 @@ public class LibraryActivity extends BaseActivity implements Queries.CallBack,
     @Override
     public void unSelectedBookState() {
         mDeletingBookQueue.removeFromDeletingQueue(currentDownloadingBookModel);
+        Log.d("deletingQueue111", String.valueOf(mDeletingBookQueue.getDeletingQueueSize()));
         if (mDeletingBookQueue.isDeletingQueueEmpty())
             mImageDeleteBook.setVisibility(View.INVISIBLE);
     }
@@ -996,6 +1003,7 @@ public class LibraryActivity extends BaseActivity implements Queries.CallBack,
         for (int i = 0; i < mLibrary.size(); i++) {
             mLibrary.get(i).setmIsBookSelected(false);
         }
+        Log.d("deletingQueue", String.valueOf(mNotDeletingBooksQueue.getQueueSize()));
         mNotDeletingBooksQueue.clearQueue();
         mShelvesAdapter.setDownloadInfo(mDownloadInfo);
         mShelvesAdapter.notifyDataSetChanged();

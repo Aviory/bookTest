@@ -17,17 +17,17 @@ public class GetbooksFirebaseMessagingService extends FirebaseMessagingService {
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
         // Not getting messages here? See why this may be: https://goo.gl/39bRNJ
-        LogUtil.log("PushTexst", "From: " + remoteMessage.getFrom());
+        LogUtil.log(this, "From: " + remoteMessage.getFrom());
 
         // Check if message contains a data payload.
         if (remoteMessage.getData().size() > 0) {
-            LogUtil.log("PushTexst", "Message data payload: " + remoteMessage.getData());
+            LogUtil.log(this, "Message data payload: " + remoteMessage.getData());
         }
 
         // Check if message contains a notification payload.
         if (remoteMessage.getNotification() != null) {
-            LogUtil.log("PushTexst", "Message Notification Body: " + remoteMessage.getNotification().getBody());
-            LogUtil.log("PushTexst", "Message Notification Title: " + remoteMessage.getNotification().getTitle());
+            LogUtil.log(this, "Message Notification Body: " + remoteMessage.getNotification().getBody());
+            LogUtil.log(this, "Message Notification Title: " + remoteMessage.getNotification().getTitle());
         }
 
         // Also if you intend on generating your own notifications as a result of a received FCM

@@ -177,5 +177,6 @@
     <dimen name="search_height">35dp</dimen>
     <dimen name="margin_edit_search">15dp</dimen>
     <dimen name="thumb_height">6dp</dimen>
+    <dimen name="splash_logo_margin">50dp</dimen>
 
 </resources>

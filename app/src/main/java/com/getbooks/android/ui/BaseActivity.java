@@ -139,6 +139,7 @@ public abstract class BaseActivity extends AppCompatActivity {
                     //TODO
                     // Permission Denied
                     LogUtil.log(this, "Permission denied");
+                    finish();
                 }
                 break;
         }

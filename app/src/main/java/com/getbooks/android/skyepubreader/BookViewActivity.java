@@ -228,7 +228,6 @@ public class BookViewActivity extends Activity implements BookSettingMenuFragmen
     boolean isBoxesShown;
 
     SkySetting setting;
-    SkyDatabase sd;
 
     Button outsideButton;
 
@@ -281,50 +280,12 @@ public class BookViewActivity extends Activity implements BookSettingMenuFragmen
         return density;
     }
 
-    public void reportMetrics() {
-        DisplayMetrics metrics = getResources().getDisplayMetrics();
-        log("densityDPI" + metrics.densityDpi);
-        log("density" + metrics.density);
-        log("real width  pixels" + metrics.widthPixels);
-        log("real height pixels" + metrics.heightPixels);
-        log("inch for width " + metrics.widthPixels / metrics.densityDpi);
-        log("inch for height" + metrics.heightPixels / metrics.densityDpi);
-    }
-
-    public void reportFiles(String path) {
-        Log.d("EPub", "Path: " + path);
-        File f = new File(path);
-        File file[] = f.listFiles();
-        Log.d("EPub", "Size: " + file.length);
-        for (int i = 0; i < file.length; i++) {
-            Log.d("EPub", "FileName:" + file[i].getName());
-        }
-    }
-
-    public boolean isHighDensityPhone() {    // if HIGH density (not XHIGH) phone like Galaxy S2, retuns true;
-        DisplayMetrics metrics = getResources().getDisplayMetrics();
-        int p0 = metrics.heightPixels;
-        int p1 = metrics.widthPixels;
-        int max = Math.max(p0, p1);
-        if (metrics.densityDpi == 240 && max == 800) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
     // We use 240 base to meet the webview coodinate system instead of 160.
     public int getPS(float dip) {
         float density = this.getDensityDPI();
         float factor = (float) density / 240.f;
         int px = (int) (dip * factor);
         return px;
-    }
-
-    public int getPSFromDP(float dps) {
-        DisplayMetrics metrics = getResources().getDisplayMetrics();
-        float pixels = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dps, metrics);
-        return (int) pixels;
     }
 
     public int getPXFromLeft(float dip) {
@@ -367,48 +328,6 @@ public class BookViewActivity extends Activity implements BookSettingMenuFragmen
 
     public int ps(float dp) {
         return this.getPS(dp);
-    }
-
-    public int pw(float sdp) {
-        int ps = this.getPS(sdp * 2);
-        int ms = this.getWidth() - ps;
-        return ms;
-    }
-
-    public int cx(float dp) {
-        int ps = this.getPS(dp);
-        int ms = this.getWidth() / 2 - ps / 2;
-        return ms;
-    }
-
-    // in double paged and landscape mode,get the center of view(its width is dpWidth) on left page
-    public int lcx(float dpWidth) {
-        int ps = this.getPS(dpWidth);
-        int ms = this.getWidth() / 4 - ps / 2;
-        return ms;
-    }
-
-    // in double paged and landscape mode,get the center of view(its width is dpWidth) on right page
-    public int rcx(float dpWidth) {
-        int ps = this.getPS(dpWidth);
-        int ms = this.getWidth() / 2 + this.getWidth() / 4 - ps / 2;
-        return ms;
-    }
-
-
-    public float getDIP(float px) {
-        float densityDPI = this.getDensityDPI();
-        float dip = px / (densityDPI / 240);
-        return dip;
-    }
-
-
-    public int getDarkerColor(int color) {
-        float[] hsv = new float[3];
-        Color.colorToHSV(color, hsv);
-        hsv[2] *= 0.8f; // value component
-        int darker = Color.HSVToColor(hsv);
-        return darker;
     }
 
     public Bitmap getBackgroundForLandscape() {
@@ -1226,85 +1145,6 @@ public class BookViewActivity extends Activity implements BookSettingMenuFragmen
         mSearchModelBooks.remove(mSearchModelBooks.size() - 1);
     }
 
-
-    class ButtonHighlighterOnTouchListener implements OnTouchListener {
-        final Button button;
-
-        public ButtonHighlighterOnTouchListener(final Button button) {
-            super();
-            this.button = button;
-        }
-
-        @Override
-        public boolean onTouch(final View view, final MotionEvent motionEvent) {
-            if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
-                //grey color filter, you can change the color as you like
-                if (button.getId() == 5000) {
-                    button.setTextColor(Color.BLUE);
-                    button.setTextSize(16);
-                } else if (button.getId() == 5001) {
-                    button.setTextColor(Color.BLUE);
-                    button.setTextSize(20);
-                } else if (button.getId() == 6000 || button.getId() == 6001) {
-                    button.setTextSize(17);
-                    button.setTextColor(Color.YELLOW);
-                } else if (button.getId() == 3001) {
-                    button.setTextColor(Color.BLACK);
-                }
-            } else if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
-                if (button.getId() == 5000) {
-                    button.setTextColor(Color.BLACK);
-                    button.setTextSize(14);
-                } else if (button.getId() == 5001) {
-                    button.setTextColor(Color.BLACK);
-                    button.setTextSize(18);
-                } else if (button.getId() == 6000 || button.getId() == 6001) {
-                    button.setTextSize(15);
-                    button.setTextColor(Color.WHITE);
-                } else if (button.getId() == 3001) {
-                    button.setTextColor(Color.DKGRAY);
-                }
-            }
-            return false;
-        }
-    }
-
-
-    class ImageButtonHighlighterOnTouchListener implements OnTouchListener {
-        final ImageButton button;
-        int highlightColor;
-        int controlColor;
-
-        public ImageButtonHighlighterOnTouchListener(final ImageButton button) {
-            super();
-            Theme theme = getCurrentTheme();
-            highlightColor = theme.controlHighlightColor;
-            controlColor = theme.controlColor;
-            this.button = button;
-        }
-
-        public ImageButtonHighlighterOnTouchListener(final ImageButton button, int controlColor, int highlightColor) {
-            super();
-            this.highlightColor = highlightColor;
-            this.controlColor = controlColor;
-            this.button = button;
-        }
-
-
-        @Override
-        public boolean onTouch(final View view, final MotionEvent motionEvent) {
-
-            if (motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
-                beep(10);
-                button.setColorFilter(highlightColor);
-
-            } else if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
-                button.setColorFilter(controlColor);
-            }
-            return false;
-        }
-    }
-
     public void makeHighlightBox() {
         RelativeLayout.LayoutParams param = new RelativeLayout.LayoutParams(
                 RelativeLayout.LayoutParams.WRAP_CONTENT,
@@ -2111,7 +1951,6 @@ public class BookViewActivity extends Activity implements BookSettingMenuFragmen
     public void increaseLineSpacing() {
         if (this.setting.lineSpacing != 4) {
             this.setting.lineSpacing++;
-            this.checkSettings();
             rv.changeLineSpacing(this.getRealLineSpace(setting.lineSpacing));
         }
         closeSettingsMenu();
@@ -2121,7 +1960,6 @@ public class BookViewActivity extends Activity implements BookSettingMenuFragmen
     public void dicreaseLineSpacing() {
         if (this.setting.lineSpacing != 0) {
             this.setting.lineSpacing--;
-            this.checkSettings();
             rv.changeLineSpacing(this.getRealLineSpace(setting.lineSpacing));
         }
         closeSettingsMenu();
@@ -2133,7 +1971,6 @@ public class BookViewActivity extends Activity implements BookSettingMenuFragmen
             this.setting.fontSize++;
             rv.changeFont(setting.fontName, this.getRealFontSize(setting.fontSize));
         }
-        this.checkSettings();
         closeSettingsMenu();
     }
 
@@ -2143,7 +1980,6 @@ public class BookViewActivity extends Activity implements BookSettingMenuFragmen
             this.setting.fontSize--;
             rv.changeFont(setting.fontName, this.getRealFontSize(setting.fontSize));
         }
-        this.checkSettings();
         closeSettingsMenu();
     }
 
@@ -2169,7 +2005,6 @@ public class BookViewActivity extends Activity implements BookSettingMenuFragmen
         String name = customFont.getFullName();
         if (!setting.fontName.equalsIgnoreCase(name)) {
             setting.fontName = name;
-            checkSettings();
             rv.changeFont(setting.fontName, this.getRealFontSize(setting.fontSize));
         }
         closeSettingsMenu();
@@ -2619,27 +2454,6 @@ public class BookViewActivity extends Activity implements BookSettingMenuFragmen
         return rs;
     }
 
-    public void checkSettings() {
-
-    }
-
-
-    public void decreaseFont() {
-        if (this.setting.fontSize != 0) {
-            this.setting.fontSize--;
-            rv.changeFont(setting.fontName, this.getRealFontSize(setting.fontSize));
-        }
-        this.checkSettings();
-    }
-
-    public void increaseFont() {
-        if (this.setting.fontSize != 4) {
-            this.setting.fontSize++;
-            rv.changeFont(setting.fontName, this.getRealFontSize(setting.fontSize));
-        }
-        this.checkSettings();
-    }
-
     public int getRealLineSpace(int lineSpaceIndex) {
         int rs = -1;
         if (lineSpaceIndex == 0) {
@@ -2659,32 +2473,6 @@ public class BookViewActivity extends Activity implements BookSettingMenuFragmen
         return rs;
     }
 
-    public void decreaseLineSpace() {
-        if (this.setting.lineSpacing != 0) {
-            this.setting.lineSpacing--;
-            this.checkSettings();
-            rv.changeLineSpacing(this.getRealLineSpace(setting.lineSpacing));
-        }
-    }
-
-    public void increaseLineSpace() {
-        if (this.setting.lineSpacing != 4) {
-            this.setting.lineSpacing++;
-            this.checkSettings();
-            rv.changeLineSpacing(this.getRealLineSpace(setting.lineSpacing));
-        }
-    }
-
-
-    public void fontSelected(int index) {
-        CustomFont customFont = this.getCustomFont(index);
-        String name = customFont.getFullName();
-        if (!setting.fontName.equalsIgnoreCase(name)) {
-            setting.fontName = name;
-            checkSettings();
-            rv.changeFont(setting.fontName, this.getRealFontSize(setting.fontSize));
-        }
-    }
 
     public void changeHighlightColor(Highlight highlight, int color) {
         currentHighlight.color = color;
@@ -2711,40 +2499,6 @@ public class BookViewActivity extends Activity implements BookSettingMenuFragmen
         this.hideFontBox();
         hideSearch();
         if (isPagesHidden) this.showPages();
-    }
-
-    public void reportMemory() {
-        Runtime rt = Runtime.getRuntime();
-        long maxMemory = rt.maxMemory();
-
-//		Log.v("EPub", "maxMemory:" + Long.toString(maxMemory));
-
-        ActivityManager am = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
-        int memoryClass = am.getMemoryClass();
-//		Log.v("EPub", "memoryClass:" + Integer.toString(memoryClass));
-
-        ActivityManager activityManager = (ActivityManager) getSystemService(ACTIVITY_SERVICE);
-        MemoryInfo memoryInfo = new MemoryInfo();
-        activityManager.getMemoryInfo(memoryInfo);
-//		Log.i("EPub", "AvailMem" + memoryInfo.availMem);
-
-        long memoryAvail = memoryInfo.availMem;
-        long memoryAlloc = maxMemory - memoryAvail;
-
-        String message = String.format("Max :%context Avail:%context", maxMemory, memoryAvail);
-        showToast(message);
-    }
-
-    public void test02() {
-        String str = "Capitulo%205%20EL%20PAPEL%20DE%20LOS%20CORTICOIDES.xhtml";
-        String res = null;
-        try {
-            res = URLDecoder.decode(str, "UTF-8");
-        } catch (Exception e) {
-        }
-//		try {
-//			res = java.net.URLEncoder.encode(str, "UTF-8");
-//		}catch(Exception ifKeyTest) {}
     }
 
     class ClickDelegate implements ClickListener {
@@ -2900,40 +2654,12 @@ public class BookViewActivity extends Activity implements BookSettingMenuFragmen
         }
     }
 
-    //	"function changePColor() {" +
-//	"	var elements = document.getElementsByTagName('p');" +
-//	"	for (var i=0; i<elements.length; i++) {" +
-//	"		elements[i].style.color = '#FF0000';" +
-//	"	}"+
-//	"}"+
-//	"changePColor();";
-
 
     class ScriptDelegate implements ScriptListener {
         @Override
         public String getScriptForChapter(int chapterIndex) {
             // TODO Auto-generated method stub
             String customScript = null;
-//			customScript = "function ignoreBookStyle() { document.styleSheets[0].disabled = true; } ignoreBookStyle();";
-            /*
-            customScript = "" +
-					"function preventPreloadVideo() {" +
-						"var videos = document.getElementsByTagName('video');" +
-						"for (var i=0; i<videos.length; i++) {" +
-							"videos[i].preload = 'none';" +
-						"}" +
-					"}"+
-					"preventPreloadVideo();"
-					+"function beep() {"+
-						    "var sound = new Audio('data:audio/wav;base64,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qJrx4KOQjahZxWbcZgztj2c49nKmkId44S71j0c8eV9yDK6uPRzx5X18eDvjvQ6yKo9ZSS6l//8elePK/Lf//IInrOF/FvDoADYAGBMGb7FtErm5MXMlmPAJQVgWta7Zx2go+8xJ0UiCb8LHHdftWyLJE0QIAIsI+UbXu67dZMjmgDGCGl1H+vpF4NSDckSIkk7Vd+sxEhBQMRU8j/12UIRhzSaUdQ+rQU5kGeFxm+hb1oh6pWWmv3uvmReDl0UnvtapVaIzo1jZbf/pD6ElLqSX+rUmOQNpJFa/r+sa4e/pBlAABoAAAAA3CUgShLdGIxsY7AUABPRrgCABdDuQ5GC7DqPQCgbbJUAoRSUj+NIEig0YfyWUho1VBBBA//uQZB4ABZx5zfMakeAAAAmwAAAAF5F3P0w9GtAAACfAAAAAwLhMDmAYWMgVEG1U0FIGCBgXBXAtfMH10000EEEEEECUBYln03TTTdNBDZopopYvrTTdNa325mImNg3TTPV9q3pmY0xoO6bv3r00y+IDGid/9aaaZTGMuj9mpu9Mpio1dXrr5HERTZSmqU36A3CumzN/9Robv/Xx4v9ijkSRSNLQhAWumap82WRSBUqXStV/YcS+XVLnSS+WLDroqArFkMEsAS+eWmrUzrO0oEmE40RlMZ5+ODIkAyKAGUwZ3mVKmcamcJnMW26MRPgUw6j+LkhyHGVGYjSUUKNpuJUQoOIAyDvEyG8S5yfK6dhZc0Tx1KI/gviKL6qvvFs1+bWtaz58uUNnryq6kt5RzOCkPWlVqVX2a/EEBUdU1KrXLf40GoiiFXK///qpoiDXrOgqDR38JB0bw7SoL+ZB9o1RCkQjQ2CBYZKd/+VJxZRRZlqSkKiws0WFxUyCwsKiMy7hUVFhIaCrNQsKkTIsLivwKKigsj8XYlwt/WKi2N4d//uQRCSAAjURNIHpMZBGYiaQPSYyAAABLAAAAAAAACWAAAAApUF/Mg+0aohSIRobBAsMlO//Kk4soosy1JSFRYWaLC4qZBYWFRGZdwqKiwkNBVmoWFSJkWFxX4FFRQWR+LsS4W/rFRb/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////VEFHAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAU291bmRib3kuZGUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAMjAwNGh0dHA6Ly93d3cuc291bmRib3kuZGUAAAAAAAAAACU=');"
-						    +"sound.play(); }";
-			*/
-/*
-            customScript = "function beep() {"+
-				    "var sound = new Audio('data:audio/wav;base64,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qJrx4KOQjahZxWbcZgztj2c49nKmkId44S71j0c8eV9yDK6uPRzx5X18eDvjvQ6yKo9ZSS6l//8elePK/Lf//IInrOF/FvDoADYAGBMGb7FtErm5MXMlmPAJQVgWta7Zx2go+8xJ0UiCb8LHHdftWyLJE0QIAIsI+UbXu67dZMjmgDGCGl1H+vpF4NSDckSIkk7Vd+sxEhBQMRU8j/12UIRhzSaUdQ+rQU5kGeFxm+hb1oh6pWWmv3uvmReDl0UnvtapVaIzo1jZbf/pD6ElLqSX+rUmOQNpJFa/r+sa4e/pBlAABoAAAAA3CUgShLdGIxsY7AUABPRrgCABdDuQ5GC7DqPQCgbbJUAoRSUj+NIEig0YfyWUho1VBBBA//uQZB4ABZx5zfMakeAAAAmwAAAAF5F3P0w9GtAAACfAAAAAwLhMDmAYWMgVEG1U0FIGCBgXBXAtfMH10000EEEEEECUBYln03TTTdNBDZopopYvrTTdNa325mImNg3TTPV9q3pmY0xoO6bv3r00y+IDGid/9aaaZTGMuj9mpu9Mpio1dXrr5HERTZSmqU36A3CumzN/9Robv/Xx4v9ijkSRSNLQhAWumap82WRSBUqXStV/YcS+XVLnSS+WLDroqArFkMEsAS+eWmrUzrO0oEmE40RlMZ5+ODIkAyKAGUwZ3mVKmcamcJnMW26MRPgUw6j+LkhyHGVGYjSUUKNpuJUQoOIAyDvEyG8S5yfK6dhZc0Tx1KI/gviKL6qvvFs1+bWtaz58uUNnryq6kt5RzOCkPWlVqVX2a/EEBUdU1KrXLf40GoiiFXK///qpoiDXrOgqDR38JB0bw7SoL+ZB9o1RCkQjQ2CBYZKd/+VJxZRRZlqSkKiws0WFxUyCwsKiMy7hUVFhIaCrNQsKkTIsLivwKKigsj8XYlwt/WKi2N4d//uQRCSAAjURNIHpMZBGYiaQPSYyAAABLAAAAAAAACWAAAAApUF/Mg+0aohSIRobBAsMlO//Kk4soosy1JSFRYWaLC4qZBYWFRGZdwqKiwkNBVmoWFSJkWFxX4FFRQWR+LsS4W/rFRb/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////VEFHAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAU291bmRib3kuZGUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAMjAwNGh0dHA6Ly93d3cuc291bmRib3kuZGUAAAAAAAAAACU=');"
-				    +"sound.play(); } beep();" ;
-*/
-//			customScript = "function changeColor() { this.getBody().style.color = '#FF0000';}";
             if (rv.isRTL()) {
                 customScript = "function ignoreBookStyle() { document.styleSheets[0].disabled = true; } ignoreBookStyle();";
             }
@@ -2944,7 +2670,6 @@ public class BookViewActivity extends Activity implements BookSettingMenuFragmen
         public String getStyleForChapter(int chapterIndex) {
             // TODO Auto-generated method stub
             String customCSS = null;
-//			customCSS = "p{ color: #ff0000; }";
             return customCSS;
         }
     }
@@ -2972,32 +2697,16 @@ public class BookViewActivity extends Activity implements BookSettingMenuFragmen
     class HighlightDelegate implements HighlightListener {
         public void onHighlightDeleted(Highlight highlight) {
             dumpHighlight("onHighlightDeleted", highlight);
-//            sd.deleteHighlight(highlight);
             mBookDataBaseLoader.deleteHighlightFromDb(highlight, mUserId, mBookSku);
         }
 
         public void onHighlightInserted(Highlight highlight) {
             dumpHighlight("onHighlightInserted", highlight);
-//			showToast(highlight.text);
 
-//			Highlight modified = new Highlight();
-//			modified.startIndex = 125;
-//			modified.startOffset = 175;
-//			modified.endIndex = 125; // 125
-//			modified.endOffset =  182;
-//			modified.chapterIndex = highlight.chapterIndex;
-//			modified.code = highlight.code;
-//			modified.color = highlight.color;
-//			modified.bookCode = highlight.bookCode;
-//			sd.insertHighlight(modified);
-
-//            sd.insertHighlight(highlight);
             mBookDataBaseLoader.insertHighlightToDb(highlight, mUserId, mBookSku);
-//            showToast("startIndex " + highlight.startIndex + " startOffset " + highlight.startOffset + " endIndex " + highlight.endIndex + " endOffset " + highlight.endOffset + " text " + highlight.text);
         }
 
         public void onHighlightHit(Highlight highlight, int x, int y, Rect startRect, Rect endRect) {
-//			debug("onHighlightHit at "+highlight.text);
             dumpHighlight("onHighlgihtHit", highlight);
             currentHighlight = highlight;
             currentColor = currentHighlight.color;
@@ -3005,8 +2714,6 @@ public class BookViewActivity extends Activity implements BookSettingMenuFragmen
         }
 
         public Highlights getHighlightsForChapter(int chapterIndex) {
-//			Log.w("EPub","getHighlightsForChapter");
-//            return sd.fetchHighlights(bookCode, chapterIndex);
             return mBookDataBaseLoader.fetchHighlightsDb(bookCode, chapterIndex, mUserId, mBookSku);
         }
 

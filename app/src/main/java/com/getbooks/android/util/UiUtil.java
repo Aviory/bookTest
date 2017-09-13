@@ -22,7 +22,6 @@ import android.widget.Toast;
 import com.getbooks.android.Const;
 import com.getbooks.android.R;
 import com.getbooks.android.model.enums.BookState;
-import com.getbooks.android.reader.UnderlinedTextView;
 import com.getbooks.android.skyepubreader.BookViewActivity;
 import com.getbooks.android.ui.activities.LibraryActivity;
 import com.getbooks.android.ui.dialog.MaterialDialog;
@@ -238,33 +237,6 @@ public class UiUtil {
             };
         });
 
-    }
-
-
-    ///////////////////////////
-
-
-    public static float convertDpToPixel(float dp, Context context) {
-        Resources resources = context.getResources();
-        DisplayMetrics metrics = resources.getDisplayMetrics();
-        float px = dp * ((float) metrics.densityDpi / DisplayMetrics.DENSITY_DEFAULT);
-        return px;
-    }
-
-    public static void copyToClipboard(Context context, String text) {
-        ClipboardManager clipboard =
-                (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
-        ClipData clip = ClipData.newPlainText("copy", text);
-        clipboard.setPrimaryClip(clip);
-    }
-
-    public static void share(Context context, String text) {
-        Intent sendIntent = new Intent();
-        sendIntent.setAction(Intent.ACTION_SEND);
-        sendIntent.putExtra(Intent.EXTRA_TEXT, text);
-        sendIntent.setType("text/plain");
-        context.startActivity(Intent.createChooser(sendIntent,
-                context.getResources().getText(R.string.send_to)));
     }
 
 }

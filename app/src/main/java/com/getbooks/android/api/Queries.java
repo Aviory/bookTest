@@ -93,6 +93,8 @@ public class Queries {
                             bookModel.setBookSku(purchasedBook.getPurchasedBookSku());
                             bookModel.setBookState(BookState.CLOUD_BOOK.getState());
                             bookModel.setIsBookRented(false);
+                            Log.d("QQQ)))purch", purchasedBook.getPurchasedBookSku());
+                            Log.d("QQQ)))purch", bookModel.url);
                             allLibraryBookModels.add(bookModel);
                         }
                     } else if (listPurchasedResponse.code() == 404) {

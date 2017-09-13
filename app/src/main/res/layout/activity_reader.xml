@@ -5,18 +5,6 @@
     android:layout_height="match_parent"
     android:background="@color/color_white">
 
-    <com.getbooks.android.ui.widget.ReaderWebView
-        android:id="@+id/reader_webview"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/color_white"
-        android:visibility="gone" />
-
-    <com.getbooks.android.ui.widget.ObservableWebView
-        android:id="@+id/reader_test_web_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-
     <FrameLayout
         android:id="@+id/stub"
         android:layout_width="match_parent"

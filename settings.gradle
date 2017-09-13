@@ -1,1 +1,1 @@
-include ':app', ':webviewmarker'
+include ':app'

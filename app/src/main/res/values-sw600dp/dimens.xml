@@ -133,6 +133,7 @@
     <!-- Menu seek bar sizes -->
     <dimen name="seek_bar_height">6dp</dimen>
     <dimen name="thumb_height">8dp</dimen>
+    <dimen name="splash_logo_margin">60dp</dimen>
 
 
 </resources>
