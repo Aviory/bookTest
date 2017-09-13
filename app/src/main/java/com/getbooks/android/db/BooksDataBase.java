@@ -751,15 +751,8 @@ public class BooksDataBase {
         int code = this.getBookmarkCode(pi, userId, bookSku);
         if (code == -1) { // if not exist
             this.insertBookmark(pi, userId, bookSku);
-            BookMarkApiModel bookMarkApiModel = new BookMarkApiModel();
-            bookMarkApiModel.setBookmarkId(pi.bookCode);
-            bookMarkApiModel.setBookmarkLabel(String.valueOf(pi.pagePositionInBook));
-            bookMarkApiModel.setBookmarkPage((int) pi.pagePositionInChapter);
-            bookMarkApiModel.setBookmarkText(String.valueOf(pi.chapterIndex));
-            queries.createBookMark(bookSku, deviceToken, bookMarkApiModel);
         } else {
             this.deleteBookmarkByCode(code, userId, bookSku); // if exist, delete it
-            queries.deleteBookMark(deviceToken, String.valueOf(code));
         }
     }
 

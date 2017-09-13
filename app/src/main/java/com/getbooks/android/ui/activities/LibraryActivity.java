@@ -896,12 +896,10 @@ public class LibraryActivity extends BaseActivity implements Queries.CallBack,
 
     @Subscribe
     public void onMessageEvent(Events.UpDateMainScreen upDateMainScreen) {
-        boolean isUpDate = Prefs.getBooleanProperty(this, Const.PUSH_NOTIFY_BY_UPDATE);
-        if (isUpDate) {
-            mQueries = new Queries();
-            mQueries.setCallBack(this);
-            mQueries.getUserSession(Prefs.getToken(getAct()), getAct());
-        }
+        Log.d("PushTexst", "upadate library");
+        mQueries = new Queries();
+        mQueries.setCallBack(this);
+        mQueries.getUserSession(Prefs.getToken(getAct()), getAct());
     }
 
     private void restartDownloading() {
@@ -930,18 +928,22 @@ public class LibraryActivity extends BaseActivity implements Queries.CallBack,
     public void onStart() {
         super.onStart();
         EventBus.getDefault().post(new Events.StateLibrary(false));
-        EventBus.getDefault().register(this);
+//        EventBus.getDefault().register(this);
+        if (!EventBus.getDefault().isRegistered(this)) {
+            EventBus.getDefault().register(this);
+        }
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        EventBus.getDefault().unregister(this);
+//        EventBus.getDefault().unregister(this);
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        EventBus.getDefault().unregister(this);
         dividerItemDecoration = null;
         EventBus.getDefault().post(new Events.StateLibrary(true));
         Intent intent = new Intent(getAct(), DownloadService.class);

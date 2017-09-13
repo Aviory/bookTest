@@ -71,6 +71,7 @@ public class Queries {
                             bookModel.bookCode = UiUtil.getRandomGeneratedBookCode();
                             bookModel.setBookSku(rentedBook.getRentBookSku());
                             Log.d("QQQ)))", rentedBook.getRentBookSku());
+                            Log.d("QQQ)))", bookModel.url);
                             bookModel.setBookState(BookState.CLOUD_BOOK.getState());
                             bookModel.setIsBookRented(true);
                             allLibraryBookModels.add(bookModel);

@@ -29,7 +29,8 @@ public final class Const {
     public static final int SPLASH_TIME_OUT = 1500;
 
     //Catalog constant
-    public static final String CATALOG_URL = "https://www.malikro.co.il/dev/on-sale";
+//    public static final String CATALOG_URL = "https://www.malikro.co.il/dev/on-sale";
+    public static final String CATALOG_URL = "https://www.malikro.co.il/dev/משימה-עולמית-16-קנדה-כדור-השלג/";
 
     // Reader constant
     public static final String BOOKS_DIRECTORY = "GetBooks";

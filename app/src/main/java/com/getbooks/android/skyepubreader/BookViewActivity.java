@@ -537,8 +537,6 @@ public class BookViewActivity extends Activity implements BookSettingMenuFragmen
         mDeviceToken = Prefs.getToken(this);
         mBookItemViewPosition = bundle.getInt(Const.VIEW_ITEM_BOOK_POSITION);
 
-        insertBookMarkFromServer(mUserId, mBookSku);
-
         autoStartPlayingWhenNewPagesLoaded = this.setting.autoStartPlaying;
         autoMoveChapterWhenParallesFinished = this.setting.autoLoadNewChapter;
 
@@ -2343,25 +2341,6 @@ public class BookViewActivity extends Activity implements BookSettingMenuFragmen
 
         UiUtil.increaseTouchArea(mCustomSeekBarLayout, seekBar);
     }
-
-    private void insertBookMarkFromServer(int userId, String bookSku) {
-        Queries queries = new Queries();
-
-        List<BookMarkApiModel> bookMarkServiceList = queries.getBookMarksBook(mBookSku, mDeviceToken);
-        for (int i = 0; i < bookMarkServiceList.size(); i++) {
-            PageInformation pi = new PageInformation();
-            pi.code = bookMarkServiceList.get(i).getBookmarkId();
-            pi.pagePositionInBook = Double.parseDouble(bookMarkServiceList.get(i).getBookmarkLabel());
-            pi.pagePositionInChapter = bookMarkServiceList.get(i).getBookmarkPage();
-            pi.chapterIndex = Integer.parseInt(bookMarkServiceList.get(i).getBookmarkText());
-            int code = mBookDataBaseLoader.getBookmarkCodeDB(pi, userId, bookSku);
-            if (code == -1) {
-                mBookDataBaseLoader.insertBookmarkToDb(pi, mUserId, bookSku);
-            }
-        }
-        Log.d("QQQ", bookMarkServiceList.toString());
-    }
-
 
     private BroadcastReceiver skyReceiver = null;
 
