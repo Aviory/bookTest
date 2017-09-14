@@ -89,6 +89,12 @@
         <item name="android:textColor">@color/gray</item>
     </style>
 
+    <style name="TextWelcomeStyle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">@dimen/log_out_question_size</item>
+        <item name="android:textColor">@color/blue</item>
+    </style>
 
     <style name="ContentItemListTextStyle">
         <item name="android:layout_width">wrap_content</item>

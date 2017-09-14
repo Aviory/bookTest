@@ -18,13 +18,13 @@ import com.getbooks.android.util.LogUtil;
  * Created by avi on 29.08.17.
  */
 
-public class DialogSettings extends AlertDialog implements View.OnClickListener{
+public class DialogSettings extends AlertDialog implements View.OnClickListener {
 
     private ImageView mImageCancelBookDelete;
     private RadioButton mRadioButtonYes;
     private RadioButton mRadioButtonNo;
 
-    public static DialogSettings newInstance(Context context){
+    public static DialogSettings newInstance(Context context) {
         DialogSettings dialogSettings = new DialogSettings(context);
         return dialogSettings;
     }
@@ -40,36 +40,37 @@ public class DialogSettings extends AlertDialog implements View.OnClickListener{
     protected DialogSettings(@NonNull Context context, boolean cancelable, @Nullable OnCancelListener cancelListener) {
         super(context, cancelable, cancelListener);
     }
+
     @Override
     public void show() {
         super.show();
         setContentView(R.layout.dialog_settings);
         mImageCancelBookDelete = (ImageView) findViewById(R.id.img_close);
-        mRadioButtonYes = (RadioButton) findViewById(R.id.setting_dialog_yes);
-        mRadioButtonNo = (RadioButton) findViewById(R.id.setting_dialog_no);
+//        mRadioButtonYes = (RadioButton) findViewById(R.id.setting_dialog_yes);
+//        mRadioButtonNo = (RadioButton) findViewById(R.id.setting_dialog_no);
         mImageCancelBookDelete.setOnClickListener(this);
         boolean cheked = Prefs.getBooleanProperty(getContext(), Const.PUSH_NOTIFY_BY_UPDATE);
-        if(cheked){
-            mRadioButtonYes.setChecked(cheked);
+        if (cheked) {
+//            mRadioButtonYes.setChecked(cheked);
         }
     }
 
     @Override
     public void dismiss() {
         super.dismiss();
-        if(mRadioButtonYes.isChecked()){
-            Prefs.setBooleanProperty(getContext(), Const.PUSH_NOTIFY_BY_UPDATE, true);
-        }else {
-            Prefs.setBooleanProperty(getContext(), Const.PUSH_NOTIFY_BY_UPDATE, false);
-        }
+//        if(mRadioButtonYes.isChecked()){
+//            Prefs.setBooleanProperty(getContext(), Const.PUSH_NOTIFY_BY_UPDATE, true);
+//        }else {
+//            Prefs.setBooleanProperty(getContext(), Const.PUSH_NOTIFY_BY_UPDATE, false);
+//        }
     }
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()){
+        switch (view.getId()) {
             case R.id.img_close:
                 dismiss();
                 break;
+        }
     }
-}
 }

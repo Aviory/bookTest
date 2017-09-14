@@ -11,6 +11,8 @@ import com.getbooks.android.prefs.Prefs;
 import com.getbooks.android.ui.BaseActivity;
 import com.getbooks.android.util.UiUtil;
 
+import java.util.Random;
+
 public class SplashActivity extends BaseActivity {
 
     @Override
@@ -23,7 +25,11 @@ public class SplashActivity extends BaseActivity {
 
     @Override
     public int getLayout() {
-        return R.layout.activity_splash;
+        if (UiUtil.getRandomShow() % 2 == 0)
+            return R.layout.activity_splash;
+        else {
+            return R.layout.activity_splash_second;
+        }
     }
 
     private void startTheActivity(final Class<?> activity) {
@@ -37,14 +43,16 @@ public class SplashActivity extends BaseActivity {
     }
 
     private void checkUserAuthorization() {
-        if (Prefs.getBooleanProperty(this, Const.IS_USER_AUTHORIZE)) {
+        if (!Prefs.getBooleanProperty(this, Const.SHOW_WELCOME_SCREEN)) {
+            UiUtil.openActivity(this, WelcomeActivity.class, false, "", "", "", "");
+        } else if (Prefs.getBooleanProperty(this, Const.IS_USER_AUTHORIZE)) {
             if (Prefs.getCountTutorialsShow(this) < Prefs.MAX_COUNT_VIEWS_TUTORIALS) {
                 UiUtil.openActivity(this, TutorialsActivity.class, false, "", "", "", "");
             } else {
-                UiUtil.openActivity(this, LibraryActivity.class, false, "", "","", "");
+                UiUtil.openActivity(this, LibraryActivity.class, false, "", "", "", "");
             }
         } else {
-            UiUtil.openActivity(this, AuthorizationActivity.class, false,"", "","", "");
+            UiUtil.openActivity(this, AuthorizationActivity.class, false, "", "", "", "");
         }
     }
 }

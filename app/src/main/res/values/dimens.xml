@@ -177,6 +177,20 @@
     <dimen name="search_height">35dp</dimen>
     <dimen name="margin_edit_search">15dp</dimen>
     <dimen name="thumb_height">6dp</dimen>
+
+    <!-- Splash second menu sizes -->
     <dimen name="splash_logo_margin">50dp</dimen>
+    <dimen name="margin_bottom_spalah">30dp</dimen>
+
+    <!-- Welcome screen sizes -->
+    <dimen name="margin_top_welcome">15dp</dimen>
+    <dimen name="margin_welcome_text_left">40dp</dimen>
+    <dimen name="margin_welcome_text_right">40dp</dimen>
+    <dimen name="welcome_txt_top_margin">50dp</dimen>
+    <dimen name="margin_top_bookmark_welcome">5dp</dimen>
+    <dimen name="margin_left_bookmark_welcome">5dp</dimen>
+    <dimen name="magin_top_txt_btn">20dp</dimen>
+    <dimen name="padding_bottom_txt_btn">5dp</dimen>
+    <dimen name="padding_side_txt_btn">20dp</dimen>
 
 </resources>

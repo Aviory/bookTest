@@ -239,4 +239,8 @@ public class UiUtil {
 
     }
 
+    public static int getRandomShow() {
+        return new Random().nextInt(4);
+    }
+
 }

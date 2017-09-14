@@ -49,6 +49,7 @@ import com.getbooks.android.ui.dialog.AlertDialogAboutUs;
 import com.getbooks.android.ui.dialog.AlertDialogInstructions;
 import com.getbooks.android.ui.dialog.AlertDialogStory;
 import com.getbooks.android.ui.dialog.DeleteBookDialog;
+import com.getbooks.android.ui.dialog.DialogSettings;
 import com.getbooks.android.ui.dialog.LogOutDialog;
 import com.getbooks.android.ui.dialog.RestartDownloadingDialog;
 import com.getbooks.android.ui.fragments.left_menu_items.FragmentServicePrivacy;
@@ -109,22 +110,22 @@ public class LibraryActivity extends BaseActivity implements Queries.CallBack,
     @BindView(R.id.img_delete_book)
     protected ImageView mImageDeleteBook;
 
-    @BindView(R.id.toggle_author_name)
+//    @BindView(R.id.toggle_author_name)
     protected ToggleButton imgAuthorName;
-    @BindView(R.id.toggle_book_name)
+//    @BindView(R.id.toggle_book_name)
     protected ToggleButton imgBookName;
-    @BindView(R.id.toggle_add_date)
+//    @BindView(R.id.toggle_add_date)
     protected ToggleButton imgAddDate;
-    @BindView(R.id.toggle_read_date)
+//    @BindView(R.id.toggle_read_date)
     protected ToggleButton imgReadDate;
 
-    @BindView(R.id.rigth_txt_book_name)
+//    @BindView(R.id.rigth_txt_book_name)
     protected ArialNormalTextView txtBookName;
-    @BindView(R.id.rigth_txt_author_name)
+//    @BindView(R.id.rigth_txt_author_name)
     protected ArialNormalTextView txtAuthorName;
-    @BindView(R.id.rigth_txt_read_date)
+//    @BindView(R.id.rigth_txt_read_date)
     protected ArialNormalTextView txtReadDate;
-    @BindView(R.id.rigth_txt_date_add)
+//    @BindView(R.id.rigth_txt_date_add)
     protected ArialNormalTextView txtAddDate;
 
     private Queries mQueries;
@@ -187,14 +188,14 @@ public class LibraryActivity extends BaseActivity implements Queries.CallBack,
 
         clickBook();
 
-        txtBookName.setOnClickListener(this);
-        imgBookName.setOnClickListener(this);
-        txtAuthorName.setOnClickListener(this);
-        imgAuthorName.setOnClickListener(this);
-        txtReadDate.setOnClickListener(this);
-        imgReadDate.setOnClickListener(this);
-        txtAddDate.setOnClickListener(this);
-        imgAddDate.setOnClickListener(this);
+//        txtBookName.setOnClickListener(this);
+//        imgBookName.setOnClickListener(this);
+//        txtAuthorName.setOnClickListener(this);
+//        imgAuthorName.setOnClickListener(this);
+//        txtReadDate.setOnClickListener(this);
+//        imgReadDate.setOnClickListener(this);
+//        txtAddDate.setOnClickListener(this);
+//        imgAddDate.setOnClickListener(this);
     }
 
     @Override
@@ -324,15 +325,15 @@ public class LibraryActivity extends BaseActivity implements Queries.CallBack,
         menuTranzaction();
     }
 
-//    @OnClick(R.id.right_txt_screen_settings)
-//    protected void screenSettings() {
-//        DialogSettings.newInstance(this).show();
-//    }
-
-    @OnClick(R.id.right_txt_order)
-    protected void order() {
-
+    @OnClick(R.id.right_txt_screen_settings)
+    protected void screenSettings() {
+        DialogSettings.newInstance(this).show();
     }
+
+//    @OnClick(R.id.right_txt_order)
+//    protected void order() {
+//
+//    }
 
     List<BookModel> mInitialLibraryList = new ArrayList<>();
 
@@ -343,90 +344,90 @@ public class LibraryActivity extends BaseActivity implements Queries.CallBack,
             mInitialLibraryList.addAll(mLibrary);
         }
         switch (view.getId()) {
-            case R.id.toggle_book_name:
-                if (imgBookName.isChecked())
-                    imgBookName.setChecked(false);
-                else
-                    imgBookName.setChecked(true);
-            case R.id.rigth_txt_book_name:
-                if (imgBookName.isChecked()) {
-                    imgBookName.setChecked(false);
-                    mLibrary.clear();
-                    mLibrary.addAll(mInitialLibraryList);
-                    mShelvesAdapter.upDateLibrary(mLibrary);
-                } else {
-                    imgBookName.setChecked(true);
-                    imgAuthorName.setChecked(false);
-                    imgAddDate.setChecked(false);
-                    imgReadDate.setChecked(false);
-                    mLibrary.clear();
-                    mLibrary.addAll(CompareUtil.compareByBookName(mInitialLibraryList));
-                    mShelvesAdapter.upDateLibrary(mLibrary);
-                }
-                break;
-            case R.id.toggle_author_name:
-                if (imgAuthorName.isChecked())
-                    imgAuthorName.setChecked(false);
-                else
-                    imgAuthorName.setChecked(true);
-            case R.id.rigth_txt_author_name:
-                if (imgAuthorName.isChecked()) {
-                    imgAuthorName.setChecked(false);
-                    mLibrary.clear();
-                    mLibrary.addAll(mInitialLibraryList);
-                    mShelvesAdapter.upDateLibrary(mLibrary);
-                } else {
-                    imgAuthorName.setChecked(true);
-                    imgBookName.setChecked(false);
-                    imgAddDate.setChecked(false);
-                    imgReadDate.setChecked(false);
-                    mLibrary.clear();
-                    mLibrary.addAll(CompareUtil.compareByAuthorName(mInitialLibraryList));
-                    mShelvesAdapter.upDateLibrary(mLibrary);
-                }
-                break;
-            case R.id.toggle_add_date:
-                if (imgAddDate.isChecked())
-                    imgAddDate.setChecked(false);
-                else
-                    imgAddDate.setChecked(true);
-            case R.id.rigth_txt_date_add:
-                if (imgAddDate.isChecked()) {
-                    imgAddDate.setChecked(false);
-                    mLibrary.clear();
-                    mLibrary.addAll(mInitialLibraryList);
-                    mShelvesAdapter.upDateLibrary(mLibrary);
-                } else {
-                    imgAddDate.setChecked(true);
-                    imgBookName.setChecked(false);
-                    imgAuthorName.setChecked(false);
-                    imgReadDate.setChecked(false);
-                    mLibrary.clear();
-                    mLibrary.addAll(CompareUtil.compareByAddDate(mInitialLibraryList));
-                    mShelvesAdapter.upDateLibrary(mLibrary);
-                }
-                break;
-            case R.id.toggle_read_date:
-                if (imgReadDate.isChecked())
-                    imgReadDate.setChecked(false);
-                else
-                    imgReadDate.setChecked(true);
-            case R.id.rigth_txt_read_date:
-                if (imgReadDate.isChecked()) {
-                    imgReadDate.setChecked(false);
-                    mLibrary.clear();
-                    mLibrary.addAll(mInitialLibraryList);
-                    mShelvesAdapter.upDateLibrary(mLibrary);
-                } else {
-                    imgReadDate.setChecked(true);
-                    imgBookName.setChecked(false);
-                    imgAddDate.setChecked(false);
-                    imgAuthorName.setChecked(false);
-                    mLibrary.clear();
-                    mLibrary.addAll(CompareUtil.compareByReadDate(mInitialLibraryList));
-                    mShelvesAdapter.upDateLibrary(mLibrary);
-                }
-                break;
+//            case R.id.toggle_book_name:
+//                if (imgBookName.isChecked())
+//                    imgBookName.setChecked(false);
+//                else
+//                    imgBookName.setChecked(true);
+//            case R.id.rigth_txt_book_name:
+//                if (imgBookName.isChecked()) {
+//                    imgBookName.setChecked(false);
+//                    mLibrary.clear();
+//                    mLibrary.addAll(mInitialLibraryList);
+//                    mShelvesAdapter.upDateLibrary(mLibrary);
+//                } else {
+//                    imgBookName.setChecked(true);
+//                    imgAuthorName.setChecked(false);
+//                    imgAddDate.setChecked(false);
+//                    imgReadDate.setChecked(false);
+//                    mLibrary.clear();
+//                    mLibrary.addAll(CompareUtil.compareByBookName(mInitialLibraryList));
+//                    mShelvesAdapter.upDateLibrary(mLibrary);
+//                }
+//                break;
+//            case R.id.toggle_author_name:
+//                if (imgAuthorName.isChecked())
+//                    imgAuthorName.setChecked(false);
+//                else
+//                    imgAuthorName.setChecked(true);
+//            case R.id.rigth_txt_author_name:
+//                if (imgAuthorName.isChecked()) {
+//                    imgAuthorName.setChecked(false);
+//                    mLibrary.clear();
+//                    mLibrary.addAll(mInitialLibraryList);
+//                    mShelvesAdapter.upDateLibrary(mLibrary);
+//                } else {
+//                    imgAuthorName.setChecked(true);
+//                    imgBookName.setChecked(false);
+//                    imgAddDate.setChecked(false);
+//                    imgReadDate.setChecked(false);
+//                    mLibrary.clear();
+//                    mLibrary.addAll(CompareUtil.compareByAuthorName(mInitialLibraryList));
+//                    mShelvesAdapter.upDateLibrary(mLibrary);
+//                }
+//                break;
+//            case R.id.toggle_add_date:
+//                if (imgAddDate.isChecked())
+//                    imgAddDate.setChecked(false);
+//                else
+//                    imgAddDate.setChecked(true);
+//            case R.id.rigth_txt_date_add:
+//                if (imgAddDate.isChecked()) {
+//                    imgAddDate.setChecked(false);
+//                    mLibrary.clear();
+//                    mLibrary.addAll(mInitialLibraryList);
+//                    mShelvesAdapter.upDateLibrary(mLibrary);
+//                } else {
+//                    imgAddDate.setChecked(true);
+//                    imgBookName.setChecked(false);
+//                    imgAuthorName.setChecked(false);
+//                    imgReadDate.setChecked(false);
+//                    mLibrary.clear();
+//                    mLibrary.addAll(CompareUtil.compareByAddDate(mInitialLibraryList));
+//                    mShelvesAdapter.upDateLibrary(mLibrary);
+//                }
+//                break;
+//            case R.id.toggle_read_date:
+//                if (imgReadDate.isChecked())
+//                    imgReadDate.setChecked(false);
+//                else
+//                    imgReadDate.setChecked(true);
+//            case R.id.rigth_txt_read_date:
+//                if (imgReadDate.isChecked()) {
+//                    imgReadDate.setChecked(false);
+//                    mLibrary.clear();
+//                    mLibrary.addAll(mInitialLibraryList);
+//                    mShelvesAdapter.upDateLibrary(mLibrary);
+//                } else {
+//                    imgReadDate.setChecked(true);
+//                    imgBookName.setChecked(false);
+//                    imgAddDate.setChecked(false);
+//                    imgAuthorName.setChecked(false);
+//                    mLibrary.clear();
+//                    mLibrary.addAll(CompareUtil.compareByReadDate(mInitialLibraryList));
+//                    mShelvesAdapter.upDateLibrary(mLibrary);
+//                }
+//                break;
         }
     }
 

@@ -134,4 +134,9 @@
     <string name="searchfinished">Search Finished</string>
     <string name="searchfound">found</string>
     <string name="search_result">Search Result</string>
+    <string name="txt_welcome_first">הספרייה הפרטית שלך בענן יותר מ- 2,000 ספרים למבוגרים ולילדים</string>
+    <string name="txt_welcome_second">לקרוא, להחזיר ולהשאיל ספרים חדשים</string>
+    <string name="txt_welcome_third">בטיסה, בבית או בחופשה</string>
+    <string name="txt_welcome_four">בעברית, רוסית ואנגלית</string>
+    <string name="txt_welcome">המשך</string>
 </resources>

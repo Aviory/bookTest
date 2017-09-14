@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
+    android:layout_height="150dp"
     android:background="@drawable/bg_right_menu"
     android:clickable="true"
     android:orientation="horizontal">
@@ -16,36 +16,35 @@
         android:layout_weight="1"
         android:orientation="vertical">
 
+        <com.getbooks.android.ui.widget.ArialNormalTextView
+            android:id="@+id/right_txt_screen_settings"
+            style="@style/RightMenuTextStyle"
+            android:text="@string/rigth_txt_screen_sett" />
+
         <!--<com.getbooks.android.ui.widget.ArialNormalTextView-->
-            <!--android:id="@+id/right_txt_screen_settings"-->
+            <!--android:id="@+id/right_txt_order"-->
             <!--style="@style/RightMenuTextStyle"-->
-            <!--android:text="@string/rigth_txt_screen_sett"-->
-            <!--android:visibility="invisible"/>-->
+            <!--android:text="@string/rigth_txt_order" />-->
 
-        <com.getbooks.android.ui.widget.ArialNormalTextView
-            android:id="@+id/right_txt_order"
-            style="@style/RightMenuTextStyle"
-            android:text="@string/rigth_txt_order" />
+        <!--<com.getbooks.android.ui.widget.ArialNormalTextView-->
+            <!--android:id="@+id/rigth_txt_book_name"-->
+            <!--style="@style/RightMenuTextStyle"-->
+            <!--android:text="@string/rigth_txt_book_name" />-->
 
-        <com.getbooks.android.ui.widget.ArialNormalTextView
-            android:id="@+id/rigth_txt_book_name"
-            style="@style/RightMenuTextStyle"
-            android:text="@string/rigth_txt_book_name" />
+        <!--<com.getbooks.android.ui.widget.ArialNormalTextView-->
+            <!--android:id="@+id/rigth_txt_author_name"-->
+            <!--style="@style/RightMenuTextStyle"-->
+            <!--android:text="@string/rigth_txt_author_name" />-->
 
-        <com.getbooks.android.ui.widget.ArialNormalTextView
-            android:id="@+id/rigth_txt_author_name"
-            style="@style/RightMenuTextStyle"
-            android:text="@string/rigth_txt_author_name" />
+        <!--<com.getbooks.android.ui.widget.ArialNormalTextView-->
+            <!--android:id="@+id/rigth_txt_read_date"-->
+            <!--style="@style/RightMenuTextStyle"-->
+            <!--android:text="@string/rigth_txt_read_date" />-->
 
-        <com.getbooks.android.ui.widget.ArialNormalTextView
-            android:id="@+id/rigth_txt_read_date"
-            style="@style/RightMenuTextStyle"
-            android:text="@string/rigth_txt_read_date" />
-
-        <com.getbooks.android.ui.widget.ArialNormalTextView
-            android:id="@+id/rigth_txt_date_add"
-            style="@style/RightMenuTextStyle"
-            android:text="@string/rigth_txt_date_add" />
+        <!--<com.getbooks.android.ui.widget.ArialNormalTextView-->
+            <!--android:id="@+id/rigth_txt_date_add"-->
+            <!--style="@style/RightMenuTextStyle"-->
+            <!--android:text="@string/rigth_txt_date_add" />-->
 
         <com.getbooks.android.ui.widget.ArialNormalTextView
             android:id="@+id/rigth_txt_remove_books"
@@ -63,38 +62,37 @@
         android:layout_weight="1"
         android:orientation="vertical">
 
-        <!--<ImageView-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_gravity="center"-->
-            <!--android:layout_weight="1"-->
-            <!--android:src="@drawable/list"-->
-            <!--android:visibility="invisible"/>-->
-
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_weight="1"
-            android:src="@drawable/sort" />
+            android:src="@drawable/list"/>
 
-        <ToggleButton
-            style="@style/CustomToggleButtonStyle"
-            android:id="@+id/toggle_book_name"
-            android:checked="false"/>
+        <!--<ImageView-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_gravity="center"-->
+            <!--android:layout_weight="1"-->
+            <!--android:src="@drawable/sort" />-->
 
-        <ToggleButton
-            style="@style/CustomToggleButtonStyle"
-            android:checked="false"
-            android:id="@+id/toggle_author_name"/>
+        <!--<ToggleButton-->
+            <!--style="@style/CustomToggleButtonStyle"-->
+            <!--android:id="@+id/toggle_book_name"-->
+            <!--android:checked="false"/>-->
 
-        <ToggleButton
-            style="@style/CustomToggleButtonStyle"
-            android:id="@+id/toggle_read_date"/>
+        <!--<ToggleButton-->
+            <!--style="@style/CustomToggleButtonStyle"-->
+            <!--android:checked="false"-->
+            <!--android:id="@+id/toggle_author_name"/>-->
 
-        <ToggleButton
-            style="@style/CustomToggleButtonStyle"
-            android:id="@+id/toggle_add_date"/>
+        <!--<ToggleButton-->
+            <!--style="@style/CustomToggleButtonStyle"-->
+            <!--android:id="@+id/toggle_read_date"/>-->
+
+        <!--<ToggleButton-->
+            <!--style="@style/CustomToggleButtonStyle"-->
+            <!--android:id="@+id/toggle_add_date"/>-->
 
         <ImageView
             android:id="@+id/img_remove_book"

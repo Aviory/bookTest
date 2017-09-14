@@ -6,29 +6,28 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.DOWNLOAD_WITHOUT_NOTIFICATION" />
-
 
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
-    <uses-permission android:name="android.permission.VIBRATE" />
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.WRITE_SETTINGS" />
-    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
 
     <application
         android:name=".GetbooksApplication"
         android:allowBackup="true"
+        android:hapticFeedbackEnabled="false"
+        android:hardwareAccelerated="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
-        android:theme="@style/AppTheme"
-        android:supportsRtl="false"
-        tools:replace="android:allowBackup"
         android:largeHeap="true"
-        android:hapticFeedbackEnabled="false"
-        android:hardwareAccelerated="true">
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="false"
+        android:theme="@style/AppTheme"
+        tools:replace="android:allowBackup">
 
-        <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/facebook_app_id"/>
+        <meta-data
+            android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebook_app_id" />
 
         <activity
             android:name=".ui.activities.SplashActivity"
@@ -53,12 +52,13 @@
 
         <activity android:name=".ui.activities.LibraryActivity" />
 
+        <activity android:name=".ui.activities.WelcomeActivity" />
+
         <activity
             android:name="com.getbooks.android.skyepubreader.BookViewActivity"
             android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|uiMode|screenSize"
             android:label="BookView"
-            android:theme="@android:style/Theme.Light.NoTitleBar" >
-        </activity>
+            android:theme="@android:style/Theme.Light.NoTitleBar"></activity>
 
         <receiver android:name=".receivers.NetworkStateReceiver">
             <intent-filter>
@@ -85,8 +85,9 @@
             </intent-filter>
         </service>
 
-        <provider android:authorities="com.facebook.app.FacebookContentProvider1679090715497657"
+        <provider
             android:name="com.facebook.FacebookContentProvider"
+            android:authorities="com.facebook.app.FacebookContentProvider1679090715497657"
             android:exported="true" />
 
     </application>
