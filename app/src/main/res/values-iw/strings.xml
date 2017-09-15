@@ -62,5 +62,7 @@
     <string name="txt_delete">למחוק</string>
     <string name="txt_delete_book_question">הספרים שנבחרו ימחקו ממכשירכם אך ימשיכו להיות נגישים בענן. האם ברצונכם להמשיך במחיקה?</string>
     <string name="search_result">Search Result</string>
+    <string name="txt_help">עזרה</string>
+    <string name="txt_questions_and_answers">שאלות ותשובות</string>
 
 </resources>

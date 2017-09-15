@@ -139,4 +139,6 @@
     <string name="txt_welcome_third">בטיסה, בבית או בחופשה</string>
     <string name="txt_welcome_four">בעברית, רוסית ואנגלית</string>
     <string name="txt_welcome">המשך</string>
+    <string name="txt_help">עזרה</string>
+    <string name="txt_questions_and_answers">שאלות ותשובות</string>
 </resources>

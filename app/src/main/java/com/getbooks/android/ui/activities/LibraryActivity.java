@@ -53,6 +53,7 @@ import com.getbooks.android.ui.dialog.DialogSettings;
 import com.getbooks.android.ui.dialog.LogOutDialog;
 import com.getbooks.android.ui.dialog.RestartDownloadingDialog;
 import com.getbooks.android.ui.fragments.left_menu_items.FragmentServicePrivacy;
+import com.getbooks.android.ui.fragments.left_menu_items.QuestionAndHistoryFragment;
 import com.getbooks.android.ui.fragments.left_menu_items.TutorialFragment;
 import com.getbooks.android.ui.widget.ArialNormalTextView;
 import com.getbooks.android.ui.widget.RecyclerItemClickListener;
@@ -110,22 +111,22 @@ public class LibraryActivity extends BaseActivity implements Queries.CallBack,
     @BindView(R.id.img_delete_book)
     protected ImageView mImageDeleteBook;
 
-//    @BindView(R.id.toggle_author_name)
+    //    @BindView(R.id.toggle_author_name)
     protected ToggleButton imgAuthorName;
-//    @BindView(R.id.toggle_book_name)
+    //    @BindView(R.id.toggle_book_name)
     protected ToggleButton imgBookName;
-//    @BindView(R.id.toggle_add_date)
+    //    @BindView(R.id.toggle_add_date)
     protected ToggleButton imgAddDate;
-//    @BindView(R.id.toggle_read_date)
+    //    @BindView(R.id.toggle_read_date)
     protected ToggleButton imgReadDate;
 
-//    @BindView(R.id.rigth_txt_book_name)
+    //    @BindView(R.id.rigth_txt_book_name)
     protected ArialNormalTextView txtBookName;
-//    @BindView(R.id.rigth_txt_author_name)
+    //    @BindView(R.id.rigth_txt_author_name)
     protected ArialNormalTextView txtAuthorName;
-//    @BindView(R.id.rigth_txt_read_date)
+    //    @BindView(R.id.rigth_txt_read_date)
     protected ArialNormalTextView txtReadDate;
-//    @BindView(R.id.rigth_txt_date_add)
+    //    @BindView(R.id.rigth_txt_date_add)
     protected ArialNormalTextView txtAddDate;
 
     private Queries mQueries;
@@ -281,8 +282,14 @@ public class LibraryActivity extends BaseActivity implements Queries.CallBack,
 
     @OnClick(R.id.txt_instruction)
     protected void instruction() {
-        menuTranzaction();
-        AlertDialogInstructions.newInstance().show(getSupportFragmentManager(), INSTRUCTIONS);
+        QuestionAndHistoryFragment fragment = (QuestionAndHistoryFragment) getSupportFragmentManager()
+                .findFragmentByTag(INSTRUCTIONS);
+        if (fragment == null)
+            menuTranzaction(QuestionAndHistoryFragment.getInstance(), INSTRUCTIONS);
+        else
+            getSupportFragmentManager().beginTransaction().show(QuestionAndHistoryFragment.getInstance()).commit();
+        QuestionAndHistoryFragment.getInstance().setText(txt_list);
+        UiUtil.hideView(mLeftMenuLayout);
     }
 
     @OnClick(R.id.txt_explanation_screens)
@@ -325,10 +332,10 @@ public class LibraryActivity extends BaseActivity implements Queries.CallBack,
         menuTranzaction();
     }
 
-    @OnClick(R.id.right_txt_screen_settings)
-    protected void screenSettings() {
-        DialogSettings.newInstance(this).show();
-    }
+//    @OnClick(R.id.right_txt_screen_settings)
+//    protected void screenSettings() {
+//        DialogSettings.newInstance(this).show();
+//    }
 
 //    @OnClick(R.id.right_txt_order)
 //    protected void order() {

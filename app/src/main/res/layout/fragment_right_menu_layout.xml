@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
-    android:layout_height="150dp"
+    android:layout_height="80dp"
     android:background="@drawable/bg_right_menu"
     android:clickable="true"
     android:orientation="horizontal">
@@ -16,10 +16,10 @@
         android:layout_weight="1"
         android:orientation="vertical">
 
-        <com.getbooks.android.ui.widget.ArialNormalTextView
-            android:id="@+id/right_txt_screen_settings"
-            style="@style/RightMenuTextStyle"
-            android:text="@string/rigth_txt_screen_sett" />
+        <!--<com.getbooks.android.ui.widget.ArialNormalTextView-->
+            <!--android:id="@+id/right_txt_screen_settings"-->
+            <!--style="@style/RightMenuTextStyle"-->
+            <!--android:text="@string/rigth_txt_screen_sett" />-->
 
         <!--<com.getbooks.android.ui.widget.ArialNormalTextView-->
             <!--android:id="@+id/right_txt_order"-->
@@ -62,12 +62,12 @@
         android:layout_weight="1"
         android:orientation="vertical">
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_weight="1"
-            android:src="@drawable/list"/>
+        <!--<ImageView-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_gravity="center"-->
+            <!--android:layout_weight="1"-->
+            <!--android:src="@drawable/list"/>-->
 
         <!--<ImageView-->
             <!--android:layout_width="wrap_content"-->

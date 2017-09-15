@@ -24,31 +24,31 @@
         android:gravity="center_horizontal">
 
 
-        <!--<RadioGroup-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:layout_marginTop="10dp"-->
-            <!--android:orientation="horizontal">-->
+        <RadioGroup
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal">
 
-            <!--<RadioButton style="@style/CustomRadioButtonStyle"-->
-                <!--android:id="@+id/setting_dialog_yes"/>-->
+            <RadioButton style="@style/CustomRadioButtonStyle"
+                android:id="@+id/setting_dialog_yes"/>
 
-            <!--<com.getbooks.android.ui.widget.ArialNormalTextView-->
-                <!--style="@style/TextDialogsStyle"-->
-                <!--android:text="@string/setting_dialog_yes"-->
-                <!--android:layout_marginLeft="@dimen/setting_dialog_txt_margin"/>-->
+            <com.getbooks.android.ui.widget.ArialNormalTextView
+                style="@style/TextDialogsStyle"
+                android:text="@string/setting_dialog_yes"
+                android:layout_marginLeft="@dimen/setting_dialog_txt_margin"/>
 
-            <!--<RadioButton style="@style/CustomRadioButtonStyle"-->
-                <!--android:id="@+id/setting_dialog_no"-->
-                <!--android:checked="true"-->
-                <!--android:layout_marginLeft="@dimen/setting_dialog_txt_margin"/>-->
+            <RadioButton style="@style/CustomRadioButtonStyle"
+                android:id="@+id/setting_dialog_no"
+                android:checked="true"
+                android:layout_marginLeft="@dimen/setting_dialog_txt_margin"/>
 
-            <!--<com.getbooks.android.ui.widget.ArialNormalTextView-->
-                <!--android:layout_marginLeft="@dimen/setting_dialog_txt_margin"-->
-                <!--style="@style/TextDialogsStyle"-->
-                <!--android:text="@string/setting_dialog_no"/>-->
+            <com.getbooks.android.ui.widget.ArialNormalTextView
+                android:layout_marginLeft="@dimen/setting_dialog_txt_margin"
+                style="@style/TextDialogsStyle"
+                android:text="@string/setting_dialog_no"/>
 
-        <!--</RadioGroup>-->
+        </RadioGroup>
     </LinearLayout>
 
     <ImageView
