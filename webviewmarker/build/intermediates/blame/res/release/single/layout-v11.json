@@ -1,0 +1,26 @@
+[
+    {
+        "merged": "C:\\Users\\Avi\\StudioProjects\\BookApp-android\\webviewmarker\\build\\intermediates\\res\\merged\\release\\layout-v11\\notification_template_big_media.xml",
+        "source": "C:\\Users\\Avi\\.android\\build-cache\\966f8b95065886cfc06d4f25bfbb3d096f42b360\\output\\res\\layout-v11\\notification_template_big_media.xml"
+    },
+    {
+        "merged": "C:\\Users\\Avi\\StudioProjects\\BookApp-android\\webviewmarker\\build\\intermediates\\res\\merged\\release\\layout-v11\\notification_template_big_media_narrow_custom.xml",
+        "source": "C:\\Users\\Avi\\.android\\build-cache\\966f8b95065886cfc06d4f25bfbb3d096f42b360\\output\\res\\layout-v11\\notification_template_big_media_narrow_custom.xml"
+    },
+    {
+        "merged": "C:\\Users\\Avi\\StudioProjects\\BookApp-android\\webviewmarker\\build\\intermediates\\res\\merged\\release\\layout-v11\\notification_media_cancel_action.xml",
+        "source": "C:\\Users\\Avi\\.android\\build-cache\\966f8b95065886cfc06d4f25bfbb3d096f42b360\\output\\res\\layout-v11\\notification_media_cancel_action.xml"
+    },
+    {
+        "merged": "C:\\Users\\Avi\\StudioProjects\\BookApp-android\\webviewmarker\\build\\intermediates\\res\\merged\\release\\layout-v11\\notification_template_big_media_narrow.xml",
+        "source": "C:\\Users\\Avi\\.android\\build-cache\\966f8b95065886cfc06d4f25bfbb3d096f42b360\\output\\res\\layout-v11\\notification_template_big_media_narrow.xml"
+    },
+    {
+        "merged": "C:\\Users\\Avi\\StudioProjects\\BookApp-android\\webviewmarker\\build\\intermediates\\res\\merged\\release\\layout-v11\\notification_template_big_media_custom.xml",
+        "source": "C:\\Users\\Avi\\.android\\build-cache\\966f8b95065886cfc06d4f25bfbb3d096f42b360\\output\\res\\layout-v11\\notification_template_big_media_custom.xml"
+    },
+    {
+        "merged": "C:\\Users\\Avi\\StudioProjects\\BookApp-android\\webviewmarker\\build\\intermediates\\res\\merged\\release\\layout-v11\\notification_media_action.xml",
+        "source": "C:\\Users\\Avi\\.android\\build-cache\\966f8b95065886cfc06d4f25bfbb3d096f42b360\\output\\res\\layout-v11\\notification_media_action.xml"
+    }
+]
